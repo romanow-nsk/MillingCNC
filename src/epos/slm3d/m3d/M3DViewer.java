@@ -58,7 +58,7 @@ public class M3DViewer extends BaseFrame {
         defaultHandler = Thread.getDefaultUncaughtExceptionHandler();
         ws().init();
         setBounds(700,50,530,600);
-        setTitle("SLM 3D Printer: "+ws().currentFileTitle());
+        setTitle(Values.getVersion()+" "+ws().currentFileTitle());
         Progress.setMaximum(100);
         Progress.setMinimum(0);
         Progress.setValue(0);

@@ -7,15 +7,9 @@ import epos.slm3d.controller.USBProtocol;
 import epos.slm3d.settings.Settings;
 import epos.slm3d.settings.WorkSpace;
 import epos.slm3d.slicer.*;
-import epos.slm3d.stl.I_STLPoint2D;
-import epos.slm3d.stl.STLLine;
-import epos.slm3d.stl.STLLoop;
-import epos.slm3d.stl.STLPoint2D;
+import epos.slm3d.stl.*;
 import epos.slm3d.usb.M3DUSBController;
-import epos.slm3d.utils.Events;
-import epos.slm3d.utils.UNIException;
-import epos.slm3d.utils.Utils;
-import epos.slm3d.utils.Values;
+import epos.slm3d.utils.*;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -435,8 +429,83 @@ public class M3DOperations {
             }
         return data;
         }
+    //+++1.1 ---------------------------------------------------- Генерация контуров по слоям ---------------------------------
+    public ArrayList<STLLoopGenerator> createLoops(final  ViewAdapter back){
+        ArrayList<STLLoopGenerator> loopList = new ArrayList<>();
+        final SliceRezult rez = new SliceRezult();
+        Settings set = WorkSpace.ws().local();
+        double vStep = set.filling.VerticalStep.getVal()/(Values.PrinterFieldSize/2);
+        double zz = WorkSpace.ws().model().max().z();
+        double z0 = set.local.ZStart.getVal()/(Values.PrinterFieldSize/2);
+        double z1 = set.local.ZFinish.getVal()/(Values.PrinterFieldSize/2);
+        if (z1==0 || zz < z1)
+            z1 = zz;
+        sliceStop = false;
+        int nLayers = (int)((z1-z0)/vStep+1);
+        notify.setProgress(0);
+        int layerCount=0;
+        try {
+            for(layerCount=0; layerCount < nLayers; layerCount++){
+                if (back.isFinish()){
+                    sliceStop = true;
+                    notify.notify(Values.error,"Слайсинг прерван");
+                    break;
+                    }
+                SliceParams par = new SliceParams(layerCount);
+                final STLPoint2D last = new STLPoint2D(0, 0);
+                if (set==null)
+                    set = WorkSpace.ws().local();
+                double diff = set.filling.FillParametersRaster.getVal() * Values.OptimizeRasterCount;
+                vStep = set.filling.VerticalStep.getVal() / (Values.PrinterFieldSize / 2);
+                z0 = WorkSpace.ws().local().local.ZStart.getVal()/(Values.PrinterFieldSize/2);
+                cnt = 0;
+                double z = par.layer!=null ? par.layer.z() : z0 + par.layerNum * vStep;
+                double diff0 = Values.PointDiffenerce/(Values.PrinterFieldSize)/2;
+                STLLoopGenerator slicer = new STLLoopGenerator(WorkSpace.ws().model().triangles(), z, diff0,notify);
+                ArrayList<STLLoop> repaired = slicer.createLoops(true);
+                if (repaired.size()!=0){
+                    notify.notify(Values.warning,"Принудительно замкнуты контуры: "+repaired.size());
+                    }
+                ArrayList<STLLoop> loops=null;
+                if (par.layer!=null){
+                    slicer.orig(par.layer.lines());
+                    loops = par.layer.loops();
+                    slicer.loops(loops);
+                    }
+                if(par.mode!=3){
+                    repaired = slicer.createLoops(true);
+                    if (repaired.size()!=0){
+                        notify.notify(Values.warning,"Принудительно замкнуты контуры: "+repaired.size());
+                        }
+                    slicer.createLoops(par.layer==null);
+                        loops = slicer.loops();
+                        if (par.layer!=null){
+                            par.layer.lines(slicer.orig());         // Вернуть исходные (м.б.изменены)
+                            par.layer.loops(loops);
+                            }
+                        }
+                    notify.log( String.format("z=%5.2f отрезков в контурах=%d", z * (Values.PrinterFieldSize / 2), slicer.orig().size()));
+                    notify.log( "Контуров " + loops.size() + " замкнутых " + slicer.totalCompleted() + "");
+                    loopList.add(slicer);
+                    }
+                notify.setProgress((int)((layerCount+1)*100/nLayers));
+                }
+            catch (UNIException ee){
+                notify.notify(Values.fatal,ee.toString());
+                return null;
+                }
+        notify.log("Слайсинг закончен, слоев: "+layerCount);
+        notify.log(String.format("линий: %d длина: %s холостой ход: %d%% время: %s",rez.lineCount(),rez.printLength(),rez.moveProc(),rez.printTime()));
+        set.statistic.setFromRezult(rez);
+        set.statistic.SliceTime.setVal((int)(back.timeInMs()/1000));
+        WorkSpace.ws().sendEvent(Events.Settings);
+        WorkSpace.ws().sendEvent(Events.NewData);
+        return loopList;
+        }
+
     /** Слайсирование для разных алгоритмов и разных генераторов команд */
     public SliceRezult sliceTo(CommandGenerator generator, final  ViewAdapter back){
+        ArrayList<STLLoopGenerator> loopList = createLoops(back);
         final SliceRezult rez = new SliceRezult();
         Settings set = WorkSpace.ws().local();
         double vStep = set.filling.VerticalStep.getVal()/(Values.PrinterFieldSize/2);
@@ -465,13 +534,13 @@ public class M3DOperations {
                     rez.procLayer(layerRez);
                     notify.setProgress((int)((layerCount+1)*100/nLayers));
                     }
-                generator.end(rez);
-                generator.close();
+            generator.end(rez);
+            generator.close();
+            }
+            catch (UNIException ee){
+                notify.notify(Values.fatal,ee.toString());
+                return rez;
                 }
-                catch (UNIException ee){
-                    notify.notify(Values.fatal,ee.toString());
-                    return rez;
-                    }
         notify.log("Слайсинг закончен, слоев: "+layerCount);
         notify.log(String.format("линий: %d длина: %s холостой ход: %d%% время: %s",rez.lineCount(),rez.printLength(),rez.moveProc(),rez.printTime()));
         set.statistic.setFromRezult(rez);

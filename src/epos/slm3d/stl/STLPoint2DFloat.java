@@ -21,6 +21,7 @@ public class STLPoint2DFloat implements I_STLPoint2D {
     public double y(){ return y; }
     @Override
     public void y(double x0){ y=(float)x0; }
+
     public STLPoint2DFloat(STLPoint2DFloat two){
         x=two.x; y=two.y;
         }
@@ -43,6 +44,17 @@ public class STLPoint2DFloat implements I_STLPoint2D {
     public boolean equalsAbout(I_STLPoint2D two){
         return diffXY(two) < Values.EqualDifference;
         }
+
+    @Override
+    public boolean equalsAboutX(I_STLPoint2D two) {
+        return Math.abs(x-two.x())<Values.EqualDifference;
+        }
+
+    @Override
+    public boolean equalsAboutY(I_STLPoint2D two) {
+        return Math.abs(y-two.y())<Values.EqualDifference;
+        }
+
     @Override
     public  void shift(double xx, double yy){
         x+=xx; y+=yy;

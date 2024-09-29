@@ -19,17 +19,20 @@ public class STLLoopGenerator {
     private int id=1;
     private ArrayList<STLTriangle> triang;
     private ArrayList<STLLoop> loops = new ArrayList<>();
+    private STLLoop treeRoot = null;
     private STLLineGroup src =  new STLLineGroup();
     private STLLineGroup orig = new STLLineGroup();
     private STLLineIndex index1;
     private STLLineIndex index2;
     public STLLineGroup orig(){ return orig; }
+    public STLLoop treeRoot(){ return treeRoot; }
     public ArrayList<STLLoop> loops(){ return loops; }
     public void orig(STLLineGroup  xx){
         orig=xx;
         }
     public void loops(ArrayList<STLLoop>  xx){ loops=xx; }
-    public STLLoopGenerator(ArrayList<STLTriangle> triang0, double z0, double diff0, I_Notify not) throws UNIException {
+    public STLLoopGenerator(){}
+    public STLLoopGenerator(ArrayList<STLTriangle> triang0, double z0, double diff0, I_Notify not) {
         id=1;
         z = z0;
         diff = diff0;
@@ -307,6 +310,7 @@ public class STLLoopGenerator {
             }
         return false;
         }
+
     /** Селекция по углу наклона = углы наклона 2 точек к линии прожига  больше-меньше */
     public STLPointIndex intersect(STLLine line, boolean forX){
         MyAtan b0 = new MyAtan(line);
@@ -398,6 +402,44 @@ public class STLLoopGenerator {
             //    line.nPoint(3);             // Контур из линий горизонтального треугольника
             //    orig.addWithTest(line);     // Оригинал - только из несовпадающий
             //    }
+            }
+        }
+    //+++ 1.1. Построение дерева контуров ----------------------------------------------------------------
+    public STLLoop createNestingTree(){
+        for(STLLoop loop1 : loops){
+            loop1.parent(null);
+            loop1.maxLevel(0);
+            }
+        for(STLLoop loop1 : loops){
+            for(STLLoop loop2 : loops){
+                if (loop1==loop2)
+                    continue;
+                if (loop1.nestingInCurrent(loop2,false)){
+                    loop1.childs().add(loop2);
+                    }
+                }
+            }
+        STLLoop root = null;
+        int max=0;
+        for(STLLoop loop1 : loops){
+            int vv = loop1.getMaxLevel();
+            if (vv > max){
+                root = loop1;
+                max = vv;
+                }
+            }
+        root.setMaxLevel(1);
+        root.removeExtra(1);
+
+        return root;
+        }
+    public static void main(String ss[]){
+        STLLoopGenerator generator = new STLLoopGenerator();
+        ArrayList<STLLoop> loops1 = STLLoop.createLoopList();
+        generator.loops(loops1);
+        STLLoop root = generator.createNestingTree();
+        if (root!=null){
+            root.printTree(1);
             }
         }
     }

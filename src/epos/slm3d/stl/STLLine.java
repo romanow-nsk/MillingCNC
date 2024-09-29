@@ -247,8 +247,8 @@ public class STLLine implements I_Line2D,I_File{
         if (seg1_line2_start * seg1_line2_end >= 0 || seg2_line1_start * seg2_line1_end >= 0){
             if (!pointIntersection(line.one()) && !pointIntersection(line.two()))
                 return null;
-            else
-                System.out.println("!!!!!!!!!!!!!!!!!!!!!!");
+            //else
+            //    System.out.println("?");
             }
         double u = seg1_line2_start / (seg1_line2_start - seg1_line2_end);
         return new STLPoint2D(one().x()+ u*dir1.x(),one().y()+u*dir1.y());
@@ -298,6 +298,71 @@ public class STLLine implements I_Line2D,I_File{
         out.writeShort(loopId);
         out.writeByte(nPoint);
         }
+    private double getYL(){
+        //YL = (y2x1-y1x2)/(x1-x2)
+        return (line[1].y()*line[0].x() - line[0].y()*line[1].x())/(line[0].x()-line[1].x());
+        }
+    private double getXR(){
+        //YL = (y1x2-y2x1)/(y1-y2)
+        return (line[0].y()*line[1].x() - line[1].y()*line[0].x())/(line[0].y()-line[1].y());
+        }
+    private double getYR(){
+        // YR = (y2-y1)(W-x1)/(x2-x2)+y1
+        return (line[1].y()-line[0].y())*(Values.PrinterFieldSize-line[0].x())/(line[1].x()-line[0].x())+line[0].y();
+        }
+    private double getXL(){
+        // YR = (x2-x1)(H-y1)/(y2-y2)+x1
+        return (line[1].x()-line[0].x())*(Values.PrinterFieldSize-line[0].y())/(line[1].y()-line[0].y())+line[0].x();
+    }
+    //+++ 1.1 ------------------------------ Растянуть отрезов до полной линии рабочего стола --------------------------
+    public STLLine expandToFullSize(){
+        STLLine out = clone();
+        double FSize = Values.PrinterFieldSize;
+        double a,b;
+        if (line[0].equalsAboutX(line[1])){ // Растянуть вертикально
+            b = (line[1].x()-line[0].x())/(line[1].y()-line[0].y());
+            a = line[0].x()-b*line[0].y();
+            out.line[0].x(a);
+            out.line[0].y(0);
+            out.line[1].x(a+b*FSize);
+            out.line[1].y(FSize);
+            }
+        else{
+            b = (line[1].y()-line[0].y())/(line[1].x()-line[0].x());
+            a = line[0].y()-b*line[0].x();
+            if (a<0){
+                out.line[0].x(-a/b);
+                out.line[0].y(0);
+                }
+            else{
+                if (a>FSize){
+                    out.line[0].x((FSize-a)/b);
+                    out.line[0].y(FSize);
+                    }
+                else{
+                    out.line[0].x(0);
+                    out.line[0].y(a);
+                    }
+                }
+            double y = FSize*b+a;
+            if (y<0){
+                out.line[1].x(-a/b);
+                out.line[1].y(0);
+                }
+            else{
+                if (y>FSize){
+                    out.line[1].x((FSize-a)/b);
+                    out.line[1].y(FSize);
+                    }
+                else{
+                    out.line[1].x(FSize);
+                    out.line[1].y(y);
+                    }
+                }
+            }
+        return out;
+        }
+
     /** true - точно не пересекает, false - пересечение возможно */
     public boolean noIntersection(STLLine line){
         double cc;
@@ -338,4 +403,18 @@ public class STLLine implements I_Line2D,I_File{
     public double x1() { return two().x(); }
     @Override
     public double y1() { return two().y(); }
+    public static void main(String ss[]){
+        STLLine line1 = new STLLine(new STLPoint2D(5,5),new STLPoint2D(5,10));
+        System.out.println(line1+" "+line1.expandToFullSize());
+        line1 = new STLLine(new STLPoint2D(5,5),new STLPoint2D(25,5));
+        System.out.println(line1+" "+line1.expandToFullSize());
+        line1 = new STLLine(new STLPoint2D(5,5),new STLPoint2D(25,25));
+        System.out.println(line1+" "+line1.expandToFullSize());
+        line1 = new STLLine(new STLPoint2D(5,5),new STLPoint2D(25,20));
+        System.out.println(line1+" "+line1.expandToFullSize());
+        line1 = new STLLine(new STLPoint2D(5,5),new STLPoint2D(20,25));
+        System.out.println(line1+" "+line1.expandToFullSize());
+        line1 = new STLLine(new STLPoint2D(20,25),new STLPoint2D(5,5));
+        System.out.println(line1+" "+line1.expandToFullSize());
+        }
 }

@@ -23,7 +23,14 @@ public class STLLoop extends STLLineGroup implements I_File{
     // 2 - поверхность
     // 3 - плоскость
     private int lineMode=0;
-
+    private ArrayList<STLLoop> childs = new ArrayList<>();        //+++ 1.1 Дерево вложености контуров
+    public ArrayList<STLLoop> childs(){ return childs; }
+    private STLLoop parent = null;
+    private int maxLevel=0;
+    public int maxLevel(){ return maxLevel; }
+    public void maxLevel(int vv) {maxLevel=vv; }
+    public STLLoop parent(){ return parent; }
+    public void parent(STLLoop xx){ parent = xx; }
     public boolean isRepaired(){ return repaired; }
     public STLLoop(double diff0){
         diff = diff0;
@@ -277,5 +284,128 @@ public class STLLoop extends STLLineGroup implements I_File{
         stat.calcStatistic();
         return stat;
         }
-
+    //+++ 1.1------------------------------------ Вложенность контуров 2 внутри 1 --------------------------------------
+    public boolean nestingInCurrent(STLLoop outSide, boolean trace) {
+        int idx1=0;
+        for (STLLine own : outSide.lines()) {
+            own = own.expandToFullSize();
+            if (trace)
+                System.out.print("id="+id+"["+idx1+"] "+own+" ");
+            idx1++;
+            int count = 0;
+            int idx2=-1;
+            for (STLLine other : lines()) {
+                idx2++;
+                //other = other.expandToFullSize();
+                //if (own.noIntersection(other))            //8%
+                //    continue;
+                STLPoint2D pp = own.intersection(other);  //23%
+                if (pp != null) {
+                    count++;
+                    if (trace)
+                        System.out.print(idx2+" ");
+                    }
+                }
+            if (count == 0)
+                return false;
+            if (count %2 == 1) {
+                System.out.println("["+count+"] ");
+                return false;
+                }
+            if (trace)
+                System.out.println();
+            }
+        return true;
+        }
+    //------------------------------------------------------------------------------------
+    public void printTree(int level){
+        System.out.println("level="+level+" id="+id+(parent==null ? "" : "->"+parent.id));
+        for(STLLoop loop : childs)
+            loop.printTree(level+1);
+        }
+    public void setMaxLevel(int level){
+        if (level>maxLevel)
+            maxLevel=level;
+        for(STLLoop loop : childs)
+            loop.setMaxLevel(level+1);
+        }
+    public void removeExtra(int level){
+        int idx;
+        for(idx=0; idx<childs.size();){
+            STLLoop ll = childs.get(idx);
+            if (ll.maxLevel!=level+1)
+                childs.remove(idx);
+            else
+                idx++;
+            }
+        for(STLLoop loop : childs)
+            loop.removeExtra(level+1);
+        }
+    public int getMaxLevel(){
+        if (childs.size()==0)
+            return 1;
+        int max=0;
+        for(STLLoop loop : childs){
+            int vv = loop.getMaxLevel();
+            if (vv>max)
+                max=vv;
+            }
+        return max+1;
+        }
+    //------------------------------------------------------------------------------------
+    public static ArrayList<STLLoop> createLoopList(){
+        ArrayList<STLLoop> loops = new ArrayList<>();
+        STLLoop loop1;
+        loop1 = new STLLoop();
+        loop1.add(new STLLine(new STLPoint2D(50,50), new STLPoint2D(50,80)));
+        loop1.add(new STLLine(new STLPoint2D(50,80), new STLPoint2D(80,80)));
+        loop1.add(new STLLine(new STLPoint2D(80,80), new STLPoint2D(80,50)));
+        loop1.add(new STLLine(new STLPoint2D(80,50), new STLPoint2D(50,50)));
+        loop1.id=1;
+        loops.add(loop1);
+        STLLoop loop2 = new STLLoop();
+        loop2.add(new STLLine(new STLPoint2D(55,55), new STLPoint2D(65,65)));
+        loop2.add(new STLLine(new STLPoint2D(65,65), new STLPoint2D(75,55)));
+        loop2.add(new STLLine(new STLPoint2D(75,55), new STLPoint2D(55,55)));
+        loop2.id=2;
+        loops.add(loop2);
+        STLLoop loop3 = new STLLoop();
+        loop3.add(new STLLine(new STLPoint2D(20,25), new STLPoint2D(30,90)));
+        loop3.add(new STLLine(new STLPoint2D(30,90), new STLPoint2D(90,95)));
+        loop3.add(new STLLine(new STLPoint2D(90,95), new STLPoint2D(85,15)));
+        loop3.add(new STLLine(new STLPoint2D(85,15), new STLPoint2D(20,25)));
+        loop3.id=3;
+        loops.add(loop3);
+        STLLoop loop4 = new STLLoop();
+        loop4.add(new STLLine(new STLPoint2D(10,60), new STLPoint2D(10,62)));
+        loop4.add(new STLLine(new STLPoint2D(10,62), new STLPoint2D(90,62)));
+        loop4.add(new STLLine(new STLPoint2D(90,62), new STLPoint2D(90,60)));
+        loop4.add(new STLLine(new STLPoint2D(90,60), new STLPoint2D(10,60)));
+        loop4.id=4;
+        loops.add(loop4);
+        loop1 = new STLLoop();
+        loop1.add(new STLLine(new STLPoint2D(75,75), new STLPoint2D(77,77)));
+        loop1.add(new STLLine(new STLPoint2D(77,77), new STLPoint2D(77,73)));
+        loop1.add(new STLLine(new STLPoint2D(77,73), new STLPoint2D(75,75)));
+        loop1.id=5;
+        loops.add(loop1);
+        loop1 = new STLLoop();
+        loop1.add(new STLLine(new STLPoint2D(75,75), new STLPoint2D(75,77)));
+        loop1.add(new STLLine(new STLPoint2D(75,77), new STLPoint2D(77,77)));
+        loop1.add(new STLLine(new STLPoint2D(77,77), new STLPoint2D(77,75)));
+        loop1.add(new STLLine(new STLPoint2D(77,75), new STLPoint2D(75,75)));
+        loop1.id=6;
+        loops.add(loop1);
+        return loops;
+        }
+    public static void main(String ss[]){
+        ArrayList<STLLoop> loops = createLoopList();
+        for(int i=1;i<=loops.size();i++){
+            for(int j=1;j<=loops.size();j++){
+                if (i==j)
+                    continue;
+                System.out.println(loops.get(i-1).id+"-"+loops.get(j-1).id +" "+loops.get(i-1).nestingInCurrent(loops.get(j-1),true));
+                }
+            }
+        }
     }

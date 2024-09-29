@@ -4,6 +4,12 @@ package epos.slm3d.utils;
  * Created by romanow on 02.12.2017.
  */
 public class Values {
+    public final static int version=1;
+    public final static int release=1;
+    public final static OwnDateTime releaseDate = new OwnDateTime(27,9,2024);
+    public static String getVersion(){
+        return "Milling CNC NSTU  version "+version+"."+release+" "+releaseDate.dateToString();
+        }
     /** Классы сообщений в логе*/
     public final static int info=0;
     public final static int important=1;

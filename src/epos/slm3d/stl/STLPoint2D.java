@@ -29,6 +29,7 @@ public class STLPoint2D implements I_STLPoint2D {
         this.x = x;
         this.y = y;
         }
+
     /** Расстояние по плоскости XY */
     @Override
     public double diffXY2(I_STLPoint2D two){
@@ -45,6 +46,17 @@ public class STLPoint2D implements I_STLPoint2D {
     public boolean equalsAbout(I_STLPoint2D two){
         return diffXY(two) < Values.EqualDifference;
         }
+
+    @Override
+    public boolean equalsAboutX(I_STLPoint2D two) {
+        return Math.abs(x-two.x())<Values.EqualDifference;
+        }
+
+    @Override
+    public boolean equalsAboutY(I_STLPoint2D two) {
+        return Math.abs(y-two.y())<Values.EqualDifference;
+        }
+
     @Override
     public  void shift(double xx, double yy){
         x+=xx; y+=yy;

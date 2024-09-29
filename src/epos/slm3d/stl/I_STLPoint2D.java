@@ -15,6 +15,8 @@ public interface I_STLPoint2D extends I_Point2D,I_File {
     double diffXY(I_STLPoint2D two);
     double diffXY2(I_STLPoint2D two);
     boolean equalsAbout(I_STLPoint2D two);
+    boolean equalsAboutX(I_STLPoint2D two);
+    boolean equalsAboutY(I_STLPoint2D two);
     void shift(double xx, double yy);
     void setCoordinates(I_STLPoint2D two);
     I_STLPoint2D clone();

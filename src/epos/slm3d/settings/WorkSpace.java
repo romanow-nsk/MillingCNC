@@ -87,7 +87,7 @@ public class WorkSpace implements I_File{
             }
         return ss;
         }
-    public String defaultFileName(){ 
+    public String defaultFileName(){
         return lastName.length()!=0 ? lastName : testDefaultDir()+modelName()+".slm3d";
         }
     public String currentFileTitle(){

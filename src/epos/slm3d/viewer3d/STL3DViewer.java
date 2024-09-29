@@ -9,6 +9,7 @@ import com.sun.j3d.utils.universe.SimpleUniverse;
 import epos.slm3d.m3d.BaseFrame;
 import epos.slm3d.utils.Events;
 import epos.slm3d.m3d.ViewAdapter;
+import epos.slm3d.utils.Values;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -41,7 +42,7 @@ public class STL3DViewer extends BaseFrame implements ActionListener{
         if (!tryToStart()) return;
         initComponents();
         this.setBounds(150,150,1024,768);
-        super.setTitle("STL Viewer");
+        super.setTitle("STL Virewer ("+Values.getVersion()+")");
         setPreferredSize(new Dimension(1024, 768));
         JMenuBar mbar = new JMenuBar();
         JMenu mtools = new JMenu("");
