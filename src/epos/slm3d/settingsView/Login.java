@@ -30,7 +30,11 @@ public class Login extends BaseFrame {
         for(UserProfile uu : users){
             UserList.add(uu.name);
             }
-        Password.setText("");
+        // Password.setText("");
+        //-------------- Отладка ------------------------
+        Password.setText("admin");
+        UserList.select(1);
+        login();
         }
     
     public Login() {

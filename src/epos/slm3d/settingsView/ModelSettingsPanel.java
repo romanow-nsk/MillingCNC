@@ -11,6 +11,7 @@ import epos.slm3d.settings.WorkSpace;
 import epos.slm3d.slicer.SliceData;
 import epos.slm3d.stl.MyAngle;
 import epos.slm3d.utils.I_Notify;
+import epos.slm3d.utils.Utils;
 import epos.slm3d.utils.Values;
 
 import java.text.DecimalFormat;
@@ -80,6 +81,12 @@ public class ModelSettingsPanel extends javax.swing.JPanel  implements I_Setting
         ShiftButton = new javax.swing.JButton();
         SHIFT = new javax.swing.JTextField();
         XYZShift = new javax.swing.JComboBox<>();
+        Z0_3 = new javax.swing.JLabel();
+        Z0_4 = new javax.swing.JLabel();
+        BlankHight = new javax.swing.JTextField();
+        BlankWidth = new javax.swing.JTextField();
+        CutterDiameter = new javax.swing.JTextField();
+        Z0_5 = new javax.swing.JLabel();
 
         setLayout(null);
         add(jLabel1);
@@ -117,7 +124,7 @@ public class ModelSettingsPanel extends javax.swing.JPanel  implements I_Setting
 
         jLabel8.setText("Масштаб модели");
         add(jLabel8);
-        jLabel8.setBounds(10, 190, 110, 14);
+        jLabel8.setBounds(10, 190, 110, 16);
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel10.setText("Статистика");
@@ -130,19 +137,19 @@ public class ModelSettingsPanel extends javax.swing.JPanel  implements I_Setting
 
         jLabel12.setText("Размер по Z (мм)");
         add(jLabel12);
-        jLabel12.setBounds(10, 160, 110, 14);
+        jLabel12.setBounds(10, 160, 110, 16);
 
         jLabel14.setText("Смещение X влево (мм)");
         add(jLabel14);
-        jLabel14.setBounds(10, 100, 140, 14);
+        jLabel14.setBounds(10, 100, 140, 16);
 
         jLabel15.setText("Смещение  Y вверх (мм)");
         add(jLabel15);
-        jLabel15.setBounds(10, 130, 140, 14);
+        jLabel15.setBounds(10, 130, 140, 16);
 
         jLabel16.setText("Время печати");
         add(jLabel16);
-        jLabel16.setBounds(270, 160, 100, 14);
+        jLabel16.setBounds(270, 160, 100, 16);
 
         RotateButton.setText("Поворот");
         RotateButton.addActionListener(new java.awt.event.ActionListener() {
@@ -151,11 +158,11 @@ public class ModelSettingsPanel extends javax.swing.JPanel  implements I_Setting
             }
         });
         add(RotateButton);
-        RotateButton.setBounds(380, 210, 100, 23);
+        RotateButton.setBounds(380, 210, 100, 22);
 
         jLabel22.setText("Размер по Y (мм)");
         add(jLabel22);
-        jLabel22.setBounds(10, 70, 110, 14);
+        jLabel22.setBounds(10, 70, 110, 16);
 
         MarkingFieldHight.setEditable(false);
         MarkingFieldHight.setBackground(new java.awt.Color(200, 200, 200));
@@ -177,7 +184,7 @@ public class ModelSettingsPanel extends javax.swing.JPanel  implements I_Setting
 
         Z0_2.setText("Z конечное (мм) ");
         add(Z0_2);
-        Z0_2.setBounds(10, 250, 120, 14);
+        Z0_2.setBounds(10, 250, 120, 16);
 
         jLabel46.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel46.setText("Модель");
@@ -186,7 +193,7 @@ public class ModelSettingsPanel extends javax.swing.JPanel  implements I_Setting
         add(jSeparator2);
         jSeparator2.setBounds(580, 152, 180, 0);
         add(jSeparator5);
-        jSeparator5.setBounds(770, 330, 0, 2);
+        jSeparator5.setBounds(770, 330, 0, 3);
 
         Zfinish.setText("0");
         Zfinish.addActionListener(new java.awt.event.ActionListener() {
@@ -197,9 +204,9 @@ public class ModelSettingsPanel extends javax.swing.JPanel  implements I_Setting
         add(Zfinish);
         Zfinish.setBounds(160, 240, 80, 25);
 
-        Z0_1.setText("Z начальное (мм) ");
+        Z0_1.setText("Диаметр фрезы (мм)");
         add(Z0_1);
-        Z0_1.setBounds(10, 220, 120, 14);
+        Z0_1.setBounds(490, 100, 150, 16);
 
         XYZ.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "X", "Y", "Z" }));
         add(XYZ);
@@ -207,7 +214,7 @@ public class ModelSettingsPanel extends javax.swing.JPanel  implements I_Setting
 
         jLabel25.setText("Линий");
         add(jLabel25);
-        jLabel25.setBounds(270, 40, 80, 14);
+        jLabel25.setBounds(270, 40, 80, 16);
 
         PrintTime.setEditable(false);
         PrintTime.setBackground(new java.awt.Color(200, 200, 200));
@@ -216,7 +223,7 @@ public class ModelSettingsPanel extends javax.swing.JPanel  implements I_Setting
 
         jLabel26.setText("Длина  (м)");
         add(jLabel26);
-        jLabel26.setBounds(270, 70, 80, 14);
+        jLabel26.setBounds(270, 70, 80, 16);
 
         LineCount.setEditable(false);
         LineCount.setBackground(new java.awt.Color(200, 200, 200));
@@ -235,11 +242,11 @@ public class ModelSettingsPanel extends javax.swing.JPanel  implements I_Setting
 
         jLabel27.setText("Холостой ход (%)");
         add(jLabel27);
-        jLabel27.setBounds(270, 100, 100, 14);
+        jLabel27.setBounds(270, 100, 100, 16);
 
         jLabel28.setText("Время слайсинга");
         add(jLabel28);
-        jLabel28.setBounds(270, 130, 100, 14);
+        jLabel28.setBounds(270, 130, 100, 16);
 
         SliceTime.setEditable(false);
         SliceTime.setBackground(new java.awt.Color(200, 200, 200));
@@ -253,7 +260,7 @@ public class ModelSettingsPanel extends javax.swing.JPanel  implements I_Setting
             }
         });
         add(ShiftButton);
-        ShiftButton.setBounds(380, 240, 100, 23);
+        ShiftButton.setBounds(380, 240, 100, 22);
 
         SHIFT.setText("10.0");
         SHIFT.addActionListener(new java.awt.event.ActionListener() {
@@ -267,6 +274,45 @@ public class ModelSettingsPanel extends javax.swing.JPanel  implements I_Setting
         XYZShift.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "X", "Y", "Z" }));
         add(XYZShift);
         XYZShift.setBounds(270, 240, 50, 25);
+
+        Z0_3.setText("Z начальное (мм) ");
+        add(Z0_3);
+        Z0_3.setBounds(10, 220, 120, 16);
+
+        Z0_4.setText("Размер заготовки X(мм)");
+        add(Z0_4);
+        Z0_4.setBounds(490, 40, 150, 16);
+
+        BlankHight.setText("0");
+        BlankHight.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BlankHightActionPerformed(evt);
+            }
+        });
+        add(BlankHight);
+        BlankHight.setBounds(640, 60, 80, 25);
+
+        BlankWidth.setText("0");
+        BlankWidth.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BlankWidthActionPerformed(evt);
+            }
+        });
+        add(BlankWidth);
+        BlankWidth.setBounds(640, 30, 80, 25);
+
+        CutterDiameter.setText("0");
+        CutterDiameter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CutterDiameterActionPerformed(evt);
+            }
+        });
+        add(CutterDiameter);
+        CutterDiameter.setBounds(640, 90, 80, 25);
+
+        Z0_5.setText("Размер заготовки Y(мм)");
+        add(Z0_5);
+        Z0_5.setBounds(490, 70, 150, 16);
     }// </editor-fold>//GEN-END:initComponents
     public boolean loadSettings(){
         try {
@@ -278,6 +324,9 @@ public class ModelSettingsPanel extends javax.swing.JPanel  implements I_Setting
             DecimalFormat df3 = new DecimalFormat("000.0", dfs);
             MarkingFieldHight.setText(df2.format(set.local.MarkingFieldHight.getVal()));
             MarkingFieldWidth.setText(df2.format(set.local.MarkingFieldWidth.getVal()));
+            BlankHight.setText(df2.format(set.local.BlankHight.getVal()));
+            BlankWidth.setText(df2.format(set.local.BlankWidth.getVal()));
+            CutterDiameter.setText(df2.format(set.local.CutterDiameter.getVal()));
             Z.setText(df2.format(set.local.Z.getVal()));
             Zstart.setText(df2.format(set.local.ZStart.getVal()));
             Zfinish.setText(df2.format(set.local.ZFinish.getVal())); 
@@ -290,7 +339,7 @@ public class ModelSettingsPanel extends javax.swing.JPanel  implements I_Setting
             PrintTime.setText(set.statistic.printTime());
             SliceTime.setText(set.statistic.sliceTime());
             } catch (Exception ee){
-                notify.notify(Values.error,ee.toString());
+                notify.notify(Values.error, Utils.createFatalMessage(ee,5));
                 return false; 
                 }
         return true;
@@ -301,6 +350,9 @@ public class ModelSettingsPanel extends javax.swing.JPanel  implements I_Setting
             Settings set = WorkSpace.ws().local();
             set.local.ZStart.setVal(Float.parseFloat(Zstart.getText()));
             set.local.ZFinish.setVal(Float.parseFloat(Zfinish.getText()));
+            set.local.BlankWidth.setVal(Float.parseFloat(BlankWidth.getText()));
+            set.local.BlankHight.setVal(Float.parseFloat(BlankHight.getText()));
+            set.local.CutterDiameter.setVal(Float.parseFloat(CutterDiameter.getText()));
             } catch (Exception ee){
                 notify.notify(Values.error,ee.toString());
                 return false; 
@@ -368,9 +420,24 @@ public class ModelSettingsPanel extends javax.swing.JPanel  implements I_Setting
         // TODO add your handling code here:
     }//GEN-LAST:event_SHIFTActionPerformed
 
+    private void BlankHightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BlankHightActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BlankHightActionPerformed
+
+    private void BlankWidthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BlankWidthActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BlankWidthActionPerformed
+
+    private void CutterDiameterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CutterDiameterActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CutterDiameterActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField ANGLE;
+    private javax.swing.JTextField BlankHight;
+    private javax.swing.JTextField BlankWidth;
+    private javax.swing.JTextField CutterDiameter;
     private javax.swing.JTextField LineCount;
     private javax.swing.JTextField LineLength;
     private javax.swing.JTextField MarkingFieldHight;
@@ -389,6 +456,9 @@ public class ModelSettingsPanel extends javax.swing.JPanel  implements I_Setting
     private javax.swing.JTextField Z;
     private javax.swing.JLabel Z0_1;
     private javax.swing.JLabel Z0_2;
+    private javax.swing.JLabel Z0_3;
+    private javax.swing.JLabel Z0_4;
+    private javax.swing.JLabel Z0_5;
     private javax.swing.JTextField Zfinish;
     private javax.swing.JTextField Zstart;
     private javax.swing.JLabel jLabel1;

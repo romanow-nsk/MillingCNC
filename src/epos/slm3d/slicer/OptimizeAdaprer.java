@@ -5,6 +5,7 @@ import epos.slm3d.stl.I_STLPoint2D;
 import epos.slm3d.stl.STLIndex2D;
 import epos.slm3d.stl.STLLine;
 import epos.slm3d.stl.STLLineGroup;
+import epos.slm3d.utils.I_Notify;
 import epos.slm3d.utils.Values;
 
 /**
@@ -19,7 +20,9 @@ public class OptimizeAdaprer implements I_LineSlice{
     private STLLineGroup src = new STLLineGroup();
     private boolean continuous;
     private double length;
-    public OptimizeAdaprer(I_LineSlice old, double diff0,boolean contigous0){
+    private I_Notify notify;
+    public OptimizeAdaprer(I_LineSlice old, double diff0, boolean contigous0, I_Notify notify0){
+        notify = notify0;
         prevBack = old;
         diff = diff0;
         last=null;
@@ -215,4 +218,9 @@ public class OptimizeAdaprer implements I_LineSlice{
     public void onSliceError(SliceError error) {
         prevBack.onSliceError(error);
     }
+
+    @Override
+    public void notify(int level, String mes) {
+        notify.notify(level,mes);
+        }
 }

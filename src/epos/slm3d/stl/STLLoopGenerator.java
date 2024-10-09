@@ -406,32 +406,52 @@ public class STLLoopGenerator {
         }
     //+++ 1.1. Построение дерева контуров ----------------------------------------------------------------
     public STLLoop createNestingTree(){
+        if (loops.size()==0)
+            return null;
+        int id=1;
         for(STLLoop loop1 : loops){
-            loop1.parent(null);
-            loop1.maxLevel(0);
+            loop1.parents().clear();
+            loop1.id(id++);
             }
         for(STLLoop loop1 : loops){
             for(STLLoop loop2 : loops){
                 if (loop1==loop2)
                     continue;
                 if (loop1.nestingInCurrent(loop2,false)){
-                    loop1.childs().add(loop2);
+                    loop2.parents().add(loop1);
                     }
                 }
             }
-        STLLoop root = null;
-        int max=0;
         for(STLLoop loop1 : loops){
-            int vv = loop1.getMaxLevel();
-            if (vv > max){
-                root = loop1;
-                max = vv;
+            if (loop1.parents().size()==0)
+                continue;
+            STLLoop loop2 = loop1.parents().get(0);
+            int max2 = loop2.getMaxPath();
+            for(int i=1;i<loop1.parents().size();i++){
+                STLLoop loop3 = loop1.parents().get(i);
+                int min3 = loop3.getMaxPath();
+                if (min3 > max2){
+                    max2 = min3;
+                    loop2 = loop3;
+                    }
                 }
+            loop2.childs().add(loop1);
+            loop1.parents().clear();
+            loop1.parents().add(loop2);
             }
-        root.setMaxLevel(1);
-        root.removeExtra(1);
-
-        return root;
+        ArrayList<STLLoop> out = new ArrayList<>();
+        for(STLLoop loop1 : loops){
+            if (loop1.parents().size()==0)
+                out.add(loop1);
+            }
+        if (out.size()==0)
+            return null;
+        if (out.size()==1)
+            return out.get(0);
+        STLLoop loop = new STLLoop();
+        loop.multiply(true);
+        loop.childs(out);
+        return loop;
         }
     public static void main(String ss[]){
         STLLoopGenerator generator = new STLLoopGenerator();

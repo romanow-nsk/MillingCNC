@@ -29,28 +29,28 @@ public class M3DSettings_2 extends BaseFrame {
     private boolean localValid = WorkSpace.ws().modelPresent();
     private GlobalSettingsPanel glob=null;
     private ModelSettingsPanel model=null;
-    public M3DSettings_2() {
+    public M3DSettings_2(I_Notify mainNotify) {
         if (!tryToStart()) return;
         initComponents();
         setTitle("Настройки");
         this.setBounds(100,100, 800, 450);
-        glob =  new GlobalSettingsPanel(notify);
+        glob =  new GlobalSettingsPanel(mainNotify);
         panels.add((I_SettingsPanel)glob);
         SettingsList.add("Принтер",glob);
-        JPanel pn =  new PrintSettingsPanel(WorkSpace.ws().global(),notify);
+        JPanel pn =  new PrintSettingsPanel(WorkSpace.ws().global(),mainNotify);
         panels.add((I_SettingsPanel)pn);
         SettingsList.add("Уставки (общие)",pn);
-        pn =  new SliceSettingsPanel(WorkSpace.ws().global(),notify);
+        pn =  new SliceSettingsPanel(WorkSpace.ws().global(),mainNotify);
         panels.add((I_SettingsPanel)pn);
         SettingsList.add("Слайсинг (общие)",pn);
         if (localValid){
-            model =  new ModelSettingsPanel(notify);
+            model =  new ModelSettingsPanel(mainNotify);
             panels.add((I_SettingsPanel)model);
             SettingsList.add("Модель",model);
-            pn =  new SliceSettingsPanel(WorkSpace.ws().local(),notify);
+            pn =  new SliceSettingsPanel(WorkSpace.ws().local(),mainNotify);
             panels.add((I_SettingsPanel)pn);
             SettingsList.add("Слайсинг (модель)",pn);
-            pn =  new PrintSettingsPanel(WorkSpace.ws().local(),notify);
+            pn =  new PrintSettingsPanel(WorkSpace.ws().local(),mainNotify);
             panels.add((I_SettingsPanel)pn);
             SettingsList.add("Уставки (модель)",pn);
             }

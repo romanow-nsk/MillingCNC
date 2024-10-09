@@ -7,6 +7,7 @@ package epos.slm3d.slicer;
 import epos.slm3d.settings.Settings;
 import epos.slm3d.settings.WorkSpace;
 import epos.slm3d.stl.*;
+import epos.slm3d.utils.I_Notify;
 import epos.slm3d.utils.Values;
 
 /** перехватчик результата слайсирования для chess */
@@ -17,10 +18,12 @@ public class ChessAdapter implements I_LineSlice{
     private MyAngle angleXY90Back;
     private MyAngle angleXY;
     private MyAngle angleXY90;
+    private I_Notify notify;
     /** шаг шахматной сетки */
     private double cellStep;
     void setMode(boolean md){ chessMode=md; }
-    ChessAdapter(Settings set, I_LineSlice old,double angle){
+    ChessAdapter(Settings set, I_LineSlice old, double angle, I_Notify notify0){
+        notify = notify0;
         angleXYBack = new MyAngle(-angle);                   // поворот в обратную сторону
         angleXY90Back = new MyAngle(-angle - Math.PI/2);// поворот в обратную сторону
         angleXY = new MyAngle(angle);                        // поворот в обратную сторону
@@ -200,6 +203,11 @@ public class ChessAdapter implements I_LineSlice{
     @Override
     public void onSliceError(SliceError points) {
         prevBack.onSliceError(points);
+    }
+
+    @Override
+    public void notify(int level, String mes) {
+        notify.notify(level,mes);
     }
 }
 

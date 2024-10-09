@@ -16,6 +16,7 @@ public class Values {
     public final static int warning=2;
     public final static int error=3;
     public final static int fatal=4;
+    public final static String infoLevels[]={"прочее","важное","предупр.","ошибка","сбой"};
     /** Типы 2D точек */
     public final static int classIdRefered=0;
     public final static int classId2D=1;

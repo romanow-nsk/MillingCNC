@@ -205,6 +205,15 @@ public class Utils {
         testName = (idx == -1 ? testName : testName.substring(0,idx)); 
         return testName;
         }
+    public static String createFatalMessage(Throwable ee, int stackSize) {
+        String ss = ee.toString() + "\n";
+        StackTraceElement dd[] = ee.getStackTrace();
+        for (int i = 0; i < dd.length && i < stackSize; i++) {
+            ss += dd[i].getClassName() + "." + dd[i].getMethodName() + ":" + dd[i].getLineNumber() + "\n";
+        }
+        String out = "Программная ошибка:\n" + ss;
+        return out;
+        }
     public static void main(String a[]){
          System.out.println(currentDateTime());
     }

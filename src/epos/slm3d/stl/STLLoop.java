@@ -22,15 +22,12 @@ public class STLLoop extends STLLineGroup implements I_File{
     // 0 - сечение
     // 2 - поверхность
     // 3 - плоскость
+    private boolean multiply=false;
     private int lineMode=0;
-    private ArrayList<STLLoop> childs = new ArrayList<>();        //+++ 1.1 Дерево вложености контуров
+    private ArrayList<STLLoop> childs = new ArrayList<>();         //+++ 1.1 Дерево вложености контуров
+    private ArrayList<STLLoop> parents = new ArrayList<>();        //+++ 1.1 Дерево вложености контуров
     public ArrayList<STLLoop> childs(){ return childs; }
-    private STLLoop parent = null;
-    private int maxLevel=0;
-    public int maxLevel(){ return maxLevel; }
-    public void maxLevel(int vv) {maxLevel=vv; }
-    public STLLoop parent(){ return parent; }
-    public void parent(STLLoop xx){ parent = xx; }
+    public ArrayList<STLLoop> parents(){ return parents; }
     public boolean isRepaired(){ return repaired; }
     public STLLoop(double diff0){
         diff = diff0;
@@ -40,6 +37,14 @@ public class STLLoop extends STLLineGroup implements I_File{
         }
     public void id(int id) {
         this.id = id;
+        }
+
+    public boolean isMultiply() {
+        return multiply; }
+    public void multiply(boolean multiply) {
+        this.multiply = multiply; }
+    public void childs(ArrayList<STLLoop> ss){
+        childs = ss;
         }
     /** Тип контура по пересечению */
     public int loopLineMode(){
@@ -319,16 +324,11 @@ public class STLLoop extends STLLineGroup implements I_File{
         }
     //------------------------------------------------------------------------------------
     public void printTree(int level){
-        System.out.println("level="+level+" id="+id+(parent==null ? "" : "->"+parent.id));
+        System.out.println("level="+level+" id="+id+(parents.size()==0 ? "" : "<-"+parents.get(0).id));
         for(STLLoop loop : childs)
             loop.printTree(level+1);
         }
-    public void setMaxLevel(int level){
-        if (level>maxLevel)
-            maxLevel=level;
-        for(STLLoop loop : childs)
-            loop.setMaxLevel(level+1);
-        }
+    /*
     public void removeExtra(int level){
         int idx;
         for(idx=0; idx<childs.size();){
@@ -341,15 +341,16 @@ public class STLLoop extends STLLineGroup implements I_File{
         for(STLLoop loop : childs)
             loop.removeExtra(level+1);
         }
-    public int getMaxLevel(){
-        if (childs.size()==0)
-            return 1;
+     */
+    public int getMaxPath(){
+        if (parents.size()==0)
+            return 0;
         int max=0;
-        for(STLLoop loop : childs){
-            int vv = loop.getMaxLevel();
-            if (vv>max)
-                max=vv;
-            }
+        for(STLLoop loop : parents){
+            int vv = loop.getMaxPath();
+            if (vv > max)
+                max = vv;
+                }
         return max+1;
         }
     //------------------------------------------------------------------------------------
@@ -395,6 +396,13 @@ public class STLLoop extends STLLineGroup implements I_File{
         loop1.add(new STLLine(new STLPoint2D(77,77), new STLPoint2D(77,75)));
         loop1.add(new STLLine(new STLPoint2D(77,75), new STLPoint2D(75,75)));
         loop1.id=6;
+        loops.add(loop1);
+        loop1 = new STLLoop();
+        loop1.add(new STLLine(new STLPoint2D(1,1), new STLPoint2D(1,5)));       // Один вне дерева
+        loop1.add(new STLLine(new STLPoint2D(1,5), new STLPoint2D(5,5)));
+        loop1.add(new STLLine(new STLPoint2D(5,5), new STLPoint2D(5,1)));
+        loop1.add(new STLLine(new STLPoint2D(5,1), new STLPoint2D(1,1)));
+        loop1.id=7;
         loops.add(loop1);
         return loops;
         }

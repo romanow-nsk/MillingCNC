@@ -34,7 +34,8 @@ public class SliceSettingsPanel extends javax.swing.JPanel  implements I_Setting
         this.setBounds(0,0, 800, 650);
         Mode.addItem("Растр");
         Mode.addItem("Клетки");
-        Mode.addItem("Случайная");        
+        Mode.addItem("Случайная");
+        Mode.addItem("Фреза-1");
         loadSettings();
         }
 

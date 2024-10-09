@@ -36,7 +36,7 @@ public class ViewNotifyer implements I_Notify{
         notify(Values.important,mes);
         }   
     @Override
-    public synchronized void notify(int level0, String mes) {
+    public synchronized void notify(final int level0, final String mes) {
         if (level0 < level)
             return;
         java.awt.EventQueue.invokeLater(

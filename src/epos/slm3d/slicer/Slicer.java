@@ -100,11 +100,12 @@ public class Slicer extends STLLoopGenerator{
             case 0: return sliceLinear(back);
             case 1: return sliceChess(set,back);
             case 2: return sliceRandom(set,back);
+            case 3: return sliceMilling(set,back);
             }
         return false;
         }
     public boolean sliceChess(Settings set,I_LineSlice back) throws UNIException{
-        ChessAdapter chessBack = new ChessAdapter(set,back,angle);
+        ChessAdapter chessBack = new ChessAdapter(set,back,angle,notify);
         chessBack.setMode(true);
         boolean rez =  sliceLinear(chessBack,angle);                // Сетка через обратный адаптер
         chessBack.setMode(false);
@@ -128,7 +129,7 @@ public class Slicer extends STLLoopGenerator{
         int level = 1;
         int dd = (int)(dx / cellStep);
         while(dd!=0){ level++; dd/=2; }
-        RandomAdapter randomBack = new RandomAdapter(back,angle,true,minmax,level+1);
+        RandomAdapter randomBack = new RandomAdapter(back,angle,true,minmax,level+1,notify);
         boolean rez=false;
         randomBack.lineVertical(false);
         rez =  sliceLinear(randomBack,angle);                // Сетка через обратный адаптер
@@ -316,6 +317,57 @@ public class Slicer extends STLLoopGenerator{
                         }
                     }
                 }
+            }
+        return false;
+        }
+    //-----------------------------------------------------------------------------------------------------------------
+    /** Слайсирование фрезерное */
+    public boolean sliceBlank(){
+        notify.notify(Values.important,"z="+ z*(Values.PrinterFieldSize/2)+ ", внешнее фрезерование, нет контуров, снятие слоя");
+        return true;
+        }
+    public boolean sliceBlankOne(STLLoop loop){
+        notify.notify(Values.important,"z="+ z*(Values.PrinterFieldSize/2)+ ", внешнее фрезерование, контур id="+loop.id());
+        for(STLLoop loop1 : loop.childs()){
+            for (STLLoop loop2 : loop1.childs())
+                sliceInside(loop2);
+            }
+        return true;
+        }
+    public boolean sliceBlankMany(ArrayList<STLLoop> loops){
+        notify.notify(Values.important,"z="+ z*(Values.PrinterFieldSize/2)+ ", внешнее фрезерование, контуров "+loops.size());
+        for(STLLoop loop1 : loops){
+            for (STLLoop loop2 : loop1.childs())
+                sliceInside(loop2);
+            }
+        return true;
+        }
+    public boolean sliceInside(STLLoop loop){
+        notify.notify(Values.important,"z="+ z*(Values.PrinterFieldSize/2)+ ", внутреннее фрезерование, контур id="+loop.id());
+        if (loop.childs().size()==0){
+            notify.notify(Values.important,"z="+ z*(Values.PrinterFieldSize/2)+ ", внутреннее фрезерование полное");
+            return true;
+            }
+        notify.notify(Values.important,"z="+ z*(Values.PrinterFieldSize/2)+ ", внутреннее фрезерование, контуров "+loop.childs().size());
+        for(STLLoop loop1 : loop.childs()) {
+            if (loop1.childs().size()==0)
+                continue;
+            for (STLLoop loop2 : loop1.childs())
+                sliceInside(loop2);
+            }
+        return true;
+        }
+    public boolean sliceMilling(Settings set,I_LineSlice back) throws UNIException {
+        STLLoop root = createNestingTree();
+        if (root==null){
+            sliceBlank();
+            return true;
+            }
+        if  (!root.isMultiply()){
+            sliceBlankOne(root);
+            }
+        else{
+            sliceBlankMany(root.childs());
             }
         return false;
         }

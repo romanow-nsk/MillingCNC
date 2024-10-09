@@ -6,6 +6,7 @@ package epos.slm3d.slicer;
 
 import epos.slm3d.settings.Settings;
 import epos.slm3d.stl.*;
+import epos.slm3d.utils.I_Notify;
 import epos.slm3d.utils.Values;
 
 /** перехватчик результата слайсирования для случайного деления
@@ -32,8 +33,10 @@ public class RandomAdapter implements I_LineSlice{
     private MyAngle angleXYBack;        // Угол обратного поворота
     private MyAngle angleXY;
     private boolean lineVertical=false;
+    private I_Notify notify;
     public void lineVertical(boolean vv){ lineVertical=vv; }
-    RandomAdapter(I_LineSlice old, double angle, boolean vertical0, STLLine minmax0, int level){
+    RandomAdapter(I_LineSlice old, double angle, boolean vertical0, STLLine minmax0, int level, I_Notify notify0){
+        notify = notify0;
         vertical = vertical0;
         minmax = minmax0;
         angleXYBack = new MyAngle(-angle);                   // поворот в обратную сторону
@@ -54,8 +57,8 @@ public class RandomAdapter implements I_LineSlice{
             minmax2.one().y(middle);
             }
         if (level!=0){
-            left = new RandomAdapter(prevBack,angle,!vertical,minmax1,level-1);
-            right = new RandomAdapter(prevBack,angle,!vertical,minmax2,level-1);
+            left = new RandomAdapter(prevBack,angle,!vertical,minmax1,level-1,notify);
+            right = new RandomAdapter(prevBack,angle,!vertical,minmax2,level-1,notify);
             }
         }
 
@@ -126,5 +129,10 @@ public class RandomAdapter implements I_LineSlice{
     public void onSliceError(SliceError points) {
         prevBack.onSliceError(points);
     }
+
+    @Override
+    public void notify(int level, String mes) {
+        notify.notify(level,mes);
+        }
 }
 

@@ -31,10 +31,19 @@ public class LocalSettings {
     public FloatParameter PageServoOffsetsLeft = new FloatParameter(0);
     /** Смещение по Y вверх мм */
     public FloatParameter PageServoOffsetsTop = new FloatParameter(0);
+    /** заготовка X мм */
+    public FloatParameter BlankWidth = new FloatParameter(0);
+    /** заготовка Y мм */
+    public FloatParameter BlankHight = new FloatParameter(0);
+    /** диаметр фрезы мм */
+    public FloatParameter CutterDiameter = new FloatParameter(0);
     //---------------------------------------------------------------------------
     public void setNotNull(){
         if (MarkingFieldWidth==null) MarkingFieldWidth = new FloatParameter(0);
         if (MarkingFieldHight==null) MarkingFieldHight = new FloatParameter(0);
+        if (BlankWidth==null) BlankWidth = new FloatParameter(0);
+        if (BlankHight==null) BlankHight = new FloatParameter(0);
+        if (CutterDiameter==null) CutterDiameter = new FloatParameter(0);
         if (Z==null) Z = new FloatParameter(0);
         if (ZStart==null) ZStart = new FloatParameter(0);
         if (ZFinish==null) ZFinish = new FloatParameter(0);

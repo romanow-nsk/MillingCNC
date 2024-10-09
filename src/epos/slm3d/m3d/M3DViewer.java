@@ -1051,7 +1051,7 @@ public class M3DViewer extends BaseFrame {
     }//GEN-LAST:event_LogStopItemStateChanged
 
     private void settings2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_settings2ActionPerformed
-        new M3DSettings_2();
+        new M3DSettings_2(notify);
     }//GEN-LAST:event_settings2ActionPerformed
 
     private void LogToFileItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_LogToFileItemStateChanged

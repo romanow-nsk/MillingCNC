@@ -10,4 +10,5 @@ public interface I_LineSlice {
     public void onSliceLine(STLLine line);
     public boolean isFinish();
     public void onSliceError(SliceError error);
+    public void notify(int level, String mes);
     }

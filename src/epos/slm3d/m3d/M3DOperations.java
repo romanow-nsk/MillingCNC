@@ -240,8 +240,8 @@ public class M3DOperations {
             double angleInc = set.filling.FillParametersAngleInc.getVal();
             double raster = set.filling.FillParametersRaster.getVal();
             double diff = set.filling.FillParametersRaster.getVal() * Values.OptimizeRasterCount;
-            double vStep = set.filling.VerticalStep.getVal() / (Values.PrinterFieldSize / 2);
-            double z0 = WorkSpace.ws().local().local.ZStart.getVal()/(Values.PrinterFieldSize/2);
+            double vStep = set.filling.VerticalStep.getVal(); //  /(Values.PrinterFieldSize / 2);
+            double z0 = WorkSpace.ws().local().local.ZStart.getVal(); // /(Values.PrinterFieldSize/2);
             cnt = 0;
             double angle = par.layer!=null ? par.layer.angle() :  (angle0 + par.layerNum * angleInc) % 180;
             double z = par.layer!=null ? par.layer.z() : z0 + par.layerNum * vStep;
@@ -268,7 +268,7 @@ public class M3DOperations {
                     } catch (UNIException ee) {
                         notify.notify(Values.fatal, ee.getMessage() + "");
                         sliceStop = true;
-                    }
+                        }
                     back.onStepLine();
                 }
                 @Override
@@ -279,7 +279,11 @@ public class M3DOperations {
                 public void onSliceError(SliceError error) {
                     generator.onError(error);
                 }
-            };
+                @Override
+                public void notify(int level,String mes) {
+                    notify.notify(level,mes);
+                    }
+                };
             Slicer slicer = new Slicer( WorkSpace.ws().model().triangles(), z, Values.PointDiffenerce, angle, raster, notify);
             ArrayList<STLLoop> loops=null;
             if (par.layer!=null){
@@ -313,7 +317,7 @@ public class M3DOperations {
             //------------------------------------------------------------------
             boolean finish1;
             if (optimize)
-                finish1 = slicer.slice(mode, new OptimizeAdaprer(sliceAdapter, diff, set.filling.FillContinuous.getVal()),set);
+                finish1 = slicer.slice(mode, new OptimizeAdaprer(sliceAdapter, diff, set.filling.FillContinuous.getVal(),notify),set);
             else
                 finish1 = slicer.slice(mode, sliceAdapter,set);
             generator.layerFinished(layerRez,z,angle);
@@ -368,7 +372,7 @@ public class M3DOperations {
         int threadCount0=WorkSpace.ws().global().global.SliceThreadNum.getVal();
         threadCount = threadCount0;
         procCount=0;
-        for(layerCount=0; layerCount < nLayers; layerCount++){
+        for(layerCount=nLayers-1; layerCount >=0; layerCount--){
             final int layerNum = layerCount;
             if (back.isFinish()){
                 sliceStop = true;
@@ -508,10 +512,10 @@ public class M3DOperations {
         ArrayList<STLLoopGenerator> loopList = createLoops(back);
         final SliceRezult rez = new SliceRezult();
         Settings set = WorkSpace.ws().local();
-        double vStep = set.filling.VerticalStep.getVal()/(Values.PrinterFieldSize/2);
+        double vStep = set.filling.VerticalStep.getVal() / (Values.PrinterFieldSize/2);
         double zz = WorkSpace.ws().model().max().z();
-        double z0 = set.local.ZStart.getVal()/(Values.PrinterFieldSize/2);
-        double z1 = set.local.ZFinish.getVal()/(Values.PrinterFieldSize/2);
+        double z0 = set.local.ZStart.getVal() / (Values.PrinterFieldSize/2);
+        double z1 = set.local.ZFinish.getVal() / (Values.PrinterFieldSize/2);
         if (z1==0 || zz < z1)
             z1 = zz;
         sliceStop = false;
@@ -521,13 +525,13 @@ public class M3DOperations {
         try {
             generator.init();
             generator.start();
-            for(layerCount=0; layerCount < nLayers; layerCount++){
+            for(layerCount=nLayers-1; layerCount >=0; layerCount--){
                 if (back.isFinish()){
                     sliceStop = true;
                     notify.notify(Values.error,"Слайсинг прерван");
                     break;
                     }
-                final SliceRezult layerRez = sliceCommon(new SliceParams(layerCount),generator,back,null);
+                final SliceRezult layerRez = sliceCommon(new SliceParams(layerCount,z0+layerCount*vStep),generator,back,null);
                     if (layerRez.hasError()){
                         break;
                         }
