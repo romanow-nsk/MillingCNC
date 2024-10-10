@@ -115,6 +115,6 @@
   </statistic>
   <userList>
     <account name="Посторонний" password="IMlWhFoNpUc=" accessMode="0" workSpaceDir=""/>
-    <account name="Администратор" password="mJjzSy/Ebto=" accessMode="3" workSpaceDir="F:\CNC\MillingCNC\Cover\"/>
+    <account name="Администратор" password="mJjzSy/Ebto=" accessMode="3" workSpaceDir="C:\romanow\CNC\Cover\"/>
   </userList>
 </settings>

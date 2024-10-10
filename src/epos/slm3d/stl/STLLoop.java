@@ -353,6 +353,14 @@ public class STLLoop extends STLLineGroup implements I_File{
                 }
         return max+1;
         }
+    public String dimStr(){
+        if (lines().size()==0)
+            return "w=0 h=0";
+        STLLine line = minmax();
+        return String.format("w=%4.2f h=%4.2f",
+                (line.two().x()-line.one().x())*(Values.PrinterFieldSize/2),
+                (line.two().y()-line.one().y())*(Values.PrinterFieldSize/2));
+        }
     //------------------------------------------------------------------------------------
     public static ArrayList<STLLoop> createLoopList(){
         ArrayList<STLLoop> loops = new ArrayList<>();

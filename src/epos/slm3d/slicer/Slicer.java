@@ -343,12 +343,16 @@ public class Slicer extends STLLoopGenerator{
         return true;
         }
     public boolean sliceInside(STLLoop loop){
-        notify.notify(Values.important,"z="+ z*(Values.PrinterFieldSize/2)+ ", внутреннее фрезерование, контур id="+loop.id());
+        String zz = String.format("z=%4.2f ",z*(Values.PrinterFieldSize/2));
+        notify.notify(Values.important,zz+" id="+loop.id()+" "+loop.dimStr());
         if (loop.childs().size()==0){
-            notify.notify(Values.important,"z="+ z*(Values.PrinterFieldSize/2)+ ", внутреннее фрезерование полное");
+            notify.notify(Values.important,zz+", фрезерование полное");
             return true;
             }
-        notify.notify(Values.important,"z="+ z*(Values.PrinterFieldSize/2)+ ", внутреннее фрезерование, контуров "+loop.childs().size());
+        notify.notify(Values.important,zz+", фрезерование,  контуров "+loop.childs().size());
+        for(STLLoop loop1 : loop.childs()) {
+            notify.notify(Values.important,"контур id="+loop1.id()+" "+loop1.dimStr());
+            }
         for(STLLoop loop1 : loop.childs()) {
             if (loop1.childs().size()==0)
                 continue;
@@ -357,17 +361,38 @@ public class Slicer extends STLLoopGenerator{
             }
         return true;
         }
+    public STLLoop createBlankLoop(Settings set){
+        double dx = set.local.BlankWidth.getVal()/ (Values.PrinterFieldSize / 2);
+        double dy = set.local.BlankHight.getVal()/ (Values.PrinterFieldSize / 2);
+        if (dx==0 || dy==0){
+            dx = set.local.MarkingFieldWidth.getVal() / (Values.PrinterFieldSize / 2);
+            dy = set.local.MarkingFieldHight.getVal() / (Values.PrinterFieldSize / 2);
+            }
+        STLLoop loop4 = new STLLoop();
+        loop4.id(0);
+        loop4.add(new STLLine(new STLPoint2D(-dx,-dy), new STLPoint2D(-dx,dy)));
+        loop4.add(new STLLine(new STLPoint2D(-dx,dy), new STLPoint2D(dx,dy)));
+        loop4.add(new STLLine(new STLPoint2D(dx,dy), new STLPoint2D(dx,-dy)));
+        loop4.add(new STLLine(new STLPoint2D(dx,-dy), new STLPoint2D(-dx,-dy)));
+        return loop4;
+        }
     public boolean sliceMilling(Settings set,I_LineSlice back) throws UNIException {
+        STLLoop blank = createBlankLoop(set);
         STLLoop root = createNestingTree();
         if (root==null){
-            sliceBlank();
+            sliceInside(blank);
+            // sliceBlank();
             return true;
             }
         if  (!root.isMultiply()){
-            sliceBlankOne(root);
+            blank.childs().add(root);
+            sliceInside(blank);
+            //sliceBlankOne(root);
             }
         else{
-            sliceBlankMany(root.childs());
+            blank.childs(root.childs());
+            sliceInside(blank);
+            //sliceBlankMany(root.childs());
             }
         return false;
         }

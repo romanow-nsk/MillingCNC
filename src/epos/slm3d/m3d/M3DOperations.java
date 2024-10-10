@@ -240,8 +240,8 @@ public class M3DOperations {
             double angleInc = set.filling.FillParametersAngleInc.getVal();
             double raster = set.filling.FillParametersRaster.getVal();
             double diff = set.filling.FillParametersRaster.getVal() * Values.OptimizeRasterCount;
-            double vStep = set.filling.VerticalStep.getVal(); //  /(Values.PrinterFieldSize / 2);
-            double z0 = WorkSpace.ws().local().local.ZStart.getVal(); // /(Values.PrinterFieldSize/2);
+            double vStep = set.filling.VerticalStep.getVal()  /(Values.PrinterFieldSize / 2);
+            double z0 = WorkSpace.ws().local().local.ZStart.getVal() /(Values.PrinterFieldSize/2);
             cnt = 0;
             double angle = par.layer!=null ? par.layer.angle() :  (angle0 + par.layerNum * angleInc) % 180;
             double z = par.layer!=null ? par.layer.z() : z0 + par.layerNum * vStep;
