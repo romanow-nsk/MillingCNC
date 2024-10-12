@@ -240,8 +240,8 @@ public class M3DOperations {
             double angleInc = set.filling.FillParametersAngleInc.getVal();
             double raster = set.filling.FillParametersRaster.getVal();
             double diff = set.filling.FillParametersRaster.getVal() * Values.OptimizeRasterCount;
-            double vStep = set.filling.VerticalStep.getVal()  /(Values.PrinterFieldSize / 2);
-            double z0 = WorkSpace.ws().local().local.ZStart.getVal() /(Values.PrinterFieldSize/2);
+            double vStep = set.filling.VerticalStep.getVal();
+            double z0 = WorkSpace.ws().local().local.ZStart.getVal();
             cnt = 0;
             double angle = par.layer!=null ? par.layer.angle() :  (angle0 + par.layerNum * angleInc) % 180;
             double z = par.layer!=null ? par.layer.z() : z0 + par.layerNum * vStep;
@@ -257,6 +257,10 @@ public class M3DOperations {
                 public void onSliceLayer() {
                     notify.log( "Команд " + cnt + "");
                 }
+
+                @Override
+                public void onCutterUpDown(boolean up) {
+                    }
                 @Override
                 public void onSliceLine(STLLine pp) {
                     try {
@@ -300,7 +304,7 @@ public class M3DOperations {
                     }
                 }
             generator.lines(slicer.orig());
-            notify.log( String.format("z=%5.2f отрезков в контурах=%d", z * (Values.PrinterFieldSize / 2), slicer.orig().size()));
+            notify.log( String.format("z=%5.2f отрезков в контурах=%d", z, slicer.orig().size()));
             generator.loops(loops);
             notify.log( "Контуров " + loops.size() + " замкнутых " + slicer.totalCompleted() + "");
             //------------------------------ Оконтуривание ---------------------
@@ -349,10 +353,10 @@ public class M3DOperations {
         final SliceData data = new SliceData();
         int layerCount=0;
         Settings set = WorkSpace.ws().local();
-        double vStep = set.filling.VerticalStep.getVal()/(Values.PrinterFieldSize/2);
+        double vStep = set.filling.VerticalStep.getVal();
         double zz = WorkSpace.ws().model().max().z();
-        double z0 = set.local.ZStart.getVal()/(Values.PrinterFieldSize/2);
-        double z1 = set.local.ZFinish.getVal()/(Values.PrinterFieldSize/2);
+        double z0 = set.local.ZStart.getVal();
+        double z1 = set.local.ZFinish.getVal();
         if (zz < z1)
             z1 = zz;
         sliceStop = false;
@@ -438,10 +442,10 @@ public class M3DOperations {
         ArrayList<STLLoopGenerator> loopList = new ArrayList<>();
         final SliceRezult rez = new SliceRezult();
         Settings set = WorkSpace.ws().local();
-        double vStep = set.filling.VerticalStep.getVal()/(Values.PrinterFieldSize/2);
+        double vStep = set.filling.VerticalStep.getVal();
         double zz = WorkSpace.ws().model().max().z();
-        double z0 = set.local.ZStart.getVal()/(Values.PrinterFieldSize/2);
-        double z1 = set.local.ZFinish.getVal()/(Values.PrinterFieldSize/2);
+        double z0 = set.local.ZStart.getVal();
+        double z1 = set.local.ZFinish.getVal();
         if (z1==0 || zz < z1)
             z1 = zz;
         sliceStop = false;
@@ -460,11 +464,11 @@ public class M3DOperations {
                 if (set==null)
                     set = WorkSpace.ws().local();
                 double diff = set.filling.FillParametersRaster.getVal() * Values.OptimizeRasterCount;
-                vStep = set.filling.VerticalStep.getVal() / (Values.PrinterFieldSize / 2);
-                z0 = WorkSpace.ws().local().local.ZStart.getVal()/(Values.PrinterFieldSize/2);
+                vStep = set.filling.VerticalStep.getVal();
+                z0 = WorkSpace.ws().local().local.ZStart.getVal();
                 cnt = 0;
                 double z = par.layer!=null ? par.layer.z() : z0 + par.layerNum * vStep;
-                double diff0 = Values.PointDiffenerce/(Values.PrinterFieldSize)/2;
+                double diff0 = Values.PointDiffenerce;
                 STLLoopGenerator slicer = new STLLoopGenerator(WorkSpace.ws().model().triangles(), z, diff0,notify);
                 ArrayList<STLLoop> repaired = slicer.createLoops(true);
                 if (repaired.size()!=0){
@@ -488,7 +492,7 @@ public class M3DOperations {
                             par.layer.loops(loops);
                             }
                         }
-                    notify.log( String.format("z=%5.2f отрезков в контурах=%d", z * (Values.PrinterFieldSize / 2), slicer.orig().size()));
+                    notify.log( String.format("z=%5.2f отрезков в контурах=%d", z, slicer.orig().size()));
                     notify.log( "Контуров " + loops.size() + " замкнутых " + slicer.totalCompleted() + "");
                     loopList.add(slicer);
                     }
@@ -512,10 +516,10 @@ public class M3DOperations {
         ArrayList<STLLoopGenerator> loopList = createLoops(back);
         final SliceRezult rez = new SliceRezult();
         Settings set = WorkSpace.ws().local();
-        double vStep = set.filling.VerticalStep.getVal() / (Values.PrinterFieldSize/2);
+        double vStep = set.filling.VerticalStep.getVal() ;
         double zz = WorkSpace.ws().model().max().z();
-        double z0 = set.local.ZStart.getVal() / (Values.PrinterFieldSize/2);
-        double z1 = set.local.ZFinish.getVal() / (Values.PrinterFieldSize/2);
+        double z0 = set.local.ZStart.getVal();
+        double z1 = set.local.ZFinish.getVal();
         if (z1==0 || zz < z1)
             z1 = zz;
         sliceStop = false;
@@ -725,7 +729,6 @@ public class M3DOperations {
         return true;
         }
     public boolean exportToGCode(ViewAdapter synch,BufferedWriter out) throws IOException{
-        double mas = Values.PrinterFieldSize/2;
         SliceData data = WorkSpace.ws().data();
         Settings local = WorkSpace.ws().local();
         int sz = data.size();
@@ -754,10 +757,10 @@ public class M3DOperations {
                 I_STLPoint2D one = line.one();
                 I_STLPoint2D two = line.two();
                 if (!last.equalsAbout(one)){
-                    out.write(String.format(Locale.US,"G00 X%6.3f Y%6.3f",one.x()*mas,one.y()*mas));
+                    out.write(String.format(Locale.US,"G00 X%6.3f Y%6.3f",one.x(),one.y()));
                     out.newLine();    
                     }
-                out.write(String.format(Locale.US,"G01 X%6.3f Y%6.3f",two.x()*mas,two.y()*mas));
+                out.write(String.format(Locale.US,"G01 X%6.3f Y%6.3f",two.x(),two.y()));
                 out.newLine();    
                 last = two;
                 if (synch.onStepLine()){

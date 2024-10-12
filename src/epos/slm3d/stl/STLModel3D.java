@@ -45,7 +45,7 @@ public class STLModel3D implements I_File{
             notify.log(String.format("Модель не загружена"));
             return;
             }
-        scale(Values.PrinterFieldSize/2);
+        //scale();
         for(STLTriangle xx : list)
             xx.rotate(mode,angle);
         setModelDimensions(notify,false);
@@ -63,11 +63,12 @@ public class STLModel3D implements I_File{
         STLPoint3D vmax = max();
         double dim = getScaleXY();
         notify.log(String.format("исходная размерность %4.2f",dim));
+        double dd = WorkSpace.ws().global().global.WorkFieldSize.getVal();
         if (set.global.AutoScale.getVal()){
-            if (dim >Values.PrinterFieldSize/2){
-                normalizedScale = (Values.PrinterFieldSize/2.)*Values.DefaultModelScale / dim;
+            if (dim >dd/2){
+                normalizedScale = (dd/2.)*Values.DefaultModelScale / dim;
                 notify.log(String.format("Автонормализация в масштабе %4.2f", normalizedScale));
-                scale(normalizedScale);
+                //scale(normalizedScale);
                 }
             else
                 normalizedScale=1;
@@ -78,14 +79,14 @@ public class STLModel3D implements I_File{
                 if (normalizedScale!=1){
                     notify.log(String.format("Масштабирование %4.2f", normalizedScale));
                     }
-                if (dim * normalizedScale > Values.PrinterFieldSize/2)
-                    notify.log(String.format("Превышена размерность модели  %4.2f > %d", (dim * normalizedScale), (int)(Values.PrinterFieldSize/2)));
+                if (dim * normalizedScale > dd/2)
+                    notify.log(String.format("Превышена размерность модели  %4.2f > %d", (dim * normalizedScale), dd/2));
                 if (normalizedScale!=1)
                     scale(normalizedScale);
                 }
             }
         notify.log(String.format("Высота (z) %4.2f", max().z()));
-        scale(2/Values.PrinterFieldSize);                   // Нормализовать к диапазону -1...+1
+        //scale(2/Values.PrinterFieldSize);                   // Нормализовать к диапазону -1...+1
         saveModelDimensions();
         }
     public void saveModelDimensions(){
@@ -93,13 +94,12 @@ public class STLModel3D implements I_File{
         STLPoint3D vmax = max();
         double dx = vmax.x()-vmin.x();
         double dy = vmax.y()-vmin.y();
-        double k = Values.PrinterFieldSize/2;
         Settings set2 = WorkSpace.ws().local();
-        set2.local.MarkingFieldWidth.setVal(dx*k);  // Размер в mm
-        set2.local.MarkingFieldHight.setVal(dy*k);  // Размер в mm
-        set2.local.Z.setVal(vmax.z()*k);
-        set2.local.PageServoOffsetsLeft.setVal(Math.abs(min().x()*k));
-        set2.local.PageServoOffsetsTop.setVal(Math.abs(min().y()*k));
+        set2.local.MarkingFieldWidth.setVal(dx);  // Размер в mm
+        set2.local.MarkingFieldHight.setVal(dy);  // Размер в mm
+        set2.local.Z.setVal(vmax.z());
+        set2.local.PageServoOffsetsLeft.setVal(Math.abs(min().x()));
+        set2.local.PageServoOffsetsTop.setVal(Math.abs(min().y()));
         }
     public void load(String fname, I_Notify notify) throws UNIException{
         loadOnly(fname,notify);

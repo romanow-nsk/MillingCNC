@@ -24,6 +24,8 @@ public class GlobalSettings {
     public StringParameter ControllerIP = new StringParameter(Values.UdpIP);
     /** Количество потоков */
     public IntParameter SliceThreadNum = new IntParameter(Values.SliceThreadNum);
+    /** Печать - текущий слой */
+    public FloatParameter WorkFieldSize = new FloatParameter(Values.WorkFieldSize);
     /** Коррекция нуля рабочего поля по X мм */
     public FloatParameter CenterOffsetX = new FloatParameter(0);
     /** Коррекция нуля рабочего поля по Y мм */

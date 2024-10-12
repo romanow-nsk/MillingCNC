@@ -101,8 +101,8 @@ public class Slice2DViewer extends BaseFrame{
             }
         @Override
         public void MouseMoved(MouseEvent evt) {
-            MX.setText(df.format(gPanel.pixelToX(evt.getX())*Values.PrinterFieldSize/2));
-            MY.setText(df.format(gPanel.pixelToY(evt.getY())*Values.PrinterFieldSize/2));        
+            MX.setText(df.format(gPanel.pixelToX(evt.getX())));
+            MY.setText(df.format(gPanel.pixelToY(evt.getY())));        
             }
         @Override
         public void MouseWheelMoved(MouseWheelEvent evt) {
@@ -593,7 +593,7 @@ public class Slice2DViewer extends BaseFrame{
         if (!MoveToNearest.isSelected()) return pp;
         if (pp==null) return pp;
         STLLineGroup gg = mode==0 ? layer.segments() : layer.lines();
-        I_STLPoint2D pp2 = gg.nearestPoint(pp,Values.NearestPointDistance/Values.PrinterFieldSize);
+        I_STLPoint2D pp2 = gg.nearestPoint(pp,Values.NearestPointDistance);
         return pp2 == null ? pp : pp2;
         } 
     private void selectMousePoint(I_STLPoint2D point){
@@ -643,8 +643,8 @@ public class Slice2DViewer extends BaseFrame{
         if (two==null){
             point = two = nearest(point);
             }
-        PX.setText(df.format(point.x()*Values.PrinterFieldSize/2));
-        PY.setText(df.format(point.y()*Values.PrinterFieldSize/2));
+        PX.setText(df.format(point.x()));
+        PY.setText(df.format(point.y()));
         paintView(false);           
         }
     private void selectConturLine(I_STLPoint2D point){
@@ -780,7 +780,7 @@ public class Slice2DViewer extends BaseFrame{
         if (Grid.isSelected())
             gPanel.paintGrid(gridColor);
         gPanel.setColor(Color.black);
-        //MES.setText("z="+String .format("%5.2f",layer.z()*(Values.PrinterFieldSize/2))+" длина="+layer.rezult().printLength()+" время="+layer.rezult().printTime());
+        //MES.setText("z="+String .format("%5.2f",layer.z()*)+" длина="+layer.rezult().printLength()+" время="+layer.rezult().printTime());
         if (mode<=2)
             statView.setValues(layer.rezult());
         if (mode==2) {
@@ -1049,7 +1049,7 @@ public class Slice2DViewer extends BaseFrame{
             double z0 = set.local.ZStart.getVal();
             double vStep = set.filling.VerticalStep.getVal();
             int lNum = (int)((z-z0+vStep/2)/vStep);
-            final double z2 = z /(Values.PrinterFieldSize/2);
+            final double z2 = z;
             new M3DReSlice("Добавить слой",ws().local(),true,(fil)->{
                 M3DOperations oper = new M3DOperations(notify);
                 ViewAdapter adapter = new ViewAdapter(null);
@@ -1174,7 +1174,7 @@ public class Slice2DViewer extends BaseFrame{
         I_STLPoint2D pp = two!=null ? two :one;
         try {
             double vv = Double.parseDouble(PX.getText());
-            pp.x(vv/(Values.PrinterFieldSize/2));
+            pp.x(vv);
             paintView(false);
             }catch(Exception ee){ notify.notify(Values.error,"Формат целого числа ????");}
     }//GEN-LAST:event_PXKeyPressed
@@ -1185,7 +1185,7 @@ public class Slice2DViewer extends BaseFrame{
         I_STLPoint2D pp = two!=null ? two :one;
         try {
             double vv = Double.parseDouble(PY.getText());
-            pp.y(vv/(Values.PrinterFieldSize/2));
+            pp.y(vv);
             paintView(false);
             }catch(Exception ee){ notify.notify(Values.error,"Формат целого числа ????");}
     }//GEN-LAST:event_PYKeyPressed

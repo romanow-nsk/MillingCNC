@@ -99,9 +99,8 @@ public class STLPoint2DFloat implements I_STLPoint2D {
         }
     @Override
     public void saveFloat(DataOutputStream out) throws IOException {
-        double mas = Values.PrinterFieldSize/2;
-        out.write(Utils.intToBytes(Float.floatToIntBits((float)(x*mas))));
-        out.write(Utils.intToBytes(Float.floatToIntBits((float)(y*mas))));
+        out.write(Utils.intToBytes(Float.floatToIntBits((float)(x))));
+        out.write(Utils.intToBytes(Float.floatToIntBits((float)(y))));
         }
     @Override
     public String toString() {

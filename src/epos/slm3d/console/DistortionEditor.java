@@ -241,9 +241,9 @@ public class DistortionEditor extends BaseFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         try {
             boolean mode = Mode.isSelected();
-            int xx = mode ? (int)(128+Double.parseDouble(X.getText())/(Values.PrinterFieldSize/2)*128)
+            int xx = mode ? (int)(128+Double.parseDouble(X.getText())) //128)
                     : Integer.parseInt(X.getText());
-            int yy = mode ? (int)(128+Double.parseDouble(Y.getText())/(Values.PrinterFieldSize/2)*128)
+            int yy = mode ? (int)(128+Double.parseDouble(Y.getText()))   //128)
                     : Integer.parseInt(Y.getText());
             data.value(xx,yy,Integer.parseInt(VX.getText()), Integer.parseInt(VY.getText()));
             view();
@@ -254,8 +254,8 @@ public class DistortionEditor extends BaseFrame {
         int x = evt.getX();
         int y = 256 - evt.getY();
         boolean mode = Mode.isSelected();
-        X.setText(""+(mode ? df.format((x-128)*Values.PrinterFieldSize/2/128) : x));
-        Y.setText(""+(mode ? df.format((y-128)*Values.PrinterFieldSize/2/128) : y));
+        X.setText(""+(mode ? df.format((x-128)/128) : x));
+        Y.setText(""+(mode ? df.format((y-128)/128) : y));
         if (evt.getButton()==1){
             VX.setText(""+data.valueX(x, y));
             VY.setText(""+data.valueY(x, y));

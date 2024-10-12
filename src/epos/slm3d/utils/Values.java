@@ -35,8 +35,8 @@ public class Values {
     public final static String SettingsFileName="m3dSettings.xml";
     /** коэффициент заполнения моделью пространства при автомасштабировании +/-1 */
     public final static double DefaultModelScale=1;
-    /** размер поля печати принтера в мм*/
-    public final static double PrinterFieldSize=100;
+    /** размер рабочего поля в мм*/
+    public final static double WorkFieldSize=100;
     /** точность приближения к pi/2 в радианах */
     public final static double AxesGrad=0.5*Math.PI/180;
     /** точность поиска соседней точки при склеивании контура - мм */

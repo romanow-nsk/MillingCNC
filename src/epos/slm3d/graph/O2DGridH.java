@@ -20,7 +20,7 @@ import java.io.IOException;
  * @author romanow
  */
 public class O2DGridH extends GraphObject{
-    private double step=1./(Values.PrinterFieldSize/2);
+    private double step=1.;
     public O2DGridH(){}
     public O2DGridH(GraphPoint p00, GraphPoint p01) {
         super(p00, p01);
@@ -32,17 +32,17 @@ public class O2DGridH extends GraphObject{
     public O2DGridH(double x0, double y0, double x1, double y1, double par) {
         super(new GraphPoint(x0,y0),new GraphPoint(x1,y1));
         if (par==0)
-            par = 1/(Values.PrinterFieldSize/2);        
+            par = 1;
         step = par;
         }
     @Override
     public void setParam1(double vv){ 
         if (vv==0) vv=1;
-        step = vv/(Values.PrinterFieldSize/2); 
+        step = vv;
         }  
  
     @Override
-    public double getParam1(){ return step*((Values.PrinterFieldSize/2)); }    
+    public double getParam1(){ return step; }
     public void paint(Color color,GraphPanel panel,boolean mid){
         super.paint(color, panel,mid);
         int nx = (int)(szX()/step)+1;

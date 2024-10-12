@@ -5,6 +5,7 @@
  */
 package epos.slm3d.graph;
 
+import epos.slm3d.settings.WorkSpace;
 import epos.slm3d.stl.I_Line2D;
 import epos.slm3d.stl.I_Point2D;
 import epos.slm3d.stl.I_STLPoint2D;
@@ -102,14 +103,15 @@ public class GraphPanel extends JPanel{
             }
         }
     public int xMMToPixel(double v){
-        return xToPixel(v/(Values.PrinterFieldSize/2));
+        return xToPixel(v);
         }
     public int yMMToPixel(double v){
-        return yToPixel(v/(Values.PrinterFieldSize/2));
+        return yToPixel(v);
         }
     public void  paintGrid(Color gridColor){
         gg.setColor(Color.red);
-        int sz = (int)Values.PrinterFieldSize/2;
+        double dd = WorkSpace.ws().global().global.WorkFieldSize.getVal();
+        int sz = (int)dd/2;
         int x1=xMMToPixel(-sz);
         int x2=xMMToPixel(sz);
         int y1=yMMToPixel(-sz);

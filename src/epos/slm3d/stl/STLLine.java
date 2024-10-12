@@ -308,16 +308,18 @@ public class STLLine implements I_Line2D,I_File{
         }
     private double getYR(){
         // YR = (y2-y1)(W-x1)/(x2-x2)+y1
-        return (line[1].y()-line[0].y())*(Values.PrinterFieldSize-line[0].x())/(line[1].x()-line[0].x())+line[0].y();
+        double dd = WorkSpace.ws().global().global.WorkFieldSize.getVal();
+        return (line[1].y()-line[0].y())*(dd-line[0].x())/(line[1].x()-line[0].x())+line[0].y();
         }
     private double getXL(){
         // YR = (x2-x1)(H-y1)/(y2-y2)+x1
-        return (line[1].x()-line[0].x())*(Values.PrinterFieldSize-line[0].y())/(line[1].y()-line[0].y())+line[0].x();
+        double dd = WorkSpace.ws().global().global.WorkFieldSize.getVal();
+        return (line[1].x()-line[0].x())*(dd-line[0].y())/(line[1].y()-line[0].y())+line[0].x();
     }
     //+++ 1.1 ------------------------------ Растянуть отрезов до полной линии рабочего стола --------------------------
     public STLLine expandToFullSize(){
         STLLine out = clone();
-        double FSize = Values.PrinterFieldSize;
+        double FSize = WorkSpace.ws().global().global.WorkFieldSize.getVal();
         double a,b;
         if (line[0].equalsAboutX(line[1])){ // Растянуть вертикально
             b = (line[1].x()-line[0].x())/(line[1].y()-line[0].y());

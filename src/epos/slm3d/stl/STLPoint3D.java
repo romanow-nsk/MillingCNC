@@ -155,7 +155,6 @@ public class STLPoint3D extends STLPoint2D{
         }
     public void saveFloat(DataOutputStream out) throws IOException {
         super.saveFloat(out);
-        double mas = Values.PrinterFieldSize/2;
-        out.write(Utils.intToBytes(Float.floatToIntBits((float)(z*mas))));
+        out.write(Utils.intToBytes(Float.floatToIntBits((float)(z))));
         }
     }

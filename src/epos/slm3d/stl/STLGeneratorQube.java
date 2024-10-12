@@ -11,7 +11,7 @@ public class STLGeneratorQube implements I_ModelGenerator{
     private double sz;
     ArrayList<STLTriangle> out=new ArrayList<>();
     public STLGeneratorQube(double size){
-        sz = size/ (Values.PrinterFieldSize/2);
+        sz = size ;
         }
     private void add(ArrayList<STLTriangle> xx){
         for (STLTriangle zz : xx)

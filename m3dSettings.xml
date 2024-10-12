@@ -23,14 +23,14 @@
   </delays>
   <filling>
     <Mode min="0" max="1" def="0" val="3"/>
-    <FillParametersRaster min="0.0" max="1000.0" def="0.01" val="0.009999999776482582"/>
+    <FillParametersRaster min="0.0" max="1000.0" def="0.01" val="0.5"/>
     <FillParametersOffset min="0.0" max="1000.0" def="0.002" val="0.0020000000949949026"/>
     <FillParametersAngle min="0.0" max="1000.0" def="20.0" val="20.0"/>
     <FillParametersAngleInc min="0.0" max="1000.0" def="1.0" val="1.0"/>
     <FillParametersFillCell min="0.0" max="1000.0" def="1.0" val="1.0"/>
     <FillingFlatness min="0.0" max="1000.0" def="0.01" val="0.009999999776482582"/>
     <VerticalStep min="0.0" max="1000.0" def="0.05" val="0.5"/>
-    <MoveOptimize def="true" val="false"/>
+    <MoveOptimize def="true" val="true"/>
     <SendLoops def="false" val="false"/>
     <FlateCircuitSlice def="false" val="false"/>
     <FillContinuous def="false" val="false"/>
@@ -87,6 +87,7 @@
       <val>192.168.1.100</val>
     </ControllerIP>
     <SliceThreadNum min="0" max="1000" def="5" val="5"/>
+    <WorkFieldSize min="0.0" max="1000.0" def="100.0" val="100.0"/>
     <CenterOffsetX min="0.0" max="1000.0" def="0.0" val="0.0"/>
     <CenterOffsetY min="0.0" max="1000.0" def="0.0" val="0.0"/>
     <CurrentLayer min="0" max="1000" def="-1" val="-1"/>
@@ -115,6 +116,6 @@
   </statistic>
   <userList>
     <account name="Посторонний" password="IMlWhFoNpUc=" accessMode="0" workSpaceDir=""/>
-    <account name="Администратор" password="mJjzSy/Ebto=" accessMode="3" workSpaceDir="C:\romanow\CNC\Cover\"/>
+    <account name="Администратор" password="mJjzSy/Ebto=" accessMode="3" workSpaceDir="F:\CNC\MillingCNC\"/>
   </userList>
 </settings>

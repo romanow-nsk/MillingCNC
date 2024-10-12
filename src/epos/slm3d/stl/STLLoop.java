@@ -102,7 +102,7 @@ public class STLLoop extends STLLineGroup implements I_File{
         System.out.println(get(size()-1).two().dump());
         STLLine out = new STLLine(get(size()-1).two().clone(), get(0).one().clone());
         add(out);
-        WorkSpace.ws().notify(Values.important,"Замыкание контура, длина="+String.format("%6.3f",out.lengthXY()*Values.PrinterFieldSize/2)+" мм");
+        WorkSpace.ws().notify(Values.important,"Замыкание контура, длина="+String.format("%6.3f",out.lengthXY())+" мм");
         System.out.println("Замыкание контура, длина="+out.lengthXY());
         repaired = true;
         return out;
@@ -269,7 +269,7 @@ public class STLLoop extends STLLineGroup implements I_File{
         if (lines().size()==0) return stat;
         STLPoint2D pp = center();
         for(STLLine ll : lines()){
-            stat.addValue(pp.diffXY(ll.one())*Values.PrinterFieldSize);
+            stat.addValue(pp.diffXY(ll.one()));
             }
         stat.calcStatistic();
         return stat;
@@ -358,8 +358,8 @@ public class STLLoop extends STLLineGroup implements I_File{
             return "w=0 h=0";
         STLLine line = minmax();
         return String.format("w=%4.2f h=%4.2f",
-                (line.two().x()-line.one().x())*(Values.PrinterFieldSize/2),
-                (line.two().y()-line.one().y())*(Values.PrinterFieldSize/2));
+                (line.two().x()-line.one().x()),
+                (line.two().y()-line.one().y()));
         }
     //------------------------------------------------------------------------------------
     public static ArrayList<STLLoop> createLoopList(){

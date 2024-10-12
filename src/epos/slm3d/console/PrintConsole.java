@@ -1110,10 +1110,10 @@ public class PrintConsole extends BaseFrame{
                 long startTime = new Date().getTime();
                 int delay = Integer.parseInt(WorkTime.getText());
                 //--------------------------------------------------------------
-                double x1 = Double.parseDouble(XX1.getText())/(Values.PrinterFieldSize/2);
-                double y1 = Double.parseDouble(YY1.getText())/(Values.PrinterFieldSize/2);
-                double x2 = Double.parseDouble(XX2.getText())/(Values.PrinterFieldSize/2);
-                double y2 = Double.parseDouble(YY2.getText())/(Values.PrinterFieldSize/2);
+                double x1 = Double.parseDouble(XX1.getText());
+                double y1 = Double.parseDouble(YY1.getText());
+                double x2 = Double.parseDouble(XX2.getText());
+                double y2 = Double.parseDouble(YY2.getText());
                 STLLine line = new STLLine(new STLPoint2D(x1,y1),new STLPoint2D(x2,y2));
                 STLPoint2D p0 = new STLPoint2D(rand(),rand());
                 STLPoint2D p1;
@@ -1184,10 +1184,10 @@ public class PrintConsole extends BaseFrame{
                     xx.value(new STLPoint2D(x1,y1)); 
                     break;
                 case Command.SIGN_LINE:
-                    x1 = Double.parseDouble(X1.getText())/(Values.PrinterFieldSize/2);
-                    y1 = Double.parseDouble(Y1.getText())/(Values.PrinterFieldSize/2);
-                    x2 = Double.parseDouble(X2.getText())/(Values.PrinterFieldSize/2);
-                    y2 = Double.parseDouble(Y2.getText())/(Values.PrinterFieldSize/2);
+                    x1 = Double.parseDouble(X1.getText());
+                    y1 = Double.parseDouble(Y1.getText());
+                    x2 = Double.parseDouble(X2.getText());
+                    y2 = Double.parseDouble(Y2.getText());
                     xx.value(new STLLine(new STLPoint2D(x1,y1),new STLPoint2D(x2,y2))); 
                     break;
                 case Command.SIGN_INTLIST:
@@ -1317,7 +1317,7 @@ public class PrintConsole extends BaseFrame{
         int yidx = (idx-1)/NK;
         double x0 = -1 + dd*xidx+dd/10;
         double y0 = -1 + dd*yidx+dd/10;
-        double step = Double.parseDouble(Step.getText())/(Values.PrinterFieldSize/2);
+        double step = Double.parseDouble(Step.getText());
         setRun(true);
         new Thread(()->{
              try {

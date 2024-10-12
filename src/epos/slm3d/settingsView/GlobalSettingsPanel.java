@@ -88,6 +88,8 @@ public class GlobalSettingsPanel extends javax.swing.JPanel implements I_Setting
         LCurrentLine1 = new javax.swing.JLabel();
         COMPort = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
+        WorkFieldSize = new javax.swing.JTextField();
+        LCurrentLine2 = new javax.swing.JLabel();
 
         setLayout(null);
         add(jLabel1);
@@ -97,12 +99,12 @@ public class GlobalSettingsPanel extends javax.swing.JPanel implements I_Setting
 
         jLabel8.setText("Масштаб модели");
         add(jLabel8);
-        jLabel8.setBounds(30, 40, 110, 14);
+        jLabel8.setBounds(30, 40, 110, 16);
 
         AutoCenter.setSelected(true);
         AutoCenter.setText("АвтоЦентр");
         add(AutoCenter);
-        AutoCenter.setBounds(30, 90, 100, 23);
+        AutoCenter.setBounds(30, 90, 100, 20);
 
         AutoScale.setSelected(true);
         AutoScale.setText("АвтоМасштаб");
@@ -112,7 +114,7 @@ public class GlobalSettingsPanel extends javax.swing.JPanel implements I_Setting
             }
         });
         add(AutoScale);
-        AutoScale.setBounds(30, 60, 110, 23);
+        AutoScale.setBounds(30, 60, 110, 20);
 
         CenterOffsetX.setText("0");
         add(CenterOffsetX);
@@ -128,17 +130,17 @@ public class GlobalSettingsPanel extends javax.swing.JPanel implements I_Setting
         jLabel36.setBounds(30, 120, 90, 14);
 
         jLabel46.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel46.setText("Принтер");
+        jLabel46.setText("Станок");
         add(jLabel46);
         jLabel46.setBounds(270, 10, 80, 20);
         add(jSeparator2);
         jSeparator2.setBounds(580, 152, 180, 0);
         add(jSeparator5);
-        jSeparator5.setBounds(770, 330, 0, 2);
+        jSeparator5.setBounds(770, 330, 0, 3);
 
         LineBlock.setText("Блочный вывод");
         add(LineBlock);
-        LineBlock.setBounds(30, 200, 120, 23);
+        LineBlock.setBounds(30, 200, 120, 20);
 
         CurrentLine.setEditable(false);
         CurrentLine.setBackground(new java.awt.Color(220, 220, 220));
@@ -150,13 +152,13 @@ public class GlobalSettingsPanel extends javax.swing.JPanel implements I_Setting
         add(LayerCount);
         LayerCount.setBounds(390, 30, 80, 25);
 
-        LCurrentLine.setText("Процесс печати");
+        LCurrentLine.setText("Рабочее поле (мм)");
         add(LCurrentLine);
-        LCurrentLine.setBounds(270, 130, 100, 14);
+        LCurrentLine.setBounds(270, 130, 120, 16);
 
-        LCurrentLayer.setText("Напечатано слоев");
+        LCurrentLayer.setText("Снято слоев");
         add(LCurrentLayer);
-        LCurrentLayer.setBounds(270, 40, 120, 14);
+        LCurrentLayer.setBounds(270, 40, 100, 16);
 
         IP.setText("localhost");
         add(IP);
@@ -176,7 +178,7 @@ public class GlobalSettingsPanel extends javax.swing.JPanel implements I_Setting
 
         ThreadLabel.setText("Потоков");
         add(ThreadLabel);
-        ThreadLabel.setBounds(30, 265, 50, 14);
+        ThreadLabel.setBounds(30, 265, 50, 16);
 
         ThreadNum.setText("5");
         add(ThreadNum);
@@ -184,64 +186,64 @@ public class GlobalSettingsPanel extends javax.swing.JPanel implements I_Setting
 
         Motor4Label.setText("Начальное     Текущее      Конечное");
         add(Motor4Label);
-        Motor4Label.setBounds(330, 260, 200, 14);
+        Motor4Label.setBounds(540, 120, 200, 16);
 
         Motor1Label.setText("Мотор 1");
         add(Motor1Label);
-        Motor1Label.setBounds(270, 170, 60, 14);
+        Motor1Label.setBounds(490, 40, 60, 16);
 
         Motor3Label.setText("Мотор 3");
         add(Motor3Label);
-        Motor3Label.setBounds(270, 200, 60, 14);
+        Motor3Label.setBounds(490, 70, 60, 16);
 
         M4L.setEditable(false);
         M4L.setBackground(new java.awt.Color(255, 255, 255));
         add(M4L);
-        M4L.setBounds(330, 220, 50, 25);
+        M4L.setBounds(550, 90, 50, 25);
 
         M3L.setEditable(false);
         M3L.setBackground(new java.awt.Color(255, 255, 255));
         add(M3L);
-        M3L.setBounds(330, 190, 50, 25);
+        M3L.setBounds(550, 60, 50, 25);
 
         M1L.setEditable(false);
         M1L.setBackground(new java.awt.Color(255, 255, 255));
         add(M1L);
-        M1L.setBounds(330, 160, 50, 25);
+        M1L.setBounds(550, 30, 50, 25);
 
         M4C.setEditable(false);
         M4C.setBackground(new java.awt.Color(220, 220, 220));
         add(M4C);
-        M4C.setBounds(390, 220, 60, 25);
+        M4C.setBounds(610, 90, 60, 25);
 
         M3C.setEditable(false);
         M3C.setBackground(new java.awt.Color(220, 220, 220));
         add(M3C);
-        M3C.setBounds(390, 190, 60, 25);
+        M3C.setBounds(610, 60, 60, 25);
 
         M1C.setEditable(false);
         M1C.setBackground(new java.awt.Color(220, 220, 220));
         add(M1C);
-        M1C.setBounds(390, 160, 60, 25);
+        M1C.setBounds(610, 30, 60, 25);
 
         Motor4Label1.setText("Мотор 4 ");
         add(Motor4Label1);
-        Motor4Label1.setBounds(270, 230, 60, 14);
+        Motor4Label1.setBounds(490, 100, 60, 16);
 
         M4H.setEditable(false);
         M4H.setBackground(new java.awt.Color(255, 255, 255));
         add(M4H);
-        M4H.setBounds(460, 220, 60, 25);
+        M4H.setBounds(680, 90, 60, 25);
 
         M3H.setEditable(false);
         M3H.setBackground(new java.awt.Color(255, 255, 255));
         add(M3H);
-        M3H.setBounds(460, 190, 60, 25);
+        M3H.setBounds(680, 60, 60, 25);
 
         M1H.setEditable(false);
         M1H.setBackground(new java.awt.Color(255, 255, 255));
         add(M1H);
-        M1H.setBounds(460, 160, 60, 25);
+        M1H.setBounds(680, 30, 60, 25);
 
         jLabel47.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel47.setText("Модель");
@@ -250,7 +252,7 @@ public class GlobalSettingsPanel extends javax.swing.JPanel implements I_Setting
 
         LCurrentLayer1.setText("Текущий слой");
         add(LCurrentLayer1);
-        LCurrentLayer1.setBounds(270, 70, 90, 14);
+        LCurrentLayer1.setBounds(270, 70, 90, 16);
 
         CurrentLayer.setEditable(false);
         CurrentLayer.setBackground(new java.awt.Color(220, 220, 220));
@@ -260,11 +262,11 @@ public class GlobalSettingsPanel extends javax.swing.JPanel implements I_Setting
         PrintingState.setEditable(false);
         PrintingState.setBackground(new java.awt.Color(220, 220, 220));
         add(PrintingState);
-        PrintingState.setBounds(390, 120, 120, 25);
+        PrintingState.setBounds(390, 150, 120, 25);
 
         LCurrentLine1.setText("Текущая линия");
         add(LCurrentLine1);
-        LCurrentLine1.setBounds(270, 100, 90, 14);
+        LCurrentLine1.setBounds(270, 100, 90, 16);
 
         COMPort.setText("COM3");
         add(COMPort);
@@ -272,7 +274,16 @@ public class GlobalSettingsPanel extends javax.swing.JPanel implements I_Setting
 
         jLabel2.setText("COM порт");
         add(jLabel2);
-        jLabel2.setBounds(170, 265, 60, 14);
+        jLabel2.setBounds(170, 265, 60, 16);
+
+        WorkFieldSize.setEditable(false);
+        WorkFieldSize.setBackground(new java.awt.Color(255, 255, 255));
+        add(WorkFieldSize);
+        WorkFieldSize.setBounds(390, 120, 80, 25);
+
+        LCurrentLine2.setText("Процесс печати");
+        add(LCurrentLine2);
+        LCurrentLine2.setBounds(270, 160, 100, 16);
     }// </editor-fold>//GEN-END:initComponents
     public boolean loadSettings(){
         try {
@@ -300,6 +311,7 @@ public class GlobalSettingsPanel extends javax.swing.JPanel implements I_Setting
             M1H.setText(""+set.global.M1HighPos.getVal());
             M3H.setText(""+set.global.M3HighPos.getVal());
             M4H.setText(""+set.global.M4HighPos.getVal());
+            WorkFieldSize.setText(""+set.global.WorkFieldSize.getVal());
             LayerCount.setText(""+set.global.LayerCount.getVal());  
             PrintingState.setText(Events.PStates[set.global.PrintingState.getVal()]);
             COMPort.setText(set.global.COMPort.getVal());
@@ -316,6 +328,7 @@ public class GlobalSettingsPanel extends javax.swing.JPanel implements I_Setting
             set.global.ScaleFactor.setVal(Float.parseFloat(ScaleFactor.getText()));
             set.global.CenterOffsetX.setVal(Float.parseFloat(CenterOffsetX.getText()));
             set.global.CenterOffsetY.setVal(Float.parseFloat(CenterOffsetY.getText()));
+            set.global.WorkFieldSize.setVal(Float.parseFloat(WorkFieldSize.getText()));
             set.global.AutoCenter.setVal(AutoCenter.isSelected());
             set.global.AutoScale.setVal(AutoScale.isSelected());
             set.global.LineBlock.setVal(LineBlock.isSelected());
@@ -358,6 +371,7 @@ public class GlobalSettingsPanel extends javax.swing.JPanel implements I_Setting
     private javax.swing.JLabel LCurrentLayer1;
     private javax.swing.JLabel LCurrentLine;
     private javax.swing.JLabel LCurrentLine1;
+    private javax.swing.JLabel LCurrentLine2;
     private javax.swing.JTextField LayerCount;
     private javax.swing.JCheckBox LineBlock;
     private javax.swing.JTextField M1C;
@@ -377,6 +391,7 @@ public class GlobalSettingsPanel extends javax.swing.JPanel implements I_Setting
     private javax.swing.JTextField ScaleFactor;
     private javax.swing.JLabel ThreadLabel;
     private javax.swing.JTextField ThreadNum;
+    private javax.swing.JTextField WorkFieldSize;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel36;

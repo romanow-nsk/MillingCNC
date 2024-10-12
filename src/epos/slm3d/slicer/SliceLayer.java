@@ -86,7 +86,7 @@ public class SliceLayer implements I_File {
         if (layerOrderNum==0) zz="+ "; else zz=""+layerOrderNum+"  ";
         if (modified) zz+="*";
         if (printSettings!=null) zz+="x";
-        return df2.format(z*(Values.PrinterFieldSize/2))+" мм / "+zz;
+        return df2.format(z)+" мм / "+zz;
         }
     public SliceLayer(Settings filling){          // С оригинальными установками - повторный слайсинг
         layerOrderNum=0;

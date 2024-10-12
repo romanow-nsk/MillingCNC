@@ -132,7 +132,8 @@ public class Utils {
 
     /* преобразование относительных единиц в мм*/
     public static long toMM(double vv) {
-        return Math.round(vv * Values.PrinterFieldSize / 2);
+        return  (long) vv;
+        //return Math.round(vv * Values.PrinterFieldSize / 2);
         }
     /* преобразование относительных единиц в мм*/
     public static String toMMString(double vv) {

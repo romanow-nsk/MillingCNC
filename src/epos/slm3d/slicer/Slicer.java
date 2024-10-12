@@ -24,11 +24,11 @@ public class Slicer extends STLLoopGenerator{
     /** нотификатор событий */
     private I_Notify notify;
     public Slicer(ArrayList<STLTriangle> src, double z0, double diff0, double angle0, double step0, I_Notify notify0) throws UNIException{
-        super(src,z0,diff0/(Values.PrinterFieldSize/2),notify0);
+        super(src,z0,diff0,notify0);
         notify = notify0;
         z = z0;
-        diff = diff0/(Values.PrinterFieldSize/2);
-        step = step0/(Values.PrinterFieldSize/2);
+        diff = diff0;
+        step = step0;
         angle = (angle0/180)*Math.PI;
         }
     /** Удалить нечетную, если парная близко */
@@ -36,7 +36,7 @@ public class Slicer extends STLLoopGenerator{
         int nn=xx.size();
         if (nn%2==0) return false;
         for(int i=0;i<nn-1;i++){
-            double dd = Values.PointCrossDiffenerce/(Values.PrinterFieldSize/2);
+            double dd = Values.PointCrossDiffenerce;
             if (xx.get(i).diffXY(xx.get(i+1))<dd && xx.get(i).reference().loopId()==xx.get(i+1).reference().loopId()){
                 notify.log("Удалена нечетная n="+xx.size()+" "+xx.get(i)+" id="+xx.get(i).reference().loopId());
                 xx.remove(i);
@@ -125,7 +125,7 @@ public class Slicer extends STLLoopGenerator{
         double dy = minmax.two().y() -  minmax.one().y();
         if (dy > dx) dx=dy;
         //-------------------------------------------------------------------------------
-        double cellStep = set.filling.FillParametersFillCell.getVal()/(Values.PrinterFieldSize/2);
+        double cellStep = set.filling.FillParametersFillCell.getVal();
         int level = 1;
         int dd = (int)(dx / cellStep);
         while(dd!=0){ level++; dd/=2; }
@@ -294,12 +294,12 @@ public class Slicer extends STLLoopGenerator{
                     if (back.isFinish())
                         return true;
                     }
-                STLPoint2D center = loop.center();            // Найти центр контура
+                STLPoint2D center = loop.center();          // Найти центр контура
                 for(STLLine xx : loop.lines()){             // Для всех отрезков
-                    I_STLPoint2D one = xx.one();                // Линия от центра к первой точке контура
+                    I_STLPoint2D one = xx.one();            // Линия от центра к первой точке контура
                     STLLine zz = new STLLine(center,one);
                     T_Pair<Double,Double> sc = zz.sinCosXY();
-                    one.x(one.x()-step*sc._2());        // Перенести точку к цкнтру на step
+                    one.x(one.x()-step*sc._2());        // Перенести точку к центру на step
                     one.y(one.y()-step*sc._1());
                     one = xx.two();                         // Линия от центра к первой точке контура
                     zz = new STLLine(center,one);
@@ -323,11 +323,11 @@ public class Slicer extends STLLoopGenerator{
     //-----------------------------------------------------------------------------------------------------------------
     /** Слайсирование фрезерное */
     public boolean sliceBlank(){
-        notify.notify(Values.important,"z="+ z*(Values.PrinterFieldSize/2)+ ", внешнее фрезерование, нет контуров, снятие слоя");
+        notify.notify(Values.important,"z="+ z+ ", внешнее фрезерование, нет контуров, снятие слоя");
         return true;
         }
     public boolean sliceBlankOne(STLLoop loop){
-        notify.notify(Values.important,"z="+ z*(Values.PrinterFieldSize/2)+ ", внешнее фрезерование, контур id="+loop.id());
+        notify.notify(Values.important,"z="+ z+ ", внешнее фрезерование, контур id="+loop.id());
         for(STLLoop loop1 : loop.childs()){
             for (STLLoop loop2 : loop1.childs())
                 sliceInside(loop2);
@@ -335,7 +335,7 @@ public class Slicer extends STLLoopGenerator{
         return true;
         }
     public boolean sliceBlankMany(ArrayList<STLLoop> loops){
-        notify.notify(Values.important,"z="+ z*(Values.PrinterFieldSize/2)+ ", внешнее фрезерование, контуров "+loops.size());
+        notify.notify(Values.important,"z="+ z+ ", внешнее фрезерование, контуров "+loops.size());
         for(STLLoop loop1 : loops){
             for (STLLoop loop2 : loop1.childs())
                 sliceInside(loop2);
@@ -343,7 +343,7 @@ public class Slicer extends STLLoopGenerator{
         return true;
         }
     public boolean sliceInside(STLLoop loop){
-        String zz = String.format("z=%4.2f ",z*(Values.PrinterFieldSize/2));
+        String zz = String.format("z=%4.2f ",z);
         notify.notify(Values.important,zz+" id="+loop.id()+" "+loop.dimStr());
         if (loop.childs().size()==0){
             notify.notify(Values.important,zz+", фрезерование полное");
@@ -362,11 +362,11 @@ public class Slicer extends STLLoopGenerator{
         return true;
         }
     public STLLoop createBlankLoop(Settings set){
-        double dx = set.local.BlankWidth.getVal()/ (Values.PrinterFieldSize / 2);
-        double dy = set.local.BlankHight.getVal()/ (Values.PrinterFieldSize / 2);
+        double dx = set.local.BlankWidth.getVal();
+        double dy = set.local.BlankHight.getVal();
         if (dx==0 || dy==0){
-            dx = set.local.MarkingFieldWidth.getVal() / (Values.PrinterFieldSize / 2);
-            dy = set.local.MarkingFieldHight.getVal() / (Values.PrinterFieldSize / 2);
+            dx = set.local.MarkingFieldWidth.getVal() ;
+            dy = set.local.MarkingFieldHight.getVal() ;
             }
         STLLoop loop4 = new STLLoop();
         loop4.id(0);

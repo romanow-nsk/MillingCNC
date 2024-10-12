@@ -65,7 +65,7 @@ public class STLLoopGenerator {
             loop.correct();
             }
         ArrayList<STLLoop> repaired =  repair();
-        double lnt = WorkSpace.ws().local().filling.FillingFlatness.getVal()/(Values.PrinterFieldSize/2);
+        double lnt = WorkSpace.ws().local().filling.FillingFlatness.getVal();
         int cnt=0;
         for (STLLoop loop:loops)
             cnt += loop.evenLoop(orig,lnt);

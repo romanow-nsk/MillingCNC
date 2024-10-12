@@ -30,6 +30,6 @@ public class SliceGenetarorQuadrat implements I_TestLoopGenerator{
 
     @Override
     public double createZmax() {
-        return 10/(Values.PrinterFieldSize/2);
+        return 10;
     }
 }

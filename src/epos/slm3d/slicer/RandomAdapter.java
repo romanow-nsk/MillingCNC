@@ -66,6 +66,12 @@ public class RandomAdapter implements I_LineSlice{
     public void onSliceLayer() {
         prevBack.onSliceLayer();
     }
+
+    @Override
+    public void onCutterUpDown(boolean up) {
+        prevBack.onCutterUpDown(up);
+        }
+
     @Override
     public void onSliceLine(STLLine line) {         // Срабатывает для КОРНЯ
         STLLine xx = line.rotateXY(angleXYBack);

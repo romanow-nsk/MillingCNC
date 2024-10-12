@@ -403,7 +403,7 @@ public class ModelSettingsPanel extends javax.swing.JPanel  implements I_Setting
             notify.notify(Values.error,"Недопустимое значение сдвига");
             return;
             }
-        shift/=(Values.PrinterFieldSize/2);
+        //shift/=;
         WorkSpace ws = WorkSpace.ws();
         ws.model().shift(XYZShift.getSelectedIndex(),shift);
         ws.data(new SliceData());

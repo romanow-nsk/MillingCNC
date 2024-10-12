@@ -29,8 +29,8 @@ public class USBCommandGenerator extends CommandGenerator {
     private double maxSize=1;
     private void setCenterOffsets(){
         GlobalSettings gen = WorkSpace.ws().global().global;
-        cOffsetX = gen.CenterOffsetX.getVal()/(Values.PrinterFieldSize/2);
-        cOffsetY = gen.CenterOffsetY.getVal()/(Values.PrinterFieldSize/2);
+        cOffsetX = gen.CenterOffsetX.getVal();
+        cOffsetY = gen.CenterOffsetY.getVal();
         double out1 = Math.abs(cOffsetX);
         double out2 = Math.abs(cOffsetY);
         maxSize =  out1 > out2 ? out1 : out2;

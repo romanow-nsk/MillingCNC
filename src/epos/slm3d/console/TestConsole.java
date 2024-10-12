@@ -62,7 +62,7 @@ public class TestConsole extends BaseFrame{
         }
     private void groupOperation(MouseEvent evt){
         GraphPoint qq = new GraphPoint(gPanel.pixelToX(evt.getX()),gPanel.pixelToY(evt.getY()));
-        int idx = model.nearest(qq, Values.FindPointDistance/(Values.PrinterFieldSize/2));
+        int idx = model.nearest(qq, Values.FindPointDistance);
         if (idx!=-1){
             GraphObject pp = model.get(idx);
             if (pp.getClass()==O2DGroup.class){
@@ -89,7 +89,7 @@ public class TestConsole extends BaseFrame{
         }
     private void selectObject(MouseEvent evt){
         GraphPoint qq = new GraphPoint(gPanel.pixelToX(evt.getX()),gPanel.pixelToY(evt.getY()));
-        int idx = model.nearest(qq, Values.FindPointDistance/(Values.PrinterFieldSize/2));
+        int idx = model.nearest(qq, Values.FindPointDistance);
         if (idx!=-1){
             cObj = idx;
             OBJ.select(cObj);
@@ -128,8 +128,8 @@ public class TestConsole extends BaseFrame{
             }
         @Override
         public void MouseMoved(MouseEvent evt) {
-            MX.setText(df.format(gPanel.pixelToX(evt.getX())*Values.PrinterFieldSize/2));
-            MY.setText(df.format(gPanel.pixelToY(evt.getY())*Values.PrinterFieldSize/2));        
+            MX.setText(df.format(gPanel.pixelToX(evt.getX())));
+            MY.setText(df.format(gPanel.pixelToY(evt.getY())));        
             }
         @Override
         public void MouseWheelMoved(MouseWheelEvent evt) {
@@ -656,14 +656,14 @@ public class TestConsole extends BaseFrame{
             return;
             }
         selected = model.get(cObj);
-        PX0.setText(df.format(selected.x0()*Values.PrinterFieldSize/2));
-        PY0.setText(df.format(selected.y0()*Values.PrinterFieldSize/2));  
-        PX1.setText(df.format(selected.x1()*Values.PrinterFieldSize/2));
-        PY1.setText(df.format(selected.y1()*Values.PrinterFieldSize/2));
-        X0.setText(df.format(selected.midX()*Values.PrinterFieldSize/2));
-        Y0.setText(df.format(selected.midY()*Values.PrinterFieldSize/2));  
-        SZX.setText(df.format(selected.szX()*Values.PrinterFieldSize/2));
-        SZY.setText(df.format(selected.szY()*Values.PrinterFieldSize/2));  
+        PX0.setText(df.format(selected.x0()));
+        PY0.setText(df.format(selected.y0()));  
+        PX1.setText(df.format(selected.x1()));
+        PY1.setText(df.format(selected.y1()));
+        X0.setText(df.format(selected.midX()));
+        Y0.setText(df.format(selected.midY()));  
+        SZX.setText(df.format(selected.szX()));
+        SZY.setText(df.format(selected.szY()));  
         Param1.setText(df.format(selected.getParam1()));
         Param2.setText(df.format(selected.getParam2()));
         }
@@ -748,7 +748,7 @@ public class TestConsole extends BaseFrame{
     private void PX0KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PX0KeyPressed
         if (!testObject(evt)) return;
         try {
-            double vv = Double.parseDouble(PX0.getText())/(Values.PrinterFieldSize/2);
+            double vv = Double.parseDouble(PX0.getText());
             if (notLine() && vv >= selected.x1()){
                 notify.notify(Values.error,"Должно быть x0 < x1");
                 objectView();
@@ -763,7 +763,7 @@ public class TestConsole extends BaseFrame{
     private void PY0KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PY0KeyPressed
         if (!testObject(evt)) return;
         try {
-            double vv = Double.parseDouble(PY0.getText())/(Values.PrinterFieldSize/2);
+            double vv = Double.parseDouble(PY0.getText());
             if (notLine() && vv >= selected.y1()){
                 notify.notify(Values.error,"Должно быть y0 < y1");
                 objectView();
@@ -813,7 +813,7 @@ public class TestConsole extends BaseFrame{
     private void PY1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PY1KeyPressed
         if (!testObject(evt)) return;
         try {
-            double vv = Double.parseDouble(PY1.getText())/(Values.PrinterFieldSize/2);
+            double vv = Double.parseDouble(PY1.getText());
             if (notLine() && vv <= selected.y0()){
                 notify.notify(Values.error,"Должно быть y0 < y1");
                 objectView();                
@@ -828,7 +828,7 @@ public class TestConsole extends BaseFrame{
     private void PX1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PX1KeyPressed
         if (!testObject(evt)) return;
         try {
-            double vv = Double.parseDouble(PX1.getText())/(Values.PrinterFieldSize/2);
+            double vv = Double.parseDouble(PX1.getText());
             if (notLine() && vv <= selected.x0()){
                 notify.notify(Values.error,"Должно быть x0 < x1");
                 objectView();                
@@ -856,7 +856,7 @@ public class TestConsole extends BaseFrame{
         if (!testObject(evt)) return;
         try {
             double vv = Double.parseDouble(Y0.getText());
-            selected.shift(0,vv/(Values.PrinterFieldSize/2) - selected.midY());
+            selected.shift(0,vv/ - selected.midY());
             objectView();            
             paintView();
             } catch(Exception ee){ notify.notify(Values.error,"Формат целого числа ????");}
@@ -866,7 +866,7 @@ public class TestConsole extends BaseFrame{
         if (!testObject(evt)) return;
         try {
             double vv = Double.parseDouble(X0.getText());
-            selected.shift(vv/(Values.PrinterFieldSize/2) - selected.midX(), 0);
+            selected.shift(vv/ - selected.midX(), 0);
             objectView();            
             paintView();
             } catch(Exception ee){ notify.notify(Values.error,"Формат целого числа ????");}
@@ -875,7 +875,7 @@ public class TestConsole extends BaseFrame{
     private void SZYKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_SZYKeyPressed
         if (!testObject(evt)) return;
         try {
-            double vv = Double.parseDouble(SZY.getText())/(Values.PrinterFieldSize/2);
+            double vv = Double.parseDouble(SZY.getText());
             if (vv<=0){
                 notify.notify(Values.error,"Размерность <=0");  
                 objectView();                
@@ -893,7 +893,7 @@ public class TestConsole extends BaseFrame{
     private void SZXKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_SZXKeyPressed
         if (!testObject(evt)) return;
         try {
-            double vv = Double.parseDouble(SZX.getText())/(Values.PrinterFieldSize/2);
+            double vv = Double.parseDouble(SZX.getText());
             if (vv<=0){
                 notify.notify(Values.error,"Размерность <=0");                
                 return;
