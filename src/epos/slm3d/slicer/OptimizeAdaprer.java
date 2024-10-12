@@ -115,8 +115,8 @@ public class OptimizeAdaprer implements I_LineSlice{
         }
 
     @Override
-    public void onCutterUpDown(boolean up) {
-        prevBack.onCutterUpDown(up);
+    public void onCutterUpDown(boolean up, double z) {
+        prevBack.onCutterUpDown(up, z);
         }
 
     public void onSliceLayerSimple() {

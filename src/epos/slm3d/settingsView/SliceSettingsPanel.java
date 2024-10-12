@@ -175,7 +175,7 @@ public class SliceSettingsPanel extends javax.swing.JPanel  implements I_Setting
             DecimalFormat df = new DecimalFormat("0.000", dfs);
             DecimalFormat df2 = new DecimalFormat("0.00", dfs);
             DecimalFormat df3 = new DecimalFormat("000.0", dfs);
-            VerticalStep.setText(df.format(set.filling.VerticalStep.getVal()));
+            //VerticalStep.setText(df.format(set.filling.VerticalStep.getVal()));
             Mode.select(set.filling.Mode.getVal());
             FillParametersRaster.setText(df.format(set.filling.FillParametersRaster.getVal()));
             FillParametersOffset.setText(df.format(set.filling.FillParametersOffset.getVal()));
@@ -200,7 +200,7 @@ public class SliceSettingsPanel extends javax.swing.JPanel  implements I_Setting
     public Settings copySettings(){
         Settings set  = new Settings();
         try {
-            set.filling.VerticalStep.setVal(Float.parseFloat(VerticalStep.getText()));
+            //set.filling.VerticalStep.setVal(Float.parseFloat(VerticalStep.getText()));
             set.filling.Mode.setVal(Mode.getSelectedIndex());
             set.filling.FillParametersRaster.setVal(Float.parseFloat(FillParametersRaster.getText()));
             set.filling.FillParametersOffset.setVal(Float.parseFloat(FillParametersOffset.getText()));
@@ -222,7 +222,7 @@ public class SliceSettingsPanel extends javax.swing.JPanel  implements I_Setting
         }
     public boolean saveSettings(){
         try {
-            set.filling.VerticalStep.setVal(Float.parseFloat(VerticalStep.getText()));
+            //set.filling.VerticalStep.setVal(Float.parseFloat(VerticalStep.getText()));
             set.filling.Mode.setVal(Mode.getSelectedIndex());
             set.filling.FillParametersRaster.setVal(Float.parseFloat(FillParametersRaster.getText()));
             set.filling.FillParametersOffset.setVal(Float.parseFloat(FillParametersOffset.getText()));

@@ -7,7 +7,7 @@ import epos.slm3d.stl.STLLine;
  */
 public interface I_LineSlice {
     public void onSliceLayer();
-    public void onCutterUpDown(boolean up);
+    public void onCutterUpDown(boolean up, double z);
     public void onSliceLine(STLLine line);
     public boolean isFinish();
     public void onSliceError(SliceError error);

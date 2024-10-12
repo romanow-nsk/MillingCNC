@@ -5,7 +5,6 @@ package epos.slm3d.slicer;
  */
 
 import epos.slm3d.settings.Settings;
-import epos.slm3d.settings.WorkSpace;
 import epos.slm3d.stl.*;
 import epos.slm3d.utils.I_Notify;
 import epos.slm3d.utils.Values;
@@ -52,9 +51,9 @@ public class ChessAdapter implements I_LineSlice{
     }
 
     @Override
-    public void onCutterUpDown(boolean up) {
-        prevBack.onCutterUpDown(up);
-    }
+    public void onCutterUpDown(boolean up, double z) {
+        prevBack.onCutterUpDown(up, z);
+        }
 
     // поворот системы координат
     // x = x′ cosφ − y′⋅sinφ

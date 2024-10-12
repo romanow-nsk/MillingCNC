@@ -36,7 +36,11 @@ public class LocalSettings {
     /** заготовка Y мм */
     public FloatParameter BlankHight = new FloatParameter(0);
     /** диаметр фрезы мм */
-    public FloatParameter CutterDiameter = new FloatParameter(0);
+    public FloatParameter CutterDiameter = new FloatParameter(1.0);
+    /** коррекция шага для диаметра/2 мм */
+    public FloatParameter StepMinus = new FloatParameter(0.02);
+    /** шаг фрезерования - толщина слоя  */
+    public FloatParameter VerticalStep = new FloatParameter(1.0);
     //---------------------------------------------------------------------------
     public void setNotNull(){
         if (MarkingFieldWidth==null) MarkingFieldWidth = new FloatParameter(0);

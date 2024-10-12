@@ -653,7 +653,7 @@ public class M3DSettings extends javax.swing.JFrame {
             PageServoOffsetsLeft.setText(df2.format(set.local.PageServoOffsetsLeft.getVal()));
             PageServoOffsetsTop.setText(df2.format(set.local.PageServoOffsetsTop.getVal()));
             ScaleFactor.setText(df.format(set.global.ScaleFactor.getVal()));
-            VerticalStep.setText(df.format(set.filling.VerticalStep.getVal()));
+            VerticalStep.setText(df.format(set.local.VerticalStep.getVal()));
             Mode.select(set.filling.Mode.getVal());
             FillParametersRaster.setText(df.format(set.filling.FillParametersRaster.getVal()));
             FillParametersOffset.setText(df.format(set.filling.FillParametersOffset.getVal()));
@@ -705,7 +705,7 @@ public class M3DSettings extends javax.swing.JFrame {
             set.local.PageServoOffsetsTop.setVal(Float.parseFloat(PageServoOffsetsTop.getText()));
             /** потеря точности при перезаписи ???? */
             set.global.ScaleFactor.setVal(Float.parseFloat(ScaleFactor.getText()));
-            set.filling.VerticalStep.setVal(Float.parseFloat(VerticalStep.getText()));
+            set.local.VerticalStep.setVal(Float.parseFloat(VerticalStep.getText()));
             set.local.ZStart.setVal(Float.parseFloat(Zstart.getText()));
             set.local.ZFinish.setVal(Float.parseFloat(Zfinish.getText()));
             set.global.CenterOffsetX.setVal(Float.parseFloat(CenterOffsetX.getText()));

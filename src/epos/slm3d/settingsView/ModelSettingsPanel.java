@@ -87,6 +87,10 @@ public class ModelSettingsPanel extends javax.swing.JPanel  implements I_Setting
         BlankWidth = new javax.swing.JTextField();
         CutterDiameter = new javax.swing.JTextField();
         Z0_5 = new javax.swing.JLabel();
+        Z0_6 = new javax.swing.JLabel();
+        StepMinus = new javax.swing.JTextField();
+        VerticalStep = new javax.swing.JTextField();
+        Z0_7 = new javax.swing.JLabel();
 
         setLayout(null);
         add(jLabel1);
@@ -204,9 +208,9 @@ public class ModelSettingsPanel extends javax.swing.JPanel  implements I_Setting
         add(Zfinish);
         Zfinish.setBounds(160, 240, 80, 25);
 
-        Z0_1.setText("Диаметр фрезы (мм)");
+        Z0_1.setText("Шаг по вертикали (мм)");
         add(Z0_1);
-        Z0_1.setBounds(490, 100, 150, 16);
+        Z0_1.setBounds(490, 160, 150, 16);
 
         XYZ.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "X", "Y", "Z" }));
         add(XYZ);
@@ -313,6 +317,32 @@ public class ModelSettingsPanel extends javax.swing.JPanel  implements I_Setting
         Z0_5.setText("Размер заготовки Y(мм)");
         add(Z0_5);
         Z0_5.setBounds(490, 70, 150, 16);
+
+        Z0_6.setText("Диаметр фрезы (мм)");
+        add(Z0_6);
+        Z0_6.setBounds(490, 100, 150, 16);
+
+        StepMinus.setText("0");
+        StepMinus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                StepMinusActionPerformed(evt);
+            }
+        });
+        add(StepMinus);
+        StepMinus.setBounds(640, 120, 80, 25);
+
+        VerticalStep.setText("0");
+        VerticalStep.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                VerticalStepActionPerformed(evt);
+            }
+        });
+        add(VerticalStep);
+        VerticalStep.setBounds(640, 150, 80, 25);
+
+        Z0_7.setText("Коррекция шага (мм)");
+        add(Z0_7);
+        Z0_7.setBounds(490, 130, 150, 16);
     }// </editor-fold>//GEN-END:initComponents
     public boolean loadSettings(){
         try {
@@ -327,6 +357,8 @@ public class ModelSettingsPanel extends javax.swing.JPanel  implements I_Setting
             BlankHight.setText(df2.format(set.local.BlankHight.getVal()));
             BlankWidth.setText(df2.format(set.local.BlankWidth.getVal()));
             CutterDiameter.setText(df2.format(set.local.CutterDiameter.getVal()));
+            StepMinus.setText(df2.format(set.local.StepMinus.getVal()));
+            VerticalStep.setText(df2.format(set.local.VerticalStep.getVal()));
             Z.setText(df2.format(set.local.Z.getVal()));
             Zstart.setText(df2.format(set.local.ZStart.getVal()));
             Zfinish.setText(df2.format(set.local.ZFinish.getVal())); 
@@ -353,6 +385,8 @@ public class ModelSettingsPanel extends javax.swing.JPanel  implements I_Setting
             set.local.BlankWidth.setVal(Float.parseFloat(BlankWidth.getText()));
             set.local.BlankHight.setVal(Float.parseFloat(BlankHight.getText()));
             set.local.CutterDiameter.setVal(Float.parseFloat(CutterDiameter.getText()));
+            set.local.StepMinus.setVal(Float.parseFloat(StepMinus.getText()));
+            set.local.VerticalStep.setVal(Float.parseFloat(VerticalStep.getText()));
             } catch (Exception ee){
                 notify.notify(Values.error,ee.toString());
                 return false; 
@@ -432,6 +466,14 @@ public class ModelSettingsPanel extends javax.swing.JPanel  implements I_Setting
         // TODO add your handling code here:
     }//GEN-LAST:event_CutterDiameterActionPerformed
 
+    private void StepMinusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StepMinusActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_StepMinusActionPerformed
+
+    private void VerticalStepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VerticalStepActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_VerticalStepActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField ANGLE;
@@ -451,6 +493,8 @@ public class ModelSettingsPanel extends javax.swing.JPanel  implements I_Setting
     private javax.swing.JTextField ScaleFactor;
     private javax.swing.JButton ShiftButton;
     private javax.swing.JTextField SliceTime;
+    private javax.swing.JTextField StepMinus;
+    private javax.swing.JTextField VerticalStep;
     private javax.swing.JComboBox<String> XYZ;
     private javax.swing.JComboBox<String> XYZShift;
     private javax.swing.JTextField Z;
@@ -459,6 +503,8 @@ public class ModelSettingsPanel extends javax.swing.JPanel  implements I_Setting
     private javax.swing.JLabel Z0_3;
     private javax.swing.JLabel Z0_4;
     private javax.swing.JLabel Z0_5;
+    private javax.swing.JLabel Z0_6;
+    private javax.swing.JLabel Z0_7;
     private javax.swing.JTextField Zfinish;
     private javax.swing.JTextField Zstart;
     private javax.swing.JLabel jLabel1;

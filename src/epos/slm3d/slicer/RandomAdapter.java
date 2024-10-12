@@ -4,10 +4,8 @@ package epos.slm3d.slicer;
  * Created by romanow on 10.12.2017.
  */
 
-import epos.slm3d.settings.Settings;
 import epos.slm3d.stl.*;
 import epos.slm3d.utils.I_Notify;
-import epos.slm3d.utils.Values;
 
 /** перехватчик результата слайсирования для случайного деления
  * 1. Поворачивает исходный контур -angle - обратно и определяет границы (Cliser)
@@ -68,8 +66,8 @@ public class RandomAdapter implements I_LineSlice{
     }
 
     @Override
-    public void onCutterUpDown(boolean up) {
-        prevBack.onCutterUpDown(up);
+    public void onCutterUpDown(boolean up, double z) {
+        prevBack.onCutterUpDown(up, z);
         }
 
     @Override

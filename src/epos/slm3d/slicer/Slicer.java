@@ -1,6 +1,7 @@
 package epos.slm3d.slicer;
 
 import epos.slm3d.settings.Settings;
+import epos.slm3d.settings.WorkSpace;
 import epos.slm3d.stl.*;
 import epos.slm3d.utils.I_Notify;
 import epos.slm3d.utils.T_Pair;
@@ -15,21 +16,26 @@ import java.util.ArrayList;
 public class Slicer extends STLLoopGenerator{
     /**  z */
     private double z;
+    /**  vStep */
+    private double vStep;
     /** точность при поиск совпадения концов отрезков */
     private double diff;
     /** угол наклона линии луча */
     private double angle;
     /** шаг луча по перпендикуляру к линии прожига */
     private double step;
+    Settings set;
     /** нотификатор событий */
     private I_Notify notify;
-    public Slicer(ArrayList<STLTriangle> src, double z0, double diff0, double angle0, double step0, I_Notify notify0) throws UNIException{
+    public Slicer(ArrayList<STLTriangle> src, double z0, double diff0, Settings set0, I_Notify notify0) throws UNIException{
         super(src,z0,diff0,notify0);
+        set = set0;
+        vStep = set.local.VerticalStep.getVal();
         notify = notify0;
         z = z0;
         diff = diff0;
-        step = step0;
-        angle = (angle0/180)*Math.PI;
+        step = set.local.CutterDiameter.getVal()-set.local.StepMinus.getVal();
+        angle = (set.filling.FillParametersAngle.getVal()/180)*Math.PI;
         }
     /** Удалить нечетную, если парная близко */
     private boolean testAndRemoveNearestOdd(ArrayList<STLReferedPoint> xx){
@@ -326,29 +332,58 @@ public class Slicer extends STLLoopGenerator{
         notify.notify(Values.important,"z="+ z+ ", внешнее фрезерование, нет контуров, снятие слоя");
         return true;
         }
-    public boolean sliceBlankOne(STLLoop loop){
+    public boolean sliceBlankOne(STLLoop loop,Settings set,I_LineSlice back){
         notify.notify(Values.important,"z="+ z+ ", внешнее фрезерование, контур id="+loop.id());
         for(STLLoop loop1 : loop.childs()){
             for (STLLoop loop2 : loop1.childs())
-                sliceInside(loop2);
+                sliceInside(loop2,set,back);
             }
         return true;
         }
-    public boolean sliceBlankMany(ArrayList<STLLoop> loops){
+    public boolean sliceBlankMany(ArrayList<STLLoop> loops,Settings set,I_LineSlice back){
         notify.notify(Values.important,"z="+ z+ ", внешнее фрезерование, контуров "+loops.size());
         for(STLLoop loop1 : loops){
             for (STLLoop loop2 : loop1.childs())
-                sliceInside(loop2);
+                sliceInside(loop2,set,back);
             }
         return true;
         }
-    public boolean sliceInside(STLLoop loop){
+    public boolean sliceLoop(STLLoop loop,I_LineSlice back){
+        for(STLLine line : loop.lines())
+            back.onSliceLine(line);
+        return true;
+        }
+    public boolean sliceInside(STLLoop loop,Settings set,I_LineSlice back){
         String zz = String.format("z=%4.2f ",z);
         notify.notify(Values.important,zz+" id="+loop.id()+" "+loop.dimStr());
+
+        //---------------------- Внешний контур -----------------------------------------------
+        back.onCutterUpDown(false,z);
+        STLLineGroup copy = loop.clone();
+        STLPoint2D center = copy.center();          // Найти центр контура
+        double cutterSize = set.local.CutterDiameter.getVal()/2;
+        for(STLLine xx : copy.lines()){             // Для всех отрезков
+            I_STLPoint2D one = xx.one();            // Линия от центра к первой точке контура
+            STLLine line2 = new STLLine(center,one);
+            T_Pair<Double,Double> sc = line2.sinCosXY();
+            one.x(one.x()-cutterSize*sc._2());        // Перенести точку к центру на step
+            one.y(one.y()-cutterSize*sc._1());
+            one = xx.two();                         // Линия от центра к первой точке контура
+            line2 = new STLLine(center,one);
+            sc = line2.sinCosXY();
+            one.x(one.x()-cutterSize*sc._2());
+            one.y(one.y()-cutterSize*sc._1());
+            }
+        for(STLLine line : copy.lines())
+            back.onSliceLine(line);
+        back.onCutterUpDown(false,z-vStep); // Поднять фрезу
+        //-------------------------------------------------------------------------------------
         if (loop.childs().size()==0){
             notify.notify(Values.important,zz+", фрезерование полное");
+
             return true;
             }
+        back.onCutterUpDown(true,z-vStep);
         notify.notify(Values.important,zz+", фрезерование,  контуров "+loop.childs().size());
         for(STLLoop loop1 : loop.childs()) {
             notify.notify(Values.important,"контур id="+loop1.id()+" "+loop1.dimStr());
@@ -357,7 +392,7 @@ public class Slicer extends STLLoopGenerator{
             if (loop1.childs().size()==0)
                 continue;
             for (STLLoop loop2 : loop1.childs())
-                sliceInside(loop2);
+                sliceInside(loop2,set,back);
             }
         return true;
         }
@@ -368,6 +403,9 @@ public class Slicer extends STLLoopGenerator{
             dx = set.local.MarkingFieldWidth.getVal() ;
             dy = set.local.MarkingFieldHight.getVal() ;
             }
+        double dCut = set.local.CutterDiameter.getVal()/2;
+        dx += dCut;
+        dy += dCut;
         STLLoop loop4 = new STLLoop();
         loop4.id(0);
         loop4.add(new STLLine(new STLPoint2D(-dx,-dy), new STLPoint2D(-dx,dy)));
@@ -380,18 +418,18 @@ public class Slicer extends STLLoopGenerator{
         STLLoop blank = createBlankLoop(set);
         STLLoop root = createNestingTree();
         if (root==null){
-            sliceInside(blank);
+            sliceInside(blank,set,back);
             // sliceBlank();
             return true;
             }
         if  (!root.isMultiply()){
             blank.childs().add(root);
-            sliceInside(blank);
+            sliceInside(blank,set,back);
             //sliceBlankOne(root);
             }
         else{
             blank.childs(root.childs());
-            sliceInside(blank);
+            sliceInside(blank,set,back);
             //sliceBlankMany(root.childs());
             }
         return false;

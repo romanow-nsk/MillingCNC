@@ -240,7 +240,7 @@ public class M3DOperations {
             double angleInc = set.filling.FillParametersAngleInc.getVal();
             double raster = set.filling.FillParametersRaster.getVal();
             double diff = set.filling.FillParametersRaster.getVal() * Values.OptimizeRasterCount;
-            double vStep = set.filling.VerticalStep.getVal();
+            double vStep = set.local.VerticalStep.getVal();
             double z0 = WorkSpace.ws().local().local.ZStart.getVal();
             cnt = 0;
             double angle = par.layer!=null ? par.layer.angle() :  (angle0 + par.layerNum * angleInc) % 180;
@@ -259,7 +259,7 @@ public class M3DOperations {
                 }
 
                 @Override
-                public void onCutterUpDown(boolean up) {
+                public void onCutterUpDown(boolean up, double z) {
                     }
                 @Override
                 public void onSliceLine(STLLine pp) {
@@ -288,7 +288,7 @@ public class M3DOperations {
                     notify.notify(level,mes);
                     }
                 };
-            Slicer slicer = new Slicer( WorkSpace.ws().model().triangles(), z, Values.PointDiffenerce, angle, raster, notify);
+            Slicer slicer = new Slicer( WorkSpace.ws().model().triangles(), z, Values.PointDiffenerce, set, notify);
             ArrayList<STLLoop> loops=null;
             if (par.layer!=null){
                 slicer.orig(par.layer.lines());
@@ -353,7 +353,7 @@ public class M3DOperations {
         final SliceData data = new SliceData();
         int layerCount=0;
         Settings set = WorkSpace.ws().local();
-        double vStep = set.filling.VerticalStep.getVal();
+        double vStep = set.local.VerticalStep.getVal();
         double zz = WorkSpace.ws().model().max().z();
         double z0 = set.local.ZStart.getVal();
         double z1 = set.local.ZFinish.getVal();
@@ -442,7 +442,7 @@ public class M3DOperations {
         ArrayList<STLLoopGenerator> loopList = new ArrayList<>();
         final SliceRezult rez = new SliceRezult();
         Settings set = WorkSpace.ws().local();
-        double vStep = set.filling.VerticalStep.getVal();
+        double vStep = set.local.VerticalStep.getVal();
         double zz = WorkSpace.ws().model().max().z();
         double z0 = set.local.ZStart.getVal();
         double z1 = set.local.ZFinish.getVal();
@@ -464,7 +464,7 @@ public class M3DOperations {
                 if (set==null)
                     set = WorkSpace.ws().local();
                 double diff = set.filling.FillParametersRaster.getVal() * Values.OptimizeRasterCount;
-                vStep = set.filling.VerticalStep.getVal();
+                vStep = set.local.VerticalStep.getVal();
                 z0 = WorkSpace.ws().local().local.ZStart.getVal();
                 cnt = 0;
                 double z = par.layer!=null ? par.layer.z() : z0 + par.layerNum * vStep;
@@ -516,7 +516,7 @@ public class M3DOperations {
         ArrayList<STLLoopGenerator> loopList = createLoops(back);
         final SliceRezult rez = new SliceRezult();
         Settings set = WorkSpace.ws().local();
-        double vStep = set.filling.VerticalStep.getVal() ;
+        double vStep = set.local.VerticalStep.getVal() ;
         double zz = WorkSpace.ws().model().max().z();
         double z0 = set.local.ZStart.getVal();
         double z1 = set.local.ZFinish.getVal();

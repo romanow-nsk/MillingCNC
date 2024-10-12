@@ -125,7 +125,7 @@ public class Slice2DViewer extends BaseFrame{
     public Slice2DViewer(ViewNotifyer notify0) {
         if (!tryToStart()) return;
         notify = notify0;
-        dz = WorkSpace.ws().local().filling.VerticalStep.getVal();
+        dz = WorkSpace.ws().local().local.VerticalStep.getVal();
         data = ws().data();
         initComponents();
         statView = new StatisticPanel();
@@ -1047,7 +1047,7 @@ public class Slice2DViewer extends BaseFrame{
             double z = Double.parseDouble(B5.getText());
             Settings set = WorkSpace.ws().local();
             double z0 = set.local.ZStart.getVal();
-            double vStep = set.filling.VerticalStep.getVal();
+            double vStep = set.local.VerticalStep.getVal();
             int lNum = (int)((z-z0+vStep/2)/vStep);
             final double z2 = z;
             new M3DReSlice("Добавить слой",ws().local(),true,(fil)->{

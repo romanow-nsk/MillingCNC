@@ -277,11 +277,11 @@
     </Component>
     <Component class="javax.swing.JLabel" name="Z0_1">
       <Properties>
-        <Property name="text" type="java.lang.String" value="&#x414;&#x438;&#x430;&#x43c;&#x435;&#x442;&#x440; &#x444;&#x440;&#x435;&#x437;&#x44b; (&#x43c;&#x43c;)"/>
+        <Property name="text" type="java.lang.String" value="&#x428;&#x430;&#x433; &#x43f;&#x43e; &#x432;&#x435;&#x440;&#x442;&#x438;&#x43a;&#x430;&#x43b;&#x438; (&#x43c;&#x43c;)"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="490" y="100" width="150" height="-1"/>
+          <AbsoluteConstraints x="490" y="160" width="150" height="-1"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -520,6 +520,52 @@
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
           <AbsoluteConstraints x="490" y="70" width="150" height="-1"/>
+        </Constraint>
+      </Constraints>
+    </Component>
+    <Component class="javax.swing.JLabel" name="Z0_6">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&#x414;&#x438;&#x430;&#x43c;&#x435;&#x442;&#x440; &#x444;&#x440;&#x435;&#x437;&#x44b; (&#x43c;&#x43c;)"/>
+      </Properties>
+      <Constraints>
+        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+          <AbsoluteConstraints x="490" y="100" width="150" height="-1"/>
+        </Constraint>
+      </Constraints>
+    </Component>
+    <Component class="javax.swing.JTextField" name="StepMinus">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="0"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="StepMinusActionPerformed"/>
+      </Events>
+      <Constraints>
+        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+          <AbsoluteConstraints x="640" y="120" width="80" height="25"/>
+        </Constraint>
+      </Constraints>
+    </Component>
+    <Component class="javax.swing.JTextField" name="VerticalStep">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="0"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="VerticalStepActionPerformed"/>
+      </Events>
+      <Constraints>
+        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+          <AbsoluteConstraints x="640" y="150" width="80" height="25"/>
+        </Constraint>
+      </Constraints>
+    </Component>
+    <Component class="javax.swing.JLabel" name="Z0_7">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&#x41a;&#x43e;&#x440;&#x440;&#x435;&#x43a;&#x446;&#x438;&#x44f; &#x448;&#x430;&#x433;&#x430; (&#x43c;&#x43c;)"/>
+      </Properties>
+      <Constraints>
+        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+          <AbsoluteConstraints x="490" y="130" width="150" height="-1"/>
         </Constraint>
       </Constraints>
     </Component>

@@ -26,7 +26,7 @@ public class Filling implements I_File{
     public FloatParameter FillParametersFillCell = new FloatParameter(1);
     public FloatParameter FillingFlatness = new FloatParameter(0.01);
     /** шаг слайсирования - толщина слоя  */
-    public FloatParameter VerticalStep = new FloatParameter(0.05);
+    //public FloatParameter VerticalStep = new FloatParameter(0.05);
     /** Оптимизация перемещений */
     public BooleanParameter MoveOptimize = new BooleanParameter(true);
     /** Оконтуривание */
@@ -48,7 +48,7 @@ public class Filling implements I_File{
         if (FillParametersAngleInc==null) FillParametersAngleInc = new FloatParameter(1);
         if (FillParametersFillCell==null) FillParametersFillCell = new FloatParameter(1);
         if (FillingFlatness==null) FillingFlatness = new FloatParameter(0.01);
-        if (VerticalStep==null) VerticalStep = new FloatParameter(0.05);
+        //if (VerticalStep==null) VerticalStep = new FloatParameter(0.05);
         if (MoveOptimize==null) MoveOptimize = new BooleanParameter(true);
         if (SendLoops==null) SendLoops = new BooleanParameter(false);
         if (FlateCircuitSlice==null) FlateCircuitSlice = new BooleanParameter(false);
@@ -65,7 +65,7 @@ public class Filling implements I_File{
         FillParametersAngleInc.load(in);
         FillParametersFillCell.load(in);
         FillingFlatness.load(in);
-        VerticalStep.load(in);
+        //VerticalStep.load(in);
         MoveOptimize.load(in);
         SendLoops.load(in);
         FlateCircuitSlice.load(in);
@@ -81,7 +81,7 @@ public class Filling implements I_File{
         FillParametersAngleInc.save(in);
         FillParametersFillCell.save(in);
         FillingFlatness.save(in);
-        VerticalStep.save(in);
+        //VerticalStep.save(in);
         MoveOptimize.save(in);
         SendLoops.save(in);
         FlateCircuitSlice.save(in);
