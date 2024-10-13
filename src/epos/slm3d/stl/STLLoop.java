@@ -304,7 +304,7 @@ public class STLLoop extends STLLineGroup implements I_File{
                 //other = other.expandToFullSize();
                 //if (own.noIntersection(other))            //8%
                 //    continue;
-                STLPoint2D pp = own.intersection(other);  //23%
+                I_Point2D pp = own.intersection(other,true);  //23%
                 if (pp != null) {
                     count++;
                     if (trace)

@@ -20,7 +20,7 @@ import javax.swing.JPanel;
  *
  * @author romanow
  */
-public class M3DSettings_2 extends BaseFrame {
+public class M3DSettings_2 extends BaseFrame implements I_SettingsChanged{
 
     /**
      * Creates new form M3DSettings_2
@@ -33,24 +33,25 @@ public class M3DSettings_2 extends BaseFrame {
         if (!tryToStart()) return;
         initComponents();
         setTitle("Настройки");
+        Save.setEnabled(false);
         this.setBounds(100,100, 800, 450);
-        glob =  new GlobalSettingsPanel(mainNotify);
+        glob =  new GlobalSettingsPanel(this,WorkSpace.ws().global(),mainNotify);
         panels.add((I_SettingsPanel)glob);
         SettingsList.add("Принтер",glob);
-        JPanel pn =  new PrintSettingsPanel(WorkSpace.ws().global(),mainNotify);
+        JPanel pn =  new PrintSettingsPanel(this,WorkSpace.ws().global(),mainNotify);
         panels.add((I_SettingsPanel)pn);
         SettingsList.add("Уставки (общие)",pn);
-        pn =  new SliceSettingsPanel(WorkSpace.ws().global(),mainNotify);
+        pn =  new SliceSettingsPanel(this,WorkSpace.ws().global(),mainNotify);
         panels.add((I_SettingsPanel)pn);
         SettingsList.add("Слайсинг (общие)",pn);
         if (localValid){
-            model =  new ModelSettingsPanel(mainNotify);
+            model =  new ModelSettingsPanel(this,WorkSpace.ws().global(),mainNotify);
             panels.add((I_SettingsPanel)model);
             SettingsList.add("Модель",model);
-            pn =  new SliceSettingsPanel(WorkSpace.ws().local(),mainNotify);
+            pn =  new SliceSettingsPanel(this,WorkSpace.ws().local(),mainNotify);
             panels.add((I_SettingsPanel)pn);
             SettingsList.add("Слайсинг (модель)",pn);
-            pn =  new PrintSettingsPanel(WorkSpace.ws().local(),mainNotify);
+            pn =  new PrintSettingsPanel(this, WorkSpace.ws().local(),mainNotify);
             panels.add((I_SettingsPanel)pn);
             SettingsList.add("Уставки (модель)",pn);
             }
@@ -150,5 +151,15 @@ public class M3DSettings_2 extends BaseFrame {
     private javax.swing.JButton Save;
     private javax.swing.JTabbedPane SettingsList;
     private javax.swing.JSeparator jSeparator8;
+
+    @Override
+    public void onChange() {
+        Save.setEnabled(true);
+        }
+
+    @Override
+    public void onCancel() {
+        Save.setEnabled(false);
+        }
     // End of variables declaration//GEN-END:variables
 }

@@ -318,7 +318,7 @@ public class STLLoopGenerator {
         for(STLLine xx: orig.lines()) {
             if (xx.noIntersection(line))            //8%
                 continue;
-            STLPoint2D pp = line.intersection(xx);  //23%
+            STLPoint2D pp = line.intersection(xx,true);  //23%
             if (pp!=null){
                 STLReferedPoint onePoint = new STLReferedPoint(pp,xx); // Тот же контур, что у отрезка
                 out.add(onePoint);

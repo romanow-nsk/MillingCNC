@@ -80,6 +80,8 @@ public class STLLine implements I_Line2D,I_File{
     public void loopId(int id0) { loopId = id0; }
     public I_STLPoint2D one(){ return line[0]; }
     public I_STLPoint2D two(){ return line[1]; }
+    public void one(I_STLPoint2D xx){ line[0]=xx; }
+    public void two(I_STLPoint2D xx){ line[1]=xx; }
     public boolean valid(){ return idx==2; }
     /** Перестановка концов */
     public void swap(){ I_STLPoint2D x=line[0]; line[0]=line[1]; line[1]=x; }
@@ -131,6 +133,18 @@ public class STLLine implements I_Line2D,I_File{
         return false;
     }
     /** Совпадение по заданной точности */
+
+    STLLineAB lineKoeffs(){
+        double dx = line[1].x()-line[0].x();
+        double dy = line[1].y()-line[0].y();
+        if (Math.abs(dx)<Values.EqualDifference){
+            return new STLLineAB();         // вертикальная
+            }
+        double a = dy/dx;
+        double b = line[0].y() - a * line[0].x();
+        return new STLLineAB(a,b);
+        }
+
 
     /** длина проекции на XY */
     public double lengthXY(){
@@ -219,8 +233,42 @@ public class STLLine implements I_Line2D,I_File{
             return new STLPoint2D(Xa,A2*Xa+b2);
             }
         }
+    private static boolean outside(double x, double x1, double x2){
+        return x < x1 && x < x2 || x > x1 && x > x2;
+        }
+    STLPoint2D intersection(STLLine linex, boolean exact) {
+        STLLineAB k1 = lineKoeffs();
+        STLLineAB k2 = linex.lineKoeffs();
+        STLPoint2D out;
+        if (k1.vertical && k2.vertical)
+            return null;
+        if (k1.vertical){
+            out = new STLPoint2D(line[0].x(),k2.y(line[0].x()));
+            if (exact && outside(out.x(),linex.x0(),linex.x1()))
+                return null;
+            return out;
+            }
+        if (k2.vertical){
+            out = new STLPoint2D(line[1].x(),k1.y(line[1].x()));
+            if (exact && outside(out.y(),linex.y0(),linex.y1()))
+                return null;
+            return out;
+            }
+        double da = Math.abs(k1.a - k2.a);
+        if (da < Values.EqualDifference){
+            if (line[0].equalsAbout(linex.line[0]))
+                return new STLPoint2D(line[0].x(),line[0].y());
+            return null;
+            }
+        double x = (k2.b-k1.b)/(k1.a-k2.a);
+        double y = k1.a * x + k1.b;
+        out = new STLPoint2D(x,y);
+        if (exact && outside(out.x(),x0(),x1()))
+            return null;
+        return out;
+        }
     //------------------------------------------------------------------------------------------------------
-    STLPoint2D intersection(STLLine line) {
+    STLPoint2D intersection1(STLLine line) {
         STLPoint2D dir1 = new STLPoint2D(two().x() - one().x(),two().y()-one().y());
         STLPoint2D dir2 = new STLPoint2D(line.two().x() - line.one().x(),line.two().y()-line.one().y());
         double x0=one().x(),y0=one().y();
@@ -319,50 +367,90 @@ public class STLLine implements I_Line2D,I_File{
     //+++ 1.1 ------------------------------ Растянуть отрезов до полной линии рабочего стола --------------------------
     public STLLine expandToFullSize(){
         STLLine out = clone();
-        double FSize = WorkSpace.ws().global().global.WorkFieldSize.getVal();
+        STLLineAB koef = lineKoeffs();
+        double FSize = WorkSpace.ws().global().global.WorkFieldSize.getVal()/2;
+        double y = koef.y(-FSize);
+        double x=0;
+        if (koef.vertical){
+            out.one().y(-FSize);
+            out.two().y(FSize);
+            return out;
+            }
+        if (Math.abs(y) > FSize){
+            x = koef.x(0);
+            out.line[0].x(x);
+            out.line[0].y(koef.a > 0 ? FSize : -FSize);
+            }
+        else{
+            out.line[0].x(-FSize);
+            out.line[0].y(y);
+            }
+        y = koef.y(FSize);
+        x=0;
+        if (Math.abs(y) > FSize){
+            x = koef.x(FSize);
+            out.line[1].x(x);
+            out.line[1].y(koef.a > 0 ? FSize : -FSize);
+            }
+        else{
+            out.line[1].x(FSize);
+            out.line[1].y(y);
+            }
+        return out;
+        /*
         double a,b;
         if (line[0].equalsAboutX(line[1])){ // Растянуть вертикально
             b = (line[1].x()-line[0].x())/(line[1].y()-line[0].y());
             a = line[0].x()-b*line[0].y();
-            out.line[0].x(a);
-            out.line[0].y(0);
+            out.line[0].x(a-b*FSize);
+            out.line[0].y(-FSize);
             out.line[1].x(a+b*FSize);
             out.line[1].y(FSize);
             }
-        else{
+        else
+        if (line[0].equalsAboutY(line[1])) { // Растянуть горизонтально
             b = (line[1].y()-line[0].y())/(line[1].x()-line[0].x());
             a = line[0].y()-b*line[0].x();
-            if (a<0){
+            out.line[0].x(-FSize);
+            out.line[0].y(a-b*FSize);
+            out.line[1].x(FSize);
+            out.line[1].y(a+b*FSize);
+            }
+        else{
+            //----- y = b*x+a
+            b = (line[1].y()-line[0].y())/(line[1].x()-line[0].x());
+            a = line[0].y()-b*line[0].x();
+            double yy = -b*FSize+a;     // Координата в левой точке
+            if (yy>FSize){
+                out.line[0].x((FSize-a)/b);
+                out.line[0].y(FSize);
+                }
+            else
+            if (yy<0){
                 out.line[0].x(-a/b);
                 out.line[0].y(0);
                 }
             else{
-                if (a>FSize){
-                    out.line[0].x((FSize-a)/b);
-                    out.line[0].y(FSize);
-                    }
-                else{
-                    out.line[0].x(0);
-                    out.line[0].y(a);
-                    }
+                out.line[0].x(-FSize);
+                out.line[0].y(yy);
                 }
-            double y = FSize*b+a;
-            if (y<0){
-                out.line[1].x(-a/b);
+            yy = b*FSize+a;     // Координата в правой точке
+            if (yy>FSize){
+                out.line[1].x((FSize-a)/b);
+                out.line[1].y(FSize);
+            }
+            else
+            if (yy<0){
+                out.line[1].x((FSize-a)/b);
                 out.line[1].y(0);
                 }
             else{
-                if (y>FSize){
-                    out.line[1].x((FSize-a)/b);
-                    out.line[1].y(FSize);
-                    }
-                else{
-                    out.line[1].x(FSize);
-                    out.line[1].y(y);
-                    }
+                out.line[1].x(FSize);
+                out.line[1].y(yy);
                 }
             }
         return out;
+         */
         }
 
     /** true - точно не пересекает, false - пересечение возможно */
@@ -405,6 +493,35 @@ public class STLLine implements I_Line2D,I_File{
     public double x1() { return two().x(); }
     @Override
     public double y1() { return two().y(); }
+    //----------- Параллельный сдвиг линии к/от центральной точки
+    public STLLine shiftParallel(double step, I_STLPoint2D center, boolean toCenter){
+        T_Pair<Double,Double> sc = sinCosXY();
+        double dx,dy;
+        STLLine line1 = clone();
+        STLLine line2 = clone();
+        if (Math.abs(sc._1().doubleValue())<Values.SinCosIs0){   // Горизонтально
+            dx = 0;
+            dy = step;
+            }
+        else
+        if (Math.abs(sc._2().doubleValue())<Values.SinCosIs0){   // Вертикально
+            dx = step;
+            dy = 0;
+            }
+        else
+        if (Math.abs(sc._1().doubleValue())>Math.abs(sc._2().doubleValue())){  // Ближе к вертикали
+            dx = step * sc._2();
+            dy = step * sc._1();
+            }
+        else{                                                   // Ближе к горизонтали
+            dx = step * sc._1();
+            dy = step * sc._2();
+            }
+        line1.shift(dx,dy);
+        line2.shift(-dx,-dy);
+        boolean bb = line1.one().diffXY(center) < line2.one().diffXY(center);
+        return bb == toCenter ? line1 : line2;
+        }
     public static void main(String ss[]){
         STLLine line1 = new STLLine(new STLPoint2D(5,5),new STLPoint2D(5,10));
         System.out.println(line1+" "+line1.expandToFullSize());

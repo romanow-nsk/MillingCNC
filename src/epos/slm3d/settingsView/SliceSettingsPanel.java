@@ -5,6 +5,7 @@
  */
 package epos.slm3d.settingsView;
 
+import epos.slm3d.m3d.I_SettingsChanged;
 import epos.slm3d.settings.Filling;
 import epos.slm3d.settings.Settings;
 import epos.slm3d.settings.SliceSettings;
@@ -21,16 +22,17 @@ import static javafx.scene.input.KeyCode.Z;
  * @author romanow
  */
 public class SliceSettingsPanel extends javax.swing.JPanel  implements I_SettingsPanel{
-
+    private I_SettingsChanged changed;
     /**
      * Creates new form M3SSettings
      */
     private Settings set;
     private I_Notify notify;
-    public SliceSettingsPanel(Settings set0,I_Notify notify0) {
+    public SliceSettingsPanel(I_SettingsChanged changed0, Settings set0, I_Notify notify0) {
         initComponents();
         set = set0;
         notify = notify0;
+        changed = changed0;
         this.setBounds(0,0, 800, 650);
         Mode.addItem("Растр");
         Mode.addItem("Клетки");

@@ -257,9 +257,11 @@ public class M3DOperations {
                 public void onSliceLayer() {
                     notify.log( "Команд " + cnt + "");
                 }
-
                 @Override
                 public void onCutterUpDown(boolean up, double z) {
+                    }
+                @Override
+                public void onCutterMove(I_STLPoint2D point) {
                     }
                 @Override
                 public void onSliceLine(STLLine pp) {

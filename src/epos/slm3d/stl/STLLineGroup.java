@@ -1,6 +1,7 @@
 package epos.slm3d.stl;
 
 import epos.slm3d.io.I_File;
+import epos.slm3d.utils.ErrorList;
 import epos.slm3d.utils.Values;
 
 import java.io.*;
@@ -10,10 +11,14 @@ import java.util.ArrayList;
  * Created by romanow on 05.12.2017.
  */
 public class STLLineGroup implements I_File{
+    private ErrorList errors = new ErrorList();
     /** вектор линий */
     private ArrayList<STLLine> lines = new ArrayList<>();
     //---------------------------------------------------------------------------------------------
     public ArrayList<STLLine> lines(){ return lines; }
+    public ErrorList errors(){
+        return errors;
+        }
     public STLLineGroup(){}
     /** добавить группу линий */
     public void add(ArrayList<STLLine> two){
@@ -24,6 +29,62 @@ public class STLLineGroup implements I_File{
         STLLineGroup out = new STLLineGroup();
         for(STLLine line:lines())
             out.add(line.clone());
+        return out;
+        }
+    public String isValidLoop() {
+        if (lines.size() == 0)
+            return "Пустой контур";
+        I_STLPoint2D p1 = lines.get(0).one();
+        I_STLPoint2D p2 = lines.get(lines.size() - 1).two();
+        if (!p1.equalsAbout(p2))
+            return "Контур не замкнут " + p1 + " " + p2;
+        for (int i = 0; i < lines.size() - 1; i++) {
+            p1 = lines.get(i).two();
+            p2 = lines.get(i + 1).one();
+            if (!p1.equalsAbout(p2))
+                return "Контур не замкнут по линиям " + i + "-" + (i + 1) + " " + p1 + " " + p2;
+            }
+        return null;
+        }
+
+    public double linesLength(){
+        double ss=0;
+        for (STLLine line : lines){
+            ss += line.lengthXY();
+            }
+        return ss;
+        }
+    public STLLineGroup shiftToCenter(double step, boolean toCenter){
+        STLLineGroup out = new STLLineGroup();
+        STLPoint2D center = center();
+        for (STLLine line : lines){                 // Сдвинуть параллельно и удлинить до конца раб. стола
+            STLLine copy = line.shiftParallel(step,center,toCenter);
+            //copy = copy.expandToFullSize();
+            out.lines.add(copy);
+            }
+        ArrayList<I_STLPoint2D> tmp = new ArrayList<>();
+        for(int i=0;i<out.size()-1;i++) {           // Найти м сохранить точки пересечения
+            STLLine l1 = out.get(i);
+            STLLine l2 = out.get(i + 1);
+            I_STLPoint2D qq = l1.intersection(l2,false);
+            tmp.add(qq);
+            }
+        STLLine l1 = out.get(0);
+        STLLine l2 = out.get(lines.size()-1);
+        I_STLPoint2D qq= l1.intersection(l2,false);
+        tmp.add(qq);
+        for(int i=0;i<tmp.size();i++){              // Перенести точки пересечения в концы отрезков
+            qq = tmp.get(i);
+            if (qq==null){
+                out.errors.addError("Не найдена точка пересечения линий "+i+"-"+(i+1)+" "+l1+" "+l2);
+                }
+            else{
+                l1 = out.get(i);
+                l2 = i==out.size()-1 ? out.get(0) : out.get(i+1);
+                l1.two(qq);
+                l2.one(qq);
+                }
+            }
         return out;
         }
     public int size(){ return lines.size(); }

@@ -6,7 +6,7 @@ package epos.slm3d.utils;
 public class Values {
     public final static int version=1;
     public final static int release=1;
-    public final static OwnDateTime releaseDate = new OwnDateTime(27,9,2024);
+    public final static OwnDateTime releaseDate = new OwnDateTime(13,10,2024);
     public static String getVersion(){
         return "Milling CNC NSTU  version "+version+"."+release+" "+releaseDate.dateToString();
         }
@@ -39,6 +39,8 @@ public class Values {
     public final static double WorkFieldSize=100;
     /** точность приближения к pi/2 в радианах */
     public final static double AxesGrad=0.5*Math.PI/180;
+    /** точность фиксации прямого угла - синус-косинус */
+    public final static double SinCosIs0=0.0001;
     /** точность поиска соседней точки при склеивании контура - мм */
     public final static double PointDiffenerce=0.00001;
     /** точность - считать точки одинаковыми - мм */

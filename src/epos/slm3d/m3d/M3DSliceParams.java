@@ -15,7 +15,7 @@ import epos.slm3d.utils.I_Notify;
  *
  * @author romanow
  */
-public class M3DSliceParams extends javax.swing.JFrame {
+public class M3DSliceParams extends javax.swing.JFrame implements I_SettingsChanged{
     private I_Notify notify;
     private SliceSettingsPanel panel;
     private StatisticPanel panel2; 
@@ -27,7 +27,7 @@ public class M3DSliceParams extends javax.swing.JFrame {
         notify = notify0;
         setTitle("Параметры слайсинга");
         setBounds(150,150,600,450);
-        panel = new SliceSettingsPanel(set,notify);
+        panel = new SliceSettingsPanel(this,set,notify);
         panel.setBounds(0,0,300,450);
         add(panel);
         panel2 = new StatisticPanel();
@@ -51,6 +51,16 @@ public class M3DSliceParams extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    @Override
+    public void onChange() {
+
+    }
+
+    @Override
+    public void onCancel() {
+
+    }
 
     /**
      * @param args the command line arguments

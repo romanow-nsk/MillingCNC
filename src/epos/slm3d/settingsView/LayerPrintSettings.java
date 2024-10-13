@@ -16,7 +16,7 @@ import javax.swing.JPanel;
  *
  * @author romanow
  */
-public class LayerPrintSettings extends BaseFrame {
+public class LayerPrintSettings extends BaseFrame implements I_SettingsChanged{
 
     /**
      * Creates new form M3DSettings_2
@@ -33,7 +33,7 @@ public class LayerPrintSettings extends BaseFrame {
         src = src0;
         setTitle("Настройки слоя");
         this.setBounds(100,100, 800, 350);
-        panel =  new PrintSettingsPanel(src,notify);
+        panel =  new PrintSettingsPanel(this,src,notify);
         panel.setBounds(0,50, 800, 300);
         add(panel);
         }
@@ -88,5 +88,15 @@ public class LayerPrintSettings extends BaseFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Save;
+
+    @Override
+    public void onChange() {
+
+    }
+
+    @Override
+    public void onCancel() {
+
+    }
     // End of variables declaration//GEN-END:variables
 }

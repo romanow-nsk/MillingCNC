@@ -14,7 +14,7 @@ import epos.slm3d.utils.I_Notify;
  *
  * @author romanow
  */
-public class M3DReSlice extends javax.swing.JFrame {
+public class M3DReSlice extends javax.swing.JFrame implements I_SettingsChanged{
     private I_Notify notify;
     private SliceSettingsPanel panel;
     private I_SettingsSelect back;
@@ -27,7 +27,7 @@ public class M3DReSlice extends javax.swing.JFrame {
         notify = notify0;
         back = back0;
         setBounds(150,150,250,100);
-        panel = new SliceSettingsPanel(set,notify);
+        panel = new SliceSettingsPanel(this,set,notify);
         panel.setBounds(0,70,500,400);
         add(panel);
         panel.setVisible(OwnSettings.isSelected());
@@ -91,5 +91,15 @@ public class M3DReSlice extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Do;
     private javax.swing.JCheckBox OwnSettings;
+
+    @Override
+    public void onChange() {
+
+    }
+
+    @Override
+    public void onCancel() {
+
+    }
     // End of variables declaration//GEN-END:variables
 }

@@ -1,6 +1,14 @@
 package epos.slm3d.utils;
 
+import epos.slm3d.settings.FloatParameter;
+import epos.slm3d.settings.Settings;
+import epos.slm3d.settings.WorkSpace;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.io.*;
+import java.lang.reflect.Field;
 import java.util.Date;
 
 /**
@@ -215,6 +223,73 @@ public class Utils {
         String out = "Программная ошибка:\n" + ss;
         return out;
         }
+    //------------------------------------------------------------------------------------------------------------------
+    public static void viewUpdate(final Component evt, boolean good){
+        if (evt==null){
+            System.out.println("Изменения приняты");
+            return;
+        }
+        evt.setBackground(good ? Color.green : Color.yellow);
+        delayInGUI(2, new Runnable() {
+            @Override
+            public void run() {
+                evt.setBackground(Color.white);
+            }
+        });
+    }
+
+    public static String setValue(Object oo, String fName, double val){
+        try{
+            Field fld = oo.getClass().getField(fName);
+            if (fld==null)
+                return fName+": ошибка записи "+val + " поле не найдено";
+            fld.setAccessible(true);
+            fld.setDouble(oo,val);
+        } catch (Exception ee){
+            return fName+": ошибка записи "+val + " "+ee.toString();
+        }
+        return null;
+    }
+
+    public static void delayInGUI(final int sec,final Runnable code){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(1000*sec);
+                    java.awt.EventQueue.invokeLater(code);
+                } catch (InterruptedException e) {}
+            }
+        }).start();
+    }
+
+    public static void saveKeyPressed(java.awt.event.KeyEvent evt, FloatParameter par, Settings set, I_Notify notify) {//GEN-FIRST:event_ZstartKeyPressed
+        if(evt.getKeyCode()!=10) return;
+        String ss = ((JTextField)evt.getComponent()).getText();
+        try {
+            par.setVal(Float.parseFloat(ss));
+            viewUpdate(evt,true);
+            WorkSpace.ws().saveSettings();
+        } catch (Exception ee){
+            notify.notify(Values.error,"Формат вещественного: "+ss);
+            viewUpdate(evt,false);
+           }
+        }
+
+
+    public static void viewUpdate(final KeyEvent evt, boolean good){
+        if (evt==null){
+            System.out.println("Изменения приняты");
+            return;
+        }
+        evt.getComponent().setBackground(good ? Color.green : Color.yellow);
+        delayInGUI(2, new Runnable() {
+            @Override
+            public void run() {
+                evt.getComponent().setBackground(Color.white);
+            }
+        });
+    }
     public static void main(String a[]){
          System.out.println(currentDateTime());
     }

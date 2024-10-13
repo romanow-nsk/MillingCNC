@@ -5,6 +5,7 @@
  */
 package epos.slm3d.settingsView;
 
+import epos.slm3d.m3d.I_SettingsChanged;
 import epos.slm3d.utils.Events;
 import epos.slm3d.settings.Settings;
 import epos.slm3d.settings.WorkSpace;
@@ -21,16 +22,17 @@ import javax.swing.JPanel;
  * @author romanow
  */
 public class GlobalSettingsPanel extends javax.swing.JPanel implements I_SettingsPanel{
-
+    private I_SettingsChanged changed;
     /**
      * Creates new form M3SSettings
      */
     private Settings set;
     private I_Notify notify;
-    public GlobalSettingsPanel(I_Notify notify0) {
+    public GlobalSettingsPanel(I_SettingsChanged changed0, Settings set0, I_Notify notify0) {
         initComponents();
-        set = WorkSpace.ws().global();
+        changed = changed0;
         notify = notify0;
+        set = set0;
         this.setBounds(0,0, 800, 650);
         loadSettings();        
         }

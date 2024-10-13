@@ -5,6 +5,7 @@
  */
 package epos.slm3d.settingsView;
 
+import epos.slm3d.m3d.I_SettingsChanged;
 import epos.slm3d.utils.Events;
 import epos.slm3d.settings.Settings;
 import epos.slm3d.settings.WorkSpace;
@@ -14,6 +15,7 @@ import epos.slm3d.utils.I_Notify;
 import epos.slm3d.utils.Utils;
 import epos.slm3d.utils.Values;
 
+import javax.swing.*;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
@@ -23,13 +25,16 @@ import java.util.Locale;
  * @author romanow
  */
 public class ModelSettingsPanel extends javax.swing.JPanel  implements I_SettingsPanel{
-
+    private Settings set;
+    private I_SettingsChanged changed;
     /**
      * Creates new form M3SSettings
      */
     private I_Notify notify;
-    public ModelSettingsPanel(I_Notify notify0) {
+    public ModelSettingsPanel(I_SettingsChanged changed0, Settings set0, I_Notify notify0) {
         initComponents();
+        set = set0;
+        changed = changed0;
         notify = notify0;
         this.setBounds(0,0, 800, 650);
         loadSettings();
@@ -108,11 +113,6 @@ public class ModelSettingsPanel extends javax.swing.JPanel  implements I_Setting
 
         PageServoOffsetsLeft.setEditable(false);
         PageServoOffsetsLeft.setBackground(new java.awt.Color(200, 200, 200));
-        PageServoOffsetsLeft.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                PageServoOffsetsLeftActionPerformed(evt);
-            }
-        });
         add(PageServoOffsetsLeft);
         PageServoOffsetsLeft.setBounds(160, 90, 80, 25);
 
@@ -174,15 +174,20 @@ public class ModelSettingsPanel extends javax.swing.JPanel  implements I_Setting
         MarkingFieldHight.setBounds(160, 60, 80, 25);
 
         ANGLE.setText("90");
-        ANGLE.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ANGLEActionPerformed(evt);
+        ANGLE.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                ANGLEKeyPressed(evt);
             }
         });
         add(ANGLE);
         ANGLE.setBounds(330, 210, 40, 25);
 
         Zstart.setText("0");
+        Zstart.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                ZstartKeyPressed(evt);
+            }
+        });
         add(Zstart);
         Zstart.setBounds(160, 210, 80, 25);
 
@@ -200,9 +205,9 @@ public class ModelSettingsPanel extends javax.swing.JPanel  implements I_Setting
         jSeparator5.setBounds(770, 330, 0, 3);
 
         Zfinish.setText("0");
-        Zfinish.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ZfinishActionPerformed(evt);
+        Zfinish.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                ZfinishKeyPressed(evt);
             }
         });
         add(Zfinish);
@@ -267,9 +272,9 @@ public class ModelSettingsPanel extends javax.swing.JPanel  implements I_Setting
         ShiftButton.setBounds(380, 240, 100, 22);
 
         SHIFT.setText("10.0");
-        SHIFT.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                SHIFTActionPerformed(evt);
+        SHIFT.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                SHIFTKeyPressed(evt);
             }
         });
         add(SHIFT);
@@ -288,27 +293,27 @@ public class ModelSettingsPanel extends javax.swing.JPanel  implements I_Setting
         Z0_4.setBounds(490, 40, 150, 16);
 
         BlankHight.setText("0");
-        BlankHight.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BlankHightActionPerformed(evt);
+        BlankHight.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                BlankHightKeyPressed(evt);
             }
         });
         add(BlankHight);
         BlankHight.setBounds(640, 60, 80, 25);
 
         BlankWidth.setText("0");
-        BlankWidth.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BlankWidthActionPerformed(evt);
+        BlankWidth.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                BlankWidthKeyPressed(evt);
             }
         });
         add(BlankWidth);
         BlankWidth.setBounds(640, 30, 80, 25);
 
         CutterDiameter.setText("0");
-        CutterDiameter.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CutterDiameterActionPerformed(evt);
+        CutterDiameter.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                CutterDiameterKeyPressed(evt);
             }
         });
         add(CutterDiameter);
@@ -323,18 +328,18 @@ public class ModelSettingsPanel extends javax.swing.JPanel  implements I_Setting
         Z0_6.setBounds(490, 100, 150, 16);
 
         StepMinus.setText("0");
-        StepMinus.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                StepMinusActionPerformed(evt);
+        StepMinus.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                StepMinusKeyPressed(evt);
             }
         });
         add(StepMinus);
         StepMinus.setBounds(640, 120, 80, 25);
 
         VerticalStep.setText("0");
-        VerticalStep.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                VerticalStepActionPerformed(evt);
+        VerticalStep.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                VerticalStepKeyPressed(evt);
             }
         });
         add(VerticalStep);
@@ -346,7 +351,6 @@ public class ModelSettingsPanel extends javax.swing.JPanel  implements I_Setting
     }// </editor-fold>//GEN-END:initComponents
     public boolean loadSettings(){
         try {
-            Settings set = WorkSpace.ws().local();
             set.setNotNull();
             DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.US);
             DecimalFormat df = new DecimalFormat("0.000", dfs);
@@ -397,18 +401,6 @@ public class ModelSettingsPanel extends javax.swing.JPanel  implements I_Setting
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
     }//GEN-LAST:event_formWindowClosing
 
-    private void ZfinishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ZfinishActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ZfinishActionPerformed
-
-    private void PageServoOffsetsLeftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PageServoOffsetsLeftActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_PageServoOffsetsLeftActionPerformed
-
-    private void ANGLEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ANGLEActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ANGLEActionPerformed
-
     private void RotateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RotateButtonActionPerformed
         double angle;
         try {
@@ -450,29 +442,76 @@ public class ModelSettingsPanel extends javax.swing.JPanel  implements I_Setting
 
     }//GEN-LAST:event_ShiftButtonActionPerformed
 
-    private void SHIFTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SHIFTActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_SHIFTActionPerformed
+    private void BlankWidthKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BlankWidthKeyPressed
+        Utils.saveKeyPressed(evt,set.local.BlankWidth,set,notify);
+    }//GEN-LAST:event_BlankWidthKeyPressed
 
-    private void BlankHightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BlankHightActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_BlankHightActionPerformed
+    private void BlankHightKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BlankHightKeyPressed
+        Utils.saveKeyPressed(evt,set.local.BlankHight,set,notify);
+    }//GEN-LAST:event_BlankHightKeyPressed
 
-    private void BlankWidthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BlankWidthActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_BlankWidthActionPerformed
+    private void CutterDiameterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CutterDiameterKeyPressed
+        Utils.saveKeyPressed(evt,set.local.CutterDiameter,set,notify);
+    }//GEN-LAST:event_CutterDiameterKeyPressed
 
-    private void CutterDiameterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CutterDiameterActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_CutterDiameterActionPerformed
+    private void StepMinusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_StepMinusKeyPressed
+        Utils.saveKeyPressed(evt,set.local.StepMinus,set,notify);    }//GEN-LAST:event_StepMinusKeyPressed
 
-    private void StepMinusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StepMinusActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_StepMinusActionPerformed
+    private void VerticalStepKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_VerticalStepKeyPressed
+        Utils.saveKeyPressed(evt,set.local.VerticalStep,set,notify);
+    }//GEN-LAST:event_VerticalStepKeyPressed
 
-    private void VerticalStepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VerticalStepActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_VerticalStepActionPerformed
+
+
+    private void ZstartKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ZstartKeyPressed
+        Utils.saveKeyPressed(evt,set.local.ZStart,set,notify);
+    }//GEN-LAST:event_ZstartKeyPressed
+
+    private void ZfinishKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ZfinishKeyPressed
+        Utils.saveKeyPressed(evt,set.local.ZFinish,set,notify);
+    }//GEN-LAST:event_ZfinishKeyPressed
+
+    private void ANGLEKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ANGLEKeyPressed
+        if(evt.getKeyCode()!=10) return;
+        double angle;
+        try {
+            angle = Double.parseDouble(ANGLE.getText())*Math.PI/180;
+        } catch(Exception ee){
+            notify.notify(Values.error,"Недопустимое значение угла");
+            return;
+        }
+        WorkSpace ws = WorkSpace.ws();
+        ws.model().rotate(XYZ.getSelectedIndex(),new MyAngle(angle),notify);
+        ws.model().shiftToCenter();
+        ws.data(new SliceData());
+        Settings set = WorkSpace.ws().local();
+        ws.model().saveModelDimensions();
+        set.setZStartFinish();
+        loadSettings();
+        notify.log(String.format("Поворот %2s %s",(String)XYZ.getSelectedItem(),ANGLE.getText()));
+        WorkSpace.ws().sendEvent(Events.Rotate);
+    }//GEN-LAST:event_ANGLEKeyPressed
+
+    private void SHIFTKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_SHIFTKeyPressed
+        if(evt.getKeyCode()!=10) return;
+        double shift;
+        try {
+            shift = Double.parseDouble(SHIFT.getText());
+        } catch(Exception ee){
+            notify.notify(Values.error,"Недопустимое значение сдвига");
+            return;
+        }
+        //shift/=;
+        WorkSpace ws = WorkSpace.ws();
+        ws.model().shift(XYZShift.getSelectedIndex(),shift);
+        ws.data(new SliceData());
+        Settings set = WorkSpace.ws().local();
+        ws.model().saveModelDimensions();
+        set.setZStartFinish();
+        loadSettings();
+        notify.log(String.format("Сдвиг %2s %s",(String)XYZShift.getSelectedItem(),SHIFT.getText()));
+        WorkSpace.ws().sendEvent(Events.Rotate);
+    }//GEN-LAST:event_SHIFTKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

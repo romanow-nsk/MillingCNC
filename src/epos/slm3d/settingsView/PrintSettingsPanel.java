@@ -5,6 +5,7 @@
  */
 package epos.slm3d.settingsView;
 
+import epos.slm3d.m3d.I_SettingsChanged;
 import epos.slm3d.settings.Settings;
 import epos.slm3d.utils.I_Notify;
 import epos.slm3d.utils.Values;
@@ -18,15 +19,16 @@ import java.util.Locale;
  * @author romanow
  */
 public class PrintSettingsPanel extends javax.swing.JPanel implements I_SettingsPanel{
-
+    private I_SettingsChanged changed;
     /**
      * Creates new form M3SSettings
      */
     private Settings set;
     private I_Notify notify;
-    public PrintSettingsPanel(Settings set0, I_Notify notify0) {
+    public PrintSettingsPanel(I_SettingsChanged changed0,Settings set0, I_Notify notify0) {
         initComponents();
         set = set0;
+        changed = changed0;
         notify = notify0;
         this.setBounds(0,0,800, 650);
         loadSettings();
