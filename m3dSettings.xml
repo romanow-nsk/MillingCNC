@@ -29,7 +29,7 @@
     <FillParametersAngleInc min="0.0" max="1000.0" def="1.0" val="1.0"/>
     <FillParametersFillCell min="0.0" max="1000.0" def="1.0" val="1.0"/>
     <FillingFlatness min="0.0" max="1000.0" def="0.01" val="0.01"/>
-    <MoveOptimize def="true" val="true"/>
+    <MoveOptimize def="true" val="false"/>
     <SendLoops def="false" val="false"/>
     <FlateCircuitSlice def="false" val="false"/>
     <FillContinuous def="false" val="false"/>

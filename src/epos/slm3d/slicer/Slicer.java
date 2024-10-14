@@ -9,6 +9,7 @@ import epos.slm3d.utils.UNIException;
 import epos.slm3d.utils.Values;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 /**
  * Created by romanow on 07.12.2017.
@@ -410,10 +411,10 @@ public class Slicer extends STLLoopGenerator{
                         //    }
                         }
                     back.onCutterMove(copy.lines().get(0).one());
-                    back.onCutterUpDown(false,z);
+                    back.onCutterUpDown(false,z);           // Опустить фрезу
                     for(STLLine line : copy.lines())
                         back.onSliceLine(line);
-                    back.onCutterUpDown(false,z-vStep); // Поднять фрезу
+                    back.onCutterUpDown(true,z-vStep);  // Поднять фрезу
                     }
                 }
             }
@@ -423,16 +424,69 @@ public class Slicer extends STLLoopGenerator{
         for(STLLoop loop1 : loop.childs())
             allLoops.add(loop1);
         STLLine vLine = new STLLine(new STLPoint2D(0,-workSize+cutterStep),new  STLPoint2D(0,workSize-cutterStep));
+        int pointsCount=0;
+        int pointsSize=0;
+        double vX0=0;
+        ArrayList<ArrayList<STLPoint2D>> pointsGroup = new ArrayList<>();
         for(double xV=-workSize+cutterStep; xV<workSize-cutterStep; xV+=cutterStep){
             vLine.one().x(xV);
             vLine.two().x(xV);
             ArrayList<STLPoint2D> points = new ArrayList<>();
             for(STLLoop loop1 : allLoops){
                 ArrayList<STLPoint2D> xx = loop1.intersect(vLine);
-                for(STLPoint2D pp : xx)
-                    points.add(pp);
+                if (xx.size()%2==1) {           // Что делать????
+                    notify.notify(Values.important, "Нечетное число точек пересечения с X=" + String.format("%6.2f - %d", xV, xx.size()));
+                    }
+                else{
+                    for(STLPoint2D pp : xx)
+                        points.add(pp);
+                    }
                 }
-            notify.notify(Values.important,"точек пересечения с X="+String.format("%6.2f - %d",xV, points.size()));
+            if (pointsSize == points.size()){       // Продолжать накапливать группу
+                if (pointsSize!=0){
+                    points.sort(new Comparator<STLPoint2D>() {
+                        @Override
+                        public int compare(STLPoint2D o1, STLPoint2D o2) {
+                            if (Math.abs(o1.y()-o2.y()) < Values.EqualDifference)
+                                return 0;
+                            if (o1.y()<o2.y())
+                                return -1;
+                            return 1;
+                            }
+                        });
+                    pointsGroup.add(points);        // Отсортировать точки по Y и добавить в группу
+                    }
+                }
+            else{
+                if (pointsSize!=0){
+                    notify.notify(Values.important,  String.format("Накоплена группа с X=%6.2f...%6.2f, групп-%d точек в группе-%d", vX0,xV-cutterStep, pointsGroup.size(),pointsSize));
+                    //----------------------- Формировать линии по 2 точки
+                    for(int i=0;i<pointsSize;i+=2){                 // по 2 очередные точки - создать линию
+                        ArrayList<STLLine> lines = new ArrayList<>();
+                        for(int j=0;j<pointsGroup.size();j++){      // направления меняются на противоположное
+                            ArrayList<STLPoint2D> tmp = pointsGroup.get(j);
+                            tmp.get(i).shift(0,cutterSize);     // Концы подрезать
+                            tmp.get(i+1).shift(0,-cutterSize);  // Концы подрезать
+                            STLLine line = new STLLine(tmp.get(j%2==0 ? i : i+1),tmp.get(j%2==0 ? i+1 : i));
+                            lines.add(line);
+                            }
+                        back.onCutterMove(lines.get(0).one());      // Переместить фрезу к началу группы
+                        back.onCutterUpDown(false,z);           // Опустить фрезу
+                        for(int ii=0;ii<lines.size();ii++){
+                            if (ii!=0)
+                                back.onSliceLine(new STLLine(lines.get(ii-1).two(),lines.get(ii).one())); // к след. линии
+                            back.onSliceLine(lines.get(ii));         // текущая линия
+                            }
+                        back.onCutterUpDown(true,z-vStep);  // Поднять фрезу
+                        }
+                    }
+                pointsSize = points.size();
+                pointsGroup.clear();
+                if (pointsSize!=0){
+                    vX0 = xV;
+                    pointsGroup.add(points);
+                    }
+                }
             }
         //--------------------------------------------------------------------------------------------------------------
         for(STLLoop loop1 : loop.childs()) {

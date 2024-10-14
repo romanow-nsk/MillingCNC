@@ -262,16 +262,18 @@ public class STLLine implements I_Line2D,I_File{
             return commonPoint(linex);
             }
         if (k1.vertical){
-            out = new STLPoint2D(line[0].x(),k2.y(line[0].x()));
-            if (exact && outside(out.x(),linex.x0(),linex.x1()))
-                return null;
-            return out;
+            double yy = k2.y(x0());                 // Пересечение с вертикалью
+            out = new STLPoint2D(x0(),yy);
+            if (!exact || (!outside(yy,y0(),y1()) && !outside(x0(),linex.x0(),linex.x1())))
+                return out;
+            return null;
             }
         if (k2.vertical){
-            out = new STLPoint2D(line[1].x(),k1.y(line[1].x()));
-            if (exact && outside(out.y(),linex.y0(),linex.y1()))
-                return null;
-            return out;
+            double yy = k1.y(linex.x0());                 // Пересечение с вертикалью
+            out = new STLPoint2D(linex.x0(),yy);
+            if (!exact || (!outside(yy,linex.y0(),linex.y1()) && !outside(linex.x0(),x0(),x1())))
+                return out;
+            return null;
             }
         out = commonPoint(linex);           // Соприкосновение концов
         if (out!=null)
