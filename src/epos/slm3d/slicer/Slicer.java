@@ -357,6 +357,8 @@ public class Slicer extends STLLoopGenerator{
     public boolean sliceInside(STLLoop loop,Settings set,I_LineSlice back){
         boolean sliceError = false;
         double cutterSize = set.local.CutterDiameter.getVal()/2;
+        double cutterStep = cutterSize - set.local.StepMinus.getVal();
+        double workSize = WorkSpace.ws().global().global.WorkFieldSize.getVal()/2;
         String zz = String.format("z=%4.2f ",z);
         notify.notify(Values.important,zz+" id="+loop.id()+" "+loop.dimStr());
         String inValid=null;
@@ -381,40 +383,58 @@ public class Slicer extends STLLoopGenerator{
         back.onCutterUpDown(false,z);
         for(STLLine line : copy.lines())
             back.onSliceLine(line);
-        back.onCutterUpDown(false,z-vStep); // Поднять фрезу
+        back.onCutterUpDown(true,z-vStep); // Поднять фрезу
         //-------------------------------------------------------------------------------------
         if (loop.childs().size()==0){
             notify.notify(Values.important,zz+", фрезерование полное");
-            return !sliceError;
             }
-        back.onCutterUpDown(true,z-vStep);
-        notify.notify(Values.important,zz+", фрезерование,  контуров "+loop.childs().size());
-        for(STLLoop loop1 : loop.childs()) {
-            notify.notify(Values.important,"внутрениий контур id="+loop1.id()+" "+loop1.dimStr()+" lnt="+String.format("%6.2f",loop1.linesLength()));
-            if ((inValid = loop1.isValidLoop())!=null){
-                notify.notify(Values.important,"контур id="+loop1.id()+" "+loop1.dimStr()+""+inValid);
-                sliceError = true;
-                }
-            else{
-                copy = loop1.shiftToCenter(cutterSize,false);
-                if (!copy.errors().valid()){
-                    notify.notify(Values.important,copy.errors().toString());
+        else{
+            notify.notify(Values.important,zz+", фрезерование,  контуров "+loop.childs().size());
+            for(STLLoop loop1 : loop.childs()) {
+                notify.notify(Values.important,"внутренний контур id="+loop1.id()+" "+loop1.dimStr()+" lnt="+String.format("%6.2f",loop1.linesLength()));
+                if ((inValid = loop1.isValidLoop())!=null){
+                    notify.notify(Values.important,"контур id="+loop1.id()+" "+loop1.dimStr()+""+inValid);
                     sliceError = true;
                     }
                 else{
-                    notify.notify(Values.important,"сдвинутый контур  lnt="+String.format("%6.2f",copy.linesLength()));
-                    //notify.notify(Values.important,"!!!!!"+" "+loop1.size()+" "+copy.size());
-                    //for (int i=0; i< loop1.size() && i< copy.size(); i++){
-                    //    notify.notify(Values.important,""+i+" "+(copy.get(i).lengthXY()-loop1.get(i).lengthXY()));
-                    //    }
+                    copy = loop1.shiftToCenter(cutterSize,false);
+                    if (!copy.errors().valid()){
+                        notify.notify(Values.important,copy.errors().toString());
+                        sliceError = true;
+                        }
+                    else{
+                        notify.notify(Values.important,"сдвинутый контур  lnt="+String.format("%6.2f",copy.linesLength()));
+                        //notify.notify(Values.important,"!!!!!"+" "+loop1.size()+" "+copy.size());
+                        //for (int i=0; i< loop1.size() && i< copy.size(); i++){
+                        //    notify.notify(Values.important,""+i+" "+(copy.get(i).lengthXY()-loop1.get(i).lengthXY()));
+                        //    }
+                        }
+                    back.onCutterMove(copy.lines().get(0).one());
+                    back.onCutterUpDown(false,z);
+                    for(STLLine line : copy.lines())
+                        back.onSliceLine(line);
+                    back.onCutterUpDown(false,z-vStep); // Поднять фрезу
                     }
-                back.onCutterMove(copy.lines().get(0).one());
-                back.onCutterUpDown(false,z);
-                for(STLLine line : copy.lines())
-                    back.onSliceLine(line);
-                back.onCutterUpDown(false,z-vStep); // Поднять фрезу
                 }
             }
+        //---------------------------------- Выборка вертикальная ------------------------------------------------------
+        ArrayList<STLLoop> allLoops = new ArrayList<>();
+        allLoops.add(loop);
+        for(STLLoop loop1 : loop.childs())
+            allLoops.add(loop1);
+        STLLine vLine = new STLLine(new STLPoint2D(0,-workSize+cutterStep),new  STLPoint2D(0,workSize-cutterStep));
+        for(double xV=-workSize+cutterStep; xV<workSize-cutterStep; xV+=cutterStep){
+            vLine.one().x(xV);
+            vLine.two().x(xV);
+            ArrayList<STLPoint2D> points = new ArrayList<>();
+            for(STLLoop loop1 : allLoops){
+                ArrayList<STLPoint2D> xx = loop1.intersect(vLine);
+                for(STLPoint2D pp : xx)
+                    points.add(pp);
+                }
+            notify.notify(Values.important,"точек пересечения с X="+String.format("%6.2f - %d",xV, points.size()));
+            }
+        //--------------------------------------------------------------------------------------------------------------
         for(STLLoop loop1 : loop.childs()) {
             if (loop1.childs().size()==0)
                 continue;

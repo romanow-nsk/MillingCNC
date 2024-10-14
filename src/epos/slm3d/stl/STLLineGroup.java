@@ -256,4 +256,13 @@ public class STLLineGroup implements I_File{
         sy/=cnt;
         return new STLPoint2D(sx,sy);
         }
+    public ArrayList<STLPoint2D> intersect(STLLine linex){
+        ArrayList<STLPoint2D> out = new ArrayList<>();
+        for (STLLine line : lines){
+            STLPoint2D qq = line.intersection(linex,true);
+            if (qq!=null)
+                out.add(qq);
+            }
+        return out;
+        }
 }

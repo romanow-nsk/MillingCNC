@@ -35,6 +35,7 @@ public class GraphPanel extends JPanel{
     public int vSize;
     private I_Mouse mBack;                  // Интерфеейс обратного вызова событий мыши
     private boolean bold=false;             // Признак рисования bold
+    private double paintSize;
     public void bold(boolean vv){ bold=vv; }
     public GraphPanel(I_Mouse mBack0){
         mBack = mBack0;
@@ -71,14 +72,14 @@ public class GraphPanel extends JPanel{
     public void setGraphics(){ gg = getGraphics(); }
     public void setPaintParams(JSlider HORIZ, JSlider VERTIC){
         setGraphics();
-        horiz = HORIZ.getValue();
-        vert = VERTIC.getValue();
         //dxy = 2./((3+mas)/4.*vSize);
-        double vx = WorkSpace.ws().local().local.BlankWidth.getVal();
+        paintSize = WorkSpace.ws().local().local.BlankWidth.getVal();
+        horiz = (int)(HORIZ.getValue()*paintSize);
+        vert = (int)(VERTIC.getValue()*paintSize);
         double vy = WorkSpace.ws().local().local.BlankHight.getVal();
-        if (vy > vx)
-            vx = vy;
-        dxy = vx*2./(Math.pow(1.1,mas-1)*vSize);
+        if (vy > paintSize)
+            paintSize = vy;
+        dxy = paintSize*2./(Math.pow(1.1,mas-1)*vSize);
         x0 = -horiz/100.;
         y0 = -vert/100.;
         xmin = x0 - dxy*vSize/2;
