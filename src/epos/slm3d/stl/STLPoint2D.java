@@ -21,8 +21,8 @@ public class STLPoint2D implements I_STLPoint2D {
     public double y(){ return y; }
     @Override
     public void y(double x0){ y=x0; }
-    public STLPoint2D(STLPoint2D two){
-        x=two.x; y=two.y;
+    public STLPoint2D(I_STLPoint2D two){
+        x=two.x(); y=two.y();
         }
     public STLPoint2D() {}
     public STLPoint2D(double x, double y) {

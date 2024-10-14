@@ -63,24 +63,20 @@ public class STLLineGroup implements I_File{
             out.lines.add(copy);
             }
         ArrayList<I_STLPoint2D> tmp = new ArrayList<>();
-        for(int i=0;i<out.size()-1;i++) {           // Найти м сохранить точки пересечения
+        for(int i=0;i<out.size();i++) {           // Найти м сохранить точки пересечения
             STLLine l1 = out.get(i);
-            STLLine l2 = out.get(i + 1);
+            STLLine l2 = out.get(i==out.size()-1 ? 0 : i+1 );
             I_STLPoint2D qq = l1.intersection(l2,false);
             tmp.add(qq);
             }
-        STLLine l1 = out.get(0);
-        STLLine l2 = out.get(lines.size()-1);
-        I_STLPoint2D qq= l1.intersection(l2,false);
-        tmp.add(qq);
         for(int i=0;i<tmp.size();i++){              // Перенести точки пересечения в концы отрезков
-            qq = tmp.get(i);
+            I_STLPoint2D qq = tmp.get(i);
+            STLLine l1 = out.get(i);
+            STLLine l2 = out.get(i==out.size()-1 ? 0 : i+1 );
             if (qq==null){
                 out.errors.addError("Не найдена точка пересечения линий "+i+"-"+(i+1)+" "+l1+" "+l2);
                 }
             else{
-                l1 = out.get(i);
-                l2 = i==out.size()-1 ? out.get(0) : out.get(i+1);
                 l1.two(qq);
                 l2.one(qq);
                 }

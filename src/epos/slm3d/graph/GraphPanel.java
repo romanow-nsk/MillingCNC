@@ -74,7 +74,11 @@ public class GraphPanel extends JPanel{
         horiz = HORIZ.getValue();
         vert = VERTIC.getValue();
         //dxy = 2./((3+mas)/4.*vSize);
-        dxy = 2./(Math.pow(1.1,mas-1)*vSize);
+        double vx = WorkSpace.ws().local().local.BlankWidth.getVal();
+        double vy = WorkSpace.ws().local().local.BlankHight.getVal();
+        if (vy > vx)
+            vx = vy;
+        dxy = vx*2./(Math.pow(1.1,mas-1)*vSize);
         x0 = -horiz/100.;
         y0 = -vert/100.;
         xmin = x0 - dxy*vSize/2;

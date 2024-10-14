@@ -138,7 +138,10 @@ public class STLLine implements I_Line2D,I_File{
         double dx = line[1].x()-line[0].x();
         double dy = line[1].y()-line[0].y();
         if (Math.abs(dx)<Values.EqualDifference){
-            return new STLLineAB();         // вертикальная
+            if (Math.abs(dy)<Values.EqualDifference)
+                return new STLLineAB();         // точка
+            else
+                return new STLLineAB(line[0].x());
             }
         double a = dy/dx;
         double b = line[0].y() - a * line[0].x();
@@ -236,12 +239,28 @@ public class STLLine implements I_Line2D,I_File{
     private static boolean outside(double x, double x1, double x2){
         return x < x1 && x < x2 || x > x1 && x > x2;
         }
+
+    STLPoint2D commonPoint(STLLine linex){
+        if (line[0].equalsAbout(linex.line[0]))
+            return new STLPoint2D(line[0]);
+        if (line[0].equalsAbout(linex.line[1]))
+            return new STLPoint2D(line[0]);
+        if (line[1].equalsAbout(linex.line[0]))
+            return new STLPoint2D(line[1]);
+        if (line[1].equalsAbout(linex.line[1]))
+            return new STLPoint2D(line[1]);
+        return null;
+        }
+
     STLPoint2D intersection(STLLine linex, boolean exact) {
         STLLineAB k1 = lineKoeffs();
         STLLineAB k2 = linex.lineKoeffs();
-        STLPoint2D out;
-        if (k1.vertical && k2.vertical)
+        if (!k1.valid || !k2.valid)
             return null;
+        STLPoint2D out;
+        if (k1.vertical && k2.vertical){
+            return commonPoint(linex);
+            }
         if (k1.vertical){
             out = new STLPoint2D(line[0].x(),k2.y(line[0].x()));
             if (exact && outside(out.x(),linex.x0(),linex.x1()))
@@ -254,7 +273,10 @@ public class STLLine implements I_Line2D,I_File{
                 return null;
             return out;
             }
-        double da = Math.abs(k1.a - k2.a);
+        out = commonPoint(linex);           // Соприкосновение концов
+        if (out!=null)
+            return out;
+        double da = Math.abs(k1.a - k2.a);  // Пересечение наклонных
         if (da < Values.EqualDifference){
             if (line[0].equalsAbout(linex.line[0]))
                 return new STLPoint2D(line[0].x(),line[0].y());
