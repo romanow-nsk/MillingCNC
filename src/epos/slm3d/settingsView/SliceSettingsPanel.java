@@ -10,8 +10,11 @@ import epos.slm3d.settings.Filling;
 import epos.slm3d.settings.Settings;
 import epos.slm3d.settings.SliceSettings;
 import epos.slm3d.utils.I_Notify;
+import epos.slm3d.utils.Utils;
 import epos.slm3d.utils.Values;
 
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
@@ -28,17 +31,37 @@ public class SliceSettingsPanel extends javax.swing.JPanel  implements I_Setting
      */
     private Settings set;
     private I_Notify notify;
+    private boolean busy=false;
     public SliceSettingsPanel(I_SettingsChanged changed0, Settings set0, I_Notify notify0) {
         initComponents();
         set = set0;
         notify = notify0;
         changed = changed0;
         this.setBounds(0,0, 800, 650);
+        busy = true;
+        Mode.removeAll();
         Mode.addItem("Растр");
         Mode.addItem("Клетки");
         Mode.addItem("Случайная");
         Mode.addItem("Фреза-1");
+        Mode.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (busy) return;
+                set.filling.Mode.setVal(Mode.getSelectedIndex());
+                Utils.viewUpdate(Mode,true);
+            }
+        });
+        MoveOptimize.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (busy) return;
+                set.filling.MoveOptimize.setVal(MoveOptimize.isSelected());
+                Utils.viewUpdate(MoveOptimize,true);
+            }
+        });
         loadSettings();
+        busy = false;
         }
 
     /**

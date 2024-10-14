@@ -228,9 +228,15 @@ public class WorkSpace implements I_File{
             set.setNotNull();
             out.close();
             return set;
-            } catch (Exception e1) { throw UNIException.io(e1.toString()); }
+            } catch (Exception e1) {
+                throw UNIException.io(e1.toString());
+                }
         }
     public void setAliases(XStream parser){
+        parser.ignoreUnknownElements();
+        parser.allowTypesByWildcard(new String[] {
+                "epos.slm3d.settings.**",
+            });
         parser.alias("settings",Settings.class);                    // Сининим класса
         parser.alias("account",UserProfile.class);                  // Сининим класса
         parser.useAttributeFor(UserProfile.class, "password");      // В головной тег
