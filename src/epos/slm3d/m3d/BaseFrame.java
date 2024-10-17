@@ -2,9 +2,13 @@ package epos.slm3d.m3d;
 
 import epos.slm3d.settings.Settings;
 import epos.slm3d.settings.WorkSpace;
+import epos.slm3d.settingsView.I_SettingsPanel;
+import lombok.Getter;
+
 import java.awt.FileDialog;
 import java.io.File;
 import java.io.FilenameFilter;
+import java.util.ArrayList;
 
 import javax.swing.*;
 
@@ -12,6 +16,7 @@ import javax.swing.*;
  * Created by romanow on 16.09.2018.
  */
 public abstract class BaseFrame extends JFrame implements I_Important{
+    @Getter private ArrayList<BasePanel> panels = new ArrayList();            // панели
     public boolean tryToStart(){
         return WorkSpace.ws().tryToStart(this);
         }
@@ -59,4 +64,14 @@ public abstract class BaseFrame extends JFrame implements I_Important{
             fname+="."+defName;
         return fname;
         }
+
+    public void sendEvent(int code, int par1, long par2, String par3,Object oo){
+        for(BasePanel panel : panels)
+            panel.sendEvent(code,par1,par2,par3,oo);
+        }
+
+    public void repaintPanels(int mode){
+
+        }
+
 }

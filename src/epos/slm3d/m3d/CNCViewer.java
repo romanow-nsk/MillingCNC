@@ -34,7 +34,7 @@ import java.util.Date;
  *
  * @author romanow
  */
-public class M3DViewer extends BaseFrame {
+public class CNCViewer extends BaseFrame {
     private ViewNotifyer notify;
     private M3DOperations operate;
     private M3DVisio visio;
@@ -52,7 +52,7 @@ public class M3DViewer extends BaseFrame {
     /**
      * Creates new form Viewer
      */
-    public M3DViewer() {
+    public CNCViewer() {
         if (!tryToStart()) return;
         initComponents();
         defaultHandler = Thread.getDefaultUncaughtExceptionHandler();
@@ -725,7 +725,7 @@ public class M3DViewer extends BaseFrame {
 
         BYSTEP.setText("По шагам");
         getContentPane().add(BYSTEP);
-        BYSTEP.setBounds(10, 510, 100, 23);
+        BYSTEP.setBounds(10, 510, 100, 20);
 
         LEVEL.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "информ.", "важное", "предупр.", "сбой" }));
         LEVEL.setPreferredSize(new java.awt.Dimension(72, 25));
@@ -746,7 +746,7 @@ public class M3DViewer extends BaseFrame {
             }
         });
         getContentPane().add(LogStop);
-        LogStop.setBounds(230, 480, 120, 23);
+        LogStop.setBounds(230, 480, 120, 20);
 
         LogToFile.setText("Лог в файле");
         LogToFile.addItemListener(new java.awt.event.ItemListener() {
@@ -755,7 +755,7 @@ public class M3DViewer extends BaseFrame {
             }
         });
         getContentPane().add(LogToFile);
-        LogToFile.setBounds(350, 480, 120, 23);
+        LogToFile.setBounds(350, 480, 120, 20);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -1334,10 +1334,10 @@ public class M3DViewer extends BaseFrame {
                 }
             }
         } catch (Exception ex) {
-            java.util.logging.Logger.getLogger(M3DViewer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CNCViewer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
             }
         //</editor-fold>
-        java.awt.EventQueue.invokeLater(()->{ new M3DViewer().setVisible(true); });
+        java.awt.EventQueue.invokeLater(()->{ new CNCViewer().setVisible(true); });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

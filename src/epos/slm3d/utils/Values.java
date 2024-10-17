@@ -33,6 +33,10 @@ public class Values {
     public final static int Changed =3;         // Растр изменен (тест сгенерирован)
     public final static String DataStates[]={"Нет данных","Модель","Растр","Растр+"};
     public final static String SettingsFileName="m3dSettings.xml";
+    public final static int FrameWidth=1280;
+    public final static int FrameHeight=800;
+    public final static int FrameTop=100;
+    public final static int FrameBottom=50;
     /** коэффициент заполнения моделью пространства при автомасштабировании +/-1 */
     public final static double DefaultModelScale=1;
     /** размер рабочего поля в мм*/
