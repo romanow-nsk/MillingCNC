@@ -118,7 +118,10 @@ public class WorkSpace implements I_File{
     public static Settings set(){ return WorkSpace.ws().local(); }
     public void setNotify(I_Notify not){
         this.notify = not;
-    }
+        }
+    public I_Notify getNotify(){
+        return notify;
+        }
     public void notify(String ss){
         if (notify!=null)
             notify.log(ss);

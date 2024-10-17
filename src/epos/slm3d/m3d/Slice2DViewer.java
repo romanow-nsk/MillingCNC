@@ -14,6 +14,7 @@ import epos.slm3d.settingsView.StatisticPanel;
 import epos.slm3d.slicer.*;
 import epos.slm3d.stl.*;
 import epos.slm3d.utils.Events;
+import epos.slm3d.utils.I_Notify;
 import epos.slm3d.utils.Utils;
 import epos.slm3d.utils.Values;
 
@@ -39,7 +40,7 @@ public class Slice2DViewer extends BaseFrame{
     private boolean onlyLoop=false;
     private int cLoop=0;
     private SliceLayer layer=null;
-    private ViewNotifyer notify;
+    private I_Notify notify;
     private STLLine selectedConturLine=null;
     private I_STLPoint2D one = null;            // Первая точка линии
     private I_STLPoint2D two = null;            // Вторая точка линии
@@ -122,7 +123,7 @@ public class Slice2DViewer extends BaseFrame{
             }            
             }
         };
-    public Slice2DViewer(ViewNotifyer notify0) {
+    public Slice2DViewer(I_Notify notify0) {
         if (!tryToStart()) return;
         notify = notify0;
         dz = WorkSpace.ws().local().local.VerticalStep.getVal();

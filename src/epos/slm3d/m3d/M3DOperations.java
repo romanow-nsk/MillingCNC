@@ -20,7 +20,7 @@ import java.util.Locale;
  * Created by romanow on 02.12.2017.
  */
 public class M3DOperations {
-    private ViewNotifyer notify;
+    private I_Notify notify;
     private volatile boolean finish = false;        // Старое !!!!!!!!!!!!!!!!!!
     private String outname="";
     private int lineCount=0;
@@ -32,7 +32,7 @@ public class M3DOperations {
     public void finish(){ 
         finish=true; 
         }
-    public M3DOperations(ViewNotifyer note){
+    public M3DOperations(I_Notify note){
         notify = note;
         }
     private int cnt=0;

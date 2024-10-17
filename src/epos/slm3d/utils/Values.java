@@ -16,7 +16,8 @@ public class Values {
     public final static int warning=2;
     public final static int error=3;
     public final static int fatal=4;
-    public final static String infoLevels[]={"прочее","важное","предупр.","ошибка","сбой"};
+    public final static int common=5;
+    public final static String infoLevels[]={"прочее","важное","предупр.","ошибка","сбой",""};
     /** Типы 2D точек */
     public final static int classIdRefered=0;
     public final static int classId2D=1;
@@ -35,7 +36,7 @@ public class Values {
     public final static String SettingsFileName="m3dSettings.xml";
     public final static int FrameWidth=1280;
     public final static int FrameHeight=800;
-    public final static int FrameTop=100;
+    public final static int FrameTop=50;
     public final static int FrameBottom=50;
     /** коэффициент заполнения моделью пространства при автомасштабировании +/-1 */
     public final static double DefaultModelScale=1;

@@ -4,6 +4,7 @@
  */
 package epos.slm3d.m3d;
 
+import epos.slm3d.utils.Values;
 import lombok.Getter;
 
 /**
@@ -11,23 +12,35 @@ import lombok.Getter;
  * @author Admin
  */
 public abstract class BasePanel extends javax.swing.JPanel implements I_PanelEvent{
-    public final static int ModeSettings=0x01;
-    public final static int ModeMain=0x02;
-    public final static int ModeMilling=0x04;
-    public final static int ModePreview=0x08;
+    public final static int EventLog=1;
+    public final static int EventOperate=2;
+    public final static int EventOperateFinish=1;
+    public final static int EventLogFile=3;
+    public final static int EventLogFileOpen=1;
+    public final static int EventLogFileClose=1;
+    public final static int EventOnWarning=4;
+    public final static int EventProgress=5;
+    //-----------------------------------------------------------------------------------------------------
     @Getter private BaseFrame baseFrame;
+    @Getter private String panelName;
     public abstract  int modeMask();
+    public abstract  boolean modeEnabled();
     public boolean isSelectedMode(int mode){
-        return (modeMask() & mode)!=0;
+        return ((modeMask() & mode)!=0) && modeEnabled();
         }
     /**
      * Creates new form BasePanel
      */
-    public BasePanel(BaseFrame baseFrame0) {
+    public BasePanel(String panelName0,BaseFrame baseFrame0) {
         initComponents();
         baseFrame = baseFrame0;
+        panelName = panelName0;
+        setBounds(0, 0,Values.FrameWidth,Values.FrameHeight-100);
         }
-    public abstract void sendEvent(int code, int par1, long par2, String par3,Object o);
+    public void sendEvent(int code, int par1, long par2, String par3,Object o){
+        baseFrame.sendEvent(code,par1,par2,par3,o);
+        }
+    public abstract  void initView();
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

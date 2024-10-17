@@ -19,40 +19,54 @@ import epos.slm3d.stl.I_ModelGenerator;
 import epos.slm3d.stl.STLGeneratorQube;
 import epos.slm3d.stl.STLGeneratorWalls;
 import epos.slm3d.stl.STLModel3D;
-import epos.slm3d.utils.Events;
-import epos.slm3d.utils.UNIException;
-import epos.slm3d.utils.Utils;
-import epos.slm3d.utils.Values;
+import epos.slm3d.utils.*;
 import epos.slm3d.viewer3d.Loop3DViewer;
 import epos.slm3d.viewer3d.STLViewer;
 
 import java.awt.*;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Date;
+
+import static epos.slm3d.m3d.BasePanel.*;
 
 /**
  *
  * @author romanow
  */
 public class CNCViewer extends BaseFrame {
-    private ViewNotifyer notify;
+    private I_Notify notify;
     private M3DOperations operate;
     private M3DVisio visio;
     private M3DTesing testing;
     private ViewAdapter viewCommon;
-    private boolean stopOnWarning=false;
+
     private MenuBar mBar;
     private Thread.UncaughtExceptionHandler defaultHandler=null;
     private M3DSettings local=null;
     private M3DSettings global=null;
     private static int childCount=3;
-    private BufferedWriter logFile = null;
+
     private M3DViewPanel preView=null;
 
     /**
      * Creates new form Viewer
      */
+
+    public void repaintPanels(){
+        //--------------------------------------------------------------------------------------------------------------
+        ArrayList<BasePanel> panels = getPanels();
+        panels.clear();
+        PanelList.removeAll();
+        BasePanel panel = new CNCViewerPanel("Главная",this);
+        if (panel.isSelectedMode(viewMode)){
+            PanelList.add(panel.getPanelName(),panel);
+            }
+        for (BasePanel panel1 : panels)
+            panel.initView();
+            }
     public CNCViewer() {
+        super();
         if (!tryToStart()) return;
         initComponents();
         defaultHandler = Thread.getDefaultUncaughtExceptionHandler();
@@ -61,34 +75,11 @@ public class CNCViewer extends BaseFrame {
         System.out.printf("Разрешение экрана: %dx%d\n", screenSize.width, screenSize.height);
         setBounds(200,50,Values.FrameWidth,Values.FrameHeight);
         setTitle(Values.getVersion()+" "+ws().currentFileTitle());
-        Progress.setMaximum(100);
-        Progress.setMinimum(0);
-        Progress.setValue(0);
-        notify = new ViewNotifyer(LOG,Progress){
-            @Override
-            public void notify(final int level0, final String mes) {
-                super.notify(level0, mes);
-                java.awt.EventQueue.invokeLater(
-                     ()->{
-                         if (level0>=Values.important && logFile!=null){
-                             try {
-                                 logFile.write(Utils.currentTime()+ " "+mes);
-                                 logFile.newLine();
-                                 } catch (IOException ex) { closeLogFile(ex);}
-                                }
-                         if (level0>=Values.error){
-                            viewCommon.finish();
-                            PAUSE.setText("...");
-                            }
-                         if (level0 >Values.warning || stopOnWarning && level0==Values.warning){           // выше warning  - приостановить
-                             if (viewCommon.isRunning()) {
-                                viewCommon.pause(true);
-                                PAUSE.setText("продолжить");
-                                }
-                            }
-                         });
-                     }
-                };
+        setViewMode(ModeMain);
+        repaintPanels();
+        setVisible(true);
+        revalidate();
+        notify = (ViewNotifyer) ws().getNotify();
         Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
             @Override
             public void uncaughtException(Thread t, Throwable e) {
@@ -105,7 +96,6 @@ public class CNCViewer extends BaseFrame {
                 }
             });
         operate = new M3DOperations(notify);
-        ws().setNotify(notify);
         setMenuBar(menuBar1);
         mBar = menuBar1;
         preView = new M3DViewPanel();
@@ -113,18 +103,23 @@ public class CNCViewer extends BaseFrame {
         viewCommon = new ViewAdapter(preView.fld()){       // Объект-адаптер для визуальных методов
             @Override
             public boolean onStepLine() {
+                /*
                 if (BYSTEP.isSelected()){
                     pause(true);
                     PAUSE.setText("продолжить");
                     }
                 return super.onStepLine();
+                 */
+                return true;
                 }
             @Override
             public boolean onStepLayer() {
+                /*
                 if (BYSTEP.isSelected()){
                     pause(true);
                     PAUSE.setText("продолжить");
                     }
+                 */
                 return super.onStepLayer();
             }
         };
@@ -138,7 +133,9 @@ public class CNCViewer extends BaseFrame {
             }
         setMenuVisible();
         visio = new M3DVisio(notify,viewCommon);
+
         }
+
     private void setWidth(boolean full){
         preView.setVisible(full);
         }
@@ -146,7 +143,8 @@ public class CNCViewer extends BaseFrame {
     public void onEvent(int code,boolean on, int value, String name) {
         System.out.println(getClass().getSimpleName()+" "+code+" "+on+" "+value+" "+name);
         if (code == Events.Print){
-            if (value == Events.PStateWorking) openLogFile();
+            if (value == Events.PStateWorking)
+                sendEvent(EventLogFile,EventLogFileOpen,0,null,null);
             }
         if (code == Events.Notify){
             notify.notify(value, name);
@@ -156,38 +154,11 @@ public class CNCViewer extends BaseFrame {
             setMenuVisible();
             }
         }
-    
-    private void openLogFile(){
-        if (logFile!=null)
-            return;
-        try {
-            Date xx = new Date();
-            if (ws().modelName().length()==0){
-                notify.log("Лог-файл только с моделью");
-                LogToFile.setSelected(false);
-                return;
-                }
-            String fname = ws().defaultDir()+ws().modelName()+"_log "+Utils.currentLogName()+".txt";
-            ws().testDefaultDir();
-            logFile = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fname),"Windows-1251"));
-            LogToFile.setSelected(true);
-            } catch (Exception ex) {
-                notify.notify(Values.error, ex.getMessage());
-                }
-        }
-    private void closeLogFile(Exception ex){
-        if (logFile==null)
-            return;
-        try { logFile.flush(); logFile.close(); } catch (IOException ex1) {}
-        logFile=null;
-        LogToFile.setSelected(false);
-        if (ex!=null)
-            notify.notify(Values.error, ex.getMessage());
-        }
+
     
     private void finishOperation(){
-        PAUSE.setText("...");
-        STOP.setText("...");
+        //PAUSE.setText("...");
+        //STOP.setText("...");
         viewCommon.finish();
         notify.log("Операция завершена "+ Utils.toTimeString(viewCommon.timeInMs()/1000)+" сек");
         notify.setProgress(0);
@@ -226,7 +197,6 @@ public class CNCViewer extends BaseFrame {
         mBar.getMenu(mSlice).getItem(2).setEnabled((loaded || sliced)&&userType!=Values.userGuest);
         mBar.getMenu(mSlice).getItem(3).setEnabled((loaded || sliced)&&userType!=Values.userGuest);
         }
-
         /**
          * This method is called from within the constructor to initialize the form.
          * WARNING: Do NOT modify this code. The content of this method is always
@@ -291,14 +261,7 @@ public class CNCViewer extends BaseFrame {
         Copy = new java.awt.Menu();
         SLM3D_USB = new java.awt.MenuItem();
         SLM3D_UDP = new java.awt.MenuItem();
-        LOG = new java.awt.TextArea();
-        PAUSE = new javax.swing.JButton();
-        STOP = new javax.swing.JButton();
-        BYSTEP = new javax.swing.JCheckBox();
-        LEVEL = new javax.swing.JComboBox<>();
-        Progress = new javax.swing.JProgressBar();
-        LogStop = new javax.swing.JCheckBox();
-        LogToFile = new javax.swing.JCheckBox();
+        PanelList = new javax.swing.JTabbedPane();
 
         file.setLabel("Модель");
         file.setName("File");
@@ -700,95 +663,21 @@ public class CNCViewer extends BaseFrame {
             }
         });
         getContentPane().setLayout(null);
-        getContentPane().add(LOG);
-        LOG.setBounds(10, 10, 480, 430);
 
-        PAUSE.setText("...");
-        PAUSE.setPreferredSize(new java.awt.Dimension(91, 25));
-        PAUSE.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                PAUSEActionPerformed(evt);
-            }
-        });
-        getContentPane().add(PAUSE);
-        PAUSE.setBounds(10, 450, 100, 25);
-
-        STOP.setText("...");
-        STOP.setPreferredSize(new java.awt.Dimension(81, 25));
-        STOP.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                STOPActionPerformed(evt);
-            }
-        });
-        getContentPane().add(STOP);
-        STOP.setBounds(10, 480, 100, 25);
-
-        BYSTEP.setText("По шагам");
-        getContentPane().add(BYSTEP);
-        BYSTEP.setBounds(10, 510, 100, 20);
-
-        LEVEL.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "информ.", "важное", "предупр.", "сбой" }));
-        LEVEL.setPreferredSize(new java.awt.Dimension(72, 25));
-        LEVEL.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                LEVELItemStateChanged(evt);
-            }
-        });
-        getContentPane().add(LEVEL);
-        LEVEL.setBounds(120, 480, 90, 25);
-        getContentPane().add(Progress);
-        Progress.setBounds(120, 450, 210, 20);
-
-        LogStop.setText("Остановить лог");
-        LogStop.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                LogStopItemStateChanged(evt);
-            }
-        });
-        getContentPane().add(LogStop);
-        LogStop.setBounds(230, 480, 120, 20);
-
-        LogToFile.setText("Лог в файле");
-        LogToFile.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                LogToFileItemStateChanged(evt);
-            }
-        });
-        getContentPane().add(LogToFile);
-        LogToFile.setBounds(350, 480, 120, 20);
+        PanelList.setBorder(new javax.swing.border.MatteBorder(null));
+        getContentPane().add(PanelList);
+        PanelList.setBounds(10, 0, 1200, 780);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void PAUSEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PAUSEActionPerformed
-        if (!viewCommon.isRunning())
-            return;
-        if (viewCommon.changePause()){
-            PAUSE.setText("продолжить");
-            }
-        else{
-            PAUSE.setText("остановить");
-            }
-    }//GEN-LAST:event_PAUSEActionPerformed
 
     private void markoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_markoutActionPerformed
         showMarkOut();
     }//GEN-LAST:event_markoutActionPerformed
 
-    private void STOPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_STOPActionPerformed
-        viewCommon.finish();
-        PAUSE.setText("...");
-        STOP.setText("...");
-        operate.finish();
-    }//GEN-LAST:event_STOPActionPerformed
-
     private void markcopyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_markcopyActionPerformed
         copyMarkOut();
     }//GEN-LAST:event_markcopyActionPerformed
-
-    private void LEVELItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_LEVELItemStateChanged
-        notify.setLevel(LEVEL.getSelectedIndex());
-    }//GEN-LAST:event_LEVELItemStateChanged
 
     private void usbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usbActionPerformed
         sendToUsb();
@@ -814,8 +703,8 @@ public class CNCViewer extends BaseFrame {
         notify.log("Закрытие сеанса - 3 сек.");
         ws().sendEvent(Events.Close,true,0,"");
         ws().saveSettings();
-        closeLogFile(null);
-        Utils.runAfterDelay(3,()->{ 
+        sendEvent(EventLogFile,EventLogFileClose,0,null,null);
+        Utils.runAfterDelay(3,()->{
             ws().sendEvent(Events.LogOut,true,0,"");
             onClose();
             });
@@ -862,9 +751,13 @@ public class CNCViewer extends BaseFrame {
         testMassStorage();
     }//GEN-LAST:event_testMSActionPerformed
 
+    private void toLog(String mes){
+        sendEvent(EventLog,Values.common,0,mes,null);
+        }
+    
     private void view3DActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_view3DActionPerformed
         if (!ws().model().loaded()){
-            LOG.append("Не загружен STL-файл");
+            toLog("Не загружен STL-файл");
             return;
             }
         new STLViewer(viewCommon).setVisible(true);
@@ -913,7 +806,7 @@ public class CNCViewer extends BaseFrame {
 
     private void viewSLM3DActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewSLM3DActionPerformed
         if (!ws().slicePresent()){
-            LOG.append("Не выполнен слайсинг в память");
+            toLog("Не выполнен слайсинг в память");
             return;
             }
         new Slice2DViewer(notify);
@@ -1048,20 +941,9 @@ public class CNCViewer extends BaseFrame {
         new ConsoleOfOperator(notify,true);
     }//GEN-LAST:event_operationConsoleUDPActionPerformed
 
-    private void LogStopItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_LogStopItemStateChanged
-        notify.logSuspendState(LogStop.isSelected());
-    }//GEN-LAST:event_LogStopItemStateChanged
-
     private void settings2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_settings2ActionPerformed
         new M3DSettings_2(notify);
     }//GEN-LAST:event_settings2ActionPerformed
-
-    private void LogToFileItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_LogToFileItemStateChanged
-        if (LogToFile.isSelected())
-            openLogFile();
-        else
-            closeLogFile(null);
-    }//GEN-LAST:event_LogToFileItemStateChanged
 
     private void UserListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UserListActionPerformed
         new UserListEditor().setVisible(true);
@@ -1097,7 +979,7 @@ public class CNCViewer extends BaseFrame {
 
     private boolean test1(){
         if (viewCommon.isRunning()){
-            LOG.append("Прервать предыдущую операцию");
+            toLog("Прервать предыдущую операцию");
             return true;
             }
         return false;
@@ -1105,7 +987,7 @@ public class CNCViewer extends BaseFrame {
     private boolean test2(){
         if (test1()) return true;
         if (!ws().modelPresent()){
-            LOG.append("Отсутствует STL-модель");
+            toLog("Отсутствует STL-модель");
             return true;
             }
         return false;
@@ -1113,16 +995,16 @@ public class CNCViewer extends BaseFrame {
     private boolean test3(){
         if (test1()) return true;
         if (!ws().slicePresent()){
-            LOG.append("Отсутствует растр");
+            toLog("Отсутствует растр");
             return true;
         }
         return false;
     }
     private void startView(int lineDelay,int layerDelay){
-        stopOnWarning=false;
+        sendEvent(EventOnWarning,0,0,null,null);
         viewCommon.start(lineDelay,layerDelay);
-        PAUSE.setText("остановить");
-        STOP.setText("прервать");
+        //PAUSE.setText("остановить");
+        //STOP.setText("прервать");
         }
     private void dumpMarkOut(){
         if (test1()) return;
@@ -1141,7 +1023,7 @@ public class CNCViewer extends BaseFrame {
             final String fname = getInputFileName("Файл STL","stl",false);
             if (fname==null) return;
             ws().loadModel(fname, notify);
-        } catch (UNIException ee){ LOG.append(ee.toString());}
+        } catch (UNIException ee){ toLog(ee.toString());}
     }
     private void showMarkOut() {
         if (test1()) return;
@@ -1263,7 +1145,7 @@ public class CNCViewer extends BaseFrame {
     private void showSlice(final boolean circuit) {
         if (test3()) return;
         startView(10,500);
-        stopOnWarning=true;
+        sendEvent(EventOnWarning,0,0,null,null);
         final int mode = ws().local().filling.Mode.getVal();
         setWidth(true);
         new Thread(
@@ -1317,6 +1199,7 @@ public class CNCViewer extends BaseFrame {
                     finishOperation();
                 }).start();
         }
+
     /**
      * @param args the command line arguments
      */
@@ -1341,18 +1224,12 @@ public class CNCViewer extends BaseFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBox BYSTEP;
     private java.awt.Menu Console;
     private java.awt.Menu Copy;
     private java.awt.MenuItem ExportGCode;
-    private javax.swing.JComboBox<String> LEVEL;
-    private java.awt.TextArea LOG;
     private java.awt.MenuItem LaserConsole;
-    private javax.swing.JCheckBox LogStop;
-    private javax.swing.JCheckBox LogToFile;
     private java.awt.Menu MarkOut;
-    private javax.swing.JButton PAUSE;
-    private javax.swing.JProgressBar Progress;
+    private javax.swing.JTabbedPane PanelList;
     private java.awt.MenuItem SLM3D_UDP;
     private java.awt.MenuItem SLM3D_USB;
     private java.awt.MenuItem STL_3D_DATA;
@@ -1364,7 +1241,6 @@ public class CNCViewer extends BaseFrame {
     private java.awt.MenuItem STL_SHOW;
     private java.awt.MenuItem STL_UDP;
     private java.awt.MenuItem STL_USB;
-    private javax.swing.JButton STOP;
     private java.awt.Menu Settings;
     private java.awt.Menu SliceTo;
     private java.awt.MenuItem TestCollection;

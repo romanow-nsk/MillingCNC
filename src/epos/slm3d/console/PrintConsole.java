@@ -13,10 +13,7 @@ import epos.slm3d.settings.WorkSpace;
 import epos.slm3d.slicer.SliceLayer;
 import epos.slm3d.stl.STLLine;
 import epos.slm3d.stl.STLPoint2D;
-import epos.slm3d.utils.Events;
-import epos.slm3d.utils.UNIException;
-import epos.slm3d.utils.Utils;
-import epos.slm3d.utils.Values;
+import epos.slm3d.utils.*;
 
 import java.io.FileInputStream;
 import java.util.ArrayList;
@@ -32,7 +29,7 @@ import java.util.Locale;
  * @author romanow
  */
 public class PrintConsole extends BaseFrame{
-    private ViewNotifyer notify;
+    private I_Notify notify;
     private volatile boolean isRun=false;
     private USBCommandGenerator generator;      // Генератор команд
     private USBProtocol usb;                    // Драйвер протокола
@@ -157,7 +154,7 @@ public class PrintConsole extends BaseFrame{
         notify.log(ss);
         }
     
-    public PrintConsole(ViewNotifyer notify0, boolean udp0) {
+    public PrintConsole(I_Notify notify0, boolean udp0) {
         if (!tryToStart()) return;
         udp = udp0;
         controller = udp ? new USBUDPEmulator() : new USBLineController();

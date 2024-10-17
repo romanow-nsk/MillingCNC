@@ -11,6 +11,7 @@ import epos.slm3d.settings.Settings;
 import epos.slm3d.settingsView.LayerPrintSettings;
 import epos.slm3d.stl.*;
 import epos.slm3d.utils.Events;
+import epos.slm3d.utils.I_Notify;
 import epos.slm3d.utils.Utils;
 import epos.slm3d.utils.Values;
 
@@ -33,7 +34,7 @@ import java.util.Locale;
  */
 public class TestConsole extends BaseFrame{
     private final int  masMax=20;
-    private ViewNotifyer notify;
+    private I_Notify notify;
     private DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.US);
     private DecimalFormat df = new DecimalFormat("00.000", dfs);
     private Color gridColor = new Color(220,220,20);
@@ -168,7 +169,7 @@ public class TestConsole extends BaseFrame{
         xx.add(new O2DLine(-0.2,-0.1,0.2,0.4));
         model.add(xx);       
         }
-    public TestConsole(ViewNotifyer notify0) {
+    public TestConsole(I_Notify notify0) {
         if (!tryToStart()) return;
         notify = notify0;
         initComponents();

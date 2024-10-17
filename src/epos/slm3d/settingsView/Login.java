@@ -7,7 +7,7 @@ package epos.slm3d.settingsView;
 
 import epos.slm3d.m3d.BaseFrame;
 import epos.slm3d.utils.Events;
-import epos.slm3d.m3d.M3DViewer;
+import epos.slm3d.m3d.CNCViewer;
 import epos.slm3d.settings.UserProfile;
 import epos.slm3d.settings.WorkSpace;
 import epos.slm3d.utils.StringCrypter;
@@ -116,7 +116,7 @@ public class Login extends BaseFrame {
         UserProfile user = users.get(UserList.getSelectedIndex());
         if (user.password.equals(StringCrypter.encrypt(Password.getText()))){
             WorkSpace.ws().currentUser(user);
-            new M3DViewer().setVisible(true);
+            new CNCViewer().setVisible(true);
             setVisible(false);            
             }
         else
