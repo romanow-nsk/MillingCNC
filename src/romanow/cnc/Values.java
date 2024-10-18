@@ -22,13 +22,16 @@ public class Values {
     public final static int EventOnWarning=4;
     public final static int EventProgress=5;
     public final static int EventInit=6;
-    // Состояния приложения (Маски)
-    public final static int ModeLogin=0x01;
-    public final static int ModeMain=0x02;
-    public final static int ModeSettings=0x04;
-    public final static int ModeMilling=0x08;
-    public final static int ModePreview=0x10;
-    public final static int ModeAll=0xFFFF;
+    // Маски панелей -----------------------------
+    public final static int PanelLogin=0x01;
+    public final static int PanelMain=0x02;
+    public final static int PanelSTL3D=0x04;
+    /** состояния программы по данным */
+    public final static int NoData=0;           // Нет данных
+    public final static int Loaded=1;           // Модель заружена
+    public final static int Sliced=2;           // Растр загружен
+    public final static int Changed =3;         // Растр изменен (тест сгенерирован)
+    public final static String DataStates[]={"Нет данных","Модель","Растр","Растр+"};
     /** Классы сообщений в логе*/
     public final static int info=0;
     public final static int important=1;
@@ -46,12 +49,6 @@ public class Values {
     public final static int userOperator=1;
     public final static int userConstructor=2;
     public final static int userAdmin=3;
-    /** состояния программы по данным */
-    public final static int NoData=0;           // Нет данных
-    public final static int Loaded=1;           // Модель заружена
-    public final static int Sliced=2;           // Растр загружен
-    public final static int Changed =3;         // Растр изменен (тест сгенерирован)
-    public final static String DataStates[]={"Нет данных","Модель","Растр","Растр+"};
     public final static String SettingsFileName="m3dSettings.xml";
     public final static int FrameWidth=1280;
     public final static int FrameHeight=800;

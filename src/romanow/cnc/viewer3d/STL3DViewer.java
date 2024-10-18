@@ -42,7 +42,7 @@ public class STL3DViewer extends BaseFrame implements ActionListener{
         if (!tryToStart()) return;
         initComponents();
         this.setBounds(150,150,1024,768);
-        super.setTitle("STL Virewer ("+Values.getVersion()+")");
+        super.setTitle("STL Viewer ("+Values.getVersion()+")");
         setPreferredSize(new Dimension(1024, 768));
         JMenuBar mbar = new JMenuBar();
         JMenu mtools = new JMenu("");

@@ -72,12 +72,12 @@ public class CNCViewer extends BaseFrame {
     public void refreshPanels() {
         PanelList.removeAll();
         for(BasePanel panel : getPanels()){
-            boolean bb = panel.isSelectedMode(viewMode);
+            boolean bb = panel.isSelectedMode(WorkSpace.ws().viewMode());
             if (bb){
                 PanelList.add(panel.getName(),panel);
                 }
+            panel.onInit(bb);
             }
-        sendEvent(EventInit,0,0,null,null);
         }
 
     private void addPanel(BasePanel panel){
@@ -90,8 +90,9 @@ public class CNCViewer extends BaseFrame {
         panels.clear();
         PanelList.removeAll();
         //-------------------------------------------------------------------------------
-        addPanel(new LoginPanel("Авторизация",this));
-        addPanel(new CNCViewerPanel("Главная",this));
+        addPanel(new LoginPanel(this));
+        addPanel(new CNCViewerPanel(this));
+        addPanel(new STL3DViewPanel(this));
         //---------------------------------------------------------------------------------
         }
 
@@ -114,7 +115,7 @@ public class CNCViewer extends BaseFrame {
                 notify.notify(Values.warning,"Настойки не прочитаны - умолчание");
                 ws().saveSettings();
                 }
-        setViewMode(ModeLogin);
+        setViewPanel(PanelLogin);
         Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
             @Override
             public void uncaughtException(Thread t, Throwable e) {

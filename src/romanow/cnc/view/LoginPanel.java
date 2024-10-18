@@ -39,7 +39,7 @@ public class LoginPanel extends BasePanel {
         UserProfile user = users.get(UserList.getSelectedIndex());
         if (user.password.equals(StringCrypter.encrypt(Password.getText()))){
             WorkSpace.ws().currentUser(user);
-            getBaseFrame().setViewMode(Values.ModeMain);
+            getBaseFrame().setViewPanel(Values.PanelMain);
             }
         else
             MES.setText("Неверный пароль");
@@ -54,7 +54,7 @@ public class LoginPanel extends BasePanel {
 
     @Override
     public int modeMask() {
-        return Values.ModeLogin;
+        return Values.PanelLogin;
         }
 
     @Override
@@ -62,7 +62,13 @@ public class LoginPanel extends BasePanel {
         return true;
     }
 
-    public LoginPanel(String name, BaseFrame baseFrame) {
+    @Override
+    public void onInit(boolean on) {
+        if (on)
+            initView();
+        }
+
+    public LoginPanel(BaseFrame baseFrame) {
         super(baseFrame);
         initComponents();
         }
@@ -146,8 +152,6 @@ public class LoginPanel extends BasePanel {
 
     @Override
     public void onEvent(int code, int par1, long par2, String par3, Object oo) {
-        if (code==Values.EventInit)
-            initView();
         }
 
     @Override

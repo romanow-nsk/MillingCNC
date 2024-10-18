@@ -17,10 +17,10 @@ public abstract class BasePanel extends javax.swing.JPanel implements I_PanelEve
 
     //-----------------------------------------------------------------------------------------------------
     @Getter private BaseFrame baseFrame;
-    @Getter private int viewMode=Values.ModeLogin;
     public abstract  String getName();
     public abstract  int modeMask();
     public abstract  boolean modeEnabled();
+    public abstract void onInit(boolean on);
 
     public boolean isSelectedMode(int mode){
         return ((modeMask() & mode)!=0) && modeEnabled();

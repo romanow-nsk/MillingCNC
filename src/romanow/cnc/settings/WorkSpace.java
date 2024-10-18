@@ -39,6 +39,7 @@ public class WorkSpace implements I_File{
     /** Последнее явно открытое или сохраненное */
     private String lastName="";
     private int dataState=Values.NoData;
+    private int viewMode=Values.PanelLogin;
     private boolean closing=false;
     private COMPortDriver com = new COMPortDriver();
     //--------------------------------------------------------------------------
@@ -49,6 +50,10 @@ public class WorkSpace implements I_File{
         }
     public int dataState(){ return dataState; }
     public void dataState(int vv){ dataState=vv; }
+    public int viewMode(){ return viewMode; }
+    public void viewMode(int vv){ viewMode=vv; }
+    public void viewModeEnableOne(int vv){ viewMode |=vv; }
+    public void viewModeDisableOne(int vv){ viewMode &= ~vv; }
     public boolean modelPresent(){ return dataState!=Values.NoData; }
     public boolean slicePresent(){ return dataState==Values.Sliced || dataState==Values.Changed; }
     public boolean sliceChanged(){ return dataState==Values.Changed; }

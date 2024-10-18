@@ -13,16 +13,12 @@ import java.util.ArrayList;
 import javax.swing.*;
 import romanow.cnc.m3d.I_Important;
 
-import static romanow.cnc.Values.ModeLogin;
-import static romanow.cnc.Values.ModeMain;
-
 /**
  * Created by romanow on 16.09.2018.
  */
 public abstract class BaseFrame extends JFrame implements I_Important{
 
     @Getter private ArrayList<BasePanel> panels = new ArrayList();            // панели
-    @Getter @Setter int viewMode=ModeLogin;
     public boolean tryToStart(){
         return WorkSpace.ws().tryToStart(this);
         }
@@ -36,8 +32,16 @@ public abstract class BaseFrame extends JFrame implements I_Important{
     public void refreshPanels(){}
     //-------------------------------------------------------------------------------
 
-    public void setViewMode(int mode){
-        viewMode = mode;
+    public void setViewPanel(int mode){
+        WorkSpace.ws().viewMode(mode);
+        refreshPanels();
+        }
+    public void setViewPanelEnable(int mode){
+        WorkSpace.ws().viewModeEnableOne(mode);
+        refreshPanels();
+        }
+    public void setViewPanelDisable(int mode){
+        WorkSpace.ws().viewModeDisableOne(mode);
         refreshPanels();
         }
 

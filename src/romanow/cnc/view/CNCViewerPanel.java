@@ -15,6 +15,7 @@ import java.io.*;
 import java.util.Date;
 import romanow.cnc.m3d.ViewAdapter;
 import romanow.cnc.m3d.ViewNotifyer;
+import romanow.cnc.viewer3d.STLViewer;
 
 import static romanow.cnc.Values.*;
 
@@ -30,7 +31,7 @@ public class CNCViewerPanel extends BasePanel {
     /**
      * Creates new form CNCViewerPanel
      */
-    public CNCViewerPanel(String name,BaseFrame baseFrame) {
+    public CNCViewerPanel(BaseFrame baseFrame) {
         super(baseFrame);
         initComponents();
         Progress.setMaximum(100);
@@ -62,6 +63,7 @@ public class CNCViewerPanel extends BasePanel {
                 }
             };
         WorkSpace.ws().setNotify(notify);
+        setMenuVisible();
         }
 
     private void toLog(String ss){
@@ -75,11 +77,15 @@ public class CNCViewerPanel extends BasePanel {
 
     @Override
     public int modeMask() {
-        return ModeAll & ~ModeLogin;
+        return PanelMain;
         }
     @Override
     public boolean modeEnabled() {
         return true;
+        }
+
+    @Override
+    public void onInit(boolean on) {
         }
 
 
@@ -101,6 +107,7 @@ public class CNCViewerPanel extends BasePanel {
         LogStop = new javax.swing.JCheckBox();
         LogToFile = new javax.swing.JCheckBox();
         OpenSTL = new javax.swing.JButton();
+        ViewSTL3D = new javax.swing.JButton();
 
         setLayout(null);
         add(LOG);
@@ -173,7 +180,18 @@ public class CNCViewerPanel extends BasePanel {
             }
         });
         add(OpenSTL);
-        OpenSTL.setBounds(730, 10, 110, 30);
+        OpenSTL.setBounds(720, 10, 140, 30);
+
+        ViewSTL3D.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        ViewSTL3D.setText("Просмотр STL(3D)");
+        ViewSTL3D.setBorder(new javax.swing.border.MatteBorder(null));
+        ViewSTL3D.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ViewSTL3DActionPerformed(evt);
+            }
+        });
+        add(ViewSTL3D);
+        ViewSTL3D.setBounds(720, 50, 140, 30);
     }// </editor-fold>//GEN-END:initComponents
 
     private void PAUSEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PAUSEActionPerformed
@@ -230,6 +248,7 @@ public class CNCViewerPanel extends BasePanel {
             final String fname = getBaseFrame().getInputFileName("Файл STL","stl",false);
             if (fname==null) return;
             WorkSpace.ws().loadModel(fname, notify);
+            setMenuVisible();
             } catch (UNIException ee){ toLog(ee.toString());}
         }
 
@@ -257,6 +276,16 @@ public class CNCViewerPanel extends BasePanel {
          */
     }//GEN-LAST:event_OpenSTLActionPerformed
 
+    private void ViewSTL3DActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ViewSTL3DActionPerformed
+        if (!WorkSpace.ws().model().loaded()){
+            toLog("Не загружен STL-файл");
+            return;
+            }
+        getBaseFrame().setViewPanelEnable(PanelSTL3D);
+        getBaseFrame().refreshPanels();
+        //new STLViewer(viewCommon).setVisible(true);
+    }//GEN-LAST:event_ViewSTL3DActionPerformed
+
 
     private void setMenuVisible(){
         boolean loaded = WorkSpace.ws().modelPresent();
@@ -265,6 +294,7 @@ public class CNCViewerPanel extends BasePanel {
         int userType = WorkSpace.ws().currentUser().accessMode;
         boolean isAdmin = userType==Values.userAdmin;
         boolean canSave = userType==Values.userAdmin || userType==Values.userConstructor;
+        ViewSTL3D.setVisible(loaded || sliced);
         /*
         mBar.getMenu(mSlice).setEnabled(loaded || sliced);
         mBar.getMenu(mSet).setEnabled(userType!=Values.userGuest);
@@ -371,5 +401,6 @@ public class CNCViewerPanel extends BasePanel {
     private javax.swing.JButton PAUSE;
     private javax.swing.JProgressBar Progress;
     private javax.swing.JButton STOP;
+    private javax.swing.JButton ViewSTL3D;
     // End of variables declaration//GEN-END:variables
 }
