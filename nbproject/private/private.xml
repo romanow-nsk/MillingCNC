@@ -7,12 +7,15 @@
             <file>file:/F:/CNC/MillingCNC/src/epos/slm3d/console/DistortionEditor.java</file>
             <file>file:/F:/CNC/MillingCNC/src/epos/slm3d/m3d/CNCViewer.java</file>
             <file>file:/F:/CNC/MillingCNC/src/epos/slm3d/settingsView/ModelSettingsPanel.java</file>
+            <file>file:/F:/CNC/MillingCNC/src/epos/slm3d/viewer3d/STL3DViewer.java</file>
+            <file>file:/F:/CNC/MillingCNC/src/epos/slm3d/m3d/CNCViewerPanel.java</file>
             <file>file:/F:/CNC/MillingCNC/src/epos/slm3d/m3d/Slice2DViewer.java</file>
             <file>file:/F:/CNC/MillingCNC/src/epos/slm3d/m3d/M3DVisio.java</file>
             <file>file:/F:/CNC/MillingCNC/src/epos/slm3d/m3d/M3DSettings_2.java</file>
             <file>file:/F:/CNC/MillingCNC/src/epos/slm3d/settings/Marking.java</file>
             <file>file:/F:/CNC/MillingCNC/src/epos/slm3d/m3d/BasePanel.java</file>
-            <file>file:/F:/CNC/MillingCNC/src/epos/slm3d/m3d/M3DViewer.java</file>
+            <file>file:/F:/CNC/MillingCNC/src/epos/slm3d/viewer3d/STLViewer.java</file>
+            <file>file:/F:/CNC/MillingCNC/src/epos/slm3d/settingsView/Login.java</file>
             <file>file:/F:/CNC/MillingCNC/src/epos/slm3d/settingsView/PrintSettingsPanel.java</file>
             <file>file:/F:/CNC/MillingCNC/src/epos/slm3d/settingsView/GlobalSettingsPanel.java</file>
             <file>file:/F:/CNC/MillingCNC/src/epos/slm3d/settings/LocalSettings.java</file>

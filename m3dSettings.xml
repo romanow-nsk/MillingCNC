@@ -22,14 +22,14 @@
     <LineSpeedDelta min="0" max="10" def="0" val="0"/>
   </delays>
   <filling>
-    <Mode min="0" max="1" def="0" val="3"/>
+    <Mode min="0" max="1" def="0" val="0"/>
     <FillParametersRaster min="0.0" max="1000.0" def="0.01" val="0.01"/>
     <FillParametersOffset min="0.0" max="1000.0" def="0.002" val="0.002"/>
     <FillParametersAngle min="0.0" max="1000.0" def="20.0" val="20.0"/>
     <FillParametersAngleInc min="0.0" max="1000.0" def="1.0" val="1.0"/>
     <FillParametersFillCell min="0.0" max="1000.0" def="1.0" val="1.0"/>
     <FillingFlatness min="0.0" max="1000.0" def="0.01" val="0.01"/>
-    <MoveOptimize def="true" val="false"/>
+    <MoveOptimize def="true" val="true"/>
     <SendLoops def="false" val="false"/>
     <FlateCircuitSlice def="false" val="false"/>
     <FillContinuous def="false" val="false"/>
@@ -70,11 +70,11 @@
     <MarkingFieldHight min="0.0" max="1000.0" def="0.0" val="0.0"/>
     <Z min="0.0" max="1000.0" def="0.0" val="0.0"/>
     <ZStart min="0.0" max="1000.0" def="0.0" val="0.0"/>
-    <ZFinish min="0.0" max="1000.0" def="0.0" val="30.0"/>
+    <ZFinish min="0.0" max="1000.0" def="0.0" val="0.0"/>
     <PageServoOffsetsLeft min="0.0" max="1000.0" def="0.0" val="0.0"/>
     <PageServoOffsetsTop min="0.0" max="1000.0" def="0.0" val="0.0"/>
-    <BlankWidth min="0.0" max="1000.0" def="0.0" val="30.0"/>
-    <BlankHight min="0.0" max="1000.0" def="0.0" val="30.0"/>
+    <BlankWidth min="0.0" max="1000.0" def="0.0" val="0.0"/>
+    <BlankHight min="0.0" max="1000.0" def="0.0" val="0.0"/>
     <CutterDiameter min="0.0" max="1000.0" def="1.0" val="1.0"/>
     <StepMinus min="0.0" max="1000.0" def="0.02" val="0.02"/>
     <VerticalStep min="0.0" max="1000.0" def="1.0" val="1.0"/>
