@@ -38,6 +38,12 @@ public class STLViewer extends BaseFrame implements WindowListener {
         //    });
         //thread.start();
         }
+
+	@Override
+	public void shutDown() {
+
+	}
+
 	public STLViewer(ViewAdapter view) throws HeadlessException {
         if (!tryToStart()) return;
 		setTitle("Просмотр STL");

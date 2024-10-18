@@ -12,20 +12,11 @@ public class Values {
     public static String getVersion(){
         return "Milling CNC NSTU  version "+version+"."+release+" "+releaseDate.dateToString();
         }
-    // Классы и подклассы широковещательных сообщений
-    public final static int EventLog=1;
-    public final static int EventOperate=2;
-    public final static int EventOperateFinish=1;
-    public final static int EventLogFile=3;
-    public final static int EventLogFileOpen=1;
-    public final static int EventLogFileClose=1;
-    public final static int EventOnWarning=4;
-    public final static int EventProgress=5;
-    public final static int EventInit=6;
     // Маски панелей -----------------------------
     public final static int PanelLogin=0x01;
     public final static int PanelMain=0x02;
     public final static int PanelSTL3D=0x04;
+    public final static int PanelModelSettings=0x08;
     /** состояния программы по данным */
     public final static int NoData=0;           // Нет данных
     public final static int Loaded=1;           // Модель заружена

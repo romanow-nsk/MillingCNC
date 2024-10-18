@@ -239,5 +239,20 @@ public class Loop3DViewer extends BaseFrame{
     private javax.swing.JButton PREV;
     private javax.swing.JCheckBox Source;
     private javax.swing.JLabel jLabel2;
+
+    @Override
+    public void onEvent(int code, boolean on, int value, String name) {
+
+    }
+
+    @Override
+    public void refresh() {
+
+    }
+
+    @Override
+    public void shutDown() {
+
+    }
     // End of variables declaration//GEN-END:variables
 }

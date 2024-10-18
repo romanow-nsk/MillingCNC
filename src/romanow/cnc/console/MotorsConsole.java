@@ -86,7 +86,6 @@ public class MotorsConsole extends BaseFrame {
         }
     @Override
     public void onEvent(int code,boolean on, int value, String name) {
-        super.onEvent(code,on,value,name);
         if (code== Events.Motors)
             askMotorsState();
         }    
@@ -879,6 +878,16 @@ public class MotorsConsole extends BaseFrame {
     private java.awt.Label label7;
     private java.awt.Label label8;
     private java.awt.Label label9;
+
+    @Override
+    public void refresh() {
+
+    }
+
+    @Override
+    public void shutDown() {
+
+    }
     // End of variables declaration//GEN-END:variables
 
 }

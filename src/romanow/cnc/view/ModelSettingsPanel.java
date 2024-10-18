@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package romanow.cnc.settingsView;
+package romanow.cnc.view;
 
 import romanow.cnc.m3d.I_SettingsChanged;
 import romanow.cnc.utils.Events;
@@ -18,26 +18,54 @@ import romanow.cnc.Values;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
+import romanow.cnc.settingsView.I_SettingsPanel;
 
 /**
  *
  * @author romanow
  */
-public class ModelSettingsPanel extends javax.swing.JPanel  implements I_SettingsPanel{
+public class ModelSettingsPanel extends BasePanel  implements I_SettingsPanel{
     private Settings set;
     private I_SettingsChanged changed;
+    private I_Notify notify;
     /**
      * Creates new form M3SSettings
      */
-    private I_Notify notify;
     public ModelSettingsPanel(I_SettingsChanged changed0, Settings set0, I_Notify notify0) {
+        super(null);
         initComponents();
         set = set0;
         changed = changed0;
         notify = notify0;
-        this.setBounds(0,0, 800, 650);
         loadSettings();
         }
+    public ModelSettingsPanel(BaseFrame base) {
+        super(base);
+        set = WorkSpace.ws().global();
+        notify = WorkSpace.ws().getNotify();
+        initComponents();
+        loadSettings();
+        }
+
+    @Override
+    public String getName() {
+        return "Модель (уставки)";
+    }
+
+    @Override
+    public int modeMask() {
+        return Values.PanelModelSettings;
+    }
+
+    @Override
+    public boolean modeEnabled() {
+        return true;
+    }
+
+    @Override
+    public void onInit(boolean on) {
+
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -102,58 +130,70 @@ public class ModelSettingsPanel extends javax.swing.JPanel  implements I_Setting
 
         MarkingFieldWidth.setEditable(false);
         MarkingFieldWidth.setBackground(new java.awt.Color(200, 200, 200));
+        MarkingFieldWidth.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         add(MarkingFieldWidth);
-        MarkingFieldWidth.setBounds(160, 30, 80, 25);
+        MarkingFieldWidth.setBounds(160, 30, 80, 30);
 
         Z.setEditable(false);
         Z.setBackground(new java.awt.Color(200, 200, 200));
+        Z.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         add(Z);
-        Z.setBounds(160, 150, 80, 25);
+        Z.setBounds(160, 170, 80, 30);
 
         PageServoOffsetsLeft.setEditable(false);
         PageServoOffsetsLeft.setBackground(new java.awt.Color(200, 200, 200));
+        PageServoOffsetsLeft.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         add(PageServoOffsetsLeft);
-        PageServoOffsetsLeft.setBounds(160, 90, 80, 25);
+        PageServoOffsetsLeft.setBounds(160, 100, 80, 30);
 
         PageServoOffsetsTop.setEditable(false);
         PageServoOffsetsTop.setBackground(new java.awt.Color(200, 200, 200));
+        PageServoOffsetsTop.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         add(PageServoOffsetsTop);
-        PageServoOffsetsTop.setBounds(160, 120, 80, 25);
+        PageServoOffsetsTop.setBounds(160, 135, 80, 30);
 
         ScaleFactor.setEditable(false);
         ScaleFactor.setBackground(new java.awt.Color(200, 200, 200));
+        ScaleFactor.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         add(ScaleFactor);
-        ScaleFactor.setBounds(160, 180, 80, 25);
+        ScaleFactor.setBounds(160, 205, 80, 30);
 
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel8.setText("Масштаб модели");
         add(jLabel8);
-        jLabel8.setBounds(10, 190, 110, 16);
+        jLabel8.setBounds(10, 215, 130, 20);
 
-        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel10.setText("Статистика");
         add(jLabel10);
-        jLabel10.setBounds(270, 10, 90, 20);
+        jLabel10.setBounds(260, 10, 100, 20);
 
+        jLabel11.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel11.setText("Размер по X (мм)");
         add(jLabel11);
         jLabel11.setBounds(10, 40, 110, 20);
 
+        jLabel12.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel12.setText("Размер по Z (мм)");
         add(jLabel12);
-        jLabel12.setBounds(10, 160, 110, 16);
+        jLabel12.setBounds(10, 180, 110, 20);
 
-        jLabel14.setText("Смещение X влево (мм)");
+        jLabel14.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel14.setText("Смещ. X влево (мм)");
         add(jLabel14);
-        jLabel14.setBounds(10, 100, 140, 16);
+        jLabel14.setBounds(10, 110, 170, 20);
 
-        jLabel15.setText("Смещение  Y вверх (мм)");
+        jLabel15.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel15.setText("Смещ.  Y вверх (мм)");
         add(jLabel15);
-        jLabel15.setBounds(10, 130, 140, 16);
+        jLabel15.setBounds(10, 145, 140, 16);
 
+        jLabel16.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel16.setText("Время печати");
         add(jLabel16);
-        jLabel16.setBounds(270, 160, 100, 16);
+        jLabel16.setBounds(260, 180, 100, 20);
 
+        RotateButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         RotateButton.setText("Поворот");
         RotateButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -161,17 +201,20 @@ public class ModelSettingsPanel extends javax.swing.JPanel  implements I_Setting
             }
         });
         add(RotateButton);
-        RotateButton.setBounds(380, 210, 100, 22);
+        RotateButton.setBounds(380, 210, 120, 30);
 
+        jLabel22.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel22.setText("Размер по Y (мм)");
         add(jLabel22);
-        jLabel22.setBounds(10, 70, 110, 16);
+        jLabel22.setBounds(10, 75, 120, 20);
 
         MarkingFieldHight.setEditable(false);
         MarkingFieldHight.setBackground(new java.awt.Color(200, 200, 200));
+        MarkingFieldHight.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         add(MarkingFieldHight);
-        MarkingFieldHight.setBounds(160, 60, 80, 25);
+        MarkingFieldHight.setBounds(160, 65, 80, 30);
 
+        ANGLE.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         ANGLE.setText("90");
         ANGLE.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -179,8 +222,9 @@ public class ModelSettingsPanel extends javax.swing.JPanel  implements I_Setting
             }
         });
         add(ANGLE);
-        ANGLE.setBounds(330, 210, 40, 25);
+        ANGLE.setBounds(320, 210, 50, 30);
 
+        Zstart.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         Zstart.setText("0");
         Zstart.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -188,21 +232,23 @@ public class ModelSettingsPanel extends javax.swing.JPanel  implements I_Setting
             }
         });
         add(Zstart);
-        Zstart.setBounds(160, 210, 80, 25);
+        Zstart.setBounds(160, 240, 80, 30);
 
+        Z0_2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         Z0_2.setText("Z конечное (мм) ");
         add(Z0_2);
-        Z0_2.setBounds(10, 250, 120, 16);
+        Z0_2.setBounds(10, 280, 120, 20);
 
-        jLabel46.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel46.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel46.setText("Модель");
         add(jLabel46);
-        jLabel46.setBounds(10, 10, 80, 20);
+        jLabel46.setBounds(10, 10, 100, 20);
         add(jSeparator2);
         jSeparator2.setBounds(580, 152, 180, 0);
         add(jSeparator5);
         jSeparator5.setBounds(770, 330, 0, 3);
 
+        Zfinish.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         Zfinish.setText("0");
         Zfinish.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -210,57 +256,68 @@ public class ModelSettingsPanel extends javax.swing.JPanel  implements I_Setting
             }
         });
         add(Zfinish);
-        Zfinish.setBounds(160, 240, 80, 25);
+        Zfinish.setBounds(160, 275, 80, 30);
 
+        Z0_1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         Z0_1.setText("Шаг по вертикали (мм)");
         add(Z0_1);
-        Z0_1.setBounds(490, 160, 150, 16);
+        Z0_1.setBounds(490, 175, 150, 20);
 
         XYZ.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "X", "Y", "Z" }));
         add(XYZ);
-        XYZ.setBounds(270, 210, 50, 25);
+        XYZ.setBounds(260, 210, 50, 30);
 
+        jLabel25.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel25.setText("Линий");
         add(jLabel25);
-        jLabel25.setBounds(270, 40, 80, 16);
+        jLabel25.setBounds(260, 40, 80, 20);
 
         PrintTime.setEditable(false);
         PrintTime.setBackground(new java.awt.Color(200, 200, 200));
+        PrintTime.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         add(PrintTime);
-        PrintTime.setBounds(380, 150, 80, 25);
+        PrintTime.setBounds(380, 170, 80, 30);
 
+        jLabel26.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel26.setText("Длина  (м)");
         add(jLabel26);
-        jLabel26.setBounds(270, 70, 80, 16);
+        jLabel26.setBounds(260, 70, 80, 20);
 
         LineCount.setEditable(false);
         LineCount.setBackground(new java.awt.Color(200, 200, 200));
+        LineCount.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         add(LineCount);
-        LineCount.setBounds(380, 30, 80, 25);
+        LineCount.setBounds(380, 30, 80, 30);
 
         LineLength.setEditable(false);
         LineLength.setBackground(new java.awt.Color(200, 200, 200));
+        LineLength.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         add(LineLength);
-        LineLength.setBounds(380, 60, 80, 25);
+        LineLength.setBounds(380, 65, 80, 30);
 
         MoveProc.setEditable(false);
         MoveProc.setBackground(new java.awt.Color(200, 200, 200));
+        MoveProc.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         add(MoveProc);
-        MoveProc.setBounds(380, 90, 80, 25);
+        MoveProc.setBounds(380, 100, 80, 30);
 
+        jLabel27.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel27.setText("Холостой ход (%)");
         add(jLabel27);
-        jLabel27.setBounds(270, 100, 100, 16);
+        jLabel27.setBounds(260, 105, 120, 20);
 
+        jLabel28.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel28.setText("Время слайсинга");
         add(jLabel28);
-        jLabel28.setBounds(270, 130, 100, 16);
+        jLabel28.setBounds(260, 145, 120, 20);
 
         SliceTime.setEditable(false);
         SliceTime.setBackground(new java.awt.Color(200, 200, 200));
+        SliceTime.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         add(SliceTime);
-        SliceTime.setBounds(380, 120, 80, 25);
+        SliceTime.setBounds(380, 135, 80, 30);
 
+        ShiftButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         ShiftButton.setText("Сдвиг");
         ShiftButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -268,8 +325,9 @@ public class ModelSettingsPanel extends javax.swing.JPanel  implements I_Setting
             }
         });
         add(ShiftButton);
-        ShiftButton.setBounds(380, 240, 100, 22);
+        ShiftButton.setBounds(380, 250, 120, 30);
 
+        SHIFT.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         SHIFT.setText("10.0");
         SHIFT.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -277,20 +335,23 @@ public class ModelSettingsPanel extends javax.swing.JPanel  implements I_Setting
             }
         });
         add(SHIFT);
-        SHIFT.setBounds(330, 240, 40, 25);
+        SHIFT.setBounds(320, 250, 50, 30);
 
         XYZShift.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "X", "Y", "Z" }));
         add(XYZShift);
-        XYZShift.setBounds(270, 240, 50, 25);
+        XYZShift.setBounds(260, 250, 50, 30);
 
+        Z0_3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         Z0_3.setText("Z начальное (мм) ");
         add(Z0_3);
-        Z0_3.setBounds(10, 220, 120, 16);
+        Z0_3.setBounds(10, 250, 130, 20);
 
+        Z0_4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         Z0_4.setText("Размер заготовки X(мм)");
         add(Z0_4);
-        Z0_4.setBounds(490, 40, 150, 16);
+        Z0_4.setBounds(490, 40, 170, 20);
 
+        BlankHight.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         BlankHight.setText("0");
         BlankHight.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -298,8 +359,9 @@ public class ModelSettingsPanel extends javax.swing.JPanel  implements I_Setting
             }
         });
         add(BlankHight);
-        BlankHight.setBounds(640, 60, 80, 25);
+        BlankHight.setBounds(660, 65, 80, 30);
 
+        BlankWidth.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         BlankWidth.setText("0");
         BlankWidth.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -307,8 +369,9 @@ public class ModelSettingsPanel extends javax.swing.JPanel  implements I_Setting
             }
         });
         add(BlankWidth);
-        BlankWidth.setBounds(640, 30, 80, 25);
+        BlankWidth.setBounds(660, 30, 80, 30);
 
+        CutterDiameter.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         CutterDiameter.setText("0");
         CutterDiameter.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -316,16 +379,19 @@ public class ModelSettingsPanel extends javax.swing.JPanel  implements I_Setting
             }
         });
         add(CutterDiameter);
-        CutterDiameter.setBounds(640, 90, 80, 25);
+        CutterDiameter.setBounds(660, 100, 80, 30);
 
+        Z0_5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         Z0_5.setText("Размер заготовки Y(мм)");
         add(Z0_5);
-        Z0_5.setBounds(490, 70, 150, 16);
+        Z0_5.setBounds(490, 70, 170, 20);
 
+        Z0_6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         Z0_6.setText("Диаметр фрезы (мм)");
         add(Z0_6);
-        Z0_6.setBounds(490, 100, 150, 16);
+        Z0_6.setBounds(490, 105, 150, 20);
 
+        StepMinus.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         StepMinus.setText("0");
         StepMinus.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -333,8 +399,9 @@ public class ModelSettingsPanel extends javax.swing.JPanel  implements I_Setting
             }
         });
         add(StepMinus);
-        StepMinus.setBounds(640, 120, 80, 25);
+        StepMinus.setBounds(660, 135, 80, 30);
 
+        VerticalStep.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         VerticalStep.setText("0");
         VerticalStep.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -342,11 +409,12 @@ public class ModelSettingsPanel extends javax.swing.JPanel  implements I_Setting
             }
         });
         add(VerticalStep);
-        VerticalStep.setBounds(640, 150, 80, 25);
+        VerticalStep.setBounds(660, 170, 80, 30);
 
+        Z0_7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         Z0_7.setText("Коррекция шага (мм)");
         add(Z0_7);
-        Z0_7.setBounds(490, 130, 150, 16);
+        Z0_7.setBounds(490, 140, 150, 20);
     }// </editor-fold>//GEN-END:initComponents
     public boolean loadSettings(){
         try {
@@ -561,5 +629,20 @@ public class ModelSettingsPanel extends javax.swing.JPanel  implements I_Setting
     private javax.swing.JLabel jLabel8;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator5;
+
+    @Override
+    public void refresh() {
+
+    }
+
+    @Override
+    public void onEvent(int code, int par1, long par2, String par3, Object oo) {
+
+    }
+
+    @Override
+    public void shutDown() {
+
+    }
     // End of variables declaration//GEN-END:variables
 }

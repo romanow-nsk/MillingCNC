@@ -56,7 +56,7 @@ public class TestConsole extends BaseFrame {
     private GraphFactory fac = new GraphFactory(); // Фабрика графических примитивов
     private GraphObject selected=null;      // Ссылка на выбранный объект
     
-    private void refresh(){
+    public void refresh(){
         int cc = cObj;
         setLayers();
         cObj = cc;
@@ -65,6 +65,12 @@ public class TestConsole extends BaseFrame {
         objectView(); 
         paintView();
         }
+
+    @Override
+    public void shutDown() {
+
+    }
+
     private void groupOperation(MouseEvent evt){
         GraphPoint qq = new GraphPoint(gPanel.pixelToX(evt.getX()),gPanel.pixelToY(evt.getY()));
         int idx = model.nearest(qq, Values.FindPointDistance);
@@ -953,7 +959,6 @@ public class TestConsole extends BaseFrame {
 
     @Override
     public void onEvent(int code,boolean on, int value, String name) {
-        super.onEvent(code,on,value,name);
         if (code== Events.Close){
             onClose();                      // TODO - сохранить файл ????
             }

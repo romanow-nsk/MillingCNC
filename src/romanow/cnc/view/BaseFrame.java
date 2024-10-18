@@ -1,5 +1,6 @@
 package romanow.cnc.view;
 
+import romanow.cnc.m3d.I_PanelEvent;
 import romanow.cnc.settings.Settings;
 import romanow.cnc.settings.WorkSpace;
 import lombok.Getter;
@@ -16,7 +17,7 @@ import romanow.cnc.m3d.I_Important;
 /**
  * Created by romanow on 16.09.2018.
  */
-public abstract class BaseFrame extends JFrame implements I_Important{
+public abstract class BaseFrame extends JFrame implements I_Important, I_PanelEvent {
 
     @Getter private ArrayList<BasePanel> panels = new ArrayList();            // панели
     public boolean tryToStart(){
@@ -79,12 +80,12 @@ public abstract class BaseFrame extends JFrame implements I_Important{
     public void sendEvent(int code, int par1, long par2, String par3,Object oo){
         for(BasePanel panel : panels)
             panel.onEvent(code,par1,par2,par3,oo);
-        //WorkSpace.ws().sendEvent(code,on,value,name);
+        WorkSpace.ws().sendEvent(this,code,par1,par2,par3,oo);
         }
-
-    //-------------------------- Для старых окон, убрать после переноса
-    public void onEvent(int code,boolean on, int value, String name){
-
+    @Override
+    public void onEvent(int code, int par1, long par2, String par3,Object oo){
+        for(BasePanel panel : panels)
+            panel.onEvent(code,par1,par2,par3,oo);
         }
 
 }

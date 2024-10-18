@@ -97,5 +97,20 @@ public class LayerPrintSettings extends BaseFrame implements I_SettingsChanged {
     public void onCancel() {
 
     }
+
+    @Override
+    public void onEvent(int code, boolean on, int value, String name) {
+
+    }
+
+    @Override
+    public void refresh() {
+
+    }
+
+    @Override
+    public void shutDown() {
+
+    }
     // End of variables declaration//GEN-END:variables
 }

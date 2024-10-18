@@ -6,6 +6,7 @@ package romanow.cnc.view;
 
 import romanow.cnc.m3d.FileBinInputStream;
 import romanow.cnc.m3d.M3DFileBinInputStream;
+import romanow.cnc.utils.Events;
 import romanow.cnc.utils.UNIException;
 import romanow.cnc.utils.Utils;
 import romanow.cnc.Values;
@@ -110,6 +111,8 @@ public class CNCViewerPanel extends BasePanel {
         ViewSTL3D = new javax.swing.JButton();
 
         setLayout(null);
+
+        LOG.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         add(LOG);
         LOG.setBounds(10, 10, 700, 650);
 
@@ -209,7 +212,7 @@ public class CNCViewerPanel extends BasePanel {
         viewCommon.finish();
         PAUSE.setText("...");
         STOP.setText("...");
-        getBaseFrame().sendEvent(EventOperate,EventOperateFinish,0,null,null);
+        getBaseFrame().sendEvent(Events.OperateFinish,0,0,null,null);
     }//GEN-LAST:event_STOPActionPerformed
 
     private void LEVELItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_LEVELItemStateChanged
@@ -228,7 +231,7 @@ public class CNCViewerPanel extends BasePanel {
     }//GEN-LAST:event_LogToFileItemStateChanged
 
     private void startView(int lineDelay,int layerDelay){
-        sendEvent(EventOnWarning,0,0,null,null);
+        sendEvent(Events.OnWarning,0,0,null,null);
         viewCommon.start(lineDelay,layerDelay);
         PAUSE.setText("остановить");
         STOP.setText("прервать");
@@ -249,6 +252,7 @@ public class CNCViewerPanel extends BasePanel {
             if (fname==null) return;
             WorkSpace.ws().loadModel(fname, notify);
             setMenuVisible();
+            getBaseFrame().refreshPanels();
             } catch (UNIException ee){ toLog(ee.toString());}
         }
 
@@ -345,16 +349,16 @@ public class CNCViewerPanel extends BasePanel {
     @Override
     public void onEvent(int code, int par1, long par2, String par3, Object oo) {
         switch (code){
-            case EventLog:
+            case Events.Log:
                 notify.notify(par1,par3);
                 break;
-            case EventLogFile:
-                if (par1==EventLogFileClose)
-                    closeLogFile(null);
-                if (par1==EventLogFileOpen)
-                    openLogFile();
+            case Events.LogFileClose:
+                closeLogFile(null);
                 break;
-            case EventOnWarning:
+            case Events.LogFileOpen:
+                openLogFile();
+                break;
+            case Events.OnWarning:
                 stopOnWarning = par1!=0;
                 break;
         }

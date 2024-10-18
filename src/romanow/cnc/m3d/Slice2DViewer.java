@@ -1236,7 +1236,6 @@ public class Slice2DViewer extends BaseFrame{
 
     @Override
     public void onEvent(int code,boolean on, int value, String name) {
-        super.onEvent(code,on,value,name);
         if (code== Events.Layer){
             MODE.select(0);
             selectMode(false);
@@ -1305,5 +1304,15 @@ public class Slice2DViewer extends BaseFrame{
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
+
+    @Override
+    public void refresh() {
+
+    }
+
+    @Override
+    public void shutDown() {
+
+    }
     // End of variables declaration//GEN-END:variables
 }

@@ -9,7 +9,7 @@ import romanow.cnc.view.BaseFrame;
 import romanow.cnc.settingsView.PrintSettingsPanel;
 import romanow.cnc.settingsView.GlobalSettingsPanel;
 import romanow.cnc.settingsView.SliceSettingsPanel;
-import romanow.cnc.settingsView.ModelSettingsPanel;
+import romanow.cnc.view.ModelSettingsPanel;
 import romanow.cnc.settingsView.I_SettingsPanel;
 import romanow.cnc.settings.WorkSpace;
 import romanow.cnc.utils.Events;
@@ -73,7 +73,6 @@ public class M3DSettings_2 extends BaseFrame implements I_SettingsChanged{
     
     @Override
     public void onEvent(int code,boolean on, int value, String name) {
-        super.onEvent(code,on,value,name);
         if (code== Events.Settings){
             glob.loadSettings();
             if (model!=null)
@@ -163,5 +162,15 @@ public class M3DSettings_2 extends BaseFrame implements I_SettingsChanged{
     public void onCancel() {
         Save.setEnabled(false);
         }
+
+    @Override
+    public void refresh() {
+
+    }
+
+    @Override
+    public void shutDown() {
+
+    }
     // End of variables declaration//GEN-END:variables
 }

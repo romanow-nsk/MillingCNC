@@ -80,5 +80,20 @@ public class M3DSelectLayer extends BaseFrame {
     private java.awt.Choice Layers;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+
+    @Override
+    public void onEvent(int code, boolean on, int value, String name) {
+
+    }
+
+    @Override
+    public void refresh() {
+
+    }
+
+    @Override
+    public void shutDown() {
+
+    }
     // End of variables declaration//GEN-END:variables
 }

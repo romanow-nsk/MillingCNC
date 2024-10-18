@@ -657,7 +657,7 @@ public class M3DOperations {
             if (synch.onStepLine())
                 return false;
             gen.line(line);
-            if (printEvent) ws.sendEvent(Events.LinePrint,true,i,"");
+            if (printEvent) ws.sendEvent(null,Events.LinePrint,0,i,"",null);
             lineCount++;
             if (lineCount%100==0)
                 notify.log( Utils.toTimeString(timeInMs()/1000)+" Передано "+(i+1)+"/"+lineCount+" линий");

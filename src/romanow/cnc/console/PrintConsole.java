@@ -1416,7 +1416,7 @@ public class PrintConsole extends BaseFrame {
                     usb.getLineCount(back);
                     usb.oneCommand(new CommandIntList(USBCodes.GetMotorStatus,3).toIntArray(),backMotors);
                     usb.oneCommand(new CommandIntList(USBCodes.GetMotorStatus,4).toIntArray(),backMotors);
-                    ws().sendEvent(Motors, true, 0, "");
+                    ws().sendEvent(Motors);
                     log("Напечатан слой "+data.label()+": "+Utils.toTimeString((new Date().getTime()-startTime)/1000)+" ("+data.rezult().printTime()+")");
                     layerCount++;
                     printThread=null;
@@ -1699,7 +1699,6 @@ public class PrintConsole extends BaseFrame {
 
     @Override
     public void onEvent(int code,boolean on, int value, String name) {
-        super.onEvent(code,on,value,name);
         if (code == FileState && on){
             setLayerData();        
             setBottonsVisible();          
@@ -1846,5 +1845,15 @@ public class PrintConsole extends BaseFrame {
     private java.awt.Checkbox laserErr;
     private java.awt.Checkbox modulationOn;
     private java.awt.Checkbox sourceOn;
+
+    @Override
+    public void refresh() {
+
+    }
+
+    @Override
+    public void shutDown() {
+
+    }
     // End of variables declaration//GEN-END:variables
 }

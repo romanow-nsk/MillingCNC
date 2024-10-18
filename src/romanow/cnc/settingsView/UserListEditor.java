@@ -51,7 +51,7 @@ public class UserListEditor extends BaseFrame {
         try {
             WorkSpace.ws().loadGlobalSettings();
             } catch (UNIException e) {
-                ws().sendEvent(Events.Notify, true, Values.important, "Настойки не прочитаны - умолчание");
+                ws().sendEvent(null,Events.Notify, 1, Values.important, "Настойки не прочитаны - умолчание",null);
                 WorkSpace.ws().saveSettings();
             }
         init();
@@ -59,7 +59,6 @@ public class UserListEditor extends BaseFrame {
     
     @Override
     public void onEvent(int code,boolean on, int value, String name) {
-        super.onEvent(code,on,value,name);
         if (code == Events.Close){
             onClose();
             }
@@ -202,7 +201,7 @@ public class UserListEditor extends BaseFrame {
     
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         if (UserList.getSelectedIndex()<2){
-            ws().notifyEvent(Values.info, "Посторонний и админ не удаляются");
+            ws().notify(Values.info, "Посторонний и админ не удаляются");
             return;
             }
         new OK(getBounds(),"Удалить "+UserList.getSelectedItem(),()->{
@@ -226,15 +225,15 @@ public class UserListEditor extends BaseFrame {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         if (UserName.getText().length()==0){
-            ws().notifyEvent(Values.info, "Отсутствует логин");
+            ws().notify(Values.info, "Отсутствует логин");
             return;
             }
         if (Password.getText().length()==0){
-            ws().notifyEvent(Values.info, "Отсутствует пароль");
+            ws().notify(Values.info, "Отсутствует пароль");
             return;
             }
         if (Path.getText().length()==0 && UserType.getSelectedIndex()!=Values.userAdmin){
-            ws().notifyEvent(Values.info, "Отсутствует рабочий каталог");
+            ws().notify(Values.info, "Отсутствует рабочий каталог");
             return;
             }
         save();
@@ -294,5 +293,15 @@ public class UserListEditor extends BaseFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JSeparator jSeparator1;
+
+    @Override
+    public void refresh() {
+
+    }
+
+    @Override
+    public void shutDown() {
+
+    }
     // End of variables declaration//GEN-END:variables
 }

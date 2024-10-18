@@ -72,6 +72,17 @@ public class ConsoleOfOperator extends BaseFrame {
         runAfterDelay(delay,()->{ askMotors(); });
         }
 
+    @Override
+    public void onEvent(int code, boolean on, int value, String name) {
+        }
+    @Override
+    public void refresh() {
+        }
+
+    @Override
+    public void shutDown() {
+        }
+
     //----------- ВЛОЖЕННЫЙ КЛАСС-ПОТОК ----------------------------------------
     public class Moved extends Thread{
 

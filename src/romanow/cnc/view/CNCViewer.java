@@ -93,6 +93,7 @@ public class CNCViewer extends BaseFrame {
         addPanel(new LoginPanel(this));
         addPanel(new CNCViewerPanel(this));
         addPanel(new STL3DViewPanel(this));
+        addPanel(new ModelSettingsPanel(this));
         //---------------------------------------------------------------------------------
         }
 
@@ -176,7 +177,7 @@ public class CNCViewer extends BaseFrame {
         System.out.println(getClass().getSimpleName()+" "+code+" "+on+" "+value+" "+name);
         if (code == Events.Print){
             if (value == Events.PStateWorking)
-                sendEvent(EventLogFile,EventLogFileOpen,0,null,null);
+                sendEvent(Events.LogFileOpen,0,0,null,null);
             }
         if (code == Events.Notify){
             notify.notify(value, name);
@@ -733,11 +734,11 @@ public class CNCViewer extends BaseFrame {
 
     private void closeWindow(){
         notify.log("Закрытие сеанса - 3 сек.");
-        ws().sendEvent(Events.Close,true,0,"");
+        ws().sendEvent(this,Events.Close,1,0,"",null);
         ws().saveSettings();
-        sendEvent(EventLogFile,EventLogFileClose,0,null,null);
+        sendEvent(Events.LogFileClose,0,0,null,null);
         Utils.runAfterDelay(3,()->{
-            ws().sendEvent(Events.LogOut,true,0,"");
+            ws().sendEvent(this,Events.LogOut,1,0,"",null);
             onClose();
             });
         }
@@ -784,7 +785,7 @@ public class CNCViewer extends BaseFrame {
     }//GEN-LAST:event_testMSActionPerformed
 
     private void toLog(String mes){
-        sendEvent(EventLog,Values.common,0,mes,null);
+        sendEvent(Events.Log,Values.common,0,mes,null);
         }
     
     private void view3DActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_view3DActionPerformed
@@ -1035,7 +1036,7 @@ public class CNCViewer extends BaseFrame {
         return false;
     }
     private void startView(int lineDelay,int layerDelay){
-        sendEvent(EventOnWarning,0,0,null,null);
+        sendEvent(Events.OnWarning,0,0,null,null);
         viewCommon.start(lineDelay,layerDelay);
         //PAUSE.setText("остановить");
         //STOP.setText("прервать");
@@ -1057,6 +1058,7 @@ public class CNCViewer extends BaseFrame {
             final String fname = getInputFileName("Файл STL","stl",false);
             if (fname==null) return;
             ws().loadModel(fname, notify);
+            refreshPanels();
         } catch (UNIException ee){ toLog(ee.toString());}
     }
     private void showMarkOut() {
@@ -1179,7 +1181,7 @@ public class CNCViewer extends BaseFrame {
     private void showSlice(final boolean circuit) {
         if (test3()) return;
         startView(10,500);
-        sendEvent(EventOnWarning,0,0,null,null);
+        sendEvent(Events.OnWarning,0,0,null,null);
         final int mode = ws().local().filling.Mode.getVal();
         setWidth(true);
         new Thread(
@@ -1314,5 +1316,15 @@ public class CNCViewer extends BaseFrame {
     private java.awt.MenuItem viewDirectToUsb;
     private java.awt.MenuItem viewLoops3D;
     private java.awt.MenuItem viewSLM3D;
+
+    @Override
+    public void refresh() {
+
+    }
+
+    @Override
+    public void shutDown() {
+
+    }
     // End of variables declaration//GEN-END:variables
 }

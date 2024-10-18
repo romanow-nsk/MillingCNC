@@ -178,6 +178,16 @@ public class Login extends BaseFrame {
     private java.awt.Choice UserList;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+
+    @Override
+    public void refresh() {
+
+    }
+
+    @Override
+    public void shutDown() {
+
+    }
     // End of variables declaration//GEN-END:variables
 
 

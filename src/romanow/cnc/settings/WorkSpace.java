@@ -20,6 +20,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * Created by romanow on 14.02.2018.
  */
 public class WorkSpace implements I_File{
+    private CopyOnWriteArrayList<BaseFrame> childs = new CopyOnWriteArrayList();
     /** Данные слайсинга */
     private SliceData data=null;
     /** 3D-модель в STL-формате*/
@@ -78,7 +79,7 @@ public class WorkSpace implements I_File{
         dataState=Values.NoData;
         }
     public void fileStateChanged(){
-        sendEvent(Events.FileState,true,0,currentFileTitle());
+        sendEvent(null,Events.FileState,0,0,currentFileTitle(),null);
         }
     public String modelName(){ return !modelPresent() ? "" : model().modelName();}
     public String defaultDir(){ 
@@ -109,7 +110,7 @@ public class WorkSpace implements I_File{
                 try {
                     Thread.sleep(Values.PrinterStateLoopDelay*1000);
                     } catch (InterruptedException e) {}
-                sendEvent(Events.Clock);
+                sendEvent(null,Events.Clock,0,0,null,null);
                 }
             }).start();
         }
@@ -169,6 +170,7 @@ public class WorkSpace implements I_File{
         data(new SliceData());
         fileStateChanged();        
         dataState = Values.Loaded;
+        viewModeEnableOne(Values.PanelModelSettings);
         }
     @Override
     public void load(DataInputStream in) throws IOException {
@@ -186,8 +188,8 @@ public class WorkSpace implements I_File{
         in.close();
         dataState = Values.Sliced;
         fileStateChanged();
-        sendEvent(Events.Settings);
-        sendEvent(Events.NewData);
+        sendEvent(null,Events.Settings,0,0,null,null);
+        sendEvent(null,Events.NewData,0,0,null,null);
         }
     @Override
     public void save(DataOutputStream out) throws IOException {
@@ -216,7 +218,7 @@ public class WorkSpace implements I_File{
             setAliases(parser);
             parser.toXML(global,is);
             out.close();
-            sendEvent(Events.Settings);
+            sendEvent(null,Events.Settings,0,0,null,null);
             } catch (Exception e1) {
                 if (notify!=null) notify.notify(Values.error,e1.toString());
                 }
@@ -275,7 +277,6 @@ public class WorkSpace implements I_File{
         noLastName();
         }
     //---------------------- Межоконные комуникации ---------------------------------------------------------
-    private CopyOnWriteArrayList<BaseFrame> childs = new CopyOnWriteArrayList();
     public boolean tryToStart(BaseFrame fr){
         for (BaseFrame frame : childs){
             if (fr.getClass()==frame.getClass()){
@@ -294,12 +295,15 @@ public class WorkSpace implements I_File{
             fr.dispose();
             });
         }
-    public void notifyEvent(int code, String mes){ sendEvent(Events.Notify,true,code,mes);}
-    public void sendEvent(int code){ sendEvent(code,true,0,"");}
-    synchronized public void sendEvent(int code,boolean on, int value, String name){
+    public void sendEvent(int code){
+        sendEvent(null,code,0,0,null,null);
+        }
+    synchronized public void sendEvent(final BaseFrame frame0, int code,int par1, long par2, String ss, Object oo){
         java.awt.EventQueue.invokeLater(()->{
             for (BaseFrame frame : childs){
-                frame.onEvent(code,on,value,name);
+                if (frame==frame0)
+                    continue;
+                frame.onEvent(code,par1,par2,ss,oo);
                 }
             });
         }
@@ -321,7 +325,7 @@ public class WorkSpace implements I_File{
         return global.global.PrintingState.getVal();
     }
     public void printing(int state) {
-        sendEvent(Events.Print,true,state,"");
+        sendEvent(null,Events.Print,0,state,"",null);
         global.global.PrintingState.setVal(state);
         saveSettings();
         }
@@ -330,7 +334,7 @@ public class WorkSpace implements I_File{
     }
     public void layerCount(int layerCount) {
         this.cLayer = layerCount;
-        sendEvent(Events.Layer,true,layerCount,"");
+        sendEvent(null,Events.Layer,0,layerCount,"",null);
         }
     public void testAndCreateDir(String fname){
         int idx1 = fname.lastIndexOf("/");

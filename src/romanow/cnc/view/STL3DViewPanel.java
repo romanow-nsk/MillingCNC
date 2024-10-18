@@ -7,6 +7,7 @@ package romanow.cnc.view;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 import romanow.cnc.Values;
 import romanow.cnc.settings.WorkSpace;
+import romanow.cnc.utils.Events;
 import romanow.cnc.viewer3d.PCanvas3D;
 import romanow.cnc.viewer3d.PModel;
 
@@ -35,10 +36,10 @@ public class STL3DViewPanel extends BasePanel {
         super(baseFrame);
         initComponents();
         //this.setBounds(150,150,800,640);
-        setPreferredSize(new Dimension(Values.FrameWidth, Values.FrameHeight-Values.FrameBottom));
+        setPreferredSize(new Dimension(Values.FrameWidth, Values.FrameHeight-Values.FrameBottom*2));
         GraphicsConfiguration config = SimpleUniverse.getPreferredConfiguration();
         canvas = new PCanvas3D(config);
-        canvas.setBounds(0,0,Values.FrameWidth, Values.FrameHeight-Values.FrameBottom);
+        canvas.setBounds(0,0,Values.FrameWidth, Values.FrameHeight-Values.FrameBottom*2);
         add(canvas, BorderLayout.CENTER);
         universe = new SimpleUniverse(canvas);
         canvas.initcanvas(universe);
@@ -115,7 +116,7 @@ public class STL3DViewPanel extends BasePanel {
 
     @Override
     public void onEvent(int code, int par1, long par2, String par3, Object oo) {
-        if (code==Values.EventInit)
+        if (code== Events.Init)
             refresh();
     }
 
