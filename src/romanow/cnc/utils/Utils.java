@@ -229,12 +229,28 @@ public class Utils {
         if (evt==null){
             System.out.println("Изменения приняты");
             return;
-        }
+            }
         evt.setBackground(good ? Color.green : Color.yellow);
         delayInGUI(2, new Runnable() {
             @Override
             public void run() {
                 evt.setBackground(Color.white);
+            }
+        });
+    }
+
+    public static void viewUpdateCheck(final Component evt, boolean good){
+        if (evt==null){
+            System.out.println("Изменения приняты");
+            return;
+            }
+        evt.setEnabled(false);
+        if (good)
+            WorkSpace.ws().saveSettings();
+        delayInGUI(2, new Runnable() {
+            @Override
+            public void run() {
+                evt.setEnabled(true);
             }
         });
     }
@@ -271,18 +287,20 @@ public class Utils {
             par.setVal(Float.parseFloat(ss));
             viewUpdate(evt,true);
             WorkSpace.ws().saveSettings();
-        } catch (Exception ee){
-            notify.notify(Values.error,"Формат вещественного: "+ss);
-            viewUpdate(evt,false);
-           }
-        }
+            } catch (Exception ee){
+                notify.notify(Values.error,"Формат вещественного: "+ss);
+                viewUpdate(evt,false);
+                }
+            }
 
 
     public static void viewUpdate(final KeyEvent evt, boolean good){
         if (evt==null){
             System.out.println("Изменения приняты");
             return;
-        }
+            }
+        if (good)
+            WorkSpace.ws().saveSettings();
         evt.getComponent().setBackground(good ? Color.green : Color.yellow);
         delayInGUI(2, new Runnable() {
             @Override

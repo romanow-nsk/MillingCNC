@@ -7,7 +7,7 @@ package romanow.cnc.m3d;
 
 import romanow.cnc.view.BaseFrame;
 import romanow.cnc.settingsView.PrintSettingsPanel;
-import romanow.cnc.settingsView.GlobalSettingsPanel;
+import romanow.cnc.settingsView.EquipSettingsPanel;
 import romanow.cnc.settingsView.SliceSettingsPanel;
 import romanow.cnc.view.ModelSettingsPanel;
 import romanow.cnc.settingsView.I_SettingsPanel;
@@ -29,7 +29,7 @@ public class M3DSettings_2 extends BaseFrame implements I_SettingsChanged{
      */
     private ArrayList<I_SettingsPanel> panels = new ArrayList();
     private boolean localValid = WorkSpace.ws().modelPresent();
-    private GlobalSettingsPanel glob=null;
+    private EquipSettingsPanel glob=null;
     private ModelSettingsPanel model=null;
     public M3DSettings_2(I_Notify mainNotify) {
         if (!tryToStart()) return;
@@ -37,7 +37,7 @@ public class M3DSettings_2 extends BaseFrame implements I_SettingsChanged{
         setTitle("Настройки");
         Save.setEnabled(false);
         this.setBounds(100,100, 800, 450);
-        glob =  new GlobalSettingsPanel(this,WorkSpace.ws().global(),mainNotify);
+        glob =  new EquipSettingsPanel(this,WorkSpace.ws().global(),mainNotify);
         panels.add((I_SettingsPanel)glob);
         SettingsList.add("Принтер",glob);
         JPanel pn =  new PrintSettingsPanel(this,WorkSpace.ws().global(),mainNotify);

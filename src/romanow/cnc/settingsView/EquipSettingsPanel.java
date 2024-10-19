@@ -20,14 +20,14 @@ import javax.swing.JPanel;
  *
  * @author romanow
  */
-public class GlobalSettingsPanel extends javax.swing.JPanel implements I_SettingsPanel{
+public class EquipSettingsPanel extends javax.swing.JPanel implements I_SettingsPanel{
     private I_SettingsChanged changed;
     /**
      * Creates new form M3SSettings
      */
     private Settings set;
     private I_Notify notify;
-    public GlobalSettingsPanel(I_SettingsChanged changed0, Settings set0, I_Notify notify0) {
+    public EquipSettingsPanel(I_SettingsChanged changed0, Settings set0, I_Notify notify0) {
         initComponents();
         changed = changed0;
         notify = notify0;

@@ -17,6 +17,7 @@ public class Values {
     public final static int PanelMain=0x02;
     public final static int PanelSTL3D=0x04;
     public final static int PanelModelSettings=0x08;
+    public final static int PanelGlobalSettings=0x10;
     /** состояния программы по данным */
     public final static int NoData=0;           // Нет данных
     public final static int Loaded=1;           // Модель заружена

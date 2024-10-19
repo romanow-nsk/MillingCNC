@@ -26,7 +26,7 @@ import romanow.cnc.settingsView.I_SettingsPanel;
  *
  * @author romanow
  */
-public class ModelSettingsPanel extends BasePanel  implements I_SettingsPanel{
+public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
     private Settings set;
     private I_SettingsChanged changed;
     private I_Notify notify;
@@ -34,7 +34,7 @@ public class ModelSettingsPanel extends BasePanel  implements I_SettingsPanel{
     /**
      * Creates new form M3SSettings
      */
-    public ModelSettingsPanel(I_SettingsChanged changed0, Settings set0, I_Notify notify0) {
+    public GlobalSettingsPanel(I_SettingsChanged changed0, Settings set0, I_Notify notify0) {
         super(null);
         initComponents();
         set = set0;
@@ -42,9 +42,9 @@ public class ModelSettingsPanel extends BasePanel  implements I_SettingsPanel{
         notify = notify0;
         loadSettings();
         }
-    public ModelSettingsPanel(BaseFrame base) {
+    public GlobalSettingsPanel(BaseFrame base) {
         super(base);
-        set = WorkSpace.ws().local();
+        set = WorkSpace.ws().global();
         notify = WorkSpace.ws().getNotify();
         initComponents();
         busy = true;
@@ -58,12 +58,12 @@ public class ModelSettingsPanel extends BasePanel  implements I_SettingsPanel{
 
     @Override
     public String getName() {
-        return "Модель";
+        return "Настройки";
     }
 
     @Override
     public int modeMask() {
-        return Values.PanelModelSettings;
+        return Values.PanelGlobalSettings;
     }
 
     @Override

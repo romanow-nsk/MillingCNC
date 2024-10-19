@@ -55,6 +55,7 @@ public class WorkSpace implements I_File{
     public void viewMode(int vv){ viewMode=vv; }
     public void viewModeEnableOne(int vv){ viewMode |=vv; }
     public void viewModeDisableOne(int vv){ viewMode &= ~vv; }
+    public boolean isViewModeEnable(int vv){ return (viewMode & vv)!=0; }
     public boolean modelPresent(){ return dataState!=Values.NoData; }
     public boolean slicePresent(){ return dataState==Values.Sliced || dataState==Values.Changed; }
     public boolean sliceChanged(){ return dataState==Values.Changed; }

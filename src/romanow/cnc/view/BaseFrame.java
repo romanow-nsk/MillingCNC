@@ -31,8 +31,12 @@ public abstract class BaseFrame extends JFrame implements I_Important, I_PanelEv
     public Settings global(){ return WorkSpace.ws().global(); }
     public void createPanels(){}
     public void refreshPanels(){}
+    public void toFront(int mask){}
     //-------------------------------------------------------------------------------
 
+    public boolean isViewPanelEnable(int mode){
+        return WorkSpace.ws().isViewModeEnable(mode);
+        }
     public void setViewPanel(int mode){
         WorkSpace.ws().viewMode(mode);
         refreshPanels();

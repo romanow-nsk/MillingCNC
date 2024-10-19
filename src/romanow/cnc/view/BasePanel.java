@@ -17,6 +17,7 @@ public abstract class BasePanel extends javax.swing.JPanel implements I_PanelEve
 
     //-----------------------------------------------------------------------------------------------------
     @Getter private BaseFrame baseFrame;
+    @Getter @Setter private boolean selected;
     public abstract  String getName();
     public abstract  int modeMask();
     public abstract  boolean modeEnabled();

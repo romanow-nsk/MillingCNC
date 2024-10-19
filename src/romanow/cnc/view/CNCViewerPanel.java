@@ -12,6 +12,7 @@ import romanow.cnc.utils.Utils;
 import romanow.cnc.Values;
 import romanow.cnc.settings.WorkSpace;
 
+import java.awt.*;
 import java.io.*;
 import java.util.Date;
 import romanow.cnc.m3d.ViewAdapter;
@@ -280,13 +281,24 @@ public class CNCViewerPanel extends BasePanel {
          */
     }//GEN-LAST:event_OpenSTLActionPerformed
 
+    private Color savedColor;
     private void ViewSTL3DActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ViewSTL3DActionPerformed
         if (!WorkSpace.ws().model().loaded()){
             toLog("Не загружен STL-файл");
             return;
             }
-        getBaseFrame().setViewPanelEnable(PanelSTL3D);
-        getBaseFrame().refreshPanels();
+        if (getBaseFrame().isViewPanelEnable(PanelSTL3D)){
+            getBaseFrame().setViewPanelDisable(PanelSTL3D);
+            ViewSTL3D.setBackground(savedColor);
+            getBaseFrame().refreshPanels();
+            }
+        else{
+            getBaseFrame().setViewPanelEnable(PanelSTL3D);
+            savedColor = ViewSTL3D.getBackground();
+            ViewSTL3D.setBackground(Color.green);
+            getBaseFrame().refreshPanels();
+            getBaseFrame().toFront(PanelSTL3D);
+            }
         //new STLViewer(viewCommon).setVisible(true);
     }//GEN-LAST:event_ViewSTL3DActionPerformed
 

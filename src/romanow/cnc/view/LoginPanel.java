@@ -39,7 +39,7 @@ public class LoginPanel extends BasePanel {
         UserProfile user = users.get(UserList.getSelectedIndex());
         if (user.password.equals(StringCrypter.encrypt(Password.getText()))){
             WorkSpace.ws().currentUser(user);
-            getBaseFrame().setViewPanel(Values.PanelMain);
+            getBaseFrame().setViewPanel(Values.PanelMain | Values.PanelGlobalSettings);
             }
         else
             MES.setText("Неверный пароль");

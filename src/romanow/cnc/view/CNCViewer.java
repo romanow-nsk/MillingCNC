@@ -67,7 +67,19 @@ public class CNCViewer extends BaseFrame {
     /**
      * Creates new form Viewer
      */
-
+    @Override
+    public void toFront(int mask){
+        int idx=0;
+        for(BasePanel panel : getPanels()){
+            if (!panel.isSelected())
+                continue;
+            if (panel.modeMask()==mask) {
+                PanelList.setSelectedIndex(idx);
+                break;
+                }
+            idx++;
+            }
+        }
     @Override
     public void refreshPanels() {
         PanelList.removeAll();
@@ -76,6 +88,7 @@ public class CNCViewer extends BaseFrame {
             if (bb){
                 PanelList.add(panel.getName(),panel);
                 }
+            panel.setSelected(bb);
             panel.onInit(bb);
             }
         }
@@ -92,6 +105,7 @@ public class CNCViewer extends BaseFrame {
         //-------------------------------------------------------------------------------
         addPanel(new LoginPanel(this));
         addPanel(new CNCViewerPanel(this));
+        addPanel(new GlobalSettingsPanel(this));
         addPanel(new STL3DViewPanel(this));
         addPanel(new ModelSettingsPanel(this));
         //---------------------------------------------------------------------------------
@@ -107,15 +121,14 @@ public class CNCViewer extends BaseFrame {
         System.out.printf("Разрешение экрана: %dx%d\n", screenSize.width, screenSize.height);
         setBounds(200,50, Values.FrameWidth,Values.FrameHeight);
         setTitle(Values.getVersion()+" "+ws().currentFileTitle());
-        createPanels();
-        setVisible(true);
-        notify = (ViewNotifyer) ws().getNotify();
         try {
             ws().loadGlobalSettings();
             } catch (UNIException e) {
                 notify.notify(Values.warning,"Настойки не прочитаны - умолчание");
                 ws().saveSettings();
                 }
+        createPanels();
+        notify = (ViewNotifyer) ws().getNotify();
         setViewPanel(PanelLogin);
         Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
             @Override
@@ -215,7 +228,7 @@ public class CNCViewer extends BaseFrame {
         int userType = ws().currentUser().accessMode;
         boolean isAdmin = userType==Values.userAdmin;
         boolean canSave = userType==Values.userAdmin || userType==Values.userConstructor;
-        mBar.getMenu(mSlice).setEnabled(loaded || sliced);
+        //mBar.getMenu(mSlice).setEnabled(loaded || sliced);
         mBar.getMenu(mSet).setEnabled(userType!=Values.userGuest);
         mBar.getMenu(mPrint).setEnabled(userType!=Values.userGuest);
         mBar.getMenu(mOther).setEnabled(isAdmin);
