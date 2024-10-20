@@ -4,6 +4,9 @@ import com.thoughtworks.xstream.XStream;
 import romanow.cnc.commands.Command;
 import romanow.cnc.console.COMPortDriver;
 import romanow.cnc.io.I_File;
+import romanow.cnc.m3d.M3DOperations;
+import romanow.cnc.m3d.M3DVisio;
+import romanow.cnc.m3d.ViewAdapter;
 import romanow.cnc.view.BaseFrame;
 import romanow.cnc.utils.Events;
 import romanow.cnc.slicer.SliceData;
@@ -12,6 +15,7 @@ import romanow.cnc.utils.I_Notify;
 import romanow.cnc.utils.UNIException;
 import romanow.cnc.Values;
 
+import javax.swing.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -33,6 +37,10 @@ public class WorkSpace implements I_File{
     private Settings temp=new Settings();
     /** Для логирования внутренних ошибок */
     private I_Notify notify=null;
+    private ViewAdapter viewCommon = null;
+    private JPanel preview=null;
+    private M3DOperations operate=null;
+    private M3DVisio visio=null;
     public ArrayList<Command> commands = new ArrayList<>();
     /** версия формата файла */
     private int fileFormatVersion=0;
@@ -61,6 +69,13 @@ public class WorkSpace implements I_File{
     public boolean sliceChanged(){ return dataState==Values.Changed; }
     public void dataChanged(){ dataState = Values.Changed; }
     public void dataSliced(){ dataState = Values.Sliced; }
+    public ViewAdapter viewCommon(){ return viewCommon; }
+    public JPanel preview(){ return preview; }
+    public M3DOperations operate(){ return operate; }
+    public void preview(JPanel vv){ 
+        preview=vv;
+        viewCommon.preview(vv);
+        }
     //--------------------------------------------------------------------------
     public void noLastName(){ lastName=""; }
     public void lastName(String ss){
@@ -123,8 +138,11 @@ public class WorkSpace implements I_File{
         return one;
         }
     public static Settings set(){ return WorkSpace.ws().local(); }
-    public void setNotify(I_Notify not){
-        this.notify = not;
+    public void setNotify(I_Notify not, ViewAdapter viewCommon0){
+        notify = not;
+        viewCommon = viewCommon0;
+        operate = new M3DOperations(not);
+        visio = new M3DVisio(not,viewCommon);
         }
     public I_Notify getNotify(){
         return notify;
@@ -171,7 +189,6 @@ public class WorkSpace implements I_File{
         data(new SliceData());
         fileStateChanged();        
         dataState = Values.Loaded;
-        viewModeEnableOne(Values.PanelModelSettings);
         }
     @Override
     public void load(DataInputStream in) throws IOException {

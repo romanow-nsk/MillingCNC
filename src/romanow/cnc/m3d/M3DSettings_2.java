@@ -34,14 +34,15 @@ public class M3DSettings_2 extends BaseFrame implements I_SettingsChanged{
         setTitle("Настройки");
         Save.setEnabled(false);
         this.setBounds(100,100, 800, 450);
-        JPanel pn =  new SliceSettingsPanel(this,WorkSpace.ws().global(),mainNotify);
+        WorkSpace ws = WorkSpace.ws();
+        JPanel pn =  new SliceSettingsPanel(this,ws.global(),mainNotify);
         panels.add((I_SettingsPanel)pn);
         SettingsList.add("Слайсинг (общие)",pn);
         if (localValid){
-            model =  new ModelSettingsPanel(this,WorkSpace.ws().global(),mainNotify);
+            model =  new ModelSettingsPanel(this,ws.global(),mainNotify);
             panels.add((I_SettingsPanel)model);
             SettingsList.add("Модель",model);
-            pn =  new SliceSettingsPanel(this,WorkSpace.ws().local(),mainNotify);
+            pn =  new SliceSettingsPanel(this,ws.local(),mainNotify);
             panels.add((I_SettingsPanel)pn);
             SettingsList.add("Слайсинг (модель)",pn);
             SettingsList.add("Уставки (модель)",pn);
@@ -120,7 +121,8 @@ public class M3DSettings_2 extends BaseFrame implements I_SettingsChanged{
     private void SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveActionPerformed
         for (I_SettingsPanel pn : panels)
             pn.saveSettings();
-        WorkSpace.ws().saveSettings();
+        WorkSpace ws = WorkSpace.ws();
+        ws.saveSettings();
         onClose();
         dispose();
     }//GEN-LAST:event_SaveActionPerformed

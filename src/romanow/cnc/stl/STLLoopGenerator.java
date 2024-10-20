@@ -46,10 +46,11 @@ public class STLLoopGenerator {
             createCrossLine();
             }
         loops.clear();
-        if (WorkSpace.ws().local().slice.FlateCircuitSlice.getVal())
+        WorkSpace ws = WorkSpace.ws();
+        if (ws.local().slice.FlateCircuitSlice.getVal())
             createTriangleLoops();          // Создает контура сам по себе ПОЗЖЕ ОСТАЛЬНЫХ
         createIndexedSource();
-        boolean xx = WorkSpace.ws().local().slice.LoopsWithSomeLineTypes.getVal();
+        boolean xx = ws.local().slice.LoopsWithSomeLineTypes.getVal();
         while(true){
             STLLoop loop = createLoop(xx);
             if (loop==null)
@@ -65,7 +66,7 @@ public class STLLoopGenerator {
             loop.correct();
             }
         ArrayList<STLLoop> repaired =  repair();
-        double lnt = WorkSpace.ws().local().slice.FillingFlatness.getVal();
+        double lnt = ws.local().slice.FillingFlatness.getVal();
         int cnt=0;
         for (STLLoop loop:loops)
             cnt += loop.evenLoop(orig,lnt);

@@ -56,7 +56,7 @@ public class M3DSequencer extends javax.swing.JFrame {
         СommandType.removeAll();
         СommandType.addItem(new CommandLine().name());
         СommandType.addItem(new CommandLayer().name());
-        //cList.add(new CommandLayer(WorkSpace.ws().general.VerticalStep.getVal()));
+        //cList.add(new CommandLayer(ws.general.VerticalStep.getVal()));
         initView();
         back = new USBNotify(factoryFull,notify) {
             @Override

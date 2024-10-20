@@ -35,18 +35,20 @@ public class USBNotify implements USBBack{
         }
     @Override
     public void onError(int code, int[] data) {
+        WorkSpace ws = WorkSpace.ws();
         notify.notify(Values.error,"Ошибка принтера: "+nameByCode(code)+": "+USBCodes.answerName(data[0]));
         if (USBCodes.USBAnswerHard[data[0]]==0 )      // Не требуют перегрузки нитерфейса
             return;
         errorsCounter++;
         if (errorsCounter == USBCodes.USBErrorsCount){
-            WorkSpace.ws().sendEvent(Events.USBFatal);
+            ws.sendEvent(Events.USBFatal);
             errorsCounter=0;
             }
         }
     @Override
     public void onFatal(int code, String mes) {
+        WorkSpace ws = WorkSpace.ws();
         notify.notify(Values.fatal,"Ошибка интерфейса: "+nameByCode(code)+ " "+mes);
-        WorkSpace.ws().sendEvent(Events.USBFatal);
+        ws.sendEvent(Events.USBFatal);
         }
 }

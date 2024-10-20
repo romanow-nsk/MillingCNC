@@ -21,32 +21,35 @@ public abstract class BaseFrame extends JFrame implements I_Important, I_PanelEv
 
     @Getter private ArrayList<BasePanel> panels = new ArrayList();            // панели
     public boolean tryToStart(){
-        return WorkSpace.ws().tryToStart(this);
+        return ws.tryToStart(this);
         }
     public void onClose(){
-        WorkSpace.ws().onClose(this);
+        ws.onClose(this);
         }
-    public WorkSpace ws(){ return WorkSpace.ws(); }
-    public Settings local(){ return WorkSpace.ws().local(); }
-    public Settings global(){ return WorkSpace.ws().global(); }
+    public WorkSpace ws(){ return ws; }
+    public Settings local(){ return ws.local(); }
+    public Settings global(){ return ws.global(); }
     public void createPanels(){}
     public void refreshPanels(){}
     public void toFront(int mask){}
+    private WorkSpace ws;
     //-------------------------------------------------------------------------------
-
+    public BaseFrame(){
+        ws = WorkSpace.ws();
+        }
     public boolean isViewPanelEnable(int mode){
-        return WorkSpace.ws().isViewModeEnable(mode);
+        return ws.isViewModeEnable(mode);
         }
     public void setViewPanel(int mode){
-        WorkSpace.ws().viewMode(mode);
+        ws.viewMode(mode);
         refreshPanels();
         }
     public void setViewPanelEnable(int mode){
-        WorkSpace.ws().viewModeEnableOne(mode);
+        ws.viewModeEnableOne(mode);
         refreshPanels();
         }
     public void setViewPanelDisable(int mode){
-        WorkSpace.ws().viewModeDisableOne(mode);
+        ws.viewModeDisableOne(mode);
         refreshPanels();
         }
 
@@ -84,7 +87,7 @@ public abstract class BaseFrame extends JFrame implements I_Important, I_PanelEv
     public void sendEvent(int code, int par1, long par2, String par3,Object oo){
         for(BasePanel panel : panels)
             panel.onEvent(code,par1,par2,par3,oo);
-        WorkSpace.ws().sendEvent(this,code,par1,par2,par3,oo);
+        ws.sendEvent(this,code,par1,par2,par3,oo);
         }
     @Override
     public void onEvent(int code, int par1, long par2, String par3,Object oo){

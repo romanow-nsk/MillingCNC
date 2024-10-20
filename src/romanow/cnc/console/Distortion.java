@@ -96,6 +96,7 @@ public class Distortion{
         int data[] = new int[sz];
         data[0]=USBCodes.SetBlockCorrElements;
         int idx=2;
+        WorkSpace ws = WorkSpace.ws();
         for(int y=0;y<256;y++)
             for(int x=0;x<256;x++){
                 if (notNull && valueXY(x,y)==0)
@@ -105,12 +106,12 @@ public class Distortion{
                 if (idx==sz){
                     data[1]=idx-2;
                     usb.oneCommand(data,idx, back);
-                    WorkSpace.ws().notify("Передан блок коррекции:"+(idx-2));
+                    ws.notify("Передан блок коррекции:"+(idx-2));
                     idx=2;
                     }
             }
         if (idx!=2){
-            WorkSpace.ws().notify("Передан блок коррекции:"+(idx-2));
+            ws.notify("Передан блок коррекции:"+(idx-2));
             data[1]=idx-2;
             usb.oneCommand(data,idx,back);
             }

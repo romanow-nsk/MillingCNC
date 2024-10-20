@@ -32,7 +32,8 @@ public class UserListEditor extends BaseFrame {
         setBounds(350,250,300,full ? 370 :120);
         }
     private void init(){
-        users = WorkSpace.ws().global().userList;
+        WorkSpace ws = WorkSpace.ws();
+        users = ws.global().userList;
         UserList.removeAll();
         for(UserProfile uu : users){
             UserList.add(uu.name);}
@@ -48,11 +49,12 @@ public class UserListEditor extends BaseFrame {
         if (!tryToStart()) return;        
         initComponents();
         setTitle("Пользователи");
+        WorkSpace ws = WorkSpace.ws();
         try {
-            WorkSpace.ws().loadGlobalSettings();
+            ws.loadGlobalSettings();
             } catch (UNIException e) {
                 ws().sendEvent(null,Events.Notify, 1, Values.important, "Настойки не прочитаны - умолчание",null);
-                WorkSpace.ws().saveSettings();
+                ws.saveSettings();
             }
         init();
     }

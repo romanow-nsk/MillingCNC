@@ -90,7 +90,7 @@ public class M3DFileBinOutputStream {
     public void writeHeader() throws UNIException {
         /*
         try {
-            is.write(WorkSpace.ws().temp().createHeader());
+            is.write(ws.temp().createHeader());
             } catch (IOException ee){ throw UNIException.io(ee); }
          */
         }

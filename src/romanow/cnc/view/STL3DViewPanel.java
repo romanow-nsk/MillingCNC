@@ -35,23 +35,10 @@ public class STL3DViewPanel extends BasePanel {
     public STL3DViewPanel(BaseFrame baseFrame) {
         super(baseFrame);
         initComponents();
-        //this.setBounds(150,150,800,640);
-        setPreferredSize(new Dimension(Values.FrameWidth, Values.FrameHeight-Values.FrameBottom*2));
-        GraphicsConfiguration config = SimpleUniverse.getPreferredConfiguration();
-        canvas = new PCanvas3D(config);
-        canvas.setBounds(0,0,Values.FrameWidth, Values.FrameHeight-Values.FrameBottom*2);
-        add(canvas, BorderLayout.CENTER);
-        universe = new SimpleUniverse(canvas);
-        canvas.initcanvas(universe);
-        //pack();
-        //setLocationRelativeTo(null);
-        setVisible(true);
-        //addWindowListener(this);
-        //---- вернуть обратно ----------------------
-        canvas.homeview(universe);
         }
 
-    private void onClose(){
+    @Override
+    public void onClose(){
         universe.removeAllLocales();
         universe.cleanup();
         //if (thread!=null){          // Тупо обломить поток
@@ -80,6 +67,20 @@ public class STL3DViewPanel extends BasePanel {
     public void onInit(boolean on) {
         if (!on)
             return;
+        //this.setBounds(150,150,800,640);
+        setPreferredSize(new Dimension(Values.FrameWidth-100, Values.FrameHeight-Values.FrameBottom*2));
+        GraphicsConfiguration config = SimpleUniverse.getPreferredConfiguration();
+        canvas = new PCanvas3D(config);
+        canvas.setBounds(0,0,Values.FrameWidth, Values.FrameHeight-Values.FrameBottom*2);
+        add(canvas, BorderLayout.CENTER);
+        universe = new SimpleUniverse(canvas);
+        canvas.initcanvas(universe);
+        //pack();
+        //setLocationRelativeTo(null);
+        setVisible(true);
+        //addWindowListener(this);
+        //---- вернуть обратно ----------------------
+        canvas.homeview(universe);
         if(model != null)
             model.cleanup();
         model = new PModel();

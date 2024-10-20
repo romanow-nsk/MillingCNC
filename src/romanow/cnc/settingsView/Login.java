@@ -42,11 +42,12 @@ public class Login extends BaseFrame {
         initComponents();
         setBounds(200,200,300,200);
         setTitle("SLM 3D-Принтер");
+        WorkSpace ws = WorkSpace.ws();
         try {
-            WorkSpace.ws().loadGlobalSettings();
+            ws.loadGlobalSettings();
             } catch (UNIException e) {
                 MES.setText("Настойки не прочитаны - умолчание");
-                WorkSpace.ws().saveSettings();
+                ws.saveSettings();
             }
         init();
         }
@@ -112,10 +113,11 @@ public class Login extends BaseFrame {
             }
         }
     private void login(){
-        ArrayList<UserProfile> users = WorkSpace.ws().global().userList; 
+        WorkSpace ws = WorkSpace.ws();
+        ArrayList<UserProfile> users = ws.global().userList; 
         UserProfile user = users.get(UserList.getSelectedIndex());
         if (user.password.equals(StringCrypter.encrypt(Password.getText()))){
-            WorkSpace.ws().currentUser(user);
+            ws.currentUser(user);
             new CNCViewer().setVisible(true);
             setVisible(false);            
             }

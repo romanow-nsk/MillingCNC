@@ -9,7 +9,7 @@ import java.util.Date;
 /** пустой адаптер для связи с View */
 public class ViewAdapter {
     /** Панель для рисования */
-    public final JPanel FLD;
+    private JPanel FLD=null;
     /** размер панели */
     private int sz;
     /** масштаб рисования */
@@ -27,6 +27,9 @@ public class ViewAdapter {
     /** системное время старта */
     private long startTime=0;
 
+    public ViewAdapter() {
+        this(null);
+        }
     public ViewAdapter(JPanel fld) {
         FLD = fld;
         if (fld!=null)
@@ -36,6 +39,10 @@ public class ViewAdapter {
         finish = false;
         pause = false;
         }
+    public void preview(JPanel vv){
+        FLD = vv;
+        }
+    public JPanel preview(){ return FLD; }
     public synchronized void finish(){
         pause=false;
         finish=true;

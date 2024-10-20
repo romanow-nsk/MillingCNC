@@ -42,8 +42,9 @@ public class ModelSettingsPanel extends BasePanel  implements I_SettingsPanel{
         }
     public ModelSettingsPanel(BaseFrame base) {
         super(base);
-        set = WorkSpace.ws().local();
-        notify = WorkSpace.ws().getNotify();
+        WorkSpace ws = WorkSpace.ws();
+        set = ws.local();
+        notify = ws.getNotify();
         initComponents();
         busy = true;
         Mode2.removeAll();
@@ -73,6 +74,10 @@ public class ModelSettingsPanel extends BasePanel  implements I_SettingsPanel{
     public void onInit(boolean on) {
         loadSettings();
     }
+
+    @Override
+    public void onClose() {
+        }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -608,7 +613,8 @@ public class ModelSettingsPanel extends BasePanel  implements I_SettingsPanel{
     }// </editor-fold>//GEN-END:initComponents
     public boolean loadSettings(){
         try {
-            set = WorkSpace.ws().global();
+            WorkSpace ws = WorkSpace.ws();
+            set = ws.global();
             busy = true;
             set.setNotNull();
             DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.US);
@@ -660,7 +666,8 @@ public class ModelSettingsPanel extends BasePanel  implements I_SettingsPanel{
 
     public boolean saveSettings(String par){
         try {
-            Settings set = WorkSpace.ws().local();
+            WorkSpace ws = WorkSpace.ws();
+            Settings set = ws.local();
             set.model.ZStart.setVal(Float.parseFloat(Zstart.getText()));
             set.model.ZFinish.setVal(Float.parseFloat(Zfinish.getText()));
             set.model.BlankWidth.setVal(Float.parseFloat(BlankWidth.getText()));
@@ -716,12 +723,12 @@ public class ModelSettingsPanel extends BasePanel  implements I_SettingsPanel{
         ws.model().rotate(XYZ.getSelectedIndex(),new MyAngle(angle),notify);
         ws.model().shiftToCenter();
         ws.data(new SliceData());
-        Settings set = WorkSpace.ws().local();
+        Settings set = ws.local();
         ws.model().saveModelDimensions();
         set.setZStartFinish();
         loadSettings();
         notify.log(String.format("Поворот %2s %s",(String)XYZ.getSelectedItem(),ANGLE.getText()));
-        WorkSpace.ws().sendEvent(Events.Rotate);
+        ws.sendEvent(Events.Rotate);
     }//GEN-LAST:event_RotateButtonActionPerformed
 
     private void ShiftButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ShiftButtonActionPerformed
@@ -736,12 +743,12 @@ public class ModelSettingsPanel extends BasePanel  implements I_SettingsPanel{
         WorkSpace ws = WorkSpace.ws();
         ws.model().shift(XYZShift.getSelectedIndex(),shift);
         ws.data(new SliceData());
-        Settings set = WorkSpace.ws().local();
+        Settings set = ws.local();
         ws.model().saveModelDimensions();
         set.setZStartFinish();
         loadSettings();
         notify.log(String.format("Сдвиг %2s %s",(String)XYZShift.getSelectedItem(),SHIFT.getText()));
-        WorkSpace.ws().sendEvent(Events.Rotate);
+        ws.sendEvent(Events.Rotate);
 
     }//GEN-LAST:event_ShiftButtonActionPerformed
 
@@ -785,12 +792,12 @@ public class ModelSettingsPanel extends BasePanel  implements I_SettingsPanel{
         ws.model().rotate(XYZ.getSelectedIndex(),new MyAngle(angle),notify);
         ws.model().shiftToCenter();
         ws.data(new SliceData());
-        Settings set = WorkSpace.ws().local();
+        Settings set = ws.local();
         ws.model().saveModelDimensions();
         set.setZStartFinish();
         loadSettings();
         notify.log(String.format("Поворот %2s %s",(String)XYZ.getSelectedItem(),ANGLE.getText()));
-        WorkSpace.ws().sendEvent(Events.Rotate);
+        ws.sendEvent(Events.Rotate);
     }//GEN-LAST:event_ANGLEKeyPressed
 
     private void SHIFTKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_SHIFTKeyPressed
@@ -806,12 +813,12 @@ public class ModelSettingsPanel extends BasePanel  implements I_SettingsPanel{
         WorkSpace ws = WorkSpace.ws();
         ws.model().shift(XYZShift.getSelectedIndex(),shift);
         ws.data(new SliceData());
-        Settings set = WorkSpace.ws().local();
+        Settings set = ws.local();
         ws.model().saveModelDimensions();
         set.setZStartFinish();
         loadSettings();
         notify.log(String.format("Сдвиг %2s %s",(String)XYZShift.getSelectedItem(),SHIFT.getText()));
-        WorkSpace.ws().sendEvent(Events.Rotate);
+        ws.sendEvent(Events.Rotate);
     }//GEN-LAST:event_SHIFTKeyPressed
 
     private void MoveOptimizeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_MoveOptimizeItemStateChanged

@@ -4,8 +4,8 @@
  */
 package romanow.cnc.view;
 
-import romanow.cnc.m3d.FileBinInputStream;
-import romanow.cnc.m3d.M3DFileBinInputStream;
+import romanow.cnc.slicer.SliceData;
+import romanow.cnc.slicer.SliceDataGenerator;
 import romanow.cnc.utils.Events;
 import romanow.cnc.utils.UNIException;
 import romanow.cnc.utils.Utils;
@@ -17,7 +17,6 @@ import java.io.*;
 import java.util.Date;
 import romanow.cnc.m3d.ViewAdapter;
 import romanow.cnc.m3d.ViewNotifyer;
-import romanow.cnc.viewer3d.STLViewer;
 
 import static romanow.cnc.Values.*;
 
@@ -30,15 +29,20 @@ public class CNCViewerPanel extends BasePanel {
     private BufferedWriter logFile = null;
     private ViewAdapter viewCommon = new ViewAdapter(null);
     private boolean stopOnWarning=false;
+    private WorkSpace ws=null;
     /**
      * Creates new form CNCViewerPanel
      */
     public CNCViewerPanel(BaseFrame baseFrame) {
         super(baseFrame);
         initComponents();
+        ws = WorkSpace.ws();
         Progress.setMaximum(100);
         Progress.setMinimum(0);
         Progress.setValue(0);
+        SliceMode.removeAll();
+        for(String ss : SliceModes)
+            SliceMode.addItem(ss);
         notify = new ViewNotifyer(LOG,Progress){
             @Override
             public void notify(final int level0, final String mes) {
@@ -64,7 +68,25 @@ public class CNCViewerPanel extends BasePanel {
                             });
                 }
             };
-        WorkSpace.ws().setNotify(notify);
+        viewCommon = new ViewAdapter(){       // Объект-адаптер для визуальных методов
+            @Override
+            public boolean onStepLine() {
+                if (BYSTEP.isSelected()){
+                    pause(true);
+                    PAUSE.setText("продолжить");
+                    }
+                return super.onStepLine();
+                }
+            @Override
+            public boolean onStepLayer() {
+                if (BYSTEP.isSelected()){
+                    pause(true);
+                    PAUSE.setText("продолжить");
+                    }
+                return super.onStepLayer();
+                }
+            };
+        ws.setNotify(notify,viewCommon);
         setMenuVisible();
         }
 
@@ -90,6 +112,10 @@ public class CNCViewerPanel extends BasePanel {
     public void onInit(boolean on) {
         }
 
+    @Override
+    public void onClose() {
+        }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -110,6 +136,11 @@ public class CNCViewerPanel extends BasePanel {
         LogToFile = new javax.swing.JCheckBox();
         OpenSTL = new javax.swing.JButton();
         ViewSTL3D = new javax.swing.JButton();
+        jLabel39 = new javax.swing.JLabel();
+        jLabel40 = new javax.swing.JLabel();
+        SliceInto = new javax.swing.JButton();
+        SliceMode = new javax.swing.JComboBox<>();
+        ViewSTL3DLoops = new javax.swing.JButton();
 
         setLayout(null);
 
@@ -184,10 +215,10 @@ public class CNCViewerPanel extends BasePanel {
             }
         });
         add(OpenSTL);
-        OpenSTL.setBounds(720, 10, 140, 30);
+        OpenSTL.setBounds(720, 40, 140, 30);
 
         ViewSTL3D.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        ViewSTL3D.setText("Просмотр STL(3D)");
+        ViewSTL3D.setText("STL(3D)");
         ViewSTL3D.setBorder(new javax.swing.border.MatteBorder(null));
         ViewSTL3D.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -195,7 +226,42 @@ public class CNCViewerPanel extends BasePanel {
             }
         });
         add(ViewSTL3D);
-        ViewSTL3D.setBounds(720, 50, 140, 30);
+        ViewSTL3D.setBounds(720, 80, 140, 30);
+
+        jLabel39.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel39.setText("Слайсинг");
+        add(jLabel39);
+        jLabel39.setBounds(870, 10, 80, 20);
+
+        jLabel40.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel40.setText("Модель");
+        add(jLabel40);
+        jLabel40.setBounds(720, 10, 80, 20);
+
+        SliceInto.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        SliceInto.setText("Слайсинг");
+        SliceInto.setBorder(new javax.swing.border.MatteBorder(null));
+        SliceInto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SliceIntoActionPerformed(evt);
+            }
+        });
+        add(SliceInto);
+        SliceInto.setBounds(870, 80, 160, 30);
+
+        add(SliceMode);
+        SliceMode.setBounds(870, 40, 160, 30);
+
+        ViewSTL3DLoops.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        ViewSTL3DLoops.setText("STL(3D) + контуры");
+        ViewSTL3DLoops.setBorder(new javax.swing.border.MatteBorder(null));
+        ViewSTL3DLoops.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ViewSTL3DLoopsActionPerformed(evt);
+            }
+        });
+        add(ViewSTL3DLoops);
+        ViewSTL3DLoops.setBounds(720, 120, 140, 30);
     }// </editor-fold>//GEN-END:initComponents
 
     private void PAUSEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PAUSEActionPerformed
@@ -251,14 +317,13 @@ public class CNCViewerPanel extends BasePanel {
             if (test1()) return;
             final String fname = getBaseFrame().getInputFileName("Файл STL","stl",false);
             if (fname==null) return;
-            WorkSpace.ws().loadModel(fname, notify);
+            ws.loadModel(fname, notify);
             setMenuVisible();
             getBaseFrame().refreshPanels();
             } catch (UNIException ee){ toLog(ee.toString());}
         }
 
     private void OpenSTLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OpenSTLActionPerformed
-        WorkSpace ws = WorkSpace.ws();
         ws.removeAll();
         setMenuVisible();
         openModel();
@@ -270,11 +335,11 @@ public class CNCViewerPanel extends BasePanel {
         new Thread(
                 ()->{
                     try {
-                        WorkSpace.ws().removeAll();
+                        ws.removeAll();
                         setMenuVisible();
-                        WorkSpace.ws().load(new DataInputStream(new FileInputStream(fname)));
-                        WorkSpace.ws().lastName(fname);
-                        WorkSpace.ws().fileStateChanged();
+                        ws.load(new DataInputStream(new FileInputStream(fname)));
+                        ws.lastName(fname);
+                        ws.fileStateChanged();
                     } catch (IOException e) { notify.notify(Values.error,e.toString()); }
                     finishOperation();
                 }).start();
@@ -283,7 +348,7 @@ public class CNCViewerPanel extends BasePanel {
 
     private Color savedColor;
     private void ViewSTL3DActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ViewSTL3DActionPerformed
-        if (!WorkSpace.ws().model().loaded()){
+        if (!ws.model().loaded()){
             toLog("Не загружен STL-файл");
             return;
             }
@@ -302,15 +367,108 @@ public class CNCViewerPanel extends BasePanel {
         //new STLViewer(viewCommon).setVisible(true);
     }//GEN-LAST:event_ViewSTL3DActionPerformed
 
+    private void SliceIntoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SliceIntoActionPerformed
+        switch (SliceMode.getSelectedIndex()){
+            case SliceModeSequent:
+                sliceTo3D();
+                break;
+            case SliceModeParellel:
+                sliceConcurent();
+                break;
+            case SliceModeIntoFile:
+                sliceConcurentToFile(true);
+                break;
+            case SliceModeIntoFileAs:
+                sliceConcurentToFile(false);
+                break;
+        }
+    }//GEN-LAST:event_SliceIntoActionPerformed
+
+    private void ViewSTL3DLoopsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ViewSTL3DLoopsActionPerformed
+        if (!ws.model().loaded()){
+            toLog("Не загружен STL-файл");
+            return;
+            }
+        if (getBaseFrame().isViewPanelEnable(PanelSTL3DLoops)){
+            getBaseFrame().setViewPanelDisable(PanelSTL3DLoops);
+            ViewSTL3DLoops.setBackground(savedColor);
+            getBaseFrame().refreshPanels();
+            }
+        else{
+            getBaseFrame().setViewPanelEnable(PanelSTL3DLoops);
+            savedColor = ViewSTL3D.getBackground();
+            ViewSTL3DLoops.setBackground(Color.green);
+            getBaseFrame().refreshPanels();
+            getBaseFrame().toFront(PanelSTL3DLoops);
+            }
+    }//GEN-LAST:event_ViewSTL3DLoopsActionPerformed
+
+    private void dataChanged(){
+        ws.dataChanged();
+        ws.fileStateChanged();
+        }
+    private void sliceTo3D() {
+        if (test2()) return;
+        startView(0,0);
+        new Thread(
+                ()->{
+                    SliceData data = new SliceData();
+                    ws.data(data);
+                    ws.operate().sliceTo(new SliceDataGenerator(data,viewCommon),viewCommon);
+                    if (!data.isSliceStop())
+                        dataChanged();
+                    finishOperation();
+                }).start();
+        }
+    private void sliceConcurent() {
+        if (test2()) return;
+        startView(0,0);
+        new Thread(
+                ()->{
+                    SliceData data = ws.operate().sliceConcurent(viewCommon);
+                    ws.data(data);
+                    ws.lastName("");
+                    if (!data.isSliceStop())
+                        dataChanged();
+                    finishOperation();
+                }).start();
+        }
+    private void sliceConcurentToFile(boolean defName) {
+        if (test2()) return;
+        String dir = ws.defaultFileName();
+        final String outname = defName ? dir : getBaseFrame().getOutputFileName("Файл слайсинга",Values.FileType,dir);
+        if (outname == null) return;
+
+        startView(0,0);
+        new Thread(
+                ()->{
+                    try {
+                        notify.log("Слайсинг в файл "+outname);
+                        SliceData data = ws.operate().sliceConcurent(viewCommon,new DataOutputStream(new FileOutputStream(outname)));
+                        ws.lastName(defName ? "" : outname);
+                        //------------- Состояние dataState не меняется ----------------------------------------
+                        ws.fileStateChanged();
+                    } catch (IOException e) { notify.notify(Values.error,e.toString()); }
+                    finishOperation();
+                }).start();
+    }
+
+
+
+
+
 
     private void setMenuVisible(){
-        boolean loaded = WorkSpace.ws().modelPresent();
-        boolean sliced = WorkSpace.ws().slicePresent();
-        boolean merge = sliced && !WorkSpace.ws().data().isMerged();
-        int userType = WorkSpace.ws().currentUser().accessMode;
+        boolean loaded = ws.modelPresent();
+        boolean sliced = ws.slicePresent();
+        boolean merge = sliced && !ws.data().isMerged();
+        int userType = ws.currentUser().accessMode;
         boolean isAdmin = userType==Values.userAdmin;
         boolean canSave = userType==Values.userAdmin || userType==Values.userConstructor;
-        ViewSTL3D.setVisible(loaded || sliced);
+        ViewSTL3D.setEnabled(loaded || sliced);
+        SliceInto.setEnabled(loaded || sliced);
+        SliceMode.setEditable(loaded || sliced);
+        ViewSTL3DLoops.setEnabled(sliced);
         /*
         mBar.getMenu(mSlice).setEnabled(loaded || sliced);
         mBar.getMenu(mSet).setEnabled(userType!=Values.userGuest);
@@ -338,7 +496,7 @@ public class CNCViewerPanel extends BasePanel {
         }
     private boolean test2(){
         if (test1()) return true;
-        if (!WorkSpace.ws().modelPresent()){
+        if (!ws.modelPresent()){
             toLog("Отсутствует STL-модель");
             return true;
             }
@@ -346,7 +504,7 @@ public class CNCViewerPanel extends BasePanel {
         }
     private boolean test3(){
         if (test1()) return true;
-        if (!WorkSpace.ws().slicePresent()){
+        if (!ws.slicePresent()){
             toLog("Отсутствует растр");
             return true;
             }
@@ -385,13 +543,13 @@ public class CNCViewerPanel extends BasePanel {
             return;
         try {
             Date xx = new Date();
-            if (WorkSpace.ws().modelName().length()==0){
+            if (ws.modelName().length()==0){
                 notify.log("Лог-файл только с моделью");
                 LogToFile.setSelected(false);
                 return;
             }
-            String fname = WorkSpace.ws().defaultDir()+ WorkSpace.ws().modelName()+"_log "+Utils.currentLogName()+".txt";
-            WorkSpace.ws().testDefaultDir();
+            String fname = ws.defaultDir()+ ws.modelName()+"_log "+Utils.currentLogName()+".txt";
+            ws.testDefaultDir();
             logFile = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fname),"Windows-1251"));
             LogToFile.setSelected(true);
         } catch (Exception ex) {
@@ -417,6 +575,11 @@ public class CNCViewerPanel extends BasePanel {
     private javax.swing.JButton PAUSE;
     private javax.swing.JProgressBar Progress;
     private javax.swing.JButton STOP;
+    private javax.swing.JButton SliceInto;
+    private javax.swing.JComboBox<String> SliceMode;
     private javax.swing.JButton ViewSTL3D;
+    private javax.swing.JButton ViewSTL3DLoops;
+    private javax.swing.JLabel jLabel39;
+    private javax.swing.JLabel jLabel40;
     // End of variables declaration//GEN-END:variables
 }

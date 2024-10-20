@@ -28,7 +28,7 @@ public class USBCommandGenerator extends CommandGenerator {
     private double cOffsetX=0,cOffsetY=0;
     private double maxSize=1;
     private void setCenterOffsets(){
-        //GlobalSettings gen = WorkSpace.ws().global().global;
+        //GlobalSettings gen = ws.global().global;
         //cOffsetX = gen.CenterOffsetX.getVal();
         //cOffsetY = gen.CenterOffsetY.getVal();
         double out1 = Math.abs(cOffsetX);
@@ -67,13 +67,13 @@ public class USBCommandGenerator extends CommandGenerator {
     public USBCommandGenerator(USBFace face, I_Notify notify0){
         notify = notify0;
         usb = new USBProtocol(face);
-        //asBlock = WorkSpace.ws().global().global.LineBlock.getVal();
+        //asBlock = ws.global().global.LineBlock.getVal();
         }
     /** Получает готовый инициализированный протокол */
     public USBCommandGenerator(USBProtocol usb0, I_Notify notify0){
         notify = notify0;
         usb = usb0;
-        //asBlock = WorkSpace.ws().global().global.LineBlock.getVal();
+        //asBlock = ws.global().global.LineBlock.getVal();
         }
     private boolean compareLineCounts() throws UNIException {
         usb.waitForState(USBCodes.STATE_WAITFORDATA,USBCodes.STATE_PRINT,0);

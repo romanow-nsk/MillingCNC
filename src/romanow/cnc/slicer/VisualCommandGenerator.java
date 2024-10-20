@@ -17,7 +17,7 @@ public class VisualCommandGenerator extends CommandGenerator{
     private STLPoint2D p0 = new STLPoint2D();
     public VisualCommandGenerator(ViewAdapter back0){
         back=back0;
-        gg = back.FLD.getGraphics();
+        gg = back.preview().getGraphics();
         }
     //--------------------------------------------------------------------------------------------------------
     private void drawLine(Color color, STLLine vv, Graphics gg){

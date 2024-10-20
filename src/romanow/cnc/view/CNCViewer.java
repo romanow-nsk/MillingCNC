@@ -78,6 +78,10 @@ public class CNCViewer extends BaseFrame {
     @Override
     public void refreshPanels() {
         PanelList.removeAll();
+        for(BasePanel panel : getPanels()) {
+            if (panel.isSelected())
+                panel.onClose();
+            }
         for(BasePanel panel : getPanels()){
             boolean bb = panel.isSelectedMode(WorkSpace.ws().viewMode());
             if (bb){
@@ -103,6 +107,8 @@ public class CNCViewer extends BaseFrame {
         addPanel(new GlobalSettingsPanel(this));
         addPanel(new STL3DViewPanel(this));
         addPanel(new ModelSettingsPanel(this));
+        addPanel(new CommonViewPanel(this));
+        //addPanel(new Loop3DPanel(this));
         //---------------------------------------------------------------------------------
         }
 
@@ -234,12 +240,12 @@ public class CNCViewer extends BaseFrame {
         mBar.getMenu(mFile).getItem(2).setEnabled(sliced && canSave);
         mBar.getMenu(mFile).getItem(3).setEnabled(sliced && canSave);
         mBar.getMenu(mFile).getItem(4).setEnabled(sliced && canSave);
-        mBar.getMenu(mView).getItem(0).setEnabled(loaded);
-        mBar.getMenu(mView).getItem(1).setEnabled(sliced);
-        mBar.getMenu(mView).getItem(2).setEnabled(loaded);
+        //mBar.getMenu(mView).getItem(0).setEnabled(loaded);
+        //mBar.getMenu(mView).getItem(1).setEnabled(sliced);
+        //mBar.getMenu(mView).getItem(2).setEnabled(loaded);
         mBar.getMenu(mSet).getItem(1).setEnabled(isAdmin);
-        mBar.getMenu(mSlice).getItem(2).setEnabled((loaded || sliced)&&userType!=Values.userGuest);
-        mBar.getMenu(mSlice).getItem(3).setEnabled((loaded || sliced)&&userType!=Values.userGuest);
+        //mBar.getMenu(mSlice).getItem(2).setEnabled((loaded || sliced)&&userType!=Values.userGuest);
+        //mBar.getMenu(mSlice).getItem(3).setEnabled((loaded || sliced)&&userType!=Values.userGuest);
         }
         /**
          * This method is called from within the constructor to initialize the form.

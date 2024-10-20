@@ -29,6 +29,7 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
     private I_SettingsChanged changed;
     private I_Notify notify;
     private boolean busy=false;
+    private WorkSpace ws = WorkSpace.ws();
     /**
      * Creates new form M3SSettings
      */
@@ -42,8 +43,8 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
         }
     public GlobalSettingsPanel(BaseFrame base) {
         super(base);
-        set = WorkSpace.ws().global();
-        notify = WorkSpace.ws().getNotify();
+        set = ws.global();
+        notify = ws.getNotify();
         initComponents();
         busy = true;
         Mode2.removeAll();
@@ -73,6 +74,10 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
     public void onInit(boolean on) {
         loadSettings();
     }
+
+    @Override
+    public void onClose() {
+        }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -699,7 +704,7 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
     }// </editor-fold>//GEN-END:initComponents
     public boolean loadSettings(){
         try {
-            set = WorkSpace.ws().global();
+            set = ws.global();
             busy = true;
             set.setNotNull();
             DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.US);
@@ -751,7 +756,7 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
 
     public boolean saveSettings(String par){
         try {
-            Settings set = WorkSpace.ws().local();
+            Settings set = ws.local();
             set.model.ZStart.setVal(Float.parseFloat(Zstart.getText()));
             set.model.ZFinish.setVal(Float.parseFloat(Zfinish.getText()));
             set.model.BlankWidth.setVal(Float.parseFloat(BlankWidth.getText()));
@@ -803,16 +808,15 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             notify.notify(Values.error,"Недопустимое значение угла");
             return;
         }
-        WorkSpace ws = WorkSpace.ws();
         ws.model().rotate(XYZ.getSelectedIndex(),new MyAngle(angle),notify);
         ws.model().shiftToCenter();
         ws.data(new SliceData());
-        Settings set = WorkSpace.ws().local();
+        Settings set = ws.local();
         ws.model().saveModelDimensions();
         set.setZStartFinish();
         loadSettings();
         notify.log(String.format("Поворот %2s %s",(String)XYZ.getSelectedItem(),ANGLE.getText()));
-        WorkSpace.ws().sendEvent(Events.Rotate);
+        ws.sendEvent(Events.Rotate);
     }//GEN-LAST:event_RotateButtonActionPerformed
 
     private void ShiftButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ShiftButtonActionPerformed
@@ -824,15 +828,14 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             return;
             }
         //shift/=;
-        WorkSpace ws = WorkSpace.ws();
         ws.model().shift(XYZShift.getSelectedIndex(),shift);
         ws.data(new SliceData());
-        Settings set = WorkSpace.ws().local();
+        Settings set = ws.local();
         ws.model().saveModelDimensions();
         set.setZStartFinish();
         loadSettings();
         notify.log(String.format("Сдвиг %2s %s",(String)XYZShift.getSelectedItem(),SHIFT.getText()));
-        WorkSpace.ws().sendEvent(Events.Rotate);
+        ws.sendEvent(Events.Rotate);
 
     }//GEN-LAST:event_ShiftButtonActionPerformed
 
@@ -872,16 +875,15 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             notify.notify(Values.error,"Недопустимое значение угла");
             return;
         }
-        WorkSpace ws = WorkSpace.ws();
         ws.model().rotate(XYZ.getSelectedIndex(),new MyAngle(angle),notify);
         ws.model().shiftToCenter();
         ws.data(new SliceData());
-        Settings set = WorkSpace.ws().local();
+        Settings set = ws.local();
         ws.model().saveModelDimensions();
         set.setZStartFinish();
         loadSettings();
         notify.log(String.format("Поворот %2s %s",(String)XYZ.getSelectedItem(),ANGLE.getText()));
-        WorkSpace.ws().sendEvent(Events.Rotate);
+        ws.sendEvent(Events.Rotate);
     }//GEN-LAST:event_ANGLEKeyPressed
 
     private void SHIFTKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_SHIFTKeyPressed
@@ -894,15 +896,14 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             return;
         }
         //shift/=;
-        WorkSpace ws = WorkSpace.ws();
         ws.model().shift(XYZShift.getSelectedIndex(),shift);
         ws.data(new SliceData());
-        Settings set = WorkSpace.ws().local();
+        Settings set = ws.local();
         ws.model().saveModelDimensions();
         set.setZStartFinish();
         loadSettings();
         notify.log(String.format("Сдвиг %2s %s",(String)XYZShift.getSelectedItem(),SHIFT.getText()));
-        WorkSpace.ws().sendEvent(Events.Rotate);
+        ws.sendEvent(Events.Rotate);
     }//GEN-LAST:event_SHIFTKeyPressed
 
     private void MoveOptimizeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_MoveOptimizeItemStateChanged
@@ -974,27 +975,32 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
     }//GEN-LAST:event_FillingFlatnessKeyPressed
 
     private void WorkFrameZKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_WorkFrameZKeyPressed
-        // TODO add your handling code here:
+        Utils.saveKeyPressed(evt,set.slice.FillingFlatness,set,notify);
     }//GEN-LAST:event_WorkFrameZKeyPressed
 
     private void WorkFrameXKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_WorkFrameXKeyPressed
-        // TODO add your handling code here:
+        Utils.saveKeyPressed(evt,set.mashine.WorkFrameX,set,notify);
     }//GEN-LAST:event_WorkFrameXKeyPressed
 
     private void WorkFrameYKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_WorkFrameYKeyPressed
-        // TODO add your handling code here:
+        Utils.saveKeyPressed(evt,set.mashine.WorkFrameY,set,notify);
     }//GEN-LAST:event_WorkFrameYKeyPressed
 
     private void ScaleFactorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ScaleFactorKeyPressed
-        // TODO add your handling code here:
+        Utils.saveKeyPressed(evt,set.model.ScaleFactor,set,notify);
     }//GEN-LAST:event_ScaleFactorKeyPressed
 
     private void AutoCenterItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_AutoCenterItemStateChanged
-        // TODO add your handling code here:
+        if (busy) return;
+        set.model.AutoCenter.setVal(AutoCenter.isSelected());
+        Utils.viewUpdateCheck(AutoCenter,true);
     }//GEN-LAST:event_AutoCenterItemStateChanged
 
     private void AutoScaleItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_AutoScaleItemStateChanged
-        // TODO add your handling code here:
+        if (busy) return;
+        set.model.AutoScale.setVal(AutoScale.isSelected());
+        Utils.viewUpdateCheck(AutoScale,true);
+
     }//GEN-LAST:event_AutoScaleItemStateChanged
 
     @Override

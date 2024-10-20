@@ -22,6 +22,7 @@ public abstract class BasePanel extends javax.swing.JPanel implements I_PanelEve
     public abstract  int modeMask();
     public abstract  boolean modeEnabled();
     public abstract void onInit(boolean on);
+    public abstract void onClose();
 
     public boolean isSelectedMode(int mode){
         return ((modeMask() & mode)!=0) && modeEnabled();

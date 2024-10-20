@@ -18,6 +18,8 @@ public class Values {
     public final static int PanelSTL3D=0x04;
     public final static int PanelModelSettings=0x08;
     public final static int PanelGlobalSettings=0x10;
+    public final static int PanelCommonView=0x20;
+    public final static int PanelSTL3DLoops=0x40;
     /** состояния программы по данным */
     public final static int NoData=0;           // Нет данных
     public final static int Loaded=1;           // Модель заружена
@@ -32,6 +34,11 @@ public class Values {
     public final static int fatal=4;
     public final static int common=5;
     public final static String infoLevels[]={"прочее","важное","предупр.","ошибка","сбой",""};
+    public final static int SliceModeSequent=0;
+    public final static int SliceModeParellel=1;
+    public final static int SliceModeIntoFile=2;
+    public final static int SliceModeIntoFileAs=3;
+    public final static String SliceModes[]={"последовательный","параллельный","в файл","в файл как..."};
     /** Типы 2D точек */
     public final static int classIdRefered=0;
     public final static int classId2D=1;

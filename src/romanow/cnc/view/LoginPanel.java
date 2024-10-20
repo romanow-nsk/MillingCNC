@@ -35,11 +35,12 @@ public class LoginPanel extends BasePanel {
         }
 
     private void login(){
-        ArrayList<UserProfile> users = WorkSpace.ws().global().userList;
+        WorkSpace ws = WorkSpace.ws();
+        ArrayList<UserProfile> users = ws.global().userList;
         UserProfile user = users.get(UserList.getSelectedIndex());
         if (user.password.equals(StringCrypter.encrypt(Password.getText()))){
-            WorkSpace.ws().currentUser(user);
-            getBaseFrame().setViewPanel(Values.PanelMain | Values.PanelGlobalSettings);
+            ws.currentUser(user);
+            getBaseFrame().setViewPanel(Values.PanelMain | Values.PanelGlobalSettings | Values.PanelCommonView);
             }
         else
             MES.setText("Неверный пароль");
@@ -68,17 +69,22 @@ public class LoginPanel extends BasePanel {
             initView();
         }
 
+    @Override
+    public void onClose() {
+        }
+
     public LoginPanel(BaseFrame baseFrame) {
         super(baseFrame);
         initComponents();
         }
 
     public void initView() {
+        WorkSpace ws = WorkSpace.ws();
         try {
-            WorkSpace.ws().loadGlobalSettings();
+            ws.loadGlobalSettings();
             } catch (UNIException e) {
                 MES.setText("Настойки не прочитаны - умолчание");
-                WorkSpace.ws().saveSettings();
+                ws.saveSettings();
             }
         init();
         }

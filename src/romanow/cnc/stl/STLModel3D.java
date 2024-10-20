@@ -93,7 +93,7 @@ public class STLModel3D implements I_File {
         STLPoint3D vmax = max();
         double dx = vmax.x()-vmin.x();
         double dy = vmax.y()-vmin.y();
-        Settings set2 = WorkSpace.ws().local();
+        Settings set2 = WorkSpace.ws().global();
         set2.model.ModelWidth.setVal(dx);  // Размер в mm
         set2.model.ModelHight.setVal(dy);  // Размер в mm
         set2.model.ModelZ.setVal(vmax.z());

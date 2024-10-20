@@ -37,8 +37,8 @@ public class FileCommandGenerator extends CommandGenerator{
     @Override
     public void layer() throws UNIException {
         //try {
-            //int stepM4 = WorkSpace.ws().local().control.NextLayerMovingM4Step.getVal();
-            //int stepM3 = WorkSpace.ws().local().control.NextLayerMovingM3Step.getVal();
+            //int stepM4 = ws.local().control.NextLayerMovingM4Step.getVal();
+            //int stepM3 = ws.local().control.NextLayerMovingM3Step.getVal();
             //ommand cmd = new CommandLayer(stepM4,stepM3);
             //addAddr(cmd.byteSize());
             //out.write(cmd.CreateBynary());

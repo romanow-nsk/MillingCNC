@@ -26,7 +26,7 @@ public class M3DVisio {
     //----------------------------------------------------------------------------------------------
     public void show(final FileBinInputStream bb, ViewAdapter view){
         VisualCommandGenerator gen = new VisualCommandGenerator(view);
-        final Graphics gg = back.FLD.getGraphics();
+        final Graphics gg = back.preview().getGraphics();
         try{
             bb.procFile(new OnM3DCommand(){
             @Override

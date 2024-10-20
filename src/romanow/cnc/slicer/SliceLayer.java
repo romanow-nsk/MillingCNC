@@ -121,19 +121,20 @@ public class SliceLayer implements I_File {
         z = in.readDouble();
         layerOrderNum = in.readInt();
         modified = in.readBoolean();
-        if (WorkSpace.ws().fileFormatVersion()>=2){
+        WorkSpace ws = WorkSpace.ws();
+        if (ws.fileFormatVersion()>=2){
             angle = in.readDouble();
             }
-        if (WorkSpace.ws().fileFormatVersion()>=3){
+        if (ws.fileFormatVersion()>=3){
             ownLabel = in.readUTF();
             }
         sliceSettings = null;
         if (in.readBoolean())
-            sliceSettings = WorkSpace.ws().loadSettings(in);
+            sliceSettings = ws.loadSettings(in);
         printSettings = null;
-        if (WorkSpace.ws().fileFormatVersion()>=1){
+        if (ws.fileFormatVersion()>=1){
             if (in.readBoolean())
-                printSettings = WorkSpace.ws().loadSettings(in);
+                printSettings = ws.loadSettings(in);
             }
         rez = new SliceRezult();
         rez.load(in);
@@ -166,6 +167,7 @@ public class SliceLayer implements I_File {
 
     @Override
     public void save(DataOutputStream out) throws IOException {
+        WorkSpace ws = WorkSpace.ws();
         out.writeDouble(z);
         out.writeInt(layerOrderNum);
         out.writeBoolean(modified);
@@ -173,10 +175,10 @@ public class SliceLayer implements I_File {
         out.writeUTF(ownLabel);                     // Версия формата = 3
         out.writeBoolean(sliceSettings!=null);
         if (sliceSettings!=null)
-            WorkSpace.ws().saveSettings(out, sliceSettings);
+            ws.saveSettings(out, sliceSettings);
         out.writeBoolean(printSettings!=null);      // Версия формата = 1
         if (printSettings!=null)
-            WorkSpace.ws().saveSettings(out, printSettings);
+            ws.saveSettings(out, printSettings);
         rez.save(out);
         segments.save(out);
         lines.save(out);

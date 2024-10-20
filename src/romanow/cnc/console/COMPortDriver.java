@@ -132,7 +132,7 @@ public class COMPortDriver {
         if (!answers[k].endsWith(":"))
             return;
         try {
-            //WorkSpace.ws().notify("Ответ лазера "+data);
+            //ws.notify("Ответ лазера "+data);
             double vv = 0;
             if (xx.indexOf("Off")==-1)
                 vv = Double.parseDouble(xx.trim());
@@ -147,7 +147,7 @@ public class COMPortDriver {
                             if (vv!=0){
                                 lpd.count++;
                                 lpd.sum+=vv;
-                                //WorkSpace.ws().notify(String.format("cnt=%d sum=%6.2f time=%d energy=%6.4f",lpd.count, lpd.sum,lpd.time(), lpd.energy()));
+                                //ws.notify(String.format("cnt=%d sum=%6.2f time=%d energy=%6.4f",lpd.count, lpd.sum,lpd.time(), lpd.energy()));
                                 }
                             write("ROP");
                             }                            
@@ -197,7 +197,8 @@ public class COMPortDriver {
         if (serialPort!=null)
             return;
         cmdCount=0;
-        String port = WorkSpace.ws().global().mashine.DeviceName.getVal()+WorkSpace.ws().global().mashine.DeviceNum.getVal();
+        WorkSpace ws = WorkSpace.ws();
+        String port = ws.global().mashine.DeviceName.getVal()+ws.global().mashine.DeviceNum.getVal();
         System.out.println("Порт открыт "+port);
         
         serialPort = new SerialPort(port);

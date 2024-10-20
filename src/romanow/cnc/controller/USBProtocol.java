@@ -340,7 +340,7 @@ public class USBProtocol {
     //--------------------------------------------------------------------------------
     public void saveMotorPosition(int mdata[],int idx){
         /*
-        GlobalSettings set = WorkSpace.ws().global().global;
+        GlobalSettings set = ws.global().global;
         switch (idx){
             case 0:
                 set.M1LowPos.setVal(mdata[2]);
@@ -358,7 +358,7 @@ public class USBProtocol {
                 set.M4CurrentPos.setVal(mdata[4]);
                 break;
         }
-        WorkSpace.ws().saveSettings();
+        ws.saveSettings();
          */
         }
     //--------------------------------------------------------------------------

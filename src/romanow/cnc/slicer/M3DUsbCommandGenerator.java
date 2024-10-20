@@ -33,8 +33,8 @@ public class M3DUsbCommandGenerator extends CommandGenerator{
     @Override
     public void layer() throws UNIException {
         //try {
-            //int stepM4 = WorkSpace.ws().local().control.NextLayerMovingM4Step.getVal();
-            //int stepM3 = WorkSpace.ws().local().control.NextLayerMovingM3Step.getVal();
+            //int stepM4 = ws.local().control.NextLayerMovingM4Step.getVal();
+            //int stepM3 = ws.local().control.NextLayerMovingM3Step.getVal();
             //usb.sendData(new CommandLayer(stepM4, stepM3).CreateBynary());
         //    } catch (UNIException ee){ throw UNIException.io(ee); }
         }
@@ -49,7 +49,7 @@ public class M3DUsbCommandGenerator extends CommandGenerator{
         try {
             usb.open();
             usb.sendCMD0();
-            //usb.sendData(WorkSpace.ws().local().createHeader());
+            //usb.sendData(ws.local().createHeader());
             } catch (UNIException ee){ throw UNIException.io(ee); }
         }
     @Override

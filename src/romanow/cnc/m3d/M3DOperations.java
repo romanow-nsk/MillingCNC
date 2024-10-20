@@ -216,7 +216,7 @@ public class M3DOperations {
             @Override
             public void onHeader(int hd[]) {
                 try {
-                    //usb.sendData(WorkSpace.ws().temp().createHeader());
+                    //usb.sendData(ws.temp().createHeader());
                     } catch(Exception ee){
                         notify.notify(Values.fatal,ee.getMessage());
                         }
@@ -233,9 +233,10 @@ public class M3DOperations {
     public SliceRezult sliceCommon(SliceParams par, CommandGenerator generator, final  ViewAdapter back, Settings set){
         final SliceRezult layerRez = new SliceRezult();
         try {
+            WorkSpace ws = WorkSpace.ws();
             final STLPoint2D last = new STLPoint2D(0, 0);
             if (set==null)
-                set = WorkSpace.ws().local();
+                set = ws.local();
             int mode = set.slice.Mode.getVal();
             boolean optimize = set.slice.MoveOptimize.getVal();
             double plusAngle = set.slice.FillParametersAngle.getVal();
@@ -244,7 +245,7 @@ public class M3DOperations {
             double raster = set.slice.FillParametersRaster.getVal();
             double diff = set.slice.FillParametersRaster.getVal() * Values.OptimizeRasterCount;
             double vStep = set.model.VerticalStep.getVal();
-            double z0 = WorkSpace.ws().local().model.ZStart.getVal();
+            double z0 = ws.local().model.ZStart.getVal();
             cnt = 0;
             double angle = par.layer!=null ? par.layer.angle() :  (angle0 + par.layerNum * angleInc) % 180;
             double z = par.layer!=null ? par.layer.z() : z0 + par.layerNum * vStep;
@@ -293,7 +294,7 @@ public class M3DOperations {
                     notify.notify(level,mes);
                     }
                 };
-            Slicer slicer = new Slicer( WorkSpace.ws().model().triangles(), z, Values.PointDiffenerce, set, notify);
+            Slicer slicer = new Slicer( ws.model().triangles(), z, Values.PointDiffenerce, set, notify);
             ArrayList<STLLoop> loops=null;
             if (par.layer!=null){
                 slicer.orig(par.layer.lines());
@@ -348,18 +349,20 @@ public class M3DOperations {
     private volatile int threadCount;
     private volatile int procCount;
     public SliceData sliceConcurent(final  ViewAdapter back){
+        WorkSpace ws = WorkSpace.ws();
         SliceData xx = sliceConcurent(back,null);
-        WorkSpace.ws().sendEvent(Events.NewData);
+        ws.sendEvent(Events.NewData);
         return xx;
         }
     /** Параллельное слайсирование в потоках */
     public SliceData sliceConcurent(final  ViewAdapter back,DataOutputStream out){
+        WorkSpace ws = WorkSpace.ws();
         final SliceRezult rez = new SliceRezult();
         final SliceData data = new SliceData();
         int layerCount=0;
-        Settings set = WorkSpace.ws().local();
+        Settings set = ws.local();
         double vStep = set.model.VerticalStep.getVal();
-        double zz = WorkSpace.ws().model().max().z();
+        double zz = ws.model().max().z();
         double z0 = set.model.ZStart.getVal();
         double z1 = set.model.ZFinish.getVal();
         if (zz < z1)
@@ -372,13 +375,13 @@ public class M3DOperations {
         if (out!=null){             // Поток вывода
             new Thread(()->{
                 try {
-                    WorkSpace.ws().saveHead(out);
+                    ws.saveHead(out);
                     data.saveConcurent(out,notify);
                     } catch (IOException e) { notify.notify(Values.error,e.toString());}
             }).start();
             }
         notify.setProgress(0);
-        int threadCount0=WorkSpace.ws().global().mashine.SliceThreadNum.getVal();
+        int threadCount0=ws.global().mashine.SliceThreadNum.getVal();
         threadCount = threadCount0;
         procCount=0;
         for(layerCount=nLayers-1; layerCount >=0; layerCount--){
@@ -433,7 +436,7 @@ public class M3DOperations {
         notify.log(String.format("линий: %d длина: %s холостой ход: %d%% время: %s",rez.lineCount(),rez.printLength(),rez.moveProc(),rez.printTime()));
         set.statistic.setFromRezult(rez);
         set.statistic.SliceTime.setVal((int)(back.timeInMs()/1000));
-        WorkSpace.ws().sendEvent(Events.Settings);
+        ws.sendEvent(Events.Settings);
         if (sliceStop)
             rez.setError();
         data.result(rez);
@@ -446,9 +449,10 @@ public class M3DOperations {
     public ArrayList<STLLoopGenerator> createLoops(final  ViewAdapter back){
         ArrayList<STLLoopGenerator> loopList = new ArrayList<>();
         final SliceRezult rez = new SliceRezult();
-        Settings set = WorkSpace.ws().local();
+        WorkSpace ws = WorkSpace.ws();
+        Settings set = ws.local();
         double vStep = set.model.VerticalStep.getVal();
-        double zz = WorkSpace.ws().model().max().z();
+        double zz = ws.model().max().z();
         double z0 = set.model.ZStart.getVal();
         double z1 = set.model.ZFinish.getVal();
         if (z1==0 || zz < z1)
@@ -467,14 +471,14 @@ public class M3DOperations {
                 SliceParams par = new SliceParams(layerCount);
                 final STLPoint2D last = new STLPoint2D(0, 0);
                 if (set==null)
-                    set = WorkSpace.ws().local();
+                    set = ws.local();
                 double diff = set.slice.FillParametersRaster.getVal() * Values.OptimizeRasterCount;
                 vStep = set.model.VerticalStep.getVal();
-                z0 = WorkSpace.ws().local().model.ZStart.getVal();
+                z0 = ws.local().model.ZStart.getVal();
                 cnt = 0;
                 double z = par.layer!=null ? par.layer.z() : z0 + par.layerNum * vStep;
                 double diff0 = Values.PointDiffenerce;
-                STLLoopGenerator slicer = new STLLoopGenerator(WorkSpace.ws().model().triangles(), z, diff0,notify);
+                STLLoopGenerator slicer = new STLLoopGenerator(ws.model().triangles(), z, diff0,notify);
                 ArrayList<STLLoop> repaired = slicer.createLoops(true);
                 if (repaired.size()!=0){
                     notify.notify(Values.warning,"Принудительно замкнуты контуры: "+repaired.size());
@@ -511,8 +515,8 @@ public class M3DOperations {
         notify.log(String.format("линий: %d длина: %s холостой ход: %d%% время: %s",rez.lineCount(),rez.printLength(),rez.moveProc(),rez.printTime()));
         set.statistic.setFromRezult(rez);
         set.statistic.SliceTime.setVal((int)(back.timeInMs()/1000));
-        WorkSpace.ws().sendEvent(Events.Settings);
-        WorkSpace.ws().sendEvent(Events.NewData);
+        ws.sendEvent(Events.Settings);
+        ws.sendEvent(Events.NewData);
         return loopList;
         }
 
@@ -520,9 +524,10 @@ public class M3DOperations {
     public SliceRezult sliceTo(CommandGenerator generator, final  ViewAdapter back){
         ArrayList<STLLoopGenerator> loopList = createLoops(back);
         final SliceRezult rez = new SliceRezult();
-        Settings set = WorkSpace.ws().local();
+        WorkSpace ws = WorkSpace.ws();
+        Settings set = ws.local();
         double vStep = set.model.VerticalStep.getVal() ;
-        double zz = WorkSpace.ws().model().max().z();
+        double zz = ws.model().max().z();
         double z0 = set.model.ZStart.getVal();
         double z1 = set.model.ZFinish.getVal();
         if (z1==0 || zz < z1)
@@ -558,8 +563,8 @@ public class M3DOperations {
         notify.log(String.format("линий: %d длина: %s холостой ход: %d%% время: %s",rez.lineCount(),rez.printLength(),rez.moveProc(),rez.printTime()));
         set.statistic.setFromRezult(rez);
         set.statistic.SliceTime.setVal((int)(back.timeInMs()/1000)); 
-        WorkSpace.ws().sendEvent(Events.Settings);
-        WorkSpace.ws().sendEvent(Events.NewData);
+        ws.sendEvent(Events.Settings);
+        ws.sendEvent(Events.NewData);
         return rez;
         }
     /** Повторный слайсинг слоя в файле */
@@ -688,7 +693,8 @@ public class M3DOperations {
     
     public void copySLM3DtoUSB(ViewAdapter synch,USBProtocol protocol) throws UNIException{
         startUSBPrint(protocol);
-        SliceData data = WorkSpace.ws().data();
+        WorkSpace ws = WorkSpace.ws();
+        SliceData data = ws.data();
         for(int i=0;i<data.size();i++){
             SliceLayer layer = data.get(i);
             copyLayerToUSB(synch,protocol,layer);
@@ -699,15 +705,16 @@ public class M3DOperations {
         finishUSBPrint();
         }
     private boolean copySLM3DtoUSBStopPoint(ViewAdapter synch,USBProtocol protocol) throws UNIException{
-        int nLayer= WorkSpace.ws().global().mashine.CurrentLayer.getVal();
-        int nline = WorkSpace.ws().global().mashine.CurrentLine.getVal();
+        WorkSpace ws = WorkSpace.ws();
+        int nLayer= ws.global().mashine.CurrentLayer.getVal();
+        int nline = ws.global().mashine.CurrentLine.getVal();
         if (nLayer==-1){
             copySLM3DtoUSB(synch,protocol);
             return true;
             }
         testGenerator(protocol);        
         startUSBPrint(protocol);
-        SliceData data = WorkSpace.ws().data();
+        SliceData data = ws.data();
         int sz = data.size();
         notify.setProgress((int)((nLayer+1)*100/sz));
         boolean first=true;
@@ -734,8 +741,9 @@ public class M3DOperations {
         return true;
         }
     public boolean exportToGCode(ViewAdapter synch,BufferedWriter out) throws IOException{
-        SliceData data = WorkSpace.ws().data();
-        Settings local = WorkSpace.ws().local();
+        WorkSpace ws = WorkSpace.ws();
+        SliceData data = ws.data();
+        Settings local = ws.local();
         int sz = data.size();
         notify.setProgress(0);
         lineCount=0;
