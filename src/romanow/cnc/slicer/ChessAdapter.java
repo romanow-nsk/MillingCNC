@@ -29,7 +29,7 @@ public class ChessAdapter implements I_LineSlice{
         angleXY = new MyAngle(angle);                        // поворот в обратную сторону
         angleXY90 = new MyAngle(angle + Math.PI/2);     // поворот в обратную сторону
         prevBack = old;
-        cellStep = set.filling.FillParametersFillCell.getVal();
+        cellStep = set.slice.FillParametersFillCell.getVal();
     }
     /** Отрезать часть линии по длине - кроме вертикальной */
     public STLLine cutByLentgh(STLLine line, double len){

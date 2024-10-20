@@ -6,7 +6,6 @@
 package romanow.cnc.console;
 
 import romanow.cnc.settings.Settings;
-import romanow.cnc.settingsView.LayerPrintSettings;
 
 import romanow.cnc.utils.Events;
 import romanow.cnc.utils.I_Notify;
@@ -735,10 +734,12 @@ public class TestConsole extends BaseFrame {
         Settings print = selected.printSettings();
         boolean copy = print == null;
         Settings ss = copy ? ws().local() : print;
+        /*
         new LayerPrintSettings(ss,copy,notify,(set)->{
             selected.printSettings(set);
             setObjectsNoMove();
             }).setVisible(true);
+         */
 
     }//GEN-LAST:event_B4ActionPerformed
 

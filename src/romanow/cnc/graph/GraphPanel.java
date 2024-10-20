@@ -71,10 +71,10 @@ public class GraphPanel extends JPanel{
     public void setPaintParams(JSlider HORIZ, JSlider VERTIC){
         setGraphics();
         //dxy = 2./((3+mas)/4.*vSize);
-        paintSize = WorkSpace.ws().local().local.BlankWidth.getVal();
+        paintSize = WorkSpace.ws().local().model.BlankWidth.getVal();
         horiz = (int)(HORIZ.getValue()*paintSize);
         vert = (int)(VERTIC.getValue()*paintSize);
-        double vy = WorkSpace.ws().local().local.BlankHight.getVal();
+        double vy = WorkSpace.ws().local().model.BlankHight.getVal();
         if (vy > paintSize)
             paintSize = vy;
         dxy = paintSize*2./(Math.pow(1.1,mas-1)*vSize);
@@ -113,7 +113,7 @@ public class GraphPanel extends JPanel{
         }
     public void  paintGrid(Color gridColor){
         gg.setColor(Color.red);
-        double dd = WorkSpace.ws().global().global.WorkFieldSize.getVal();
+        double dd = WorkSpace.ws().global().mashine.WorkFrameX.getVal();
         int sz = (int)dd/2;
         int x1=xMMToPixel(-sz);
         int x2=xMMToPixel(sz);

@@ -6,10 +6,8 @@
 package romanow.cnc.view;
 
 import romanow.cnc.Values;
-import romanow.cnc.console.ConsoleOfOperator;
 import romanow.cnc.console.DistortionEditor;
 import romanow.cnc.console.LaserConsole;
-import romanow.cnc.console.PrintConsole;
 import romanow.cnc.console.TestConsole;
 import romanow.cnc.io.BinOutputStream;
 import romanow.cnc.settings.WorkSpace;
@@ -33,7 +31,6 @@ import romanow.cnc.m3d.M3DFileBinInputStream;
 import romanow.cnc.m3d.M3DFileBinOutputStream;
 import romanow.cnc.m3d.M3DOperations;
 import romanow.cnc.m3d.M3DSequencer;
-import romanow.cnc.m3d.M3DSettings;
 import romanow.cnc.m3d.M3DSettings_2;
 import romanow.cnc.m3d.M3DTesing;
 import romanow.cnc.m3d.M3DViewPanel;
@@ -58,8 +55,6 @@ public class CNCViewer extends BaseFrame {
 
     private MenuBar mBar;
     private Thread.UncaughtExceptionHandler defaultHandler=null;
-    private M3DSettings local=null;
-    private M3DSettings global=null;
     private static int childCount=3;
 
     private M3DViewPanel preView=null;
@@ -121,14 +116,17 @@ public class CNCViewer extends BaseFrame {
         System.out.printf("Разрешение экрана: %dx%d\n", screenSize.width, screenSize.height);
         setBounds(200,50, Values.FrameWidth,Values.FrameHeight);
         setTitle(Values.getVersion()+" "+ws().currentFileTitle());
+        String xx = null;
         try {
             ws().loadGlobalSettings();
             } catch (UNIException e) {
-                notify.notify(Values.warning,"Настойки не прочитаны - умолчание");
+                xx = "Настойки не прочитаны - умолчание";
                 ws().saveSettings();
                 }
         createPanels();
         notify = (ViewNotifyer) ws().getNotify();
+        if (xx!=null)
+            notify.notify(warning,xx);
         setViewPanel(PanelLogin);
         Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
             @Override
@@ -276,8 +274,6 @@ public class CNCViewer extends BaseFrame {
         settings2 = new java.awt.MenuItem();
         UserList = new java.awt.MenuItem();
         printer = new java.awt.Menu();
-        TestCollection = new java.awt.MenuItem();
-        TextCollectionUDP = new java.awt.MenuItem();
         LaserConsole = new java.awt.MenuItem();
         other = new java.awt.Menu();
         SliceTo = new java.awt.Menu();
@@ -474,23 +470,6 @@ public class CNCViewer extends BaseFrame {
         menuBar1.add(settings);
 
         printer.setLabel("Принтер");
-
-        TestCollection.setLabel("Печать (USB)");
-        TestCollection.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TestCollectionActionPerformed(evt);
-            }
-        });
-        printer.add(TestCollection);
-
-        TextCollectionUDP.setLabel("Печать  (TCP/IP)");
-        TextCollectionUDP.setName("");
-        TextCollectionUDP.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TextCollectionUDPActionPerformed(evt);
-            }
-        });
-        printer.add(TextCollectionUDP);
 
         LaserConsole.setLabel("Консоль лазера");
         LaserConsole.addActionListener(new java.awt.event.ActionListener() {
@@ -782,11 +761,13 @@ public class CNCViewer extends BaseFrame {
     }//GEN-LAST:event_openSTLActionPerformed
 
     private void allSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_allSettingsActionPerformed
+        /*
         if (global==null) {
             global = new M3DSettings(() -> global = null, ws().global(), "Глобальные настройки");
             global.setVisible(true);
             }
         else global.toFront();
+         */
     }//GEN-LAST:event_allSettingsActionPerformed
 
     private void USBSequenceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_USBSequenceActionPerformed
@@ -834,12 +815,14 @@ public class CNCViewer extends BaseFrame {
             notify.notify(Values.error,"Нет открытой модели для редактирования настроек");
             return;
             }
+        /*
         if (local==null){
             local = new M3DSettings(()-> local=null,ws().local(),"Настройки модели");
             local.setVisible(true);
             }
         else
             local.toFront();
+         */
     }//GEN-LAST:event_fileSettingsActionPerformed
 
     private void STL_CIRCUIT_SHOWActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_STL_CIRCUIT_SHOWActionPerformed
@@ -941,16 +924,8 @@ public class CNCViewer extends BaseFrame {
     }//GEN-LAST:event_SLM3D_USBActionPerformed
 
     private void operationConsoleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_operationConsoleActionPerformed
-        new ConsoleOfOperator(notify,false);
+        //new ConsoleOfOperator(notify,false);
     }//GEN-LAST:event_operationConsoleActionPerformed
-
-    private void TestCollectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TestCollectionActionPerformed
-        new PrintConsole(notify,false);
-    }//GEN-LAST:event_TestCollectionActionPerformed
-
-    private void TextCollectionUDPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextCollectionUDPActionPerformed
-        new PrintConsole(notify,true);
-    }//GEN-LAST:event_TextCollectionUDPActionPerformed
 
     private void generateSTLModel(I_ModelGenerator gen){
         STLModel3D model = new STLModel3D();
@@ -986,7 +961,7 @@ public class CNCViewer extends BaseFrame {
     }//GEN-LAST:event_STL_ConcurentSaveActionPerformed
 
     private void operationConsoleUDPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_operationConsoleUDPActionPerformed
-        new ConsoleOfOperator(notify,true);
+        //new ConsoleOfOperator(notify,true);
     }//GEN-LAST:event_operationConsoleUDPActionPerformed
 
     private void settings2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_settings2ActionPerformed
@@ -1118,7 +1093,7 @@ public class CNCViewer extends BaseFrame {
                 return;
                 }
         startView(1,100);
-        final int mode = ws().local().filling.Mode.getVal();
+        final int mode = ws().local().slice.Mode.getVal();
         CommandGenerator gen = new FileCommandGenerator(out);
         new Thread(
                 ()->{operate.sliceTo(gen,viewCommon);
@@ -1131,7 +1106,7 @@ public class CNCViewer extends BaseFrame {
     private void sliceToUsb(boolean test) {
         if (test2()) return;
         startView(0,0);
-        final int mode = ws().local().filling.Mode.getVal();
+        final int mode = ws().local().slice.Mode.getVal();
         USBFace face = test ? new USBUDPEmulator() : new USBLineController();
         new Thread(
              ()->{
@@ -1195,7 +1170,7 @@ public class CNCViewer extends BaseFrame {
         if (test3()) return;
         startView(10,500);
         sendEvent(Events.OnWarning,0,0,null,null);
-        final int mode = ws().local().filling.Mode.getVal();
+        final int mode = ws().local().slice.Mode.getVal();
         setWidth(true);
         new Thread(
                 ()->{
@@ -1249,6 +1224,13 @@ public class CNCViewer extends BaseFrame {
                 }).start();
         }
 
+    @Override
+    public void refresh() {
+    }
+
+    @Override
+    public void shutDown() {
+    }
     /**
      * @param args the command line arguments
      */
@@ -1292,10 +1274,8 @@ public class CNCViewer extends BaseFrame {
     private java.awt.MenuItem STL_USB;
     private java.awt.Menu Settings;
     private java.awt.Menu SliceTo;
-    private java.awt.MenuItem TestCollection;
     private java.awt.MenuItem TestConsole;
     private java.awt.Menu Tests;
-    private java.awt.MenuItem TextCollectionUDP;
     private java.awt.MenuItem UDPSequence;
     private java.awt.MenuItem USBSequence;
     private java.awt.MenuItem UserList;
@@ -1330,14 +1310,5 @@ public class CNCViewer extends BaseFrame {
     private java.awt.MenuItem viewLoops3D;
     private java.awt.MenuItem viewSLM3D;
 
-    @Override
-    public void refresh() {
-
-    }
-
-    @Override
-    public void shutDown() {
-
-    }
     // End of variables declaration//GEN-END:variables
 }

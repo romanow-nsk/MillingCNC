@@ -46,12 +46,14 @@ public class USBUDPEmulator implements USBFace{
         }
     @Override
     public void write(int[] data, int sz) throws UNIException {
+        /*
         try {
             byte[] buffer = Utils.intToBytes(data,sz);
             DatagramPacket packet = new DatagramPacket(buffer, sz*4,
                     new InetSocketAddress(WorkSpace.ws().global().global.ControllerIP.getVal(), USBCodes.USBEmulatorInetPort));
             socket.send(packet);
             } catch (IOException e) { throw UNIException.io(e); }
+             */
         }
 
     @Override

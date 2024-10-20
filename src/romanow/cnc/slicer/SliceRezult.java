@@ -38,7 +38,7 @@ public class SliceRezult implements I_File {
         return Utils.toMMString(lineLength);
     }
     public String printTime(){
-        return Utils.toTimeString((Utils.toMM(lineLength)/ WorkSpace.ws().local().marking.MicroStepsMark.getVal()));
+        return Utils.toTimeString(Utils.toMM(lineLength)); // WorkSpace.ws().local().marking.MicroStepsMark.getVal()));
     }
     public synchronized void procLayer(SliceRezult layer){
         lineCount+=layer.lineCount;

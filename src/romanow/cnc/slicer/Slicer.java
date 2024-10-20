@@ -32,12 +32,12 @@ public class Slicer extends STLLoopGenerator {
     public Slicer(ArrayList<STLTriangle> src, double z0, double diff0, Settings set0, I_Notify notify0) throws UNIException {
         super(src,z0,diff0,notify0);
         set = set0;
-        vStep = set.local.VerticalStep.getVal();
+        vStep = set.model.VerticalStep.getVal();
         notify = notify0;
         z = z0;
         diff = diff0;
-        step = set.local.CutterDiameter.getVal()-set.local.StepMinus.getVal();
-        angle = (set.filling.FillParametersAngle.getVal()/180)*Math.PI;
+        step = set.model.CutterDiameter.getVal()-set.model.StepMinus.getVal();
+        angle = (set.slice.FillParametersAngle.getVal()/180)*Math.PI;
         }
     /** Удалить нечетную, если парная близко */
     private boolean testAndRemoveNearestOdd(ArrayList<STLReferedPoint> xx){
@@ -133,7 +133,7 @@ public class Slicer extends STLLoopGenerator {
         double dy = minmax.two().y() -  minmax.one().y();
         if (dy > dx) dx=dy;
         //-------------------------------------------------------------------------------
-        double cellStep = set.filling.FillParametersFillCell.getVal();
+        double cellStep = set.slice.FillParametersFillCell.getVal();
         int level = 1;
         int dd = (int)(dx / cellStep);
         while(dd!=0){ level++; dd/=2; }
@@ -358,9 +358,9 @@ public class Slicer extends STLLoopGenerator {
 
     public boolean sliceInside(STLLoop loop,Settings set,I_LineSlice back){
         boolean sliceError = false;
-        double cutterSize = set.local.CutterDiameter.getVal()/2;
-        double cutterStep = cutterSize - set.local.StepMinus.getVal();
-        double workSize = WorkSpace.ws().global().global.WorkFieldSize.getVal()/2;
+        double cutterSize = set.model.CutterDiameter.getVal()/2;
+        double cutterStep = cutterSize - set.model.StepMinus.getVal();
+        double workSize = WorkSpace.ws().global().mashine.WorkFrameX.getVal()/2;
         String zz = String.format("z=%4.2f ",z);
         notify.notify(Values.important,zz+" id="+loop.id()+" "+loop.dimStr());
         String inValid=null;
@@ -499,13 +499,13 @@ public class Slicer extends STLLoopGenerator {
         return sliceError;
         }
     public STLLoop createBlankLoop(Settings set){
-        double dx = set.local.BlankWidth.getVal();
-        double dy = set.local.BlankHight.getVal();
+        double dx = set.model.BlankWidth.getVal();
+        double dy = set.model.BlankHight.getVal();
         if (dx==0 || dy==0){
-            dx = set.local.MarkingFieldWidth.getVal() ;
-            dy = set.local.MarkingFieldHight.getVal() ;
+            dx = set.model.ModelWidth.getVal() ;
+            dy = set.model.ModelHight.getVal() ;
             }
-        double dCut = set.local.CutterDiameter.getVal()/2;
+        double dCut = set.model.CutterDiameter.getVal()/2;
         dx += dCut;
         dy += dCut;
         STLLoop loop4 = new STLLoop();

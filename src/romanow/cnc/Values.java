@@ -41,7 +41,7 @@ public class Values {
     public final static int userOperator=1;
     public final static int userConstructor=2;
     public final static int userAdmin=3;
-    public final static String SettingsFileName="m3dSettings.xml";
+    public final static String SettingsFileName="MillingCNC.xml";
     public final static int FrameWidth=1280;
     public final static int FrameHeight=800;
     public final static int FrameTop=50;
@@ -112,7 +112,8 @@ public class Values {
     /** Число отрезков эллипса дл печати */
     public final static int EllipseLineCount = 100;
     /** Номер COM-порта */
-    public final static String COMPort="COM3";
+    public final static String COMPort="COM";
+    public final static int COMPortNum=4;
     public static void main(String argv[]){
         System.out.println(Double.parseDouble("0.00"));
         }

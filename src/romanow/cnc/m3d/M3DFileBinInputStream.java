@@ -111,7 +111,7 @@ public class M3DFileBinInputStream implements FileBinInputStream{
             addr = M3DValues.headerSize;
             int hd[] = readHeader();
             back.onHeader(hd);
-            WorkSpace.ws().temp().setHeader(hd);
+            //WorkSpace.ws().temp().setHeader(hd);
             while (!finish){
                 Command cmd = getNext();
                 if (cmd==null)
@@ -131,7 +131,7 @@ public class M3DFileBinInputStream implements FileBinInputStream{
         int hd[] = new int[sz];
         for (int i = 0; i < sz; i++)
             hd[i] = dest.readInt();
-        WorkSpace.ws().temp().setHeader(hd);
+        //WorkSpace.ws().temp().setHeader(hd);
         return hd;
         }
     }

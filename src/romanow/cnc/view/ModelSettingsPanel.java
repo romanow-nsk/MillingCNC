@@ -15,8 +15,6 @@ import romanow.cnc.utils.I_Notify;
 import romanow.cnc.utils.Utils;
 import romanow.cnc.Values;
 
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
@@ -617,40 +615,40 @@ public class ModelSettingsPanel extends BasePanel  implements I_SettingsPanel{
             DecimalFormat df = new DecimalFormat("0.000", dfs);
             DecimalFormat df2 = new DecimalFormat("0.00", dfs);
             DecimalFormat df3 = new DecimalFormat("000.0", dfs);
-            MarkingFieldHight.setText(df2.format(set.local.MarkingFieldHight.getVal()));
-            MarkingFieldWidth.setText(df2.format(set.local.MarkingFieldWidth.getVal()));
-            BlankHight.setText(df2.format(set.local.BlankHight.getVal()));
-            BlankWidth.setText(df2.format(set.local.BlankWidth.getVal()));
-            CutterDiameter.setText(df2.format(set.local.CutterDiameter.getVal()));
-            StepMinus.setText(df2.format(set.local.StepMinus.getVal()));
-            VerticalStep.setText(df2.format(set.local.VerticalStep.getVal()));
-            Z.setText(df2.format(set.local.Z.getVal()));
-            Zstart.setText(df2.format(set.local.ZStart.getVal()));
-            Zfinish.setText(df2.format(set.local.ZFinish.getVal())); 
-            PageServoOffsetsLeft.setText(df2.format(set.local.PageServoOffsetsLeft.getVal()));
-            PageServoOffsetsTop.setText(df2.format(set.local.PageServoOffsetsTop.getVal()));
-            ScaleFactor.setText(df.format(set.global.ScaleFactor.getVal()));
+            MarkingFieldHight.setText(df2.format(set.model.ModelHight.getVal()));
+            MarkingFieldWidth.setText(df2.format(set.model.ModelWidth.getVal()));
+            BlankHight.setText(df2.format(set.model.BlankHight.getVal()));
+            BlankWidth.setText(df2.format(set.model.BlankWidth.getVal()));
+            CutterDiameter.setText(df2.format(set.model.CutterDiameter.getVal()));
+            StepMinus.setText(df2.format(set.model.StepMinus.getVal()));
+            VerticalStep.setText(df2.format(set.model.VerticalStep.getVal()));
+            Z.setText(df2.format(set.model.ModelZ.getVal()));
+            Zstart.setText(df2.format(set.model.ZStart.getVal()));
+            Zfinish.setText(df2.format(set.model.ZFinish.getVal()));
+            PageServoOffsetsLeft.setText(df2.format(set.model.PageServoOffsetsLeft.getVal()));
+            PageServoOffsetsTop.setText(df2.format(set.model.PageServoOffsetsTop.getVal()));
+            ScaleFactor.setText(df.format(set.model.ScaleFactor.getVal()));
             LineCount.setText(""+set.statistic.LineCount.getVal());
             LineLength.setText(set.statistic.printLength());
             MoveProc.setText(""+set.statistic.moveProc());
             PrintTime.setText(set.statistic.printTime());
             SliceTime.setText(set.statistic.sliceTime());
             //------------------------------------------------------------------------
-            //VerticalStep.setText(df.format(set.filling.VerticalStep.getVal()));
-            Mode2.setSelectedIndex(set.filling.Mode.getVal());
-            FillParametersRaster.setText(df.format(set.filling.FillParametersRaster.getVal()));
-            FillParametersOffset.setText(df.format(set.filling.FillParametersOffset.getVal()));
-            FillParametersAngle.setText(df.format(set.filling.FillParametersAngle.getVal()));
-            FillParametersAngleInc.setText(df.format(set.filling.FillParametersAngleInc.getVal()));
-            FillParametersFillCell.setText(df.format(set.filling.FillParametersFillCell.getVal()));
-            FillingFlatness.setText(df.format(set.filling.FillingFlatness.getVal()));
-            MoveOptimize.setSelected(set.filling.MoveOptimize.getVal());
-            SendLoops.setSelected(set.filling.SendLoops.getVal());
-            Continuous.setSelected(set.filling.FillContinuous.getVal());
-            FlateCircuitSlice.setSelected(set.filling.FlateCircuitSlice.getVal());
+            //VerticalStep.setText(df.format(set.slice.VerticalStep.getVal()));
+            Mode2.setSelectedIndex(set.slice.Mode.getVal());
+            FillParametersRaster.setText(df.format(set.slice.FillParametersRaster.getVal()));
+            FillParametersOffset.setText(df.format(set.slice.FillParametersOffset.getVal()));
+            FillParametersAngle.setText(df.format(set.slice.FillParametersAngle.getVal()));
+            FillParametersAngleInc.setText(df.format(set.slice.FillParametersAngleInc.getVal()));
+            FillParametersFillCell.setText(df.format(set.slice.FillParametersFillCell.getVal()));
+            FillingFlatness.setText(df.format(set.slice.FillingFlatness.getVal()));
+            MoveOptimize.setSelected(set.slice.MoveOptimize.getVal());
+            SendLoops.setSelected(set.slice.SendLoops.getVal());
+            Continuous.setSelected(set.slice.FillContinuous.getVal());
+            FlateCircuitSlice.setSelected(set.slice.FlateCircuitSlice.getVal());
             Continuous.setVisible(MoveOptimize.isSelected());
-            RepairLoops.setSelected(set.filling.RepairLoops.getVal());
-            LoopsWithSomeLineTypes.setSelected(set.filling.LoopsWithSomeLineTypes.getVal());
+            RepairLoops.setSelected(set.slice.RepairLoops.getVal());
+            LoopsWithSomeLineTypes.setSelected(set.slice.LoopsWithSomeLineTypes.getVal());
             } catch (Exception ee){
                 notify.notify(Values.error, Utils.createFatalMessage(ee,5));
                 busy = false;
@@ -663,27 +661,27 @@ public class ModelSettingsPanel extends BasePanel  implements I_SettingsPanel{
     public boolean saveSettings(String par){
         try {
             Settings set = WorkSpace.ws().local();
-            set.local.ZStart.setVal(Float.parseFloat(Zstart.getText()));
-            set.local.ZFinish.setVal(Float.parseFloat(Zfinish.getText()));
-            set.local.BlankWidth.setVal(Float.parseFloat(BlankWidth.getText()));
-            set.local.BlankHight.setVal(Float.parseFloat(BlankHight.getText()));
-            set.local.CutterDiameter.setVal(Float.parseFloat(CutterDiameter.getText()));
-            set.local.StepMinus.setVal(Float.parseFloat(StepMinus.getText()));
-            set.local.VerticalStep.setVal(Float.parseFloat(VerticalStep.getText()));
+            set.model.ZStart.setVal(Float.parseFloat(Zstart.getText()));
+            set.model.ZFinish.setVal(Float.parseFloat(Zfinish.getText()));
+            set.model.BlankWidth.setVal(Float.parseFloat(BlankWidth.getText()));
+            set.model.BlankHight.setVal(Float.parseFloat(BlankHight.getText()));
+            set.model.CutterDiameter.setVal(Float.parseFloat(CutterDiameter.getText()));
+            set.model.StepMinus.setVal(Float.parseFloat(StepMinus.getText()));
+            set.model.VerticalStep.setVal(Float.parseFloat(VerticalStep.getText()));
             //---------------------------------------------------------------------------------------
-            set.filling.Mode.setVal(Mode2.getSelectedIndex());
-            set.filling.FillParametersRaster.setVal(Float.parseFloat(FillParametersRaster.getText()));
-            set.filling.FillParametersOffset.setVal(Float.parseFloat(FillParametersOffset.getText()));
-            set.filling.FillParametersAngle.setVal(Float.parseFloat(FillParametersAngle.getText()));
-            set.filling.FillParametersAngleInc.setVal(Float.parseFloat(FillParametersAngleInc.getText()));
-            set.filling.FillParametersFillCell.setVal(Float.parseFloat(FillParametersFillCell.getText()));
-            set.filling.FillingFlatness.setVal(Float.parseFloat(FillingFlatness.getText()));
-            set.filling.MoveOptimize.setVal(MoveOptimize.isSelected());
-            set.filling.SendLoops.setVal(SendLoops.isSelected());
-            set.filling.FlateCircuitSlice.setVal(FlateCircuitSlice.isSelected());
-            set.filling.FillContinuous.setVal(Continuous.isSelected());
-            set.filling.RepairLoops.setVal(RepairLoops.isSelected());
-            set.filling.LoopsWithSomeLineTypes.setVal(LoopsWithSomeLineTypes.isSelected());
+            set.slice.Mode.setVal(Mode2.getSelectedIndex());
+            set.slice.FillParametersRaster.setVal(Float.parseFloat(FillParametersRaster.getText()));
+            set.slice.FillParametersOffset.setVal(Float.parseFloat(FillParametersOffset.getText()));
+            set.slice.FillParametersAngle.setVal(Float.parseFloat(FillParametersAngle.getText()));
+            set.slice.FillParametersAngleInc.setVal(Float.parseFloat(FillParametersAngleInc.getText()));
+            set.slice.FillParametersFillCell.setVal(Float.parseFloat(FillParametersFillCell.getText()));
+            set.slice.FillingFlatness.setVal(Float.parseFloat(FillingFlatness.getText()));
+            set.slice.MoveOptimize.setVal(MoveOptimize.isSelected());
+            set.slice.SendLoops.setVal(SendLoops.isSelected());
+            set.slice.FlateCircuitSlice.setVal(FlateCircuitSlice.isSelected());
+            set.slice.FillContinuous.setVal(Continuous.isSelected());
+            set.slice.RepairLoops.setVal(RepairLoops.isSelected());
+            set.slice.LoopsWithSomeLineTypes.setVal(LoopsWithSomeLineTypes.isSelected());
             sendEvent(Events.Settings,0,0,null,null);
             if (par!=null)
                 notify.notify(Values.info,"Изменен параметр: "+par);
@@ -748,30 +746,30 @@ public class ModelSettingsPanel extends BasePanel  implements I_SettingsPanel{
     }//GEN-LAST:event_ShiftButtonActionPerformed
 
     private void BlankWidthKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BlankWidthKeyPressed
-        Utils.saveKeyPressed(evt,set.local.BlankWidth,set,notify);
+        Utils.saveKeyPressed(evt,set.model.BlankWidth,set,notify);
     }//GEN-LAST:event_BlankWidthKeyPressed
 
     private void BlankHightKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BlankHightKeyPressed
-        Utils.saveKeyPressed(evt,set.local.BlankHight,set,notify);
+        Utils.saveKeyPressed(evt,set.model.BlankHight,set,notify);
     }//GEN-LAST:event_BlankHightKeyPressed
 
     private void CutterDiameterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CutterDiameterKeyPressed
-        Utils.saveKeyPressed(evt,set.local.CutterDiameter,set,notify);
+        Utils.saveKeyPressed(evt,set.model.CutterDiameter,set,notify);
     }//GEN-LAST:event_CutterDiameterKeyPressed
 
     private void StepMinusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_StepMinusKeyPressed
-        Utils.saveKeyPressed(evt,set.local.StepMinus,set,notify);    }//GEN-LAST:event_StepMinusKeyPressed
+        Utils.saveKeyPressed(evt,set.model.StepMinus,set,notify);    }//GEN-LAST:event_StepMinusKeyPressed
 
     private void VerticalStepKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_VerticalStepKeyPressed
-        Utils.saveKeyPressed(evt,set.local.VerticalStep,set,notify);
+        Utils.saveKeyPressed(evt,set.model.VerticalStep,set,notify);
     }//GEN-LAST:event_VerticalStepKeyPressed
 
     private void ZstartKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ZstartKeyPressed
-        Utils.saveKeyPressed(evt,set.local.ZStart,set,notify);
+        Utils.saveKeyPressed(evt,set.model.ZStart,set,notify);
     }//GEN-LAST:event_ZstartKeyPressed
 
     private void ZfinishKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ZfinishKeyPressed
-        Utils.saveKeyPressed(evt,set.local.ZFinish,set,notify);
+        Utils.saveKeyPressed(evt,set.model.ZFinish,set,notify);
     }//GEN-LAST:event_ZfinishKeyPressed
 
     private void ANGLEKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ANGLEKeyPressed
@@ -818,70 +816,70 @@ public class ModelSettingsPanel extends BasePanel  implements I_SettingsPanel{
 
     private void MoveOptimizeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_MoveOptimizeItemStateChanged
         if (busy) return;
-        set.filling.MoveOptimize.setVal(MoveOptimize.isSelected());
+        set.slice.MoveOptimize.setVal(MoveOptimize.isSelected());
         Continuous.setVisible(MoveOptimize.isSelected());
         Utils.viewUpdateCheck(MoveOptimize,true);
     }//GEN-LAST:event_MoveOptimizeItemStateChanged
 
     private void ContinuousItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_ContinuousItemStateChanged
         if (busy) return;
-        set.filling.FillContinuous.setVal(Continuous.isSelected());
+        set.slice.FillContinuous.setVal(Continuous.isSelected());
         Utils.viewUpdateCheck(Continuous,true);
     }//GEN-LAST:event_ContinuousItemStateChanged
 
     private void SendLoopsItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_SendLoopsItemStateChanged
         if (busy) return;
-        set.filling.SendLoops.setVal(SendLoops.isSelected());
+        set.slice.SendLoops.setVal(SendLoops.isSelected());
         Utils.viewUpdateCheck(SendLoops,true);
 
     }//GEN-LAST:event_SendLoopsItemStateChanged
 
     private void FlateCircuitSliceItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_FlateCircuitSliceItemStateChanged
         if (busy) return;
-        set.filling.FlateCircuitSlice.setVal(FlateCircuitSlice.isSelected());
+        set.slice.FlateCircuitSlice.setVal(FlateCircuitSlice.isSelected());
         Utils.viewUpdateCheck(FlateCircuitSlice,true);
     }//GEN-LAST:event_FlateCircuitSliceItemStateChanged
 
     private void RepairLoopsItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_RepairLoopsItemStateChanged
         if (busy) return;
-        set.filling.RepairLoops.setVal(RepairLoops.isSelected());
+        set.slice.RepairLoops.setVal(RepairLoops.isSelected());
         Utils.viewUpdateCheck(RepairLoops,true);
     }//GEN-LAST:event_RepairLoopsItemStateChanged
 
     private void LoopsWithSomeLineTypesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_LoopsWithSomeLineTypesItemStateChanged
         if (busy) return;
-        set.filling.LoopsWithSomeLineTypes.setVal(LoopsWithSomeLineTypes.isSelected());
+        set.slice.LoopsWithSomeLineTypes.setVal(LoopsWithSomeLineTypes.isSelected());
         Utils.viewUpdateCheck(LoopsWithSomeLineTypes,true);
     }//GEN-LAST:event_LoopsWithSomeLineTypesItemStateChanged
 
     private void Mode2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_Mode2ItemStateChanged
         if (busy) return;
-        set.filling.Mode.setVal(Mode2.getSelectedIndex());
+        set.slice.Mode.setVal(Mode2.getSelectedIndex());
         Utils.viewUpdate(Mode2,true);
     }//GEN-LAST:event_Mode2ItemStateChanged
 
     private void FillParametersRasterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FillParametersRasterKeyPressed
-        Utils.saveKeyPressed(evt,set.filling.FillParametersRaster,set,notify);
+        Utils.saveKeyPressed(evt,set.slice.FillParametersRaster,set,notify);
     }//GEN-LAST:event_FillParametersRasterKeyPressed
 
     private void FillParametersOffsetKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FillParametersOffsetKeyPressed
-        Utils.saveKeyPressed(evt,set.filling.FillParametersOffset,set,notify);
+        Utils.saveKeyPressed(evt,set.slice.FillParametersOffset,set,notify);
     }//GEN-LAST:event_FillParametersOffsetKeyPressed
 
     private void FillParametersAngleKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FillParametersAngleKeyPressed
-        Utils.saveKeyPressed(evt,set.filling.FillParametersAngle,set,notify);
+        Utils.saveKeyPressed(evt,set.slice.FillParametersAngle,set,notify);
     }//GEN-LAST:event_FillParametersAngleKeyPressed
 
     private void FillParametersAngleIncKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FillParametersAngleIncKeyPressed
-        Utils.saveKeyPressed(evt,set.filling.FillParametersAngleInc,set,notify);
+        Utils.saveKeyPressed(evt,set.slice.FillParametersAngleInc,set,notify);
     }//GEN-LAST:event_FillParametersAngleIncKeyPressed
 
     private void FillParametersFillCellKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FillParametersFillCellKeyPressed
-        Utils.saveKeyPressed(evt,set.filling.FillParametersFillCell,set,notify);
+        Utils.saveKeyPressed(evt,set.slice.FillParametersFillCell,set,notify);
     }//GEN-LAST:event_FillParametersFillCellKeyPressed
 
     private void FillingFlatnessKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FillingFlatnessKeyPressed
-        Utils.saveKeyPressed(evt,set.filling.FillingFlatness,set,notify);
+        Utils.saveKeyPressed(evt,set.slice.FillingFlatness,set,notify);
     }//GEN-LAST:event_FillingFlatnessKeyPressed
 
     @Override

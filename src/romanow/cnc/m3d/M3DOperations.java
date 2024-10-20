@@ -216,7 +216,7 @@ public class M3DOperations {
             @Override
             public void onHeader(int hd[]) {
                 try {
-                    usb.sendData(WorkSpace.ws().temp().createHeader());
+                    //usb.sendData(WorkSpace.ws().temp().createHeader());
                     } catch(Exception ee){
                         notify.notify(Values.fatal,ee.getMessage());
                         }
@@ -236,15 +236,15 @@ public class M3DOperations {
             final STLPoint2D last = new STLPoint2D(0, 0);
             if (set==null)
                 set = WorkSpace.ws().local();
-            int mode = set.filling.Mode.getVal();
-            boolean optimize = set.filling.MoveOptimize.getVal();
-            double plusAngle = set.filling.FillParametersAngle.getVal();
-            double angle0 = set.filling.FillParametersAngle.getVal();
-            double angleInc = set.filling.FillParametersAngleInc.getVal();
-            double raster = set.filling.FillParametersRaster.getVal();
-            double diff = set.filling.FillParametersRaster.getVal() * Values.OptimizeRasterCount;
-            double vStep = set.local.VerticalStep.getVal();
-            double z0 = WorkSpace.ws().local().local.ZStart.getVal();
+            int mode = set.slice.Mode.getVal();
+            boolean optimize = set.slice.MoveOptimize.getVal();
+            double plusAngle = set.slice.FillParametersAngle.getVal();
+            double angle0 = set.slice.FillParametersAngle.getVal();
+            double angleInc = set.slice.FillParametersAngleInc.getVal();
+            double raster = set.slice.FillParametersRaster.getVal();
+            double diff = set.slice.FillParametersRaster.getVal() * Values.OptimizeRasterCount;
+            double vStep = set.model.VerticalStep.getVal();
+            double z0 = WorkSpace.ws().local().model.ZStart.getVal();
             cnt = 0;
             double angle = par.layer!=null ? par.layer.angle() :  (angle0 + par.layerNum * angleInc) % 180;
             double z = par.layer!=null ? par.layer.z() : z0 + par.layerNum * vStep;
@@ -313,7 +313,7 @@ public class M3DOperations {
             generator.loops(loops);
             notify.log( "Контуров " + loops.size() + " замкнутых " + slicer.totalCompleted() + "");
             //------------------------------ Оконтуривание ---------------------
-            if (set.filling.SendLoops.getVal()){
+            if (set.slice.SendLoops.getVal()){
                 for(STLLoop loop : loops)
                     for(STLLine pp : loop.lines()){
                         generator.line(pp);
@@ -326,7 +326,7 @@ public class M3DOperations {
             //------------------------------------------------------------------
             boolean finish1;
             if (optimize)
-                finish1 = slicer.slice(mode, new OptimizeAdaprer(sliceAdapter, diff, set.filling.FillContinuous.getVal(),notify),set);
+                finish1 = slicer.slice(mode, new OptimizeAdaprer(sliceAdapter, diff, set.slice.FillContinuous.getVal(),notify),set);
             else
                 finish1 = slicer.slice(mode, sliceAdapter,set);
             generator.layerFinished(layerRez,z,angle);
@@ -358,10 +358,10 @@ public class M3DOperations {
         final SliceData data = new SliceData();
         int layerCount=0;
         Settings set = WorkSpace.ws().local();
-        double vStep = set.local.VerticalStep.getVal();
+        double vStep = set.model.VerticalStep.getVal();
         double zz = WorkSpace.ws().model().max().z();
-        double z0 = set.local.ZStart.getVal();
-        double z1 = set.local.ZFinish.getVal();
+        double z0 = set.model.ZStart.getVal();
+        double z1 = set.model.ZFinish.getVal();
         if (zz < z1)
             z1 = zz;
         sliceStop = false;
@@ -378,7 +378,7 @@ public class M3DOperations {
             }).start();
             }
         notify.setProgress(0);
-        int threadCount0=WorkSpace.ws().global().global.SliceThreadNum.getVal();
+        int threadCount0=WorkSpace.ws().global().mashine.SliceThreadNum.getVal();
         threadCount = threadCount0;
         procCount=0;
         for(layerCount=nLayers-1; layerCount >=0; layerCount--){
@@ -447,10 +447,10 @@ public class M3DOperations {
         ArrayList<STLLoopGenerator> loopList = new ArrayList<>();
         final SliceRezult rez = new SliceRezult();
         Settings set = WorkSpace.ws().local();
-        double vStep = set.local.VerticalStep.getVal();
+        double vStep = set.model.VerticalStep.getVal();
         double zz = WorkSpace.ws().model().max().z();
-        double z0 = set.local.ZStart.getVal();
-        double z1 = set.local.ZFinish.getVal();
+        double z0 = set.model.ZStart.getVal();
+        double z1 = set.model.ZFinish.getVal();
         if (z1==0 || zz < z1)
             z1 = zz;
         sliceStop = false;
@@ -468,9 +468,9 @@ public class M3DOperations {
                 final STLPoint2D last = new STLPoint2D(0, 0);
                 if (set==null)
                     set = WorkSpace.ws().local();
-                double diff = set.filling.FillParametersRaster.getVal() * Values.OptimizeRasterCount;
-                vStep = set.local.VerticalStep.getVal();
-                z0 = WorkSpace.ws().local().local.ZStart.getVal();
+                double diff = set.slice.FillParametersRaster.getVal() * Values.OptimizeRasterCount;
+                vStep = set.model.VerticalStep.getVal();
+                z0 = WorkSpace.ws().local().model.ZStart.getVal();
                 cnt = 0;
                 double z = par.layer!=null ? par.layer.z() : z0 + par.layerNum * vStep;
                 double diff0 = Values.PointDiffenerce;
@@ -521,10 +521,10 @@ public class M3DOperations {
         ArrayList<STLLoopGenerator> loopList = createLoops(back);
         final SliceRezult rez = new SliceRezult();
         Settings set = WorkSpace.ws().local();
-        double vStep = set.local.VerticalStep.getVal() ;
+        double vStep = set.model.VerticalStep.getVal() ;
         double zz = WorkSpace.ws().model().max().z();
-        double z0 = set.local.ZStart.getVal();
-        double z1 = set.local.ZFinish.getVal();
+        double z0 = set.model.ZStart.getVal();
+        double z1 = set.model.ZFinish.getVal();
         if (z1==0 || zz < z1)
             z1 = zz;
         sliceStop = false;
@@ -576,7 +576,7 @@ public class M3DOperations {
             generator.end(layerRez);
             generator.close();
             SliceLayer lr = tmp.get(0);
-            if (set.filling!=null)
+            if (set.model!=null)
                 lr.sliceSettings(set);
             if (par.zOrig<0){
                 lr.setModified();
@@ -699,8 +699,8 @@ public class M3DOperations {
         finishUSBPrint();
         }
     private boolean copySLM3DtoUSBStopPoint(ViewAdapter synch,USBProtocol protocol) throws UNIException{
-        int nLayer= WorkSpace.ws().global().global.CurrentLayer.getVal();
-        int nline = WorkSpace.ws().global().global.CurrentLine.getVal();
+        int nLayer= WorkSpace.ws().global().mashine.CurrentLayer.getVal();
+        int nline = WorkSpace.ws().global().mashine.CurrentLine.getVal();
         if (nLayer==-1){
             copySLM3DtoUSB(synch,protocol);
             return true;
@@ -746,14 +746,14 @@ public class M3DOperations {
             out.newLine();
             Settings ls = layer.printSettings();
             if (ls == null) ls = local;
-            out.write(String.format(Locale.US,"M901 P%-3d",ls.pulses.LaserPumpPower.getVal()));
-            out.newLine();
-            out.write(String.format(Locale.US,"M902 P%-3d",ls.marking.MicroStepsMark.getVal()));
-            out.newLine();
-            out.write(String.format(Locale.US,"M903 P%-3d",ls.control.NextLayerMovingM4Step.getVal()));
-            out.newLine();
-            out.write(String.format(Locale.US,"M904 P%-3d",ls.control.NextLayerMovingM3Step.getVal()));
-            out.newLine();
+            //out.write(String.format(Locale.US,"M901 P%-3d",ls.pulses.LaserPumpPower.getVal()));
+            //out.newLine();
+            //out.write(String.format(Locale.US,"M902 P%-3d",ls.marking.MicroStepsMark.getVal()));
+            //out.newLine();
+            //out.write(String.format(Locale.US,"M903 P%-3d",ls.control.NextLayerMovingM4Step.getVal()));
+            //out.newLine();
+            //out.write(String.format(Locale.US,"M904 P%-3d",ls.control.NextLayerMovingM3Step.getVal()));
+            //out.newLine();
             out.write("G900");
             out.newLine();
             I_STLPoint2D last = new STLPoint2D(0,0);

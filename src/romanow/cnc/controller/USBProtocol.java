@@ -1,7 +1,6 @@
 package romanow.cnc.controller;
 
 import romanow.cnc.commands.*;
-import romanow.cnc.settings.GlobalSettings;
 import romanow.cnc.settings.Settings;
 import romanow.cnc.settings.WorkSpace;
 import romanow.cnc.stl.STLLine;
@@ -100,12 +99,12 @@ public class USBProtocol {
         int xx[]=getLineCount(back);
         Settings set = WorkSpace.ws().global();
         if (xx==null){
-            set.global.CurrentLayer.setVal(layerCount);
-            set.global.CurrentLine.setVal(lineCount);
+            //set.global.CurrentLayer.setVal(layerCount);
+            //set.global.CurrentLine.setVal(lineCount);
             }
         else{
-            set.global.CurrentLayer.setVal(xx[1]);
-            set.global.CurrentLine.setVal(xx[2]);
+            //set.global.CurrentLayer.setVal(xx[1]);
+            //set.global.CurrentLine.setVal(xx[2]);
             }
         WorkSpace.ws().saveSettings();
         }
@@ -340,6 +339,7 @@ public class USBProtocol {
     public int blockByteSize() { return usb.blockByteSize(); }
     //--------------------------------------------------------------------------------
     public void saveMotorPosition(int mdata[],int idx){
+        /*
         GlobalSettings set = WorkSpace.ws().global().global;
         switch (idx){
             case 0:
@@ -359,6 +359,7 @@ public class USBProtocol {
                 break;
         }
         WorkSpace.ws().saveSettings();
+         */
         }
     //--------------------------------------------------------------------------
     public void OxygenOff(USBBack back){

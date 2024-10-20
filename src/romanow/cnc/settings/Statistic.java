@@ -5,14 +5,19 @@
  */
 package romanow.cnc.settings;
 
+import romanow.cnc.io.I_File;
 import romanow.cnc.slicer.SliceRezult;
 import romanow.cnc.utils.Utils;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 
 /**
  *
  * @author romanow
  */
-public class Statistic {
+public class Statistic implements I_File {
     public IntParameter LineCount = new IntParameter(0);
     /** Длина линий в м*/
     public FloatParameter LineLength = new FloatParameter(0);
@@ -38,6 +43,24 @@ public class Statistic {
         LineLength.setVal(rez.lineLength());
         MoveLength.setVal(rez.moveLength());
         SliceTime.setVal(rez.sliceTime());
-        PrintTime.setVal((int)(LineLength.getVal())/ WorkSpace.ws().local().marking.MicroStepsMark.getVal());
+        PrintTime.setVal(0);
         }
+
+    @Override
+    public void load(DataInputStream in) throws IOException {
+        LineCount.load(in);
+        LineLength.load(in);
+        MoveLength.load(in);
+        SliceTime.load(in);
+        PrintTime.load(in);
+    }
+
+    @Override
+    public void save(DataOutputStream in) throws IOException {
+        LineCount.save(in);
+        LineLength.save(in);
+        MoveLength.save(in);
+        SliceTime.save(in);
+        PrintTime.save(in);
+    }
 }

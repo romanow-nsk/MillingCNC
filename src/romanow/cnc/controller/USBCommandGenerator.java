@@ -2,7 +2,6 @@ package romanow.cnc.controller;
 
 import romanow.cnc.commands.Command;
 import romanow.cnc.commands.CommandLineBlock;
-import romanow.cnc.settings.GlobalSettings;
 import romanow.cnc.settings.WorkSpace;
 import romanow.cnc.slicer.CommandGenerator;
 import romanow.cnc.slicer.SliceRezult;
@@ -29,9 +28,9 @@ public class USBCommandGenerator extends CommandGenerator {
     private double cOffsetX=0,cOffsetY=0;
     private double maxSize=1;
     private void setCenterOffsets(){
-        GlobalSettings gen = WorkSpace.ws().global().global;
-        cOffsetX = gen.CenterOffsetX.getVal();
-        cOffsetY = gen.CenterOffsetY.getVal();
+        //GlobalSettings gen = WorkSpace.ws().global().global;
+        //cOffsetX = gen.CenterOffsetX.getVal();
+        //cOffsetY = gen.CenterOffsetY.getVal();
         double out1 = Math.abs(cOffsetX);
         double out2 = Math.abs(cOffsetY);
         maxSize =  out1 > out2 ? out1 : out2;
@@ -68,13 +67,13 @@ public class USBCommandGenerator extends CommandGenerator {
     public USBCommandGenerator(USBFace face, I_Notify notify0){
         notify = notify0;
         usb = new USBProtocol(face);
-        asBlock = WorkSpace.ws().global().global.LineBlock.getVal();
+        //asBlock = WorkSpace.ws().global().global.LineBlock.getVal();
         }
     /** Получает готовый инициализированный протокол */
     public USBCommandGenerator(USBProtocol usb0, I_Notify notify0){
         notify = notify0;
         usb = usb0;
-        asBlock = WorkSpace.ws().global().global.LineBlock.getVal();
+        //asBlock = WorkSpace.ws().global().global.LineBlock.getVal();
         }
     private boolean compareLineCounts() throws UNIException {
         usb.waitForState(USBCodes.STATE_WAITFORDATA,USBCodes.STATE_PRINT,0);

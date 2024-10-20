@@ -299,7 +299,7 @@ public class M3DSequencer extends javax.swing.JFrame {
                 }
             if (cmd instanceof CommandLayer){
                 CommandLayer lr = new CommandLayer();
-                lr.step(WorkSpace.ws().global().local.VerticalStep.getVal());
+                lr.step(WorkSpace.ws().global().model.VerticalStep.getVal());
                 cmd = lr;
                 }
             cList.add(cmd);

@@ -88,9 +88,11 @@ public class M3DFileBinOutputStream {
         is.write(Utils.intToBytes(vv));
         }
     public void writeHeader() throws UNIException {
+        /*
         try {
             is.write(WorkSpace.ws().temp().createHeader());
             } catch (IOException ee){ throw UNIException.io(ee); }
+         */
         }
     public static void main(String argv[]) {
         }

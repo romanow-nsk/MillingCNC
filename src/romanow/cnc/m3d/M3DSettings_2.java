@@ -6,8 +6,6 @@
 package romanow.cnc.m3d;
 
 import romanow.cnc.view.BaseFrame;
-import romanow.cnc.settingsView.PrintSettingsPanel;
-import romanow.cnc.settingsView.EquipSettingsPanel;
 import romanow.cnc.settingsView.SliceSettingsPanel;
 import romanow.cnc.view.ModelSettingsPanel;
 import romanow.cnc.settingsView.I_SettingsPanel;
@@ -29,7 +27,6 @@ public class M3DSettings_2 extends BaseFrame implements I_SettingsChanged{
      */
     private ArrayList<I_SettingsPanel> panels = new ArrayList();
     private boolean localValid = WorkSpace.ws().modelPresent();
-    private EquipSettingsPanel glob=null;
     private ModelSettingsPanel model=null;
     public M3DSettings_2(I_Notify mainNotify) {
         if (!tryToStart()) return;
@@ -37,13 +34,7 @@ public class M3DSettings_2 extends BaseFrame implements I_SettingsChanged{
         setTitle("Настройки");
         Save.setEnabled(false);
         this.setBounds(100,100, 800, 450);
-        glob =  new EquipSettingsPanel(this,WorkSpace.ws().global(),mainNotify);
-        panels.add((I_SettingsPanel)glob);
-        SettingsList.add("Принтер",glob);
-        JPanel pn =  new PrintSettingsPanel(this,WorkSpace.ws().global(),mainNotify);
-        panels.add((I_SettingsPanel)pn);
-        SettingsList.add("Уставки (общие)",pn);
-        pn =  new SliceSettingsPanel(this,WorkSpace.ws().global(),mainNotify);
+        JPanel pn =  new SliceSettingsPanel(this,WorkSpace.ws().global(),mainNotify);
         panels.add((I_SettingsPanel)pn);
         SettingsList.add("Слайсинг (общие)",pn);
         if (localValid){
@@ -53,8 +44,6 @@ public class M3DSettings_2 extends BaseFrame implements I_SettingsChanged{
             pn =  new SliceSettingsPanel(this,WorkSpace.ws().local(),mainNotify);
             panels.add((I_SettingsPanel)pn);
             SettingsList.add("Слайсинг (модель)",pn);
-            pn =  new PrintSettingsPanel(this, WorkSpace.ws().local(),mainNotify);
-            panels.add((I_SettingsPanel)pn);
             SettingsList.add("Уставки (модель)",pn);
             }
         }
@@ -74,7 +63,6 @@ public class M3DSettings_2 extends BaseFrame implements I_SettingsChanged{
     @Override
     public void onEvent(int code,boolean on, int value, String name) {
         if (code== Events.Settings){
-            glob.loadSettings();
             if (model!=null)
                 model.loadSettings();
             }

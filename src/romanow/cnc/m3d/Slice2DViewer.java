@@ -10,7 +10,6 @@ import romanow.cnc.graph.GraphPanel;
 import romanow.cnc.graph.I_Mouse;
 import romanow.cnc.settings.Settings;
 import romanow.cnc.settings.WorkSpace;
-import romanow.cnc.settingsView.LayerPrintSettings;
 import romanow.cnc.settingsView.StatisticPanel;
 
 import romanow.cnc.slicer.*;
@@ -128,7 +127,7 @@ public class Slice2DViewer extends BaseFrame{
     public Slice2DViewer(I_Notify notify0) {
         if (!tryToStart()) return;
         notify = notify0;
-        dz = WorkSpace.ws().local().local.VerticalStep.getVal();
+        dz = WorkSpace.ws().local().model.VerticalStep.getVal();
         data = ws().data();
         initComponents();
         statView = new StatisticPanel();
@@ -706,7 +705,7 @@ public class Slice2DViewer extends BaseFrame{
         gPanel.clear();
         mode = MODE.getSelectedIndex();
         LAYERS.removeAll();
-        double z0 = WorkSpace.ws().local().local.ZStart.getVal();
+        double z0 = WorkSpace.ws().local().model.ZStart.getVal();
         int k=0;
         for(int i=0;i<data.size();i++){
             SliceLayer lr = data.get(i);
@@ -1049,8 +1048,8 @@ public class Slice2DViewer extends BaseFrame{
         try {
             double z = Double.parseDouble(B5.getText());
             Settings set = WorkSpace.ws().local();
-            double z0 = set.local.ZStart.getVal();
-            double vStep = set.local.VerticalStep.getVal();
+            double z0 = set.model.ZStart.getVal();
+            double vStep = set.model.VerticalStep.getVal();
             int lNum = (int)((z-z0+vStep/2)/vStep);
             final double z2 = z;
             new M3DReSlice("Добавить слой",ws().local(),true,(fil)->{
@@ -1119,12 +1118,14 @@ public class Slice2DViewer extends BaseFrame{
         Settings print = layer.printSettings();
         boolean copy = print == null;
         Settings ss = copy ? ws().local() : print;
+        /*
         new LayerPrintSettings(ss,copy,notify,(set)->{
             layer.printSettings(set);
             setLayersNoMove();
             ws().sendEvent(Events.Settings);
             dataChanged();   
             }).setVisible(true);
+         */
 
     }//GEN-LAST:event_B4ActionPerformed
 

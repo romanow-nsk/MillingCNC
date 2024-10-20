@@ -380,19 +380,19 @@ public class STLLine implements I_Line2D, I_File {
         }
     private double getYR(){
         // YR = (y2-y1)(W-x1)/(x2-x2)+y1
-        double dd = WorkSpace.ws().global().global.WorkFieldSize.getVal();
+        double dd = WorkSpace.ws().global().mashine.WorkFrameX.getVal();
         return (line[1].y()-line[0].y())*(dd-line[0].x())/(line[1].x()-line[0].x())+line[0].y();
         }
     private double getXL(){
         // YR = (x2-x1)(H-y1)/(y2-y2)+x1
-        double dd = WorkSpace.ws().global().global.WorkFieldSize.getVal();
+        double dd = WorkSpace.ws().global().mashine.WorkFrameX.getVal();
         return (line[1].x()-line[0].x())*(dd-line[0].y())/(line[1].y()-line[0].y())+line[0].x();
     }
     //+++ 1.1 ------------------------------ Растянуть отрезов до полной линии рабочего стола --------------------------
     public STLLine expandToFullSize(){
         STLLine out = clone();
         STLLineAB koef = lineKoeffs();
-        double FSize = WorkSpace.ws().global().global.WorkFieldSize.getVal()/2;
+        double FSize = WorkSpace.ws().global().mashine.WorkFrameX.getVal()/2;
         double y = koef.y(-FSize);
         double x=0;
         if (koef.vertical){

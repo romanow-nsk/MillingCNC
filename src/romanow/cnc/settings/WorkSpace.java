@@ -167,7 +167,7 @@ public class WorkSpace implements I_File{
         local = loadSettings();            // Копия настроек из файла
         model().load(fname, notify);
         local.setZStartFinish();
-        local.global.ScaleFactor.setVal(model.normalizedScale());
+        local.model.ScaleFactor.setVal(model.normalizedScale());
         data(new SliceData());
         fileStateChanged();        
         dataState = Values.Loaded;
@@ -323,11 +323,12 @@ public class WorkSpace implements I_File{
         }
     //------------------------------------------------------------------------
     public int printing() {
-        return global.global.PrintingState.getVal();
-    }
+        return 0;
+        //return global.global.PrintingState.getVal();
+        }
     public void printing(int state) {
         sendEvent(null,Events.Print,0,state,"",null);
-        global.global.PrintingState.setVal(state);
+        //global.global.PrintingState.setVal(state);
         saveSettings();
         }
     public int layerCount() {

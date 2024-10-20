@@ -28,7 +28,7 @@ public class OptimizeAdaprer implements I_LineSlice{
         last=null;
         prevLast=null;
         continuous = contigous0;     // НЕПРЕРЫВНЫЙ СЛАЙСИНГ (короткие соединения) - меньше удвоенного растра
-        length = WorkSpace.ws().local().filling.FillParametersRaster.getVal()*Values.ContinuousK;
+        length = WorkSpace.ws().local().slice.FillParametersRaster.getVal()*Values.ContinuousK;
         }
     /** возвращает линии в порядке оптимизации */
     public void onSliceLayerIndexed() {

@@ -45,7 +45,7 @@ public class SliceSettingsPanel extends javax.swing.JPanel  implements I_Setting
             @Override
             public void itemStateChanged(ItemEvent e) {
                 if (busy) return;
-                set.filling.Mode.setVal(Mode.getSelectedIndex());
+                set.slice.Mode.setVal(Mode.getSelectedIndex());
                 Utils.viewUpdate(Mode,true);
             }
         });
@@ -53,7 +53,7 @@ public class SliceSettingsPanel extends javax.swing.JPanel  implements I_Setting
             @Override
             public void itemStateChanged(ItemEvent e) {
                 if (busy) return;
-                set.filling.MoveOptimize.setVal(MoveOptimize.isSelected());
+                set.slice.MoveOptimize.setVal(MoveOptimize.isSelected());
                 Utils.viewUpdate(MoveOptimize,true);
             }
         });
@@ -197,21 +197,21 @@ public class SliceSettingsPanel extends javax.swing.JPanel  implements I_Setting
             DecimalFormat df = new DecimalFormat("0.000", dfs);
             DecimalFormat df2 = new DecimalFormat("0.00", dfs);
             DecimalFormat df3 = new DecimalFormat("000.0", dfs);
-            //VerticalStep.setText(df.format(set.filling.VerticalStep.getVal()));
-            Mode.select(set.filling.Mode.getVal());
-            FillParametersRaster.setText(df.format(set.filling.FillParametersRaster.getVal()));
-            FillParametersOffset.setText(df.format(set.filling.FillParametersOffset.getVal()));
-            FillParametersAngle.setText(df.format(set.filling.FillParametersAngle.getVal()));
-            FillParametersAngleInc.setText(df.format(set.filling.FillParametersAngleInc.getVal()));
-            FillParametersFillCell.setText(df.format(set.filling.FillParametersFillCell.getVal()));
-            FillingFlatness.setText(df.format(set.filling.FillingFlatness.getVal()));
-            MoveOptimize.setSelected(set.filling.MoveOptimize.getVal());
-            SendLoops.setSelected(set.filling.SendLoops.getVal());
-            Continuous.setSelected(set.filling.FillContinuous.getVal());
-            FlateCircuitSlice.setSelected(set.filling.FlateCircuitSlice.getVal());
+            //VerticalStep.setText(df.format(set.slice.VerticalStep.getVal()));
+            Mode.select(set.slice.Mode.getVal());
+            FillParametersRaster.setText(df.format(set.slice.FillParametersRaster.getVal()));
+            FillParametersOffset.setText(df.format(set.slice.FillParametersOffset.getVal()));
+            FillParametersAngle.setText(df.format(set.slice.FillParametersAngle.getVal()));
+            FillParametersAngleInc.setText(df.format(set.slice.FillParametersAngleInc.getVal()));
+            FillParametersFillCell.setText(df.format(set.slice.FillParametersFillCell.getVal()));
+            FillingFlatness.setText(df.format(set.slice.FillingFlatness.getVal()));
+            MoveOptimize.setSelected(set.slice.MoveOptimize.getVal());
+            SendLoops.setSelected(set.slice.SendLoops.getVal());
+            Continuous.setSelected(set.slice.FillContinuous.getVal());
+            FlateCircuitSlice.setSelected(set.slice.FlateCircuitSlice.getVal());
             Continuous.setVisible(MoveOptimize.isSelected());
-            RepairLoops.setSelected(set.filling.RepairLoops.getVal());
-            LoopsWithSomeLineTypes.setSelected(set.filling.LoopsWithSomeLineTypes.getVal());
+            RepairLoops.setSelected(set.slice.RepairLoops.getVal());
+            LoopsWithSomeLineTypes.setSelected(set.slice.LoopsWithSomeLineTypes.getVal());
             } catch (Exception ee){
                 notify.notify(Values.error,ee.toString());
                 return false; 
@@ -222,20 +222,20 @@ public class SliceSettingsPanel extends javax.swing.JPanel  implements I_Setting
     public Settings copySettings(){
         Settings set  = new Settings();
         try {
-            //set.filling.VerticalStep.setVal(Float.parseFloat(VerticalStep.getText()));
-            set.filling.Mode.setVal(Mode.getSelectedIndex());
-            set.filling.FillParametersRaster.setVal(Float.parseFloat(FillParametersRaster.getText()));
-            set.filling.FillParametersOffset.setVal(Float.parseFloat(FillParametersOffset.getText()));
-            set.filling.FillParametersAngle.setVal(Float.parseFloat(FillParametersAngle.getText()));
-            set.filling.FillParametersAngleInc.setVal(Float.parseFloat(FillParametersAngleInc.getText()));
-            set.filling.FillParametersFillCell.setVal(Float.parseFloat(FillParametersFillCell.getText()));
-            set.filling.FillingFlatness.setVal(Float.parseFloat(FillingFlatness.getText()));
-            set.filling.MoveOptimize.setVal(MoveOptimize.isSelected());
-            set.filling.SendLoops.setVal(SendLoops.isSelected());
-            set.filling.FlateCircuitSlice.setVal(FlateCircuitSlice.isSelected());            
-            set.filling.FillContinuous.setVal(Continuous.isSelected());            
-            set.filling.RepairLoops.setVal(RepairLoops.isSelected());    
-            set.filling.LoopsWithSomeLineTypes.setVal(LoopsWithSomeLineTypes.isSelected());
+            //set.slice.VerticalStep.setVal(Float.parseFloat(VerticalStep.getText()));
+            set.slice.Mode.setVal(Mode.getSelectedIndex());
+            set.slice.FillParametersRaster.setVal(Float.parseFloat(FillParametersRaster.getText()));
+            set.slice.FillParametersOffset.setVal(Float.parseFloat(FillParametersOffset.getText()));
+            set.slice.FillParametersAngle.setVal(Float.parseFloat(FillParametersAngle.getText()));
+            set.slice.FillParametersAngleInc.setVal(Float.parseFloat(FillParametersAngleInc.getText()));
+            set.slice.FillParametersFillCell.setVal(Float.parseFloat(FillParametersFillCell.getText()));
+            set.slice.FillingFlatness.setVal(Float.parseFloat(FillingFlatness.getText()));
+            set.slice.MoveOptimize.setVal(MoveOptimize.isSelected());
+            set.slice.SendLoops.setVal(SendLoops.isSelected());
+            set.slice.FlateCircuitSlice.setVal(FlateCircuitSlice.isSelected());            
+            set.slice.FillContinuous.setVal(Continuous.isSelected());            
+            set.slice.RepairLoops.setVal(RepairLoops.isSelected());    
+            set.slice.LoopsWithSomeLineTypes.setVal(LoopsWithSomeLineTypes.isSelected());
             } catch (Exception ee){
                 notify.notify(Values.error,ee.toString());
                 return null; 
@@ -244,20 +244,20 @@ public class SliceSettingsPanel extends javax.swing.JPanel  implements I_Setting
         }
     public boolean saveSettings(){
         try {
-            //set.filling.VerticalStep.setVal(Float.parseFloat(VerticalStep.getText()));
-            set.filling.Mode.setVal(Mode.getSelectedIndex());
-            set.filling.FillParametersRaster.setVal(Float.parseFloat(FillParametersRaster.getText()));
-            set.filling.FillParametersOffset.setVal(Float.parseFloat(FillParametersOffset.getText()));
-            set.filling.FillParametersAngle.setVal(Float.parseFloat(FillParametersAngle.getText()));
-            set.filling.FillParametersAngleInc.setVal(Float.parseFloat(FillParametersAngleInc.getText()));
-            set.filling.FillParametersFillCell.setVal(Float.parseFloat(FillParametersFillCell.getText()));
-            set.filling.FillingFlatness.setVal(Float.parseFloat(FillingFlatness.getText()));
-            set.filling.MoveOptimize.setVal(MoveOptimize.isSelected());
-            set.filling.SendLoops.setVal(SendLoops.isSelected());
-            set.filling.FlateCircuitSlice.setVal(FlateCircuitSlice.isSelected());
-            set.filling.FillContinuous.setVal(Continuous.isSelected());            
-            set.filling.RepairLoops.setVal(RepairLoops.isSelected());            
-            set.filling.LoopsWithSomeLineTypes.setVal(LoopsWithSomeLineTypes.isSelected());
+            //set.slice.VerticalStep.setVal(Float.parseFloat(VerticalStep.getText()));
+            set.slice.Mode.setVal(Mode.getSelectedIndex());
+            set.slice.FillParametersRaster.setVal(Float.parseFloat(FillParametersRaster.getText()));
+            set.slice.FillParametersOffset.setVal(Float.parseFloat(FillParametersOffset.getText()));
+            set.slice.FillParametersAngle.setVal(Float.parseFloat(FillParametersAngle.getText()));
+            set.slice.FillParametersAngleInc.setVal(Float.parseFloat(FillParametersAngleInc.getText()));
+            set.slice.FillParametersFillCell.setVal(Float.parseFloat(FillParametersFillCell.getText()));
+            set.slice.FillingFlatness.setVal(Float.parseFloat(FillingFlatness.getText()));
+            set.slice.MoveOptimize.setVal(MoveOptimize.isSelected());
+            set.slice.SendLoops.setVal(SendLoops.isSelected());
+            set.slice.FlateCircuitSlice.setVal(FlateCircuitSlice.isSelected());
+            set.slice.FillContinuous.setVal(Continuous.isSelected());            
+            set.slice.RepairLoops.setVal(RepairLoops.isSelected());            
+            set.slice.LoopsWithSomeLineTypes.setVal(LoopsWithSomeLineTypes.isSelected());
             } catch (Exception ee){
                 notify.notify(Values.error,ee.toString());
                 return false; 

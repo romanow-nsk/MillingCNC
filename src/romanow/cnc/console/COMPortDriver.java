@@ -197,7 +197,7 @@ public class COMPortDriver {
         if (serialPort!=null)
             return;
         cmdCount=0;
-        String port = WorkSpace.ws().global().global.COMPort.getVal();
+        String port = WorkSpace.ws().global().mashine.DeviceName.getVal()+WorkSpace.ws().global().mashine.DeviceNum.getVal();
         System.out.println("Порт открыт "+port);
         
         serialPort = new SerialPort(port);

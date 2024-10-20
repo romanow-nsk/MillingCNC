@@ -53,7 +53,7 @@ public class STLModel3D implements I_File {
     /** вычислить размерности модели */
     public void setModelDimensions(I_Notify notify, boolean scaled){
         Settings set = WorkSpace.ws().global();
-        if (set.global.AutoCenter.getVal())                        // Автоцентровка
+        if (set.model.AutoCenter.getVal())                        // Автоцентровка
             shiftToCenter();
         double zz = min().z();
         if (zz!=0)
@@ -62,8 +62,8 @@ public class STLModel3D implements I_File {
         STLPoint3D vmax = max();
         double dim = getScaleXY();
         notify.log(String.format("исходная размерность %4.2f",dim));
-        double dd = WorkSpace.ws().global().global.WorkFieldSize.getVal();
-        if (set.global.AutoScale.getVal()){
+        double dd = WorkSpace.ws().global().mashine.WorkFrameX.getVal();
+        if (set.model.AutoScale.getVal()){
             if (dim >dd/2){
                 normalizedScale = (dd/2.)*Values.DefaultModelScale / dim;
                 notify.log(String.format("Автонормализация в масштабе %4.2f", normalizedScale));
@@ -74,7 +74,7 @@ public class STLModel3D implements I_File {
             }
         else{
             if (scaled){
-                normalizedScale = set.global.ScaleFactor.getVal();
+                normalizedScale = set.model.ScaleFactor.getVal();
                 if (normalizedScale!=1){
                     notify.log(String.format("Масштабирование %4.2f", normalizedScale));
                     }
@@ -94,11 +94,11 @@ public class STLModel3D implements I_File {
         double dx = vmax.x()-vmin.x();
         double dy = vmax.y()-vmin.y();
         Settings set2 = WorkSpace.ws().local();
-        set2.local.MarkingFieldWidth.setVal(dx);  // Размер в mm
-        set2.local.MarkingFieldHight.setVal(dy);  // Размер в mm
-        set2.local.Z.setVal(vmax.z());
-        set2.local.PageServoOffsetsLeft.setVal(Math.abs(min().x()));
-        set2.local.PageServoOffsetsTop.setVal(Math.abs(min().y()));
+        set2.model.ModelWidth.setVal(dx);  // Размер в mm
+        set2.model.ModelHight.setVal(dy);  // Размер в mm
+        set2.model.ModelZ.setVal(vmax.z());
+        set2.model.PageServoOffsetsLeft.setVal(Math.abs(min().x()));
+        set2.model.PageServoOffsetsTop.setVal(Math.abs(min().y()));
         }
     public void load(String fname, I_Notify notify) throws UNIException{
         loadOnly(fname,notify);
