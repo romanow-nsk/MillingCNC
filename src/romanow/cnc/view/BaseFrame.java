@@ -66,6 +66,7 @@ public abstract class BaseFrame extends JFrame implements I_Important, I_PanelEv
 
     public String getOutputFileName(String title, final String defName, String srcName){
         FileDialog dlg=new FileDialog(this,title,FileDialog.SAVE);
+        srcName = srcName.replace("\\","/");
         dlg.setFile(srcName);
         dlg.setFilenameFilter(new FilenameFilter() {
             @Override
@@ -79,6 +80,7 @@ public abstract class BaseFrame extends JFrame implements I_Important, I_PanelEv
         fname+=dlg.getFile();
         if (!fname.endsWith("."+defName))
             fname+="."+defName;
+        fname = fname.replace("\\","/");
         return fname;
         }
     public void sendEvent(int code, int par1, long par2, String par3,Object oo){

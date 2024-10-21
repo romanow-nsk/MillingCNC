@@ -232,17 +232,17 @@ public class CNCViewer extends BaseFrame {
         boolean isAdmin = userType==Values.userAdmin;
         boolean canSave = userType==Values.userAdmin || userType==Values.userConstructor;
         //mBar.getMenu(mSlice).setEnabled(loaded || sliced);
-        mBar.getMenu(mSet).setEnabled(userType!=Values.userGuest);
-        mBar.getMenu(mPrint).setEnabled(userType!=Values.userGuest);
-        mBar.getMenu(mOther).setEnabled(isAdmin);
+        //mBar.getMenu(mSet).setEnabled(userType!=Values.userGuest);
+        //mBar.getMenu(mPrint).setEnabled(userType!=Values.userGuest);
+        //mBar.getMenu(mOther).setEnabled(isAdmin);
         //--------------------------------------------------------------------
-        mBar.getMenu(mFile).getItem(2).setEnabled(sliced && canSave);
-        mBar.getMenu(mFile).getItem(3).setEnabled(sliced && canSave);
-        mBar.getMenu(mFile).getItem(4).setEnabled(sliced && canSave);
+        //mBar.getMenu(mFile).getItem(2).setEnabled(sliced && canSave);
+        //mBar.getMenu(mFile).getItem(3).setEnabled(sliced && canSave);
+        //mBar.getMenu(mFile).getItem(4).setEnabled(sliced && canSave);
         //mBar.getMenu(mView).getItem(0).setEnabled(loaded);
         //mBar.getMenu(mView).getItem(1).setEnabled(sliced);
         //mBar.getMenu(mView).getItem(2).setEnabled(loaded);
-        mBar.getMenu(mSet).getItem(1).setEnabled(isAdmin);
+        //mBar.getMenu(mSet).getItem(1).setEnabled(isAdmin);
         //mBar.getMenu(mSlice).getItem(2).setEnabled((loaded || sliced)&&userType!=Values.userGuest);
         //mBar.getMenu(mSlice).getItem(3).setEnabled((loaded || sliced)&&userType!=Values.userGuest);
         }

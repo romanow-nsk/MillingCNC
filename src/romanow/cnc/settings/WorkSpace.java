@@ -100,7 +100,7 @@ public class WorkSpace implements I_File{
         }
     public String modelName(){ return !modelPresent() ? "" : model().modelName();}
     public String defaultDir(){ 
-        return currentUser.workSpaceDir+(modelName().length()==0 ? "" : (modelName()+"\\")); 
+        return currentUser.workSpaceDir+(modelName().length()==0 ? "" : (modelName()+"/"));
         }
     public String testDefaultDir(){
         String ss = defaultDir();
