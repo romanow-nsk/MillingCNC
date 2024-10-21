@@ -17,7 +17,7 @@ public abstract class BasePanel extends javax.swing.JPanel implements I_PanelEve
 
     //-----------------------------------------------------------------------------------------------------
     @Getter private BaseFrame baseFrame;
-    @Getter @Setter private boolean selected;
+    @Getter private boolean selected=false;
     public abstract  String getName();
     public abstract  int modeMask();
     public abstract  boolean modeEnabled();
@@ -27,7 +27,9 @@ public abstract class BasePanel extends javax.swing.JPanel implements I_PanelEve
     public boolean isSelectedMode(int mode){
         return ((modeMask() & mode)!=0) && modeEnabled();
         }
-
+    public void setSelected(boolean bb){
+        selected = bb;
+        }
     /**
      * Creates new form BasePanel
      */

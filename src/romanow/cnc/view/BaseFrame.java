@@ -42,15 +42,12 @@ public abstract class BaseFrame extends JFrame implements I_Important, I_PanelEv
         }
     public void setViewPanel(int mode){
         ws.viewMode(mode);
-        refreshPanels();
         }
     public void setViewPanelEnable(int mode){
         ws.viewModeEnableOne(mode);
-        refreshPanels();
         }
     public void setViewPanelDisable(int mode){
         ws.viewModeDisableOne(mode);
-        refreshPanels();
         }
 
     public String getInputFileName(String title, final String defName,boolean defDir){

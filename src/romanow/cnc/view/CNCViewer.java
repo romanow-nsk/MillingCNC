@@ -48,16 +48,17 @@ import static romanow.cnc.Values.*;
  */
 public class CNCViewer extends BaseFrame {
     private I_Notify notify;
-    private M3DOperations operate;
-    private M3DVisio visio;
+    //private M3DOperations operate;
+    //private M3DVisio visio;
     private M3DTesing testing;
-    private ViewAdapter viewCommon;
+    //private ViewAdapter ws().viewCommon();
+    //private M3DViewPanel preView=null;
 
     private MenuBar mBar;
     private Thread.UncaughtExceptionHandler defaultHandler=null;
     private static int childCount=3;
+    private WorkSpace ws=null;
 
-    private M3DViewPanel preView=null;
 
     /**
      * Creates new form Viewer
@@ -108,13 +109,14 @@ public class CNCViewer extends BaseFrame {
         addPanel(new STL3DViewPanel(this));
         addPanel(new ModelSettingsPanel(this));
         addPanel(new CommonViewPanel(this));
-        //addPanel(new Loop3DPanel(this));
+        addPanel(new Loop3DPanel(this));
         //---------------------------------------------------------------------------------
         }
 
     public CNCViewer() {
         super();
         if (!tryToStart()) return;
+        ws = WorkSpace.ws();
         initComponents();
         defaultHandler = Thread.getDefaultUncaughtExceptionHandler();
         ws().init();
@@ -149,43 +151,40 @@ public class CNCViewer extends BaseFrame {
                 notify.notify(Values.fatal,message);
                 }
             });
-        operate = new M3DOperations(notify);
+        //operate = new M3DOperations(notify);
         setMenuBar(menuBar1);
         mBar = menuBar1;
+        /*
         preView = new M3DViewPanel();
         preView.setVisible(false);
-        viewCommon = new ViewAdapter(preView.fld()){       // Объект-адаптер для визуальных методов
+        ws().viewCommon() = new ViewAdapter(preView.fld()){       // Объект-адаптер для визуальных методов
             @Override
             public boolean onStepLine() {
-                /*
                 if (BYSTEP.isSelected()){
                     pause(true);
                     PAUSE.setText("продолжить");
                     }
                 return super.onStepLine();
-                 */
-                return true;
                 }
             @Override
             public boolean onStepLayer() {
-                /*
                 if (BYSTEP.isSelected()){
                     pause(true);
                     PAUSE.setText("продолжить");
                     }
-                 */
                 return super.onStepLayer();
             }
         };
-        preView.setAdapter(viewCommon);
+        preView.setAdapter(ws().viewCommon());
         testing = new M3DTesing(notify);
+        */
         setMenuVisible();
-        visio = new M3DVisio(notify,viewCommon);
-
+        //visio = new M3DVisio(notify,ws().viewCommon());
+        refreshPanels();
         }
 
     private void setWidth(boolean full){
-        preView.setVisible(full);
+        ws.preview().setVisible(full);
         }
 
 
@@ -209,14 +208,14 @@ public class CNCViewer extends BaseFrame {
     private void finishOperation(){
         //PAUSE.setText("...");
         //STOP.setText("...");
-        viewCommon.finish();
-        notify.log("Операция завершена "+ Utils.toTimeString(viewCommon.timeInMs()/1000)+" сек");
+        ws().ws().viewCommon().finish();
+        notify.log("Операция завершена "+ Utils.toTimeString(ws().viewCommon().timeInMs()/1000)+" сек");
         notify.setProgress(0);
         setMenuVisible();
         setWidth(false);
         }
     private void breakOperation(){
-        viewCommon.finish();
+        ws().viewCommon().finish();
         finishOperation();
         }
     final int mFile=0;
@@ -793,7 +792,7 @@ public class CNCViewer extends BaseFrame {
             toLog("Не загружен STL-файл");
             return;
             }
-        new STLViewer(viewCommon).setVisible(true);
+        new STLViewer(ws().ws().viewCommon()).setVisible(true);
     }//GEN-LAST:event_view3DActionPerformed
 
     private void directToUsbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_directToUsbActionPerformed
@@ -896,7 +895,7 @@ public class CNCViewer extends BaseFrame {
         new Thread(
                 ()->{
                     try {
-                        operate.exportToGCode(viewCommon,new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outname))));
+                        ws.operate().exportToGCode(ws().viewCommon(),new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outname))));
                         } catch (IOException e) { notify.notify(Values.error,e.toString()); }
                     finishOperation();
                 }).start();
@@ -918,7 +917,7 @@ public class CNCViewer extends BaseFrame {
             ()->{
                 try{
                     if (init) protocol.init();
-                    operate.copySLM3DtoUSB(viewCommon,stopPoint,protocol);
+                    ws.operate().copySLM3DtoUSB(ws().ws().viewCommon(),stopPoint,protocol);
                     if (init) protocol.close();
                     } catch (UNIException ee){ notify.notify(Values.error,ee.toString());}
                 finishOperation();
@@ -1007,7 +1006,7 @@ public class CNCViewer extends BaseFrame {
     }//GEN-LAST:event_TestConsoleActionPerformed
 
     private boolean test1(){
-        if (viewCommon.isRunning()){
+        if (ws().viewCommon().isRunning()){
             toLog("Прервать предыдущую операцию");
             return true;
             }
@@ -1031,7 +1030,7 @@ public class CNCViewer extends BaseFrame {
     }
     private void startView(int lineDelay,int layerDelay){
         sendEvent(Events.OnWarning,0,0,null,null);
-        viewCommon.start(lineDelay,layerDelay);
+        ws().viewCommon().start(lineDelay,layerDelay);
         //PAUSE.setText("остановить");
         //STOP.setText("прервать");
         }
@@ -1042,7 +1041,7 @@ public class CNCViewer extends BaseFrame {
         startView(10,100);
         new Thread(
             ()->{
-                operate.dumpMarkOut(fname);
+                ws.operate().dumpMarkOut(fname);
                 finishOperation();
                 }).start();
         }
@@ -1069,7 +1068,7 @@ public class CNCViewer extends BaseFrame {
                     notify.notify(Values.error,"Файл не найден");
                     return;
                     }
-                visio.show(bb,viewCommon);
+                ws.visio().show(bb,ws().viewCommon());
                 finishOperation();
                 }).start();
         }
@@ -1081,7 +1080,7 @@ public class CNCViewer extends BaseFrame {
         startView(0,0);
         new Thread(
             ()->{
-                operate.copy(fname);
+                ws.operate().copy(fname);
                 finishOperation();
                 }).start();
         }
@@ -1102,9 +1101,9 @@ public class CNCViewer extends BaseFrame {
         final int mode = ws().local().slice.Mode.getVal();
         CommandGenerator gen = new FileCommandGenerator(out);
         new Thread(
-                ()->{operate.sliceTo(gen,viewCommon);
+                ()->{ws.operate().sliceTo(gen,ws().viewCommon());
                     finishOperation();
-                    notify.log("Время выполнения: "+viewCommon.timeInMs()/1000+" сек.");
+                    notify.log("Время выполнения: "+ws().viewCommon().timeInMs()/1000+" сек.");
                     }).start();
             }
 
@@ -1116,7 +1115,7 @@ public class CNCViewer extends BaseFrame {
         USBFace face = test ? new USBUDPEmulator() : new USBLineController();
         new Thread(
              ()->{
-                 operate.sliceTo(new USBCommandGenerator(face,notify), viewCommon);
+                 ws.operate().sliceTo(new USBCommandGenerator(face,notify), ws().viewCommon());
                  finishOperation();
                  }).start();
             }
@@ -1133,7 +1132,7 @@ public class CNCViewer extends BaseFrame {
                 ()->{
                     SliceData data = new SliceData();
                     ws().data(data);
-                    operate.sliceTo(new SliceDataGenerator(data,viewCommon),viewCommon);
+                    ws.operate().sliceTo(new SliceDataGenerator(data,ws().viewCommon()),ws().viewCommon());
                     if (!data.isSliceStop())
                         dataChanged();
                     finishOperation();
@@ -1144,7 +1143,7 @@ public class CNCViewer extends BaseFrame {
         startView(0,0);
         new Thread(
                 ()->{
-                    SliceData data = operate.sliceConcurent(viewCommon);
+                    SliceData data = ws.operate().sliceConcurent(ws().viewCommon());
                     ws().data(data);
                     ws().lastName("");
                     if (!data.isSliceStop())
@@ -1163,7 +1162,7 @@ public class CNCViewer extends BaseFrame {
                 ()->{
                     try {
                         notify.log("Слайсинг в файл "+outname);
-                        SliceData data = operate.sliceConcurent(viewCommon,new DataOutputStream(new FileOutputStream(outname)));
+                        SliceData data = ws.operate().sliceConcurent(ws().viewCommon(),new DataOutputStream(new FileOutputStream(outname)));
                         ws().lastName(defName ? "" : outname);
                         //------------- Состояние dataState не меняется ----------------------------------------
                         ws().fileStateChanged();
@@ -1181,9 +1180,9 @@ public class CNCViewer extends BaseFrame {
         new Thread(
                 ()->{
                     if (circuit)
-                        operate.sliceTo(new VisualCommandGenerator(viewCommon),viewCommon);
+                        ws.operate().sliceTo(new VisualCommandGenerator(ws().viewCommon()),ws().viewCommon());
                     else
-                        operate.sliceTo(new VisualCommandGenerator(viewCommon),viewCommon);
+                        ws.operate().sliceTo(new VisualCommandGenerator(ws().viewCommon()),ws().viewCommon());
                     finishOperation();
                     }).start();
             }
@@ -1203,7 +1202,7 @@ public class CNCViewer extends BaseFrame {
         startView(0,0);
         new Thread(
             ()->{
-                operate.toUsb(fname);
+                ws.operate().toUsb(fname);
                 finishOperation();
                 }).start();
         }

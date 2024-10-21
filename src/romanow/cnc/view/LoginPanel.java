@@ -41,6 +41,7 @@ public class LoginPanel extends BasePanel {
         if (user.password.equals(StringCrypter.encrypt(Password.getText()))){
             ws.currentUser(user);
             getBaseFrame().setViewPanel(Values.PanelMain | Values.PanelGlobalSettings | Values.PanelCommonView);
+            getBaseFrame().refreshPanels();
             }
         else
             MES.setText("Неверный пароль");

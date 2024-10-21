@@ -72,6 +72,7 @@ public class WorkSpace implements I_File{
     public ViewAdapter viewCommon(){ return viewCommon; }
     public JPanel preview(){ return preview; }
     public M3DOperations operate(){ return operate; }
+    public M3DVisio visio(){ return visio; }
     public void preview(JPanel vv){ 
         preview=vv;
         viewCommon.preview(vv);
