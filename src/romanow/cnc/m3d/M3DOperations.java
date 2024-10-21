@@ -550,7 +550,7 @@ public class M3DOperations {
                         break;
                         }
                     rez.procLayer(layerRez);
-                    notify.setProgress((int)((layerCount+1)*100/nLayers));
+                    notify.setProgress((int)((nLayers-layerCount+1)*100/nLayers));
                     }
             generator.end(rez);
             generator.close();

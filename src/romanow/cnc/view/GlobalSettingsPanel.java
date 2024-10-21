@@ -745,7 +745,10 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             Continuous.setVisible(MoveOptimize.isSelected());
             RepairLoops.setSelected(set.slice.RepairLoops.getVal());
             LoopsWithSomeLineTypes.setSelected(set.slice.LoopsWithSomeLineTypes.getVal());
-            } catch (Exception ee){
+            WorkFrameX.setText(df2.format(set.mashine.WorkFrameX.getVal()));
+            WorkFrameY.setText(df2.format(set.mashine.WorkFrameY.getVal()));
+            WorkFrameZ.setText(df2.format(set.mashine.WorkFrameZ.getVal()));
+        } catch (Exception ee){
                 notify.notify(Values.error, Utils.createFatalMessage(ee,5));
                 busy = false;
                 return false; 
