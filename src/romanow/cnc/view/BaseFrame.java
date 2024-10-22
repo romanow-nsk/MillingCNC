@@ -67,13 +67,16 @@ public abstract class BaseFrame extends JFrame implements I_Important, I_PanelEv
     public String getOutputFileName(String title, final String defName, String srcName){
         FileDialog dlg=new FileDialog(this,title,FileDialog.SAVE);
         srcName = srcName.replace("\\","/");
+        int idx=srcName.lastIndexOf("/");
+        if (idx!=-1)
+            srcName = srcName.substring(idx+1);
         dlg.setFile(srcName);
         dlg.setFilenameFilter(new FilenameFilter() {
             @Override
             public boolean accept(File dir, String name) {
                 return name.endsWith("."+defName);
             }
-        });            
+            });
         dlg.show();
         String fname=dlg.getDirectory();
         if (fname==null) return null;

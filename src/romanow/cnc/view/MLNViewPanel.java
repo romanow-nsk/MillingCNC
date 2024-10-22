@@ -989,9 +989,19 @@ public class MLNViewPanel extends BasePanel {
         add(ShowDelay);
         ShowDelay.setBounds(900, 340, 190, 20);
 
+        LAYERS.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                LAYERSItemStateChanged(evt);
+            }
+        });
         add(LAYERS);
         LAYERS.setBounds(10, 60, 210, 30);
 
+        MODE.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                MODEItemStateChanged(evt);
+            }
+        });
         add(MODE);
         MODE.setBounds(10, 10, 210, 30);
 
@@ -1271,6 +1281,15 @@ public class MLNViewPanel extends BasePanel {
     private void ShowDelayStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_ShowDelayStateChanged
         showDelay = ShowDelay.getValue();
     }//GEN-LAST:event_ShowDelayStateChanged
+
+    private void MODEItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_MODEItemStateChanged
+        selectMode(true);
+        paintView(true);
+    }//GEN-LAST:event_MODEItemStateChanged
+
+    private void LAYERSItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_LAYERSItemStateChanged
+        selectLayer();
+    }//GEN-LAST:event_LAYERSItemStateChanged
 
     @Override
     public void refresh() {

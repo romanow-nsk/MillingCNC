@@ -125,13 +125,13 @@ public class GraphPanel extends JPanel{
         gg.drawLine(x2,y1,x2,y2);
         for(int x=-sz;x<=sz;x+=1){
             int xx = xMMToPixel(x);
-            if (xx<0 || xx>=600) continue;
+            if (xx<0 || xx>=vSize) continue;
             gg.setColor(x%10==0 ? Color.red : gridColor);
             gg.drawLine(xx,y1,xx,y2);
             }
         for(int y=-sz;y<=sz;y+=1){
             int yy = yMMToPixel(y);
-            if (yy<0 || yy>=600) continue;
+            if (yy<0 || yy>=vSize) continue;
             gg.setColor(y%10==0 ? Color.red : gridColor);
             gg.drawLine(x1,yy,x2,yy);
             }

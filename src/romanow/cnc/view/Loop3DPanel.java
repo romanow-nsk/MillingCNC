@@ -11,7 +11,7 @@ import romanow.cnc.slicer.SliceData;
 import romanow.cnc.slicer.SliceLayer;
 import romanow.cnc.viewer3d.PCanvas3D;
 import romanow.cnc.viewer3d.PModel;
-
+//---------- Старая Java3D ----------------------------------
 import javax.media.j3d.Background;
 import javax.media.j3d.Shape3D;
 import javax.vecmath.Color3f;
