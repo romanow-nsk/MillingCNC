@@ -5,6 +5,7 @@
  */
 package romanow.cnc.settings;
 
+import romanow.cnc.Values;
 import romanow.cnc.io.I_File;
 
 import java.io.DataInputStream;
@@ -47,6 +48,25 @@ public class ModelSettings implements I_File {
     public BooleanParameter AutoCenter = new BooleanParameter(true);
     /** авто масштабирование */
     public BooleanParameter AutoScale = new BooleanParameter(true);
+    public ModelSettings clone(){
+        ModelSettings out = new ModelSettings();
+        out.ModelWidth = ModelWidth.clone();
+        out.ModelHight = ModelHight.clone();
+        out.ModelZ = ModelZ.clone();
+        out.ZStart = ZStart.clone();
+        out.ZFinish = ZFinish.clone();
+        out.PageServoOffsetsTop = PageServoOffsetsTop.clone();
+        out.PageServoOffsetsLeft =PageServoOffsetsLeft.clone();
+        out.BlankWidth = BlankWidth.clone();
+        out.BlankHight = BlankHight.clone();
+        out.CutterDiameter = CutterDiameter.clone();
+        out.StepMinus = StepMinus.clone();
+        out.VerticalStep = VerticalStep.clone();
+        out.ScaleFactor = ScaleFactor.clone();
+        out.AutoScale = AutoScale.clone();
+        out.AutoCenter = AutoCenter.clone();
+        return out;
+        }
     //---------------------------------------------------------------------------
     public void setNotNull(){
         if (ModelWidth==null) ModelWidth = new FloatParameter(0);

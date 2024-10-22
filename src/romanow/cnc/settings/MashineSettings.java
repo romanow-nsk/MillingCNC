@@ -30,6 +30,19 @@ public class MashineSettings implements I_File {
         DeviceName.load(in);
         DeviceNum.load(in);
         }
+    public MashineSettings clone(){
+        MashineSettings out = new MashineSettings();
+        out.WorkFrameX = WorkFrameX.clone();
+        out.WorkFrameY = WorkFrameY.clone();
+        out.WorkFrameZ = WorkFrameZ.clone();
+        out.SliceThreadNum = SliceThreadNum.clone();
+        out.CurrentLayer = CurrentLayer.clone();
+        out.CurrentLine = CurrentLine.clone();
+        out.DeviceName = new StringParameter(DeviceName.getVal());
+        out.DeviceNum = DeviceNum.clone();
+        return out;
+        }
+
     public void save(DataOutputStream in) throws IOException {
         WorkFrameX.save(in);
         WorkFrameY.save(in);

@@ -19,6 +19,7 @@ import romanow.cnc.m3d.ViewAdapter;
 import romanow.cnc.m3d.ViewNotifyer;
 
 import static romanow.cnc.Values.*;
+import romanow.cnc.m3d.Slice2DViewer;
 
 /**
  *
@@ -141,6 +142,7 @@ public class CNCViewerPanel extends BasePanel {
         SliceInto = new javax.swing.JButton();
         SliceMode = new javax.swing.JComboBox<>();
         ViewSTL3DLoops = new javax.swing.JButton();
+        ViewMLN = new javax.swing.JButton();
 
         setLayout(null);
 
@@ -253,7 +255,7 @@ public class CNCViewerPanel extends BasePanel {
         SliceMode.setBounds(870, 40, 160, 30);
 
         ViewSTL3DLoops.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        ViewSTL3DLoops.setText("STL(3D) + контуры");
+        ViewSTL3DLoops.setText("STL(3D)+контуры");
         ViewSTL3DLoops.setBorder(new javax.swing.border.MatteBorder(null));
         ViewSTL3DLoops.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -262,6 +264,17 @@ public class CNCViewerPanel extends BasePanel {
         });
         add(ViewSTL3DLoops);
         ViewSTL3DLoops.setBounds(720, 120, 140, 30);
+
+        ViewMLN.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        ViewMLN.setText("MLN по слоям");
+        ViewMLN.setBorder(new javax.swing.border.MatteBorder(null));
+        ViewMLN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ViewMLNActionPerformed(evt);
+            }
+        });
+        add(ViewMLN);
+        ViewMLN.setBounds(870, 120, 160, 30);
     }// </editor-fold>//GEN-END:initComponents
 
     private void PAUSEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PAUSEActionPerformed
@@ -403,6 +416,25 @@ public class CNCViewerPanel extends BasePanel {
             }
     }//GEN-LAST:event_ViewSTL3DLoopsActionPerformed
 
+    private void ViewMLNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ViewMLNActionPerformed
+        if (!ws.slicePresent()){
+            toLog("Не выполнен слайсинг");
+            return;
+            }
+        if (getBaseFrame().isViewPanelEnable(PanelMLN)){
+            getBaseFrame().setViewPanelDisable(PanelMLN);
+            ViewSTL3DLoops.setBackground(savedColor);
+            getBaseFrame().refreshPanels();
+        }
+        else{
+            getBaseFrame().setViewPanelEnable(PanelMLN);
+            savedColor = ViewSTL3D.getBackground();
+            ViewSTL3DLoops.setBackground(Color.green);
+            getBaseFrame().refreshPanels();
+            getBaseFrame().toFront(PanelMLN);
+            }
+    }//GEN-LAST:event_ViewMLNActionPerformed
+
     private void dataChanged(){
         ws.dataChanged();
         ws.fileStateChanged();
@@ -469,6 +501,7 @@ public class CNCViewerPanel extends BasePanel {
         SliceInto.setEnabled(loaded || sliced);
         SliceMode.setEditable(loaded || sliced);
         ViewSTL3DLoops.setEnabled(sliced);
+        ViewMLN.setEnabled(sliced);
         /*
         mBar.getMenu(mSlice).setEnabled(loaded || sliced);
         mBar.getMenu(mSet).setEnabled(userType!=Values.userGuest);
@@ -577,6 +610,7 @@ public class CNCViewerPanel extends BasePanel {
     private javax.swing.JButton STOP;
     private javax.swing.JButton SliceInto;
     private javax.swing.JComboBox<String> SliceMode;
+    private javax.swing.JButton ViewMLN;
     private javax.swing.JButton ViewSTL3D;
     private javax.swing.JButton ViewSTL3DLoops;
     private javax.swing.JLabel jLabel39;

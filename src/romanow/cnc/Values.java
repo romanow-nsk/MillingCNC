@@ -20,6 +20,8 @@ public class Values {
     public final static int PanelGlobalSettings=0x10;
     public final static int PanelCommonView=0x20;
     public final static int PanelSTL3DLoops=0x40;
+    public final static int PanelMLN=0x80;
+    public final static String MillingFileExtention="mln";
     /** состояния программы по данным */
     public final static int NoData=0;           // Нет данных
     public final static int Loaded=1;           // Модель заружена

@@ -72,11 +72,11 @@ public class GraphPanel extends JPanel{
         setGraphics();
         //dxy = 2./((3+mas)/4.*vSize);
         paintSize = WorkSpace.ws().local().model.BlankWidth.getVal();
-        horiz = (int)(HORIZ.getValue()*paintSize);
-        vert = (int)(VERTIC.getValue()*paintSize);
         double vy = WorkSpace.ws().local().model.BlankHight.getVal();
         if (vy > paintSize)
             paintSize = vy;
+        horiz = (int)(HORIZ.getValue()*paintSize);
+        vert = (int)(VERTIC.getValue()*paintSize);
         dxy = paintSize*2./(Math.pow(1.1,mas-1)*vSize);
         x0 = -horiz/100.;
         y0 = -vert/100.;

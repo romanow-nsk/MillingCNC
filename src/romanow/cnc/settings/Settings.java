@@ -28,7 +28,13 @@ public class Settings implements I_File{
             userList.add(new UserProfile("Посторонний","",Values.userGuest,""));
             userList.add(new UserProfile("Администратор",Values.FirstAdminPass,Values.userAdmin,""));
             }
-
+        }
+    public Settings clone(){
+        Settings out = new Settings();
+        out.slice = slice.clone();
+        out.model = model.clone();
+        out.mashine = mashine.clone();
+        return out;
         }
     public void setZStartFinish(){
         model.ZFinish.setVal(model.ModelZ.getVal());

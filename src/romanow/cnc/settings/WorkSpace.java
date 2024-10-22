@@ -111,7 +111,7 @@ public class WorkSpace implements I_File{
         return ss;
         }
     public String defaultFileName(){
-        return lastName.length()!=0 ? lastName : testDefaultDir()+modelName()+".slm3d";
+        return lastName.length()!=0 ? lastName : testDefaultDir()+modelName()+"."+Values.MillingFileExtention;
         }
     public String currentFileTitle(){
         return Values.DataStates[dataState]+ " "+modelName() + (!slicePresent() ? "" : " : "+defaultFileName());
