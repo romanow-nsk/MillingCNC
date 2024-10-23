@@ -1,20 +1,26 @@
 package romanow.cnc.stl;
 
+import romanow.cnc.Values;
+
+import java.util.ArrayList;
+
 // https://stackoverflow.com/questions/41144224/calculate-curvature-for-3-points-x-y
 public class STLUtils {
-    public static double curvature0(STLPoint2D p0, STLPoint2D p1, STLPoint2D p2) {
+    public static double curvature0(I_STLPoint2D p0, I_STLPoint2D p1, I_STLPoint2D p2) {
         double dx1 = p1.x() - p0.x();
         double dy1 = p1.y() - p0.y();
         double dx2 = p2.x() - p0.x();
         double dy2 = p2.y() - p0.y();
-        double area = 0.5 * (dx1 * dy2 - dy1 * dx2);
+        double area = Math.abs(0.5 * (dx1 * dy2 - dy1 * dx2));
+        if (area < Values.EqualDifference)
+            area = Values.EqualDifference;
         double len0 = p0.diffXY(p1);
         double len1 = p1.diffXY(p2);
         double len2 = p2.diffXY(p0);
         return Math.abs((len0 * len1 * len2)/(4 * area));
         }
 
-    public static double curvature(STLPoint2D p1, STLPoint2D p2, STLPoint2D p3){
+    public static double curvature(I_STLPoint2D p1, I_STLPoint2D p2, I_STLPoint2D p3){
         // side lengths
         double a = p1.diffXY(p2);
         double b = p2.diffXY(p3);
@@ -24,10 +30,12 @@ public class STLUtils {
         // Heron's formula for the area of a triangle
         double area = Math.sqrt(s * (s - a) * (s - b) * (s - c));
         double abc = a * b * c; // becomes 0 if points coincide
+        if (area < Values.EqualDifference)
+            area = Values.EqualDifference;
         return (abc == 0) ? 0 : abc/(4 * area);
         }
     // Adapted from https://stackoverflow.com/a/4103418
-    private static STLPoint2D center( STLPoint2D p0, STLPoint2D p1, STLPoint2D p2) {
+    public static I_STLPoint2D center( I_STLPoint2D p0, I_STLPoint2D p1, I_STLPoint2D p2) {
         double x0 = p0.x();
         double y0 = p0.y();
         double x1 = p1.x();
@@ -48,5 +56,15 @@ public class STLUtils {
         STLPoint2D p2 = new STLPoint2D(5,15);
         STLPoint2D p3 = new STLPoint2D(10,10);
         System.out.println("R1="+curvature(p1,p2,p3)+" R2="+curvature0(p1,p2,p3)+" center="+center(p1,p2,p3));
+        p2 = new STLPoint2D(5,10);
+        System.out.println("R1="+curvature(p1,p2,p3)+" R2="+curvature0(p1,p2,p3)+" center="+center(p1,p2,p3));
+        ArrayList<STLPoint2D> tmp = new ArrayList<>();
+        for(double fi=0; fi<Math.PI*2; fi+=0.1){
+            tmp.add(new STLPoint2D(10+10*Math.cos(fi),15+10*Math.sin(fi)));
+            }
+        for(int i=1;i<tmp.size()-1;i++)
+            System.out.println("R1="+curvature(tmp.get(i-1),tmp.get(i),tmp.get(i+1))+
+                    " R2="+curvature0(tmp.get(i-1),tmp.get(i),tmp.get(i+1))+
+                    " center="+center(tmp.get(i-1),tmp.get(i),tmp.get(i+1)));
         }
 }

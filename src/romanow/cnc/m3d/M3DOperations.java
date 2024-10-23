@@ -743,6 +743,7 @@ public class M3DOperations {
         finishUSBPrint();
         return true;
         }
+
     public boolean exportToGCode(ViewAdapter synch,BufferedWriter out) throws IOException{
         WorkSpace ws = WorkSpace.ws();
         SliceData data = ws.data();
@@ -753,20 +754,14 @@ public class M3DOperations {
         notify.setProgress(0);
         lineCount=0;
         for(int i=0;i<sz;i++,layerZ+=dz){
+            int count=0;
             SliceLayer layer = data.get(i);
             ArrayList<STLLine> lines = layer.segments().lines();
+            STLGCodePoints current = null;
             out.write("( -------------- Слой "+(i+1)+"---------------------)");
             out.newLine();
             Settings ls = layer.printSettings();
             if (ls == null) ls = local;
-            //out.write(String.format(Locale.US,"M901 P%-3d",ls.pulses.LaserPumpPower.getVal()));
-            //out.newLine();
-            //out.write(String.format(Locale.US,"M902 P%-3d",ls.marking.MicroStepsMark.getVal()));
-            //out.newLine();
-            //out.write(String.format(Locale.US,"M903 P%-3d",ls.control.NextLayerMovingM4Step.getVal()));
-            //out.newLine();
-            //out.write(String.format(Locale.US,"M904 P%-3d",ls.control.NextLayerMovingM3Step.getVal()));
-            //out.newLine();
             out.write("G900");
             out.newLine();
             I_STLPoint2D last = new STLPoint2D(0,0);
@@ -779,6 +774,13 @@ public class M3DOperations {
                 I_STLPoint2D one = line.one();
                 I_STLPoint2D two = line.two();
                 if (j==lineIdx){            // Начало очередной группы фрезерования
+                    if (current!=null){
+                        count += current.points.size()-1;
+                        current.write(out,layerZ);
+                        }
+                    current = new STLGCodePoints("( -------------- Группа "+(groupIdx+1)+"---------------------)");
+                    current.add(one);
+                    /*
                     out.write("( -------------- Группа "+(groupIdx+1)+"---------------------)");
                     out.newLine();
                     out.write(String.format(Locale.US,"G30 G91 Z%6.3f",20.0));
@@ -787,12 +789,18 @@ public class M3DOperations {
                     out.newLine();
                     out.write(String.format(Locale.US,"G30 G91 Z%6.3f",-layerZ));
                     out.newLine();
+                     */
                     last = one;
                     groupIdx++;
                     if (groupIdx<layer.groupIndexes().size()-1)
                         lineIdx = layer.groupIndexes().get(groupIdx);
                     }
                 if (!last.equalsAbout(one)){
+                    count += current.points.size()-1;
+                    current.write(out,layerZ);
+                    current = new STLGCodePoints("( -------------- Перемещение в группе "+(groupIdx+1)+"---------------------)");
+                    current.add(one);
+                    /*
                     out.write("( -------------- Перемещение в группе "+(groupIdx+1)+"---------------------)");
                     out.newLine();
                     out.write(String.format(Locale.US,"G30 G91 Z%6.3f",20.0));
@@ -801,9 +809,11 @@ public class M3DOperations {
                     out.newLine();
                     out.write(String.format(Locale.US,"G30 G91 Z%6.3f",-layerZ));
                     out.newLine();
+                     */
                     }
-                out.write(String.format(Locale.US,"G01 X%6.3f Y%6.3f",two.x(),two.y()));
-                out.newLine();    
+                //out.write(String.format(Locale.US,"G01 X%6.3f Y%6.3f",two.x(),two.y()));
+                //out.newLine();
+                current.add(two);
                 last = two;
                 if (synch.onStepLine()){
                     out.close();
@@ -811,7 +821,11 @@ public class M3DOperations {
                     }
                 lineCount++;
                 }
+            count += current.points.size()-1;
+            current.write(out,layerZ);
             notify.setProgress((int)((i+1)*100/sz));
+            //----------- Для проверки группировки ------------------------------------------------------
+            //notify.notify(Values.info,"Линий="+lines.size()+","+count);
             }
         out.write(String.format(Locale.US,"G30 G91 Z%6.3f",20.0));
         out.newLine();
