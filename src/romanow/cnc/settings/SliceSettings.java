@@ -36,9 +36,29 @@ public class SliceSettings implements I_File {
     public BooleanParameter RepairLoops = new BooleanParameter(true);
     /** Контуры из отрезков одного типа */
     public BooleanParameter LoopsWithSomeLineTypes = new BooleanParameter(true);
+    // Количество точек для преобразования в фрезерование по дуге
+    public IntParameter ARCPointsCount=new IntParameter(4);
+    // Изменение радиуса окружности 3 точек для выделения дуги
+    public FloatParameter  ARCRadiusDiff=new FloatParameter(1);
+    // Изменение центра окружности 3 точек для выделения дуги
+    public FloatParameter ARCCenterDiff=new FloatParameter(1);
+    // Ограничение радиуса кривизны
+    public FloatParameter ARCRadiusMax=new FloatParameter(200);
+    // Ограничение длины линии
+    public FloatParameter ARCLineMax=new FloatParameter(2);
+    // Режим выделения дуг
+    public BooleanParameter ARCGCodeMode=new BooleanParameter(true);
+
 
     public void setNotNull(){
         if (Mode==null) Mode = new IntParameter(0,1,0);
+        if (ARCCenterDiff==null) ARCCenterDiff = new FloatParameter(1);
+        if (ARCRadiusDiff==null) ARCRadiusDiff = new FloatParameter(1);
+        if (ARCPointsCount==null) ARCPointsCount = new IntParameter(4);
+        if (ARCRadiusMax==null) ARCRadiusMax = new FloatParameter(200);
+        if (ARCLineMax==null) ARCLineMax = new FloatParameter(2);
+        if (ARCGCodeMode==null) ARCGCodeMode = new BooleanParameter(true);
+        //------------------------------------------------------------------------------
         if (FillParametersRaster==null) FillParametersRaster = new FloatParameter(0.01);
         if (FillParametersOffset==null) FillParametersOffset = new FloatParameter(0.002);
         if (FillParametersAngle==null) FillParametersAngle = new FloatParameter(20);
@@ -52,11 +72,11 @@ public class SliceSettings implements I_File {
         if (FillContinuous==null) FillContinuous = new BooleanParameter(false);
         if (RepairLoops==null) RepairLoops = new BooleanParameter(false);
         if (LoopsWithSomeLineTypes==null) LoopsWithSomeLineTypes = new BooleanParameter(false);
-
         }
     public SliceSettings clone(){
         SliceSettings out = new SliceSettings();
         out.Mode = Mode.clone();
+        out.ARCGCodeMode = ARCGCodeMode.clone();
         out.FillParametersRaster = FillParametersRaster.clone();
         out.FillParametersOffset = FillParametersOffset.clone();
         out.FillParametersAngle = FillParametersAngle.clone();
@@ -75,6 +95,7 @@ public class SliceSettings implements I_File {
 
     public void load(DataInputStream in) throws IOException {
         Mode.load(in);
+        ARCGCodeMode.load(in);
         FillParametersRaster.load(in);
         FillParametersOffset.load(in);
         FillParametersAngle.load(in);
@@ -91,6 +112,7 @@ public class SliceSettings implements I_File {
         }
     public void save(DataOutputStream in) throws IOException {
         Mode.save(in);
+        ARCGCodeMode.save(in);
         FillParametersRaster.save(in);
         FillParametersOffset.save(in);
         FillParametersAngle.save(in);

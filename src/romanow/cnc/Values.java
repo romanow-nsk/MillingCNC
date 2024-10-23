@@ -45,7 +45,7 @@ public class Values {
     public final static int classIdRefered=0;
     public final static int classId2D=1;
     public final static int classId2dFloat=2;
-    /** Категории пользоователей */
+    /** Категории пользователей */
     public final static int userGuest=0;
     public final static int userOperator=1;
     public final static int userConstructor=2;
@@ -123,6 +123,18 @@ public class Values {
     /** Номер COM-порта */
     public final static String COMPort="COM";
     public final static int COMPortNum=4;
+    // Количество точек для преобразования в фрезерование по дуге
+    public final static int ARCPointsCount=4;
+    // Изменение радиуса окружности 3 точек для выделения дуги
+    public final static double ARCRadiusDiff=1;
+    // Изменение центра окружности 3 точек для выделения дуги
+    public final static double ARCCenterDiff=1;
+    // Ограничение радиуса кривизны
+    public final static double ARCRadiusMax=200;
+    // Ограничение длины линии
+    public final static double ARCLineMax=2;
+    // Режим выделения дуг
+    public final static boolean ARCGCodeMode=true;
     public static void main(String argv[]){
         System.out.println(Double.parseDouble("0.00"));
         }

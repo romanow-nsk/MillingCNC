@@ -165,6 +165,7 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
         Z0_10 = new javax.swing.JLabel();
         AutoCenter = new javax.swing.JCheckBox();
         AutoScale = new javax.swing.JCheckBox();
+        ARCGCodeMode = new javax.swing.JCheckBox();
 
         setLayout(null);
         add(jLabel1);
@@ -701,6 +702,16 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
         });
         add(AutoScale);
         AutoScale.setBounds(10, 320, 250, 24);
+
+        ARCGCodeMode.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        ARCGCodeMode.setText("G code: круговая интерполяция");
+        ARCGCodeMode.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                ARCGCodeModeItemStateChanged(evt);
+            }
+        });
+        add(ARCGCodeMode);
+        ARCGCodeMode.setBounds(530, 520, 260, 24);
     }// </editor-fold>//GEN-END:initComponents
     public boolean loadSettings(){
         try {
@@ -750,6 +761,7 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             WorkFrameZ.setText(df2.format(set.mashine.WorkFrameZ.getVal()));
             AutoCenter.setSelected(set.model.AutoCenter.getVal());
             AutoScale.setSelected(set.model.AutoScale.getVal());
+            ARCGCodeMode.setSelected(set.slice.ARCGCodeMode.getVal());
         } catch (Exception ee){
                 notify.notify(Values.error, Utils.createFatalMessage(ee,5));
                 busy = false;
@@ -785,6 +797,7 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             set.slice.FillContinuous.setVal(Continuous.isSelected());
             set.slice.RepairLoops.setVal(RepairLoops.isSelected());
             set.slice.LoopsWithSomeLineTypes.setVal(LoopsWithSomeLineTypes.isSelected());
+            set.slice.ARCGCodeMode.setVal(ARCGCodeMode.isSelected());
             sendEvent(Events.Settings,0,0,null,null);
             if (par!=null)
                 notify.notify(Values.info,"Изменен параметр: "+par);
@@ -1010,6 +1023,12 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
 
     }//GEN-LAST:event_AutoScaleItemStateChanged
 
+    private void ARCGCodeModeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_ARCGCodeModeItemStateChanged
+        if (busy) return;
+        set.slice.ARCGCodeMode.setVal(ARCGCodeMode.isSelected());
+        Utils.viewUpdateCheck(ARCGCodeMode,true);
+    }//GEN-LAST:event_ARCGCodeModeItemStateChanged
+
     @Override
     public boolean saveSettings() {
         return saveSettings(null);
@@ -1018,6 +1037,7 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField ANGLE;
+    private javax.swing.JCheckBox ARCGCodeMode;
     private javax.swing.JCheckBox AutoCenter;
     private javax.swing.JCheckBox AutoScale;
     private javax.swing.JTextField BlankHight;

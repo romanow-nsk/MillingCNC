@@ -757,7 +757,7 @@ public class M3DOperations {
             int count=0;
             SliceLayer layer = data.get(i);
             ArrayList<STLLine> lines = layer.segments().lines();
-            STLGCodePoints current = null;
+            GCodePoints current = null;
             out.write("( -------------- Слой "+(i+1)+"---------------------)");
             out.newLine();
             Settings ls = layer.printSettings();
@@ -778,7 +778,7 @@ public class M3DOperations {
                         count += current.points.size()-1;
                         current.write(out,layerZ);
                         }
-                    current = new STLGCodePoints("( -------------- Группа "+(groupIdx+1)+"---------------------)");
+                    current = new GCodePoints("( -------------- Группа "+(groupIdx+1)+"---------------------)");
                     current.add(one);
                     /*
                     out.write("( -------------- Группа "+(groupIdx+1)+"---------------------)");
@@ -798,7 +798,7 @@ public class M3DOperations {
                 if (!last.equalsAbout(one)){
                     count += current.points.size()-1;
                     current.write(out,layerZ);
-                    current = new STLGCodePoints("( -------------- Перемещение в группе "+(groupIdx+1)+"---------------------)");
+                    current = new GCodePoints("( -------------- Перемещение в группе "+(groupIdx+1)+"---------------------)");
                     current.add(one);
                     /*
                     out.write("( -------------- Перемещение в группе "+(groupIdx+1)+"---------------------)");
