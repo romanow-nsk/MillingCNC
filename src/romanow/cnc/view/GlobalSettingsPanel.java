@@ -748,6 +748,8 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             WorkFrameX.setText(df2.format(set.mashine.WorkFrameX.getVal()));
             WorkFrameY.setText(df2.format(set.mashine.WorkFrameY.getVal()));
             WorkFrameZ.setText(df2.format(set.mashine.WorkFrameZ.getVal()));
+            AutoCenter.setSelected(set.model.AutoCenter.getVal());
+            AutoScale.setSelected(set.model.AutoScale.getVal());
         } catch (Exception ee){
                 notify.notify(Values.error, Utils.createFatalMessage(ee,5));
                 busy = false;
@@ -767,6 +769,8 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             set.model.CutterDiameter.setVal(Float.parseFloat(CutterDiameter.getText()));
             set.model.StepMinus.setVal(Float.parseFloat(StepMinus.getText()));
             set.model.VerticalStep.setVal(Float.parseFloat(VerticalStep.getText()));
+            set.model.AutoCenter.setVal(AutoCenter.isSelected());
+            set.model.AutoScale.setVal(AutoScale.isSelected());
             //---------------------------------------------------------------------------------------
             set.slice.Mode.setVal(Mode2.getSelectedIndex());
             set.slice.FillParametersRaster.setVal(Float.parseFloat(FillParametersRaster.getText()));

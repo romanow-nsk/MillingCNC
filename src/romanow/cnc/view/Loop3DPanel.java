@@ -9,13 +9,18 @@ import romanow.cnc.Values;
 import romanow.cnc.settings.WorkSpace;
 import romanow.cnc.slicer.SliceData;
 import romanow.cnc.slicer.SliceLayer;
+import romanow.cnc.stl.STLLine;
 import romanow.cnc.viewer3d.PCanvas3D;
 import romanow.cnc.viewer3d.PModel;
 //---------- Старая Java3D ----------------------------------
+import javax.media.j3d.Appearance;
 import javax.media.j3d.Background;
 import javax.media.j3d.Shape3D;
 import javax.vecmath.Color3f;
 import java.awt.*;
+import java.util.ArrayList;
+
+import static romanow.cnc.viewer3d.PModel.colorAppearance;
 
 /**
  *
@@ -49,6 +54,9 @@ public class Loop3DPanel extends BasePanel {
         }
 
     private void paintView(){
+        paintView(null,0);
+        }
+    private void paintView(ArrayList<STLLine> lines, float z){
         model.cleanup();
         if (ModelView.isSelected()){
             model.addChild(modelView);
@@ -60,7 +68,40 @@ public class Loop3DPanel extends BasePanel {
             else
                 model.addLoop(data.get(idx));
             }
-        canvas.rendermodel(model, universe);
+        if (lines!=null){
+            Appearance app = colorAppearance(Color.red);
+            for(STLLine line1 : lines)
+            model.addLine(line1,z,app);
+            canvas.rendermodel(model,universe);
+            }
+        else{
+            if (MILLING.isSelected()){
+                int idx = LAYERS.getSelectedIndex();
+                final ArrayList<STLLine> tmp = new ArrayList<>();
+                for (STLLine line2 : data.get(idx).segments().lines()) {
+                    tmp.add(line2);
+                    paintView(tmp,(float) data.get(idx).z());
+                    try {
+                        Thread.sleep(10);
+                        } catch (InterruptedException e) {}
+                    }
+                }
+            else
+                canvas.rendermodel(model,universe);
+            }
+        }
+
+    private void paintSlice(){
+        Appearance app = colorAppearance(Color.blue);
+        int idx = LAYERS.getSelectedIndex();
+        SliceLayer layer = data.get(idx);
+        for (STLLine line : layer.segments().lines()) {
+            model.addLine(line,(float) layer.z(),app);
+            canvas.rendermodel(model,universe);
+            try {
+                Thread.sleep(10);
+                } catch (InterruptedException e) {}
+            }
         }
 
     @Override
@@ -151,6 +192,7 @@ public class Loop3DPanel extends BasePanel {
         jLabel2 = new javax.swing.JLabel();
         Source = new javax.swing.JCheckBox();
         LAYERS = new javax.swing.JComboBox<>();
+        MILLING = new javax.swing.JCheckBox();
 
         setLayout(null);
 
@@ -208,6 +250,16 @@ public class Loop3DPanel extends BasePanel {
         LAYERS.setToolTipText("");
         add(LAYERS);
         LAYERS.setBounds(20, 70, 150, 30);
+
+        MILLING.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        MILLING.setText("Фрезерование");
+        MILLING.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                MILLINGItemStateChanged(evt);
+            }
+        });
+        add(MILLING);
+        MILLING.setBounds(20, 180, 140, 24);
     }// </editor-fold>//GEN-END:initComponents
 
     private void ModelViewItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_ModelViewItemStateChanged
@@ -234,6 +286,10 @@ public class Loop3DPanel extends BasePanel {
         paintView();
     }//GEN-LAST:event_SourceItemStateChanged
 
+    private void MILLINGItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_MILLINGItemStateChanged
+        paintView();
+    }//GEN-LAST:event_MILLINGItemStateChanged
+
     @Override
     public void refresh() {
 
@@ -251,6 +307,7 @@ public class Loop3DPanel extends BasePanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> LAYERS;
+    private javax.swing.JCheckBox MILLING;
     private javax.swing.JCheckBox ModelView;
     private javax.swing.JButton NEXT;
     private javax.swing.JButton PREV;

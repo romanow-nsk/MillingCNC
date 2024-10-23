@@ -105,7 +105,7 @@ public class PModel extends BranchGroup {
 			addLine(line,z,colorApperance);
 			}
 		}
-	public Appearance colorAppearance(Color color){
+	public static Appearance colorAppearance(Color color){
 		Appearance appearanceGreen = new Appearance();
 		ColoringAttributes coloringAttributesGreen = new ColoringAttributes();
 		coloringAttributesGreen.setColor(new Color3f(color));
@@ -119,7 +119,7 @@ public class PModel extends BranchGroup {
 		for(int i=0;i<sz;i++)
 			addLine(points.get(i).reference(),z,colorApperance);
 		}
-    private void addLine(STLLine line, float z, Appearance colorApperance){
+    public void addLine(STLLine line, float z, Appearance colorApperance){
 		LineArray lineX = new LineArray(2, LineArray.COORDINATES);
 		lineX.setCoordinate(0, new Point3f((float)line.one().x(),(float)line.one().y(),z));
 		lineX.setCoordinate(1, new Point3f((float)line.two().x(),(float)line.two().y(),z));

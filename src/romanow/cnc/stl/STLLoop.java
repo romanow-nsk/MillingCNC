@@ -343,11 +343,14 @@ public class STLLoop extends STLLineGroup implements I_File {
         }
      */
     public int getMaxPath(){
-        if (parents.size()==0)
+        return getMaxPath(0);
+        }
+    public int getMaxPath(int level){
+        if (parents.size()==0 || level > 10)
             return 0;
         int max=0;
         for(STLLoop loop : parents){
-            int vv = loop.getMaxPath();
+            int vv = loop.getMaxPath(level+1);
             if (vv > max)
                 max = vv;
                 }

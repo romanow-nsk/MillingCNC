@@ -226,7 +226,7 @@ public class CNCViewerPanel extends BasePanel {
         STLLoad.setBounds(720, 40, 140, 30);
 
         STL3DView.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        STL3DView.setText("STL(3D)");
+        STL3DView.setText("3D STL");
         STL3DView.setBorder(new javax.swing.border.MatteBorder(null));
         STL3DView.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -261,7 +261,7 @@ public class CNCViewerPanel extends BasePanel {
         SliceMode.setBounds(870, 40, 160, 30);
 
         STL3DViewLoops.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        STL3DViewLoops.setText("STL(3D)+контуры");
+        STL3DViewLoops.setText("3D STL+слайсинг");
         STL3DViewLoops.setBorder(new javax.swing.border.MatteBorder(null));
         STL3DViewLoops.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -569,8 +569,9 @@ public class CNCViewerPanel extends BasePanel {
                     SliceData data = ws.operate().sliceConcurent(viewCommon);
                     ws.data(data);
                     ws.lastName("");
-                    if (!data.isSliceStop())
+                    if (!data.isSliceStop()){
                         dataChanged();
+                        }
                     finishOperation();
                 }).start();
         }
@@ -588,16 +589,13 @@ public class CNCViewerPanel extends BasePanel {
                         SliceData data = ws.operate().sliceConcurent(viewCommon,new DataOutputStream(new FileOutputStream(outname)));
                         ws.lastName(defName ? "" : outname);
                         //------------- Состояние dataState не меняется ----------------------------------------
-                        ws.fileStateChanged();
+                        if (!data.isSliceStop()){
+                            dataChanged();
+                            }
                     } catch (IOException e) { notify.notify(Values.error,e.toString()); }
                     finishOperation();
                 }).start();
-    }
-
-
-
-
-
+        }
 
     private void setMenuVisible(){
         boolean loaded = ws.modelPresent();
