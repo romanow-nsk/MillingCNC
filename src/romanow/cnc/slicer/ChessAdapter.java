@@ -52,13 +52,9 @@ public class ChessAdapter implements I_LineSlice{
     }
 
     @Override
-    public void onCutterUpDown(boolean up, double z) {
-        prevBack.onCutterUpDown(up, z);
+    public void onLineGroup() {
+        prevBack.onLineGroup();
         }
-    @Override
-    public void onCutterMove(I_STLPoint2D point) {
-        }
-
     // поворот системы координат
     // x = x′ cosφ − y′⋅sinφ
     // y = x′ sinφ + y′⋅cosφ.

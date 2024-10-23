@@ -90,6 +90,11 @@ public class USBCommandGenerator extends CommandGenerator {
         usb.BurnLineBlock(block,back);
         block.clear();
         }
+
+    @Override
+    public void lineGroup() throws UNIException {
+        }
+
     @Override
     public void line(STLLine line0) throws UNIException {
         STLLine line = correctCenterOffsets(line0);

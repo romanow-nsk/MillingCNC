@@ -381,11 +381,9 @@ public class Slicer extends STLLoopGenerator {
         else{
             notify.notify(Values.important,"сдвинутый контур  lnt="+String.format("%6.2f",copy.linesLength()));
             }
-        back.onCutterMove(copy.lines().get(0).one());
-        back.onCutterUpDown(false,z);
+        back.onLineGroup();
         for(STLLine line : copy.lines())
             back.onSliceLine(line);
-        back.onCutterUpDown(true,z-vStep); // Поднять фрезу
         //-------------------------------------------------------------------------------------
         if (loop.childs().size()==0){
             notify.notify(Values.important,zz+", фрезерование полное");
@@ -411,11 +409,9 @@ public class Slicer extends STLLoopGenerator {
                         //    notify.notify(Values.important,""+i+" "+(copy.get(i).lengthXY()-loop1.get(i).lengthXY()));
                         //    }
                         }
-                    back.onCutterMove(copy.lines().get(0).one());
-                    back.onCutterUpDown(false,z);           // Опустить фрезу
+                    back.onLineGroup();
                     for(STLLine line : copy.lines())
                         back.onSliceLine(line);
-                    back.onCutterUpDown(true,z-vStep);  // Поднять фрезу
                     }
                 }
             }
@@ -471,14 +467,12 @@ public class Slicer extends STLLoopGenerator {
                             STLLine line = new STLLine(tmp.get(j%2==0 ? i : i+1),tmp.get(j%2==0 ? i+1 : i));
                             lines.add(line);
                             }
-                        back.onCutterMove(lines.get(0).one());      // Переместить фрезу к началу группы
-                        back.onCutterUpDown(false,z);           // Опустить фрезу
+                        back.onLineGroup();
                         for(int ii=0;ii<lines.size();ii++){
                             if (ii!=0)
                                 back.onSliceLine(new STLLine(lines.get(ii-1).two(),lines.get(ii).one())); // к след. линии
                             back.onSliceLine(lines.get(ii));         // текущая линия
                             }
-                        back.onCutterUpDown(true,z-vStep);  // Поднять фрезу
                         }
                     }
                 pointsSize = points.size();

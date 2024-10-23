@@ -32,6 +32,11 @@ public class VisualCommandGenerator extends CommandGenerator{
         gg.setColor(color);
         gg.drawOval((int)(vv.x()*mas+sz)-3, (int)(-vv.y()*mas+sz)-3,5,5);
         }
+
+    @Override
+    public void lineGroup() throws UNIException {
+        }
+
     @Override
     public void line(STLLine line) throws UNIException {
         drawLine(Color.black,line,gg);

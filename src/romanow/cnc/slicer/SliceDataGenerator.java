@@ -23,6 +23,12 @@ public class SliceDataGenerator extends CommandGenerator{
         data = data0;
         back=back0;
         }
+
+    @Override
+    public void lineGroup() throws UNIException {
+        current.addGroupIndex();
+        }
+
     //--------------------------------------------------------------------------------------------------------
     @Override
     public void line(STLLine line) throws UNIException {

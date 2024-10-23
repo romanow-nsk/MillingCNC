@@ -23,6 +23,12 @@ public class M3DUsbCommandGenerator extends CommandGenerator{
     public M3DUsbCommandGenerator(I_Notify notifyo){
         notify = notifyo;
         }
+
+    @Override
+    public void lineGroup() {
+        }
+
+
     @Override
     public void line(STLLine line) throws UNIException {
         try {

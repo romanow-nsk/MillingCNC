@@ -230,7 +230,7 @@ public class M3DOperations {
 
      /**  Общий модуль слайсирования слоя */
     // layer !=null при повторном слайсировании существующих контуров, иначе нарезка
-    public SliceRezult sliceCommon(SliceParams par, CommandGenerator generator, final  ViewAdapter back, Settings set){
+    public SliceRezult sliceCommon(SliceParams par, final CommandGenerator generator, final  ViewAdapter back, Settings set){
         final SliceRezult layerRez = new SliceRezult();
         try {
             WorkSpace ws = WorkSpace.ws();
@@ -262,10 +262,13 @@ public class M3DOperations {
                     notify.log( "Команд " + cnt + "");
                 }
                 @Override
-                public void onCutterUpDown(boolean up, double z) {
-                    }
-                @Override
-                public void onCutterMove(I_STLPoint2D point) {
+                public void onLineGroup() {
+                    try{
+                        generator.lineGroup();
+                        } catch (UNIException ee) {
+                            notify.notify(Values.fatal, ee.getMessage() + "");
+                            sliceStop = true;
+                            }
                     }
                 @Override
                 public void onSliceLine(STLLine pp) {
@@ -745,9 +748,11 @@ public class M3DOperations {
         SliceData data = ws.data();
         Settings local = ws.local();
         int sz = data.size();
+        double dz = local.model.VerticalStep.getVal();
+        double layerZ = dz;
         notify.setProgress(0);
         lineCount=0;
-        for(int i=0;i<sz;i++){
+        for(int i=0;i<sz;i++,layerZ+=dz){
             SliceLayer layer = data.get(i);
             ArrayList<STLLine> lines = layer.segments().lines();
             out.write("( -------------- Слой "+(i+1)+"---------------------)");
@@ -765,13 +770,37 @@ public class M3DOperations {
             out.write("G900");
             out.newLine();
             I_STLPoint2D last = new STLPoint2D(0,0);
+            int groupIdx=0;
+            int lineIdx = 0;
+            if (groupIdx<layer.groupIndexes().size()-1)
+                layer.groupIndexes().get(groupIdx);
             for (int j=0; j<lines.size();j++){
                 STLLine line = lines.get(j);
                 I_STLPoint2D one = line.one();
                 I_STLPoint2D two = line.two();
-                if (!last.equalsAbout(one)){
+                if (j==lineIdx){            // Начало очередной группы фрезерования
+                    out.write("( -------------- Группа "+(groupIdx+1)+"---------------------)");
+                    out.newLine();
+                    out.write(String.format(Locale.US,"G30 G91 Z%6.3f",20.0));
+                    out.newLine();
                     out.write(String.format(Locale.US,"G00 X%6.3f Y%6.3f",one.x(),one.y()));
-                    out.newLine();    
+                    out.newLine();
+                    out.write(String.format(Locale.US,"G30 G91 Z%6.3f",-layerZ));
+                    out.newLine();
+                    last = one;
+                    groupIdx++;
+                    if (groupIdx<layer.groupIndexes().size()-1)
+                        lineIdx = layer.groupIndexes().get(groupIdx);
+                    }
+                if (!last.equalsAbout(one)){
+                    out.write("( -------------- Перемещение в группе "+(groupIdx+1)+"---------------------)");
+                    out.newLine();
+                    out.write(String.format(Locale.US,"G30 G91 Z%6.3f",20.0));
+                    out.newLine();
+                    out.write(String.format(Locale.US,"G00 X%6.3f Y%6.3f",one.x(),one.y()));
+                    out.newLine();
+                    out.write(String.format(Locale.US,"G30 G91 Z%6.3f",-layerZ));
+                    out.newLine();
                     }
                 out.write(String.format(Locale.US,"G01 X%6.3f Y%6.3f",two.x(),two.y()));
                 out.newLine();    
@@ -784,6 +813,8 @@ public class M3DOperations {
                 }
             notify.setProgress((int)((i+1)*100/sz));
             }
+        out.write(String.format(Locale.US,"G30 G91 Z%6.3f",20.0));
+        out.newLine();
         out.write("M30");
         out.newLine();
         notify.log("Передано "+sz+" слоев, "+lineCount+" линий");

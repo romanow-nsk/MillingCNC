@@ -15,6 +15,7 @@ public abstract class CommandGenerator {
     private int addr=0;
     public int addr(){ return addr; }
     public void addAddr(int sz){ addr+=sz; }
+    public abstract void lineGroup() throws UNIException;
     /** команда печати линии */
     public abstract void line(STLLine line) throws UNIException;
     /** команда смены слоя */

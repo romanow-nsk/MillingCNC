@@ -23,6 +23,11 @@ public class FileCommandGenerator extends CommandGenerator{
     public FileCommandGenerator(M3DFileBinOutputStream out0){
         out=out0;
         }
+
+    @Override
+    public void lineGroup() throws UNIException {
+        }
+
     @Override
     public void line(STLLine line) throws UNIException {
         try {

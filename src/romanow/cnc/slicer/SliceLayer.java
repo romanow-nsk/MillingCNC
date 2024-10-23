@@ -46,7 +46,10 @@ public class SliceLayer implements I_File {
     private boolean ready=false;
     /** собственная сингнатура */
     private String ownLabel="";
+    /**  индексы групп линии - поднятие/опускание и перенос фрезы */
+    private ArrayList<Integer> groupIndexes = new ArrayList<>();
     //----------------------------------------------------------------------------------
+    public ArrayList<Integer> groupIndexes(){ return groupIndexes; }
     public Settings printSettings(){ return printSettings; }
     public void printSettings(Settings set0 ){ printSettings=set0; }
     public void setReady(){ ready=true; }
@@ -91,6 +94,10 @@ public class SliceLayer implements I_File {
         layerOrderNum=0;
         modified=true;
         sliceSettings=filling;
+        }
+
+    public void addGroupIndex(){
+        groupIndexes.add(segments.size());
         }
 
     public void addError(SliceError err) {

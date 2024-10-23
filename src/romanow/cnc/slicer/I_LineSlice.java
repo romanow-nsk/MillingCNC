@@ -8,8 +8,7 @@ import romanow.cnc.stl.STLLine;
  */
 public interface I_LineSlice {
     public void onSliceLayer();
-    public void onCutterUpDown(boolean up, double z);
-    public void onCutterMove(I_STLPoint2D point);
+    public void onLineGroup();
     public void onSliceLine(STLLine line);
     public boolean isFinish();
     public void onSliceError(SliceError error);

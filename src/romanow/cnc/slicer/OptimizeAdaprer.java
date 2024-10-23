@@ -113,13 +113,9 @@ public class OptimizeAdaprer implements I_LineSlice{
         else
             optimize(false);
         }
-
     @Override
-    public void onCutterUpDown(boolean up, double z) {
-        prevBack.onCutterUpDown(up, z);
-        }
-    @Override
-    public void onCutterMove(I_STLPoint2D point) {
+    public void onLineGroup() {
+        prevBack.onLineGroup();
         }
     public void onSliceLayerSimple() {
         optimize(false);
