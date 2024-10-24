@@ -95,7 +95,10 @@ public class COMPortGDriver {
         synchronized (this){
             writeStamp=0;
             }
-        return new Pair<>(""+port+": тайм-аут "+timeout+" сек, нет ответа",null);
+        //------------------ Тайм-аут игнорируем
+        System.out.println(">>>"+port+": тайм-аут");
+        return new Pair<>(null,"ok");
+        //return new Pair<>(""+port+": тайм-аут "+timeout+" сек, нет ответа",null);
         }
     synchronized public String close() {
         try {
@@ -123,6 +126,7 @@ public class COMPortGDriver {
                     else{
                         synchronized (COMPortGDriver.this){
                             answer = data.substring(0,idx);
+                            System.out.println(">>>"+port+": "+answer);
                             data = "";
                            if (writeStamp==0){
                                final String ss = answer;

@@ -755,6 +755,8 @@ public class M3DOperations {
         double layerZ = dz;
         notify.setProgress(0);
         lineCount=0;
+        out.write("G90");
+        out.newLine();
         for(int i=0;i<sz;i++,layerZ+=dz){
             int count=0;
             SliceLayer layer = data.get(i);
