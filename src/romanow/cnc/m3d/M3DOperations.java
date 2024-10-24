@@ -748,6 +748,8 @@ public class M3DOperations {
         WorkSpace ws = WorkSpace.ws();
         SliceData data = ws.data();
         Settings local = ws.local();
+        double x0 = ws.global().mashine.WorkFrameX.getVal()/2;
+        double y0 = ws.global().mashine.WorkFrameY.getVal()/2;
         int sz = data.size();
         double dz = local.model.VerticalStep.getVal();
         double layerZ = dz;
@@ -762,8 +764,8 @@ public class M3DOperations {
             out.newLine();
             Settings ls = layer.printSettings();
             if (ls == null) ls = local;
-            out.write("G900");
-            out.newLine();
+            //out.write("G900");
+            //out.newLine();
             I_STLPoint2D last = new STLPoint2D(0,0);
             int groupIdx=0;
             int lineIdx = 0;
@@ -776,7 +778,7 @@ public class M3DOperations {
                 if (j==lineIdx){            // Начало очередной группы фрезерования
                     if (current!=null){
                         count += current.points.size()-1;
-                        current.write(out,layerZ);
+                        current.write(out,layerZ,x0,y0);
                         }
                     current = new GCodePoints("( -------------- Группа "+(groupIdx+1)+"---------------------)");
                     current.add(one);
@@ -797,7 +799,7 @@ public class M3DOperations {
                     }
                 if (!last.equalsAbout(one)){
                     count += current.points.size()-1;
-                    current.write(out,layerZ);
+                    current.write(out,layerZ,x0,y0);
                     current = new GCodePoints("( -------------- Перемещение в группе "+(groupIdx+1)+"---------------------)");
                     current.add(one);
                     /*
@@ -822,7 +824,7 @@ public class M3DOperations {
                 lineCount++;
                 }
             count += current.points.size()-1;
-            current.write(out,layerZ);
+            current.write(out,layerZ,x0,y0);
             notify.setProgress((int)((i+1)*100/sz));
             //----------- Для проверки группировки ------------------------------------------------------
             //notify.notify(Values.info,"Линий="+lines.size()+","+count);

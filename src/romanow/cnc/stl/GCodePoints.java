@@ -18,12 +18,12 @@ public class GCodePoints {
     public void add(I_STLPoint2D point2D){
         points.add(point2D);
         }
-    public void write(BufferedWriter out, double layerZ) throws IOException {
+    public void write(BufferedWriter out, double layerZ, double x0, double y0) throws IOException {
         out.write(comment);
         out.newLine();
         out.write(String.format(Locale.US,"G30 G91 Z%6.3f",20.0));
         out.newLine();
-        out.write(String.format(Locale.US,"G00 X%6.3f Y%6.3f",points.get(0).x(),points.get(0).y()));
+        out.write(String.format(Locale.US,"G00 X%6.3f Y%6.3f F500",points.get(0).x()+x0,points.get(0).y()+y0));
         out.newLine();
         out.write(String.format(Locale.US,"G30 G91 Z%6.3f",-layerZ));
         out.newLine();
@@ -32,23 +32,23 @@ public class GCodePoints {
             ArrayList<ArcPointsGroup> groups = createArcs(layerZ);
             for(ArcPointsGroup group :  groups){
                 for(int i=idx; i<=group.idx;i++){        // Начальную точку дуги надо вывести
-                    out.write(String.format(Locale.US,"G01 X%6.3f Y%6.3f",points.get(i).x(),points.get(i).y()));
+                    out.write(String.format(Locale.US,"G01 X%6.3f Y%6.3f",points.get(i).x()+x0,points.get(i).y()+y0));
                     out.newLine();
                     }
                 //------------ TODO определить G02 или G03
                 int jj = idx+group.count-1;
-                out.write(String.format(Locale.US,"G02 X%6.3f Y%6.3f R%6.3f ",points.get(jj).x(),points.get(jj).y(),group.radius));
+                out.write(String.format(Locale.US,"G02 X%6.3f Y%6.3f R%6.3f F500 ",points.get(jj).x()+x0,points.get(jj).y()+y0,group.radius));
                 out.newLine();
                 idx = jj+1;
                 }
             for(int i=idx; i<points.size();i++){        // Начальную точку дуги надо вывести
-                out.write(String.format(Locale.US,"G01 X%6.3f Y%6.3f",points.get(i).x(),points.get(i).y()));
+                out.write(String.format(Locale.US,"G01 X%6.3f Y%6.3f F500",points.get(i).x()+x0,points.get(i).y()+y0));
                 out.newLine();
                 }
             }
         else{
             for(int i=1;i<points.size();i++){
-                out.write(String.format(Locale.US,"G01 X%6.3f Y%6.3f",points.get(i).x(),points.get(i).y()));
+                out.write(String.format(Locale.US,"G01 X%6.3f Y%6.3f F500",points.get(i).x()+x0,points.get(i).y()+y0));
                 out.newLine();
                 }
             }
