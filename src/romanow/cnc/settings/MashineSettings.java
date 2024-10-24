@@ -20,6 +20,8 @@ public class MashineSettings implements I_File {
     /**  Драйвер USB */
     public StringParameter DeviceName = new StringParameter(Values.COMPort);
     public IntParameter DeviceNum = new IntParameter(Values.COMPortNum);
+    public IntParameter BaudRate = new IntParameter(Values.COMPortBaudRate);
+    public IntParameter DeviceTimeOut = new IntParameter(5);
     public void load(DataInputStream in) throws IOException {
         WorkFrameX.load(in);
         WorkFrameY.load(in);
@@ -29,6 +31,8 @@ public class MashineSettings implements I_File {
         CurrentLine.load(in);
         DeviceName.load(in);
         DeviceNum.load(in);
+        BaudRate.load(in);
+        DeviceTimeOut.load(in);
         }
     public MashineSettings clone(){
         MashineSettings out = new MashineSettings();
@@ -40,6 +44,8 @@ public class MashineSettings implements I_File {
         out.CurrentLine = CurrentLine.clone();
         out.DeviceName = new StringParameter(DeviceName.getVal());
         out.DeviceNum = DeviceNum.clone();
+        out.BaudRate = BaudRate.clone();
+        out.DeviceTimeOut = DeviceTimeOut.clone();
         return out;
         }
 
@@ -52,6 +58,8 @@ public class MashineSettings implements I_File {
         CurrentLine.save(in);
         DeviceName.save(in);
         DeviceNum.save(in);
+        BaudRate.save(in);
+        DeviceTimeOut.save(in);
     }
     public void setNotNull(){
         if (WorkFrameX==null)  WorkFrameX = new FloatParameter(600);
@@ -62,5 +70,7 @@ public class MashineSettings implements I_File {
         if (CurrentLine==null) CurrentLine = new IntParameter(0);
         if (DeviceName==null) DeviceName = new StringParameter(Values.COMPort);
         if (DeviceNum==null) DeviceNum = new IntParameter(Values.COMPortNum);
+        if (BaudRate==null) BaudRate = new IntParameter(Values.COMPortBaudRate);
+        if (DeviceTimeOut==null) DeviceTimeOut = new IntParameter(5);
     }
 }

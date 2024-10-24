@@ -4,9 +4,13 @@
  */
 package romanow.cnc.view;
 
+import romanow.cnc.io.COMPortGDriver;
+import romanow.cnc.io.I_COMPortGReceiver;
+import romanow.cnc.settings.MashineSettings;
 import romanow.cnc.slicer.SliceData;
 import romanow.cnc.slicer.SliceDataGenerator;
 import romanow.cnc.utils.Events;
+import romanow.cnc.utils.Pair;
 import romanow.cnc.utils.UNIException;
 import romanow.cnc.utils.Utils;
 import romanow.cnc.Values;
@@ -288,7 +292,7 @@ public class CNCViewerPanel extends BasePanel {
         jLabel41.setBounds(870, 10, 80, 20);
 
         MILLINGMashine.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        MILLINGMashine.setText("Станок");
+        MILLINGMashine.setText("G-код из файла");
         MILLINGMashine.setBorder(new javax.swing.border.MatteBorder(null));
         MILLINGMashine.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -495,8 +499,82 @@ public class CNCViewerPanel extends BasePanel {
             }
     }//GEN-LAST:event_MLNViewActionPerformed
 
+    private I_COMPortGReceiver gCodeBack = new I_COMPortGReceiver() {
+        @Override
+        public void onError(UNIException ee) {
+            notify.notify(error,"GCODE - ошибка: "+ee.toString());
+            }
+        @Override
+        public void onReceive(String ss) {
+            notify.notify(info,"GCODE - асинхронный ответ: "+ss);
+            }
+        @Override
+        public void onClose() {
+            notify.notify(info,"GCODE - отключение");
+            }
+        };
+
+    private void sendGCode(BufferedReader in,COMPortGDriver driver) {
+        int count = 0;
+        try {
+            String gCode = null;
+            while ((gCode = in.readLine()) != null) {
+                count++;
+                notify.notify(info, "GCODE: " + gCode);
+                Pair<String, String> res = driver.write(gCode);
+                if (res.o1 != null) {
+                    notify.notify(error, "GCODE - ошибка: " + res.o1);
+                    break;
+                } else {
+                    if (!res.o2.equals("ok"))
+                        notify.notify(info, "GCODE - ответ " + res.o2);
+                }
+            }
+            in.close();
+            driver.close();
+            notify.notify(info, "GCODE: " + count + " команд");
+        } catch (Exception ee) {
+            notify.notify(error,"GCODE: " +ee.toString());
+            driver.close();
+            if (in != null) {
+                try {
+                    in.close();
+                    } catch (IOException e) {}
+                }
+            }
+        }
     private void MILLINGMashineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MILLINGMashineActionPerformed
-        // TODO add your handling code here:
+        final String fname = getBaseFrame().getInputFileName("Файл GCODE","gcode",false);
+        if (fname==null) return;
+        final COMPortGDriver driver = new COMPortGDriver();
+        BufferedReader in=null;
+        try {
+            MashineSettings ms = ws.global().mashine;
+            in = new BufferedReader(new InputStreamReader(new FileInputStream(fname),"UTF8"));
+            String ss = driver.open(ms.DeviceName.getVal()+ms.DeviceNum.getVal(),ms.BaudRate.getVal(),ms.DeviceTimeOut.getVal(),gCodeBack);
+            int count=0;
+            if (ss!=null){
+                notify.notify(error,ss);
+                if (in!=null)
+                    in.close();
+                return;
+                }
+            final BufferedReader in2 = in;
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    sendGCode(in2,driver);
+                    }
+                }).start();
+            } catch (Exception ee){
+                notify.notify(error,"GCODE: " +ee.toString());
+                driver.close();
+                if (in != null) {
+                try {
+                    in.close();
+                    } catch (IOException e) {}
+                }
+            }
     }//GEN-LAST:event_MILLINGMashineActionPerformed
 
     private void GCODESaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GCODESaveActionPerformed

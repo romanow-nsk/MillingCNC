@@ -123,6 +123,7 @@ public class Values {
     /** Номер COM-порта */
     public final static String COMPort="COM";
     public final static int COMPortNum=4;
+    public final static int COMPortBaudRate=115200;
     // Количество точек для преобразования в фрезерование по дуге
     public final static int ARCPointsCount=4;
     // Изменение радиуса окружности 3 точек для выделения дуги

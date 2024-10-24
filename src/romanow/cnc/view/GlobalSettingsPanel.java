@@ -166,6 +166,14 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
         AutoCenter = new javax.swing.JCheckBox();
         AutoScale = new javax.swing.JCheckBox();
         ARCGCodeMode = new javax.swing.JCheckBox();
+        Z0_11 = new javax.swing.JLabel();
+        BaudRate = new javax.swing.JTextField();
+        DeviceName = new javax.swing.JTextField();
+        DevicePort = new javax.swing.JTextField();
+        Z0_12 = new javax.swing.JLabel();
+        Z0_13 = new javax.swing.JLabel();
+        Z0_14 = new javax.swing.JLabel();
+        DeviceTimeOut = new javax.swing.JTextField();
 
         setLayout(null);
         add(jLabel1);
@@ -405,9 +413,9 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
         Z0_3.setBounds(10, 250, 130, 20);
 
         Z0_4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        Z0_4.setText("Размер стола Z(мм)");
+        Z0_4.setText("Тайм-аут (c)");
         add(Z0_4);
-        Z0_4.setBounds(520, 110, 170, 20);
+        Z0_4.setBounds(520, 250, 130, 20);
 
         BlankHight.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         BlankHight.setText("0");
@@ -712,6 +720,62 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
         });
         add(ARCGCodeMode);
         ARCGCodeMode.setBounds(530, 520, 260, 24);
+
+        Z0_11.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z0_11.setText("Размер стола Z(мм)");
+        add(Z0_11);
+        Z0_11.setBounds(520, 110, 170, 20);
+
+        BaudRate.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        BaudRate.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                BaudRateKeyPressed(evt);
+            }
+        });
+        add(BaudRate);
+        BaudRate.setBounds(660, 210, 80, 30);
+
+        DeviceName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        DeviceName.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                DeviceNameKeyPressed(evt);
+            }
+        });
+        add(DeviceName);
+        DeviceName.setBounds(660, 135, 80, 30);
+
+        DevicePort.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        DevicePort.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                DevicePortKeyPressed(evt);
+            }
+        });
+        add(DevicePort);
+        DevicePort.setBounds(660, 170, 80, 30);
+
+        Z0_12.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z0_12.setText("Устройство");
+        add(Z0_12);
+        Z0_12.setBounds(520, 145, 150, 20);
+
+        Z0_13.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z0_13.setText("Номер (порт)");
+        add(Z0_13);
+        Z0_13.setBounds(520, 180, 150, 20);
+
+        Z0_14.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z0_14.setText("Скорость (бит/c)");
+        add(Z0_14);
+        Z0_14.setBounds(520, 215, 150, 20);
+
+        DeviceTimeOut.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        DeviceTimeOut.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                DeviceTimeOutKeyPressed(evt);
+            }
+        });
+        add(DeviceTimeOut);
+        DeviceTimeOut.setBounds(660, 245, 80, 30);
     }// </editor-fold>//GEN-END:initComponents
     public boolean loadSettings(){
         try {
@@ -762,6 +826,10 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             AutoCenter.setSelected(set.model.AutoCenter.getVal());
             AutoScale.setSelected(set.model.AutoScale.getVal());
             ARCGCodeMode.setSelected(set.slice.ARCGCodeMode.getVal());
+            DeviceName.setText(set.mashine.DeviceName.getVal());
+            DevicePort.setText(""+set.mashine.DeviceNum.getVal());
+            BaudRate.setText(""+set.mashine.BaudRate.getVal());
+            DeviceTimeOut.setText(""+set.mashine.DeviceTimeOut.getVal());
         } catch (Exception ee){
                 notify.notify(Values.error, Utils.createFatalMessage(ee,5));
                 busy = false;
@@ -798,6 +866,9 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             set.slice.RepairLoops.setVal(RepairLoops.isSelected());
             set.slice.LoopsWithSomeLineTypes.setVal(LoopsWithSomeLineTypes.isSelected());
             set.slice.ARCGCodeMode.setVal(ARCGCodeMode.isSelected());
+            set.mashine.BaudRate.setVal(Integer.parseInt(BaudRate.getText()));
+            set.mashine.DeviceName.setVal(DeviceName.getText());
+            set.mashine.DeviceNum.setVal(Integer.parseInt(DevicePort.getText()));
             sendEvent(Events.Settings,0,0,null,null);
             if (par!=null)
                 notify.notify(Values.info,"Изменен параметр: "+par);
@@ -1029,6 +1100,22 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
         Utils.viewUpdateCheck(ARCGCodeMode,true);
     }//GEN-LAST:event_ARCGCodeModeItemStateChanged
 
+    private void BaudRateKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BaudRateKeyPressed
+        Utils.saveKeyPressed(evt,set.mashine.BaudRate,set,notify);
+    }//GEN-LAST:event_BaudRateKeyPressed
+
+    private void DeviceNameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_DeviceNameKeyPressed
+        Utils.saveKeyPressed(evt,set.mashine.DeviceName,set,notify);
+    }//GEN-LAST:event_DeviceNameKeyPressed
+
+    private void DevicePortKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_DevicePortKeyPressed
+        Utils.saveKeyPressed(evt,set.mashine.DeviceNum,set,notify);
+    }//GEN-LAST:event_DevicePortKeyPressed
+
+    private void DeviceTimeOutKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_DeviceTimeOutKeyPressed
+        Utils.saveKeyPressed(evt,set.mashine.DeviceTimeOut,set,notify);
+    }//GEN-LAST:event_DeviceTimeOutKeyPressed
+
     @Override
     public boolean saveSettings() {
         return saveSettings(null);
@@ -1040,10 +1127,14 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
     private javax.swing.JCheckBox ARCGCodeMode;
     private javax.swing.JCheckBox AutoCenter;
     private javax.swing.JCheckBox AutoScale;
+    private javax.swing.JTextField BaudRate;
     private javax.swing.JTextField BlankHight;
     private javax.swing.JTextField BlankWidth;
     private javax.swing.JCheckBox Continuous;
     private javax.swing.JTextField CutterDiameter;
+    private javax.swing.JTextField DeviceName;
+    private javax.swing.JTextField DevicePort;
+    private javax.swing.JTextField DeviceTimeOut;
     private javax.swing.JTextField FillParametersAngle;
     private javax.swing.JTextField FillParametersAngleInc;
     private javax.swing.JTextField FillParametersFillCell;
@@ -1079,6 +1170,10 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
     private javax.swing.JTextField Z;
     private javax.swing.JLabel Z0_1;
     private javax.swing.JLabel Z0_10;
+    private javax.swing.JLabel Z0_11;
+    private javax.swing.JLabel Z0_12;
+    private javax.swing.JLabel Z0_13;
+    private javax.swing.JLabel Z0_14;
     private javax.swing.JLabel Z0_2;
     private javax.swing.JLabel Z0_3;
     private javax.swing.JLabel Z0_4;

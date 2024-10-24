@@ -1,9 +1,7 @@
 package romanow.cnc.utils;
 
 import romanow.cnc.Values;
-import romanow.cnc.settings.FloatParameter;
-import romanow.cnc.settings.Settings;
-import romanow.cnc.settings.WorkSpace;
+import romanow.cnc.settings.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -293,6 +291,26 @@ public class Utils {
                 }
             }
 
+    public static void saveKeyPressed(java.awt.event.KeyEvent evt, StringParameter par, Settings set, I_Notify notify) {//GEN-FIRST:event_ZstartKeyPressed
+        if(evt.getKeyCode()!=10) return;
+        String ss = ((JTextField)evt.getComponent()).getText();
+        par.setVal(ss);
+        viewUpdate(evt,true);
+        WorkSpace.ws().saveSettings();
+        }
+
+    public static void saveKeyPressed(java.awt.event.KeyEvent evt, IntParameter par, Settings set, I_Notify notify) {//GEN-FIRST:event_ZstartKeyPressed
+        if(evt.getKeyCode()!=10) return;
+        String ss = ((JTextField)evt.getComponent()).getText();
+        try {
+            par.setVal(Integer.parseInt(ss));
+            viewUpdate(evt,true);
+            WorkSpace.ws().saveSettings();
+            } catch (Exception ee){
+                notify.notify(Values.error,"Формат вещественного: "+ss);
+                viewUpdate(evt,false);
+                }
+    }
 
     public static void viewUpdate(final KeyEvent evt, boolean good){
         if (evt==null){
