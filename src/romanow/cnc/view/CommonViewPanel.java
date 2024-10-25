@@ -6,15 +6,21 @@ package romanow.cnc.view;
 
 import romanow.cnc.Values;
 import romanow.cnc.m3d.ViewAdapter;
+import romanow.cnc.settings.Settings;
 import romanow.cnc.settings.WorkSpace;
+import romanow.cnc.stl.STLLine;
+import romanow.cnc.utils.Events;
 
 import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
 
 /**
  *
  * @author Admin
  */
 public class CommonViewPanel extends BasePanel {
+    private double ddxy=0;
     public JPanel fld(){ return FLD; }
     /**
      * Creates new form CommonViewPanel
@@ -49,6 +55,30 @@ public class CommonViewPanel extends BasePanel {
         }
     @Override
     public void onEvent(int code, int par1, long par2, String par3, Object oo) {
+        if (code== Events.GCode){
+            if (par1==0 || par1==2){
+                Settings set = WorkSpace.ws().global();
+                double xSize = set.model.BlankWidth.getVal();
+                FLD.removeAll();
+                double ySize = set.model.BlankHight.getVal();
+                ddxy = xSize / FLD.getWidth();
+                double ddy = ySize / FLD.getHeight();
+                if (ddy < ddxy)
+                    ddxy = ddy;
+                ddxy *= 10;
+                FLD.removeAll();
+                }
+            if (par1==1){
+                ArrayList<STLLine> lines = (ArrayList<STLLine>) oo;
+                Graphics gg = FLD.getGraphics();
+                gg.setColor(Color.white);
+                gg.fillRect(0,0,FLD.getWidth(),FLD.getHeight());
+                gg.setColor(Color.red);
+                for(STLLine line : lines){
+                    gg.drawLine((int)(line.one().x()*ddxy),(int)(line.one().y()*ddxy),(int)(line.two().x()*ddxy),(int)(line.two().y()*ddxy));
+                    }
+                }
+            }
         }
     @Override
     public void shutDown() {

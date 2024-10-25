@@ -91,6 +91,16 @@ public abstract class BaseFrame extends JFrame implements I_Important, I_PanelEv
             panel.onEvent(code,par1,par2,par3,oo);
         ws.sendEvent(this,code,par1,par2,par3,oo);
         }
+    public void sendEventSynch(int code, int par1, long par2, String par3,Object oo){
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                for(BasePanel panel : panels)
+                    panel.onEvent(code,par1,par2,par3,oo);
+                ws.sendEvent(BaseFrame.this,code,par1,par2,par3,oo);
+                }
+            });
+        }
     @Override
     public void onEvent(int code, int par1, long par2, String par3,Object oo){
         for(BasePanel panel : panels)

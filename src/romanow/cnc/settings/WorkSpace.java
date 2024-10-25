@@ -156,6 +156,16 @@ public class WorkSpace implements I_File{
         if (notify!=null)
             notify.notify(mode,ss);
         }
+    public void notifySync(final int mode,final String ss){
+        if (notify!=null){
+            java.awt.EventQueue.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    notify.notify(mode,ss);
+                    }
+                });
+            }
+        }
     public Settings temp(){ return temp; }
     public void temp(Settings set){temp = set; }
     public Settings local(){ return local; }
