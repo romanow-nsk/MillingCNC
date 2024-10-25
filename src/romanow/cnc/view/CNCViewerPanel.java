@@ -607,6 +607,8 @@ public class CNCViewerPanel extends BasePanel {
         ArrayList<STLLine> lines = new ArrayList<>();
         String gCode = null;
         int count=0;
+        double x0 = WorkSpace.ws().global().mashine.WorkFrameX.getVal()/2;
+        double y0 = WorkSpace.ws().global().mashine.WorkFrameY.getVal()/2;
         while (true) {
             try {
                 try{
@@ -656,16 +658,16 @@ public class CNCViewerPanel extends BasePanel {
                     case 90:
                         break;
                     case 0:
-                        prevPoint = new STLPoint2D(pars.get(xx),pars.get(yy));
+                        prevPoint = new STLPoint2D(pars.get(xx)-x0,pars.get(yy)-y0);
                         break;
                     case 1:
-                        I_STLPoint2D two = new STLPoint2D(pars.get(xx),pars.get(yy));
+                        I_STLPoint2D two = new STLPoint2D(pars.get(xx)-x0,pars.get(yy)-y0);
                         STLLine line = new STLLine(prevPoint,two);
                         prevPoint = two;
                         lines.add(line);
                         break;
                     case 2:         // Кривая - как линия
-                        two = new STLPoint2D(pars.get(xx),pars.get(yy));
+                        two = new STLPoint2D(pars.get(xx)-x0,pars.get(yy)-y0);
                         line = new STLLine(prevPoint,two);
                         prevPoint = two;
                         lines.add(line);

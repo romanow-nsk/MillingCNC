@@ -55,6 +55,7 @@ public class CommonViewPanel extends BasePanel {
         }
     @Override
     public void onEvent(int code, int par1, long par2, String par3, Object oo) {
+        /*
         if (code== Events.GCode){
             if (par1==0 || par1==2){
                 Settings set = WorkSpace.ws().global();
@@ -79,6 +80,7 @@ public class CommonViewPanel extends BasePanel {
                     }
                 }
             }
+         */
         }
     @Override
     public void shutDown() {

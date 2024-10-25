@@ -6,10 +6,12 @@ package romanow.cnc.view;
 
 import com.sun.j3d.utils.universe.SimpleUniverse;
 import romanow.cnc.Values;
+import romanow.cnc.settings.Settings;
 import romanow.cnc.settings.WorkSpace;
 import romanow.cnc.slicer.SliceData;
 import romanow.cnc.slicer.SliceLayer;
 import romanow.cnc.stl.STLLine;
+import romanow.cnc.utils.Events;
 import romanow.cnc.viewer3d.PCanvas3D;
 import romanow.cnc.viewer3d.PModel;
 //---------- Старая Java3D ----------------------------------
@@ -56,6 +58,22 @@ public class Loop3DPanel extends BasePanel {
     private void paintView(){
         paintView(null,0);
         }
+
+    private double layerZ=0;
+    @Override
+    public void onEvent(int code, int par1, long par2, String par3, Object oo) {
+        if (code== Events.GCode){
+            if (par1==2){
+                layerZ = ((Double)oo).doubleValue();
+                }
+            if (par1==1){
+                ArrayList<STLLine> lines = (ArrayList<STLLine>) oo;
+                paintView(lines,(float) layerZ);
+                }
+        }
+    }
+
+
     private void paintView(ArrayList<STLLine> lines, float z){
         model.cleanup();
         if (ModelView.isSelected()){
@@ -71,7 +89,7 @@ public class Loop3DPanel extends BasePanel {
         if (lines!=null){
             Appearance app = colorAppearance(Color.red);
             for(STLLine line1 : lines)
-            model.addLine(line1,z,app);
+                model.addLine(line1,z,app);
             canvas.rendermodel(model,universe);
             }
         else{
@@ -294,12 +312,6 @@ public class Loop3DPanel extends BasePanel {
     public void refresh() {
 
         }
-
-
-    @Override
-    public void onEvent(int code, int par1, long par2, String par3, Object oo) {
-        }
-
     @Override
     public void shutDown() {
         }
