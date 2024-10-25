@@ -28,6 +28,7 @@ public class Events {
     public final static int OnWarning=26;
     public final static int Progress=27;
     public final static int Init=28;
+    public final static int GCode=29;
     //-------------------------------------------- Состояния принтера в программе  -------------------------------------
     public final static int PStateStandBy=0;
     public final static int PStateWorking=1;        

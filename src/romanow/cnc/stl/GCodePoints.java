@@ -37,7 +37,13 @@ public class GCodePoints {
                     }
                 //------------ TODO определить G02 или G03
                 int jj = idx+group.count-1;
-                out.write(String.format(Locale.US,"G02 X%6.3f Y%6.3f R%6.3f F5000 ",points.get(jj).x()+x0,points.get(jj).y()+y0,group.radius));
+                //--------------------- Координаты центра
+                double II = group.center.x()-points.get(idx).x();
+                double JJ = group.center.y()-points.get(idx).y();
+                out.write(String.format(Locale.US,"G02 X%6.3f Y%6.3f I%6.3f J%6.3f F5000 ",
+                        points.get(jj).x()+x0,points.get(jj).y()+y0,II,JJ));
+                //--------------------- Радиус
+                //out.write(String.format(Locale.US,"G02 X%6.3f Y%6.3f R%6.3f F5000 ",points.get(jj).x()+x0,points.get(jj).y()+y0,group.radius));
                 out.newLine();
                 idx = jj+1;
                 }

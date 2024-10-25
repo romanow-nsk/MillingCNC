@@ -293,17 +293,16 @@ public class Loop3DPanel extends BasePanel {
     @Override
     public void refresh() {
 
-    }
+        }
+
 
     @Override
     public void onEvent(int code, int par1, long par2, String par3, Object oo) {
-
-    }
+        }
 
     @Override
     public void shutDown() {
-
-    }
+        }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> LAYERS;

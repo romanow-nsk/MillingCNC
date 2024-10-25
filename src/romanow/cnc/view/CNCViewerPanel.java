@@ -9,6 +9,9 @@ import romanow.cnc.io.I_COMPortGReceiver;
 import romanow.cnc.settings.MashineSettings;
 import romanow.cnc.slicer.SliceData;
 import romanow.cnc.slicer.SliceDataGenerator;
+import romanow.cnc.stl.I_STLPoint2D;
+import romanow.cnc.stl.STLLine;
+import romanow.cnc.stl.STLPoint2D;
 import romanow.cnc.utils.Events;
 import romanow.cnc.utils.Pair;
 import romanow.cnc.utils.UNIException;
@@ -18,7 +21,11 @@ import romanow.cnc.settings.WorkSpace;
 
 import java.awt.*;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.StringTokenizer;
+
 import romanow.cnc.m3d.ViewAdapter;
 import romanow.cnc.m3d.ViewNotifyer;
 
@@ -292,7 +299,7 @@ public class CNCViewerPanel extends BasePanel {
         jLabel41.setBounds(870, 10, 80, 20);
 
         MILLINGMashine.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        MILLINGMashine.setText("G-код из файла");
+        MILLINGMashine.setText("G-код (станок)");
         MILLINGMashine.setBorder(new javax.swing.border.MatteBorder(null));
         MILLINGMashine.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -303,7 +310,7 @@ public class CNCViewerPanel extends BasePanel {
         MILLINGMashine.setBounds(720, 230, 140, 30);
 
         GCODESave.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        GCODESave.setText("G-код (файл)");
+        GCODESave.setText("G-код (экспорт)");
         GCODESave.setBorder(new javax.swing.border.MatteBorder(null));
         GCODESave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -319,7 +326,7 @@ public class CNCViewerPanel extends BasePanel {
         jLabel42.setBounds(730, 200, 140, 20);
 
         MILLINGView.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        MILLINGView.setText("Просмотр");
+        MILLINGView.setText("G-код (просмотр)");
         MILLINGView.setBorder(new javax.swing.border.MatteBorder(null));
         MILLINGView.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -521,6 +528,13 @@ public class CNCViewerPanel extends BasePanel {
             while ((gCode = in.readLine()) != null) {
                 count++;
                 notify.notify(info, "GCODE: " + gCode);
+                final String gcode1 = gCode;
+                java.awt.EventQueue.invokeLater(new Runnable(){
+                    @Override
+                    public void run() {
+                        getBaseFrame().sendEvent(Events.GCode,1,0,gcode1,null);
+                        }
+                    });
                 Pair<String, String> res = driver.write(gCode);
                 if (res.o1 != null) {
                     notify.notify(error, "GCODE - ошибка: " + res.o1);
@@ -560,6 +574,8 @@ public class CNCViewerPanel extends BasePanel {
                 return;
                 }
             final BufferedReader in2 = in;
+            //--------------------- сброс последовательности -----------------------------------------------------------
+            getBaseFrame().sendEvent(Events.GCode,0,0,"",null);
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -582,8 +598,89 @@ public class CNCViewerPanel extends BasePanel {
     }//GEN-LAST:event_GCODESaveActionPerformed
 
     private void MILLINGViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MILLINGViewActionPerformed
-        // TODO add your handling code here:
+        final String fname = getBaseFrame().getInputFileName("Файл GCODE","gcode",false);
+        if (fname==null) return;
+        BufferedReader in=null;
+        try {
+            MashineSettings ms = ws.global().mashine;
+            in = new BufferedReader(new InputStreamReader(new FileInputStream(fname),"UTF8"));
+            //--------------------- сброс последовательности -----------------------------------------------------------
+            getBaseFrame().sendEvent(Events.GCode,0,0,"",null);
+            String gCode = null;
+            int count=0;
+            while ((gCode = in.readLine()) != null) {
+                count++;
+                notify.notify(info, "GCODE: " + gCode);
+                parseAndExecuteGCode(gCode);
+                getBaseFrame().sendEvent(Events.GCode,1,0,gCode,null);
+                }
+            in.close();
+            notify.notify(info, "GCODE: " + count + " команд");
+            } catch (Exception ee){
+                notify.notify(error,"GCODE: " +ee.toString());
+                if (in != null) {
+                    try {
+                        in.close();
+                        } catch (IOException e) {}
+                }
+            }
+
     }//GEN-LAST:event_MILLINGViewActionPerformed
+
+
+    //------------------------------------------------------------------------------------------------------------------
+    private I_STLPoint2D prevPoint = new STLPoint2D(0,0);
+    private double layerZ = 0;
+    private void parseAndExecuteGCode(String gCode){
+        if (!gCode.startsWith("G"))
+            return;
+        StringTokenizer tokenizer = new StringTokenizer(gCode);
+        ArrayList<String> tokens = new ArrayList<>();
+        while (tokenizer.hasMoreTokens())
+            tokens.add(tokenizer.nextToken(" "));
+        HashMap<Character,Double> pars = new HashMap<>();
+        for(String token : tokens){
+            char cc = token.charAt(0);
+            double dd = Double.parseDouble(token.substring(1));
+            if (pars.get(cc)!=null){
+                WorkSpace.ws().notify(Values.warning,"Повторный тэг "+gCode);
+                continue;
+            }
+            pars.put(cc,dd);
+        }
+        Character xx = new Character('X');
+        Character yy = new Character('Y');
+        Character zz = new Character('Z');
+        Double dd = pars.get(new Character('G'));
+        if (dd==null){
+            WorkSpace.ws().notify(Values.warning,"Не найден тег G: "+gCode);
+            return;
+        }
+        switch ((int)dd.doubleValue()){
+            case 90:
+                break;
+            case 0:
+                prevPoint = new STLPoint2D(pars.get(xx),pars.get(yy));
+                break;
+            case 1:
+                I_STLPoint2D two = new STLPoint2D(pars.get(xx),pars.get(yy));
+                STLLine line = new STLLine(prevPoint,two);
+                prevPoint = two;
+                break;
+            case 2:         // Кривая - как линия
+                two = new STLPoint2D(pars.get(xx),pars.get(yy));
+                line = new STLLine(prevPoint,two);
+                prevPoint = two;
+                break;
+            case 30:
+                layerZ = pars.get(zz);
+                break;
+        }
+    }
+
+
+
+
 
     private void MLNLoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MLNLoadActionPerformed
         if (test1()) return;
