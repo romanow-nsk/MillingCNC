@@ -23,21 +23,21 @@ public class GCodePoints {
         out.newLine();
         out.write(String.format(Locale.US,"G30"));
         out.newLine();
-        out.write(String.format(Locale.US,"G00 X%6.3f Y%6.3f F5000",points.get(0).x()+x0,points.get(0).y()+y0));
+        out.write(String.format(Locale.US,"G00 X%-6.3f Y%-6.3f F5000",points.get(0).x()+x0,points.get(0).y()+y0));
         out.newLine();
         //------------- Z стола - Z-заготовки - слой
         double frameZ = WorkSpace.ws().global().mashine.WorkFrameZ.getVal();
         double blankZ = WorkSpace.ws().global().model.BlankZ.getVal();
-        out.write(String.format(Locale.US,"G00 Z%6.3f F5000",frameZ-blankZ));
+        out.write(String.format(Locale.US,"G00 Z%-6.3f F5000",frameZ-blankZ));
         out.newLine();
-        out.write(String.format(Locale.US,"G01 Z%6.3f F5000",layerZ));
+        out.write(String.format(Locale.US,"G01 Z%-6.3f F5000",layerZ));
         out.newLine();
         int idx=0;
         if (WorkSpace.ws().global().slice.ARCGCodeMode.getVal()){
             ArrayList<ArcPointsGroup> groups = createArcs(layerZ);
             for(ArcPointsGroup group :  groups){
                 for(int i=idx; i<=group.idx;i++){        // Начальную точку дуги надо вывести
-                    out.write(String.format(Locale.US,"G01 X%6.3f Y%6.3f F5000",points.get(i).x()+x0,points.get(i).y()+y0));
+                    out.write(String.format(Locale.US,"G01 X%-6.3f Y%-6.3f F5000",points.get(i).x()+x0,points.get(i).y()+y0));
                     out.newLine();
                     }
                 //------------ TODO определить G02 или G03
@@ -45,21 +45,21 @@ public class GCodePoints {
                 //--------------------- Координаты центра
                 double II = group.center.x()-points.get(idx).x();
                 double JJ = group.center.y()-points.get(idx).y();
-                out.write(String.format(Locale.US,"G02 X%6.3f Y%6.3f I%6.3f J%6.3f F5000 ",
+                out.write(String.format(Locale.US,"G02 X%-6.3f Y%-6.3f I%-6.3f J%-6.3f F5000 ",
                         points.get(jj).x()+x0,points.get(jj).y()+y0,II,JJ));
                 //--------------------- Радиус
-                //out.write(String.format(Locale.US,"G02 X%6.3f Y%6.3f R%6.3f F5000 ",points.get(jj).x()+x0,points.get(jj).y()+y0,group.radius));
+                //out.write(String.format(Locale.US,"G02 X%-6.3f Y%-6.3f R%-6.3f F5000 ",points.get(jj).x()+x0,points.get(jj).y()+y0,group.radius));
                 out.newLine();
                 idx = jj+1;
                 }
             for(int i=idx; i<points.size();i++){        // Начальную точку дуги надо вывести
-                out.write(String.format(Locale.US,"G01 X%6.3f Y%6.3f F5000",points.get(i).x()+x0,points.get(i).y()+y0));
+                out.write(String.format(Locale.US,"G01 X%-6.3f Y%-6.3f F5000",points.get(i).x()+x0,points.get(i).y()+y0));
                 out.newLine();
                 }
             }
         else{
             for(int i=1;i<points.size();i++){
-                out.write(String.format(Locale.US,"G01 X%6.3f Y%6.3f F5000",points.get(i).x()+x0,points.get(i).y()+y0));
+                out.write(String.format(Locale.US,"G01 X%-6.3f Y%-6.3f F5000",points.get(i).x()+x0,points.get(i).y()+y0));
                 out.newLine();
                 }
             }

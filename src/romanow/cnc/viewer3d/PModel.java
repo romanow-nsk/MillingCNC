@@ -3,6 +3,7 @@ package romanow.cnc.viewer3d;
 import com.sun.j3d.utils.geometry.GeometryInfo;
 import com.sun.j3d.utils.geometry.NormalGenerator;
 import com.sun.j3d.utils.geometry.Stripifier;
+import romanow.cnc.Values;
 import romanow.cnc.slicer.I_ErrorDraw;
 import romanow.cnc.slicer.SliceData;
 import romanow.cnc.slicer.SliceError;
@@ -151,7 +152,7 @@ public class PModel extends BranchGroup {
 			}
 		}
 	public void addSource(SliceLayer layer){
-    	Appearance app = colorAppearance(Color.red);
+    	Appearance app = colorAppearance(Values.ColorDarkRed);
 		addLines(layer.lines().lines(),(float) layer.z(),app);
 		}
 	public void addLoops(SliceData data){

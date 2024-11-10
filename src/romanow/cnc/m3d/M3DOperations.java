@@ -787,11 +787,11 @@ public class M3DOperations {
                     /*
                     out.write("( -------------- Группа "+(groupIdx+1)+"---------------------)");
                     out.newLine();
-                    out.write(String.format(Locale.US,"G30 G91 Z%6.3f",20.0));
+                    out.write(String.format(Locale.US,"G30 G91 Z%-6.3f",20.0));
                     out.newLine();
-                    out.write(String.format(Locale.US,"G00 X%6.3f Y%6.3f",one.x(),one.y()));
+                    out.write(String.format(Locale.US,"G00 X%-6.3f Y%-6.3f",one.x(),one.y()));
                     out.newLine();
-                    out.write(String.format(Locale.US,"G30 G91 Z%6.3f",-layerZ));
+                    out.write(String.format(Locale.US,"G30 G91 Z%-6.3f",-layerZ));
                     out.newLine();
                      */
                     last = one;
@@ -807,15 +807,15 @@ public class M3DOperations {
                     /*
                     out.write("( -------------- Перемещение в группе "+(groupIdx+1)+"---------------------)");
                     out.newLine();
-                    out.write(String.format(Locale.US,"G30 G91 Z%6.3f",20.0));
+                    out.write(String.format(Locale.US,"G30 G91 Z%-6.3f",20.0));
                     out.newLine();
-                    out.write(String.format(Locale.US,"G00 X%6.3f Y%6.3f",one.x(),one.y()));
+                    out.write(String.format(Locale.US,"G00 X%-6.3f Y%-6.3f",one.x(),one.y()));
                     out.newLine();
-                    out.write(String.format(Locale.US,"G30 G91 Z%6.3f",-layerZ));
+                    out.write(String.format(Locale.US,"G30 G91 Z%-6.3f",-layerZ));
                     out.newLine();
                      */
                     }
-                //out.write(String.format(Locale.US,"G01 X%6.3f Y%6.3f",two.x(),two.y()));
+                //out.write(String.format(Locale.US,"G01 X%-6.3f Y%-6.3f",two.x(),two.y()));
                 //out.newLine();
                 current.add(two);
                 last = two;
@@ -831,7 +831,7 @@ public class M3DOperations {
             //----------- Для проверки группировки ------------------------------------------------------
             //notify.notify(Values.info,"Линий="+lines.size()+","+count);
             }
-        out.write(String.format(Locale.US,"G30 G91 Z%6.3f",20.0));
+        out.write(String.format(Locale.US,"G30 G91 Z%-6.3f",20.0));
         out.newLine();
         out.write("M30");
         out.newLine();

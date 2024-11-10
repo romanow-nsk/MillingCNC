@@ -102,7 +102,7 @@ public class STLLoop extends STLLineGroup implements I_File {
         System.out.println(get(size()-1).two().dump());
         STLLine out = new STLLine(get(size()-1).two().clone(), get(0).one().clone());
         add(out);
-        WorkSpace.ws().notify(Values.important,"Замыкание контура, длина="+String.format("%6.3f",out.lengthXY())+" мм");
+        WorkSpace.ws().notify(Values.important,"Замыкание контура, длина="+String.format("%-6.3f",out.lengthXY())+" мм");
         System.out.println("Замыкание контура, длина="+out.lengthXY());
         repaired = true;
         return out;

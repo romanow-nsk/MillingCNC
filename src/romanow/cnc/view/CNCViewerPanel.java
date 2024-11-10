@@ -9,6 +9,7 @@ import romanow.cnc.io.I_COMPortGReceiver;
 import romanow.cnc.settings.MashineSettings;
 import romanow.cnc.slicer.SliceData;
 import romanow.cnc.slicer.SliceDataGenerator;
+import romanow.cnc.stl.GCodeLayer;
 import romanow.cnc.stl.I_STLPoint2D;
 import romanow.cnc.stl.STLLine;
 import romanow.cnc.stl.STLPoint2D;
@@ -608,7 +609,10 @@ public class CNCViewerPanel extends BasePanel {
     private I_STLPoint2D prevPoint = new STLPoint2D(0,0);
     private double layerZ = 0;
     private Graphics gr=null;
-    private void parseAndExecuteGCode(BufferedReader in){
+    int step=0;                             // Обработка последовательности смены слоя
+    private ArrayList<GCodeLayer> parseGCode(BufferedReader in){
+        ArrayList<GCodeLayer> layers = new ArrayList<>();
+        GCodeLayer current=null;
         ArrayList<STLLine> lines = new ArrayList<>();
         String gCode = null;
         int count=0;
@@ -616,16 +620,13 @@ public class CNCViewerPanel extends BasePanel {
         double y0 = WorkSpace.ws().global().mashine.WorkFrameY.getVal()/2;
         while (true) {
             try {
-                try{
-                    Thread.sleep(10);
-                    } catch (Exception ee){}
                 gCode = in.readLine();
                 } catch (IOException e) {
                     ws.notifySync(error, "GCODE: " + Utils.createFatalMessage(e,10));
                     try {
                         in.close();
                         } catch (IOException ex) {}
-                    return;
+                    return null;
                     }
                 if (gCode==null){
                     try {
@@ -640,7 +641,7 @@ public class CNCViewerPanel extends BasePanel {
                 StringTokenizer tokenizer = new StringTokenizer(gCode);
                 ArrayList<String> tokens = new ArrayList<>();
                 while (tokenizer.hasMoreTokens())
-                tokens.add(tokenizer.nextToken(" "));
+                    tokens.add(tokenizer.nextToken(" "));
                 HashMap<Character,Double> pars = new HashMap<>();
                 for(String token : tokens){
                     char cc = token.charAt(0);
@@ -657,40 +658,66 @@ public class CNCViewerPanel extends BasePanel {
                 Double dd = pars.get(new Character('G'));
                 if (dd==null){
                     ws.notifySync(Values.warning,"Не найден тег G: "+gCode);
-                    return;
+                    continue;
                     }
-                switch ((int)dd.doubleValue()){
-                    case 90:
-                        break;
-                    case 0:
-                        prevPoint = new STLPoint2D(pars.get(xx)-x0,pars.get(yy)-y0);
-                        break;
+                switch (step){
                     case 1:
-                        I_STLPoint2D two = new STLPoint2D(pars.get(xx)-x0,pars.get(yy)-y0);
-                        STLLine line = new STLLine(prevPoint,two);
-                        prevPoint = two;
-                        lines.add(line);
-                        break;
-                    case 2:         // Кривая - как линия
-                        two = new STLPoint2D(pars.get(xx)-x0,pars.get(yy)-y0);
-                        line = new STLLine(prevPoint,two);
-                        prevPoint = two;
-                        lines.add(line);
-                        break;
-                    case 30:
-                        layerZ = pars.get(zz);
+                        prevPoint = new STLPoint2D(pars.get(xx)-x0,pars.get(yy)-y0);
                         if (lines.size()!=0){
-                            getBaseFrame().sendEventSynch(Events.GCode,1,0,"",lines);
+                            current.groups.add(lines);
+                            //getBaseFrame().sendEventSynch(Events.GCode,1,0,"",lines);
                             lines = new ArrayList<>();
                             }
-                        getBaseFrame().sendEventSynch(Events.GCode,2,0,gCode,pars.get(zz));
+                        step++;
                         break;
+                    case 2:
+                        step++;
+                        break;
+                    case 3:
+                        double newZ = pars.get(zz);
+                        if (current==null)
+                            current = new GCodeLayer(newZ);
+                        if (newZ!=current.layerZ){
+                            layers.add(current);
+                            current = new GCodeLayer(newZ);
+                            }
+                        step=0;
+                        break;
+                    //-------------------------------------------------------------------------------
+                    case 0:
+                        switch ((int)dd.doubleValue()){
+                        case 90:
+                            break;
+                        case 0:
+                            prevPoint = new STLPoint2D(pars.get(xx)-x0,pars.get(yy)-y0);
+                            break;
+                        case 1:
+                            I_STLPoint2D two = new STLPoint2D(pars.get(xx)-x0,pars.get(yy)-y0);
+                            STLLine line = new STLLine(prevPoint,two);
+                            prevPoint = two;
+                            lines.add(line);
+                            break;
+                        case 2:         // Кривая - как линия
+                            two = new STLPoint2D(pars.get(xx)-x0,pars.get(yy)-y0);
+                            line = new STLLine(prevPoint,two);
+                            prevPoint = two;
+                            lines.add(line);
+                            break;
+                        case 30:
+                            step=1;
+                        break;
+                        }
+                    break;
+                    //------------------------------------------------------------------------------
                         }
                     }
             if (lines.size()!=0){
-                getBaseFrame().sendEventSynch(Events.GCode,1,0,"",lines);
+                current.groups.add(lines);
                 lines = new ArrayList<>();
                 }
+            if (current!=null){}
+                layers.add(current);
+            return layers;
             }
 
     private void MILLINGViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MILLINGViewActionPerformed
@@ -705,16 +732,14 @@ public class CNCViewerPanel extends BasePanel {
             MashineSettings ms = ws.global().mashine;
             in = new BufferedReader(new InputStreamReader(new FileInputStream(fname),"UTF8"));
             //--------------------- сброс последовательности -----------------------------------------------------------
-            getBaseFrame().setViewPanelEnable(PanelSTL3D);
-            getBaseFrame().refreshPanels();
-            getBaseFrame().sendEvent(Events.GCode,0,0,"",null);
             final BufferedReader in2 = in;
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    parseAndExecuteGCode(in2);
-                    }
-                }).start();
+            ArrayList<GCodeLayer> res = parseGCode(in2);
+            if (res!=null) {
+                getBaseFrame().setViewPanelEnable(PanelSTL3DLoops);
+                getBaseFrame().refreshPanels();
+                getBaseFrame().toFront(PanelSTL3DLoops);
+                getBaseFrame().sendEvent(Events.GCode, 0, 0, "", res);
+                }
             } catch (Exception ee){
                 notify.notify(error,"GCODE: " +Utils.createFatalMessage(ee,10));
                 if (in != null) {

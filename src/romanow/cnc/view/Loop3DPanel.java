@@ -4,12 +4,14 @@
  */
 package romanow.cnc.view;
 
+import com.sun.deploy.security.SelectableSecurityManager;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 import romanow.cnc.Values;
 import romanow.cnc.settings.Settings;
 import romanow.cnc.settings.WorkSpace;
 import romanow.cnc.slicer.SliceData;
 import romanow.cnc.slicer.SliceLayer;
+import romanow.cnc.stl.GCodeLayer;
 import romanow.cnc.stl.STLLine;
 import romanow.cnc.utils.Events;
 import romanow.cnc.viewer3d.PCanvas3D;
@@ -17,6 +19,7 @@ import romanow.cnc.viewer3d.PModel;
 //---------- Старая Java3D ----------------------------------
 import javax.media.j3d.Appearance;
 import javax.media.j3d.Background;
+import javax.media.j3d.LineAttributes;
 import javax.media.j3d.Shape3D;
 import javax.vecmath.Color3f;
 import java.awt.*;
@@ -29,13 +32,18 @@ import static romanow.cnc.viewer3d.PModel.colorAppearance;
  * @author Admin
  */
 public class Loop3DPanel extends BasePanel {
-    Shape3D modelView = null;
-    SliceData data;
-    int cLayer=0;
-    Thread thread=null;
-    PCanvas3D canvas;
-    PModel model;
-    SimpleUniverse universe;
+    private Shape3D modelView = null;
+    private SliceData data;
+    private int cLayer=0;
+    private Thread thread=null;
+    private PCanvas3D canvas;
+    private PModel model;
+    private SimpleUniverse universe;
+    private ArrayList<GCodeLayer> gCode=new ArrayList<>();
+    private boolean gCodeMode=false;
+    private LineAttributes lineAttr = new LineAttributes();
+    private final static float lineWidth=1.5f;
+
     double Scale0 = 0.1;
     /**
      * Creates new form Loop3DPanel
@@ -43,11 +51,8 @@ public class Loop3DPanel extends BasePanel {
     public Loop3DPanel(BaseFrame base) {
         super(base);
         initComponents();
+        lineAttr.setLineWidth(lineWidth);
         setPreferredSize(new Dimension(Values.FrameWidth, Values.FrameHeight-Values.FrameBottom*2));
-        GraphicsConfiguration config = SimpleUniverse.getPreferredConfiguration();
-        canvas = new PCanvas3D(config);
-        canvas.setBounds(200,10,Values.FrameWidth-200, Values.FrameHeight-Values.FrameBottom*2);
-        add(canvas);
         //universe = new SimpleUniverse(canvas);
         //canvas.initcanvas(universe);
         }
@@ -62,34 +67,46 @@ public class Loop3DPanel extends BasePanel {
         cLayer = 0;
         }
 
+    private void setLayersGCode(){
+        LAYERS.removeAll();
+        for(int i=0;i<data.size();i++){
+            GCodeLayer lr = gCode.get(i);
+            LAYERS.addItem(String.format("%-4.2f мм / %d",lr.layerZ,i+1));
+            }
+        cLayer = 0;
+        }
+
+
     private void paintView(){
         paintView(null,0);
         }
 
     private double layerZ=0;
+    private boolean newLayer=true;
     @Override
     public void onEvent(int code, int par1, long par2, String par3, Object oo) {
         if (code== Events.GCode){
-            if (par1==0){
-                onActivate();
-                }
-            if (par1==2){
-                layerZ = ((Double)oo).doubleValue();
-                }
-            if (par1==1){
-                ArrayList<STLLine> lines = (ArrayList<STLLine>) oo;
-                paintView(lines,(float) layerZ);
-                }
+            gCodeMode = true;
+            gCode = (ArrayList<GCodeLayer>) oo;
+            setLayersGCode();
         }
     }
 
+    private final static Color[] colors = {
+        Values.ColorDarkGreen,
+        Color.blue,
+        Color.cyan,
+        Values.ColorYellow,
+        Color.black,
+        Color.magenta
+        };
 
     private void paintView(ArrayList<STLLine> lines, float z){
         model.cleanup();
-        if (ModelView.isSelected()){
+        if (ModelView.isSelected()) {
             model.addChild(modelView);
             }
-        if (data!=null){
+        if (data != null) {
             int idx = LAYERS.getSelectedIndex();
             if (Source.isSelected())
                 model.addSource(data.get(idx));
@@ -97,21 +114,49 @@ public class Loop3DPanel extends BasePanel {
                 model.addLoop(data.get(idx));
             }
         if (lines!=null){
-            Appearance app = colorAppearance(Color.red);
-            for(STLLine line1 : lines)
+            int colorIdx=0;
+            Appearance app = colorAppearance(colors[colorIdx]);
+            app.setLineAttributes(lineAttr);
+            for(STLLine line1 : lines){
+                if (line1==null){
+                    if (colorIdx<colors.length-1)
+                        colorIdx++;
+                    else
+                        colorIdx=0;
+                    app = colorAppearance(colors[colorIdx]);
+                    app.setLineAttributes(lineAttr);
+                    continue;
+                    }
                 model.addLine(line1,z,app);
+                }
             canvas.rendermodel(model,universe);
             }
         else{
             if (MILLING.isSelected()){
                 int idx = LAYERS.getSelectedIndex();
+                double zz = data.get(idx).z();
                 final ArrayList<STLLine> tmp = new ArrayList<>();
-                for (STLLine line2 : data.get(idx).segments().lines()) {
-                    tmp.add(line2);
-                    paintView(tmp,(float) data.get(idx).z());
-                    try {
-                        Thread.sleep(10);
-                        } catch (InterruptedException e) {}
+                if (!gCodeMode){
+                    for (STLLine line2 : data.get(idx).segments().lines()) {
+                        tmp.add(line2);
+                        paintView(tmp,z);
+                        try {
+                            Thread.sleep(20);
+                            } catch (InterruptedException e) {}
+                        }
+                    }
+                else{   //----------------------------------------------------------------------------------------------
+                    GCodeLayer lr = gCode.get(idx);
+                    for(int ii=0;ii<lr.groups.size();ii++){
+                        for (STLLine line2 : lr.groups.get(ii)) {
+                            tmp.add(line2);
+                            paintView(tmp,z);
+                            try {
+                                Thread.sleep(10);
+                                } catch (InterruptedException e) {}
+                            }
+                        tmp.add(null);
+                        }
                     }
                 }
             else
@@ -121,6 +166,7 @@ public class Loop3DPanel extends BasePanel {
 
     private void paintSlice(){
         Appearance app = colorAppearance(Color.blue);
+        app.setLineAttributes(lineAttr);
         int idx = LAYERS.getSelectedIndex();
         SliceLayer layer = data.get(idx);
         for (STLLine line : layer.segments().lines()) {
@@ -155,10 +201,16 @@ public class Loop3DPanel extends BasePanel {
             thread.stop();
             thread=null;
             }
+        if (canvas!=null)
+            remove(canvas);
         }
 
     @Override
     public void onActivate() {
+        GraphicsConfiguration config = SimpleUniverse.getPreferredConfiguration();
+        canvas = new PCanvas3D(config);
+        canvas.setBounds(200,10,Values.FrameWidth-200, Values.FrameHeight-Values.FrameBottom*2);
+        add(canvas);
         universe = new SimpleUniverse(canvas);
         canvas.initcanvas(universe);
         data = WorkSpace.ws().data();

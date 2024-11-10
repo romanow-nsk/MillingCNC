@@ -16,7 +16,11 @@ public class Values {
         }
     public final static Color ColorGreen = new Color(0x94E983);
     public final static Color ColorDarkGreen = new Color(0x30B030);
+    public final static Color ColorDarkGreen2 = new Color(0x70B070);
+    public final static Color ColorDarkGreen3 = new Color(0xA0C0A0);
     public final static Color ColorDarkRed = new Color(0xD03030);
+    public final static Color ColorYellow = new Color(0xFEBC49);
+    public final static Color ColorGray = new Color(210,210,210);
     // Маски панелей -----------------------------
     public final static int PanelLogin=0x01;
     public final static int PanelMain=0x02;

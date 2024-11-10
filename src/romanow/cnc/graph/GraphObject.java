@@ -44,7 +44,7 @@ public class GraphObject extends GraphLine implements I_File {
     public double midY(){ return (y0()+y1())/2; }
     public double szX(){ return (x1()-x0()); }
     public double szY(){ return (y1()-y0()); }   
-    public String toString(){ return name()+String.format(" [%6.3f,%6.3f]",midX(),midY()); }
+    public String toString(){ return name()+String.format(" [%-6.3f,%-6.3f]",midX(),midY()); }
     public String name(){ return "..."; }
     public GraphObject clone(){ return new GraphObject(x0(),y0(),x1(),y1());}
     public GraphPoint middle(){ return new GraphPoint(midX(),midY()); }
