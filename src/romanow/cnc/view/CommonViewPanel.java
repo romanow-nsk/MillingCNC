@@ -42,8 +42,13 @@ public class CommonViewPanel extends BasePanel {
     public boolean modeEnabled() {
         return true;
         }
+
     @Override
-    public void onInit(boolean on) {
+    public void onActivate() {
+        }
+
+    @Override
+    public void onDeactivate() {
         }
 
     @Override

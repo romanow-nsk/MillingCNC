@@ -2,6 +2,8 @@ package romanow.cnc;
 
 import romanow.cnc.utils.OwnDateTime;
 
+import java.awt.*;
+
 /**
  * Created by romanow on 02.12.2017.
  */
@@ -12,6 +14,9 @@ public class Values {
     public static String getVersion(){
         return "Milling CNC NSTU  version "+version+"."+release+" "+releaseDate.dateToString();
         }
+    public final static Color ColorGreen = new Color(0x94E983);
+    public final static Color ColorDarkGreen = new Color(0x30B030);
+    public final static Color ColorDarkRed = new Color(0xD03030);
     // Маски панелей -----------------------------
     public final static int PanelLogin=0x01;
     public final static int PanelMain=0x02;

@@ -24,6 +24,7 @@ import javax.swing.JSlider;
  * @author romanow
  */
 public class GraphPanel extends JPanel{
+    public final static int MASOffset=4;
     public int horiz=0;
     public int vert=0;
     public double xmin,xmax,ymin,ymax,x0,y0;// Координаты текущего положения панели в поле печати
@@ -77,7 +78,7 @@ public class GraphPanel extends JPanel{
             paintSize = vy;
         horiz = (int)(HORIZ.getValue()*paintSize);
         vert = (int)(VERTIC.getValue()*paintSize);
-        dxy = paintSize*2./(Math.pow(1.1,mas-1)*vSize);
+        dxy = paintSize*2./(Math.pow(1.1,mas-MASOffset)*vSize);
         x0 = -horiz/100.;
         y0 = -vert/100.;
         xmin = x0 - dxy*vSize/2;

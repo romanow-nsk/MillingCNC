@@ -121,8 +121,13 @@ public class CNCViewerPanel extends BasePanel {
         }
 
     @Override
-    public void onInit(boolean on) {
+    public void onActivate() {
         }
+
+    @Override
+    public void onDeactivate() {
+        }
+
 
     @Override
     public void onClose() {
@@ -444,7 +449,7 @@ public class CNCViewerPanel extends BasePanel {
         else{
             getBaseFrame().setViewPanelEnable(PanelSTL3D);
             savedColor = STL3DView.getBackground();
-            STL3DView.setBackground(Color.green);
+            STL3DView.setBackground(ColorDarkGreen);
             getBaseFrame().refreshPanels();
             getBaseFrame().toFront(PanelSTL3D);
             }
@@ -481,7 +486,7 @@ public class CNCViewerPanel extends BasePanel {
         else{
             getBaseFrame().setViewPanelEnable(PanelSTL3DLoops);
             savedColor = STL3DView.getBackground();
-            STL3DViewLoops.setBackground(Color.green);
+            STL3DViewLoops.setBackground(ColorDarkGreen);
             getBaseFrame().refreshPanels();
             getBaseFrame().toFront(PanelSTL3DLoops);
             }
@@ -500,7 +505,7 @@ public class CNCViewerPanel extends BasePanel {
         else{
             getBaseFrame().setViewPanelEnable(PanelMLN);
             savedColor = MLNView.getBackground();
-            MLNView.setBackground(Color.green);
+            MLNView.setBackground(ColorDarkGreen);
             getBaseFrame().refreshPanels();
             getBaseFrame().toFront(PanelMLN);
             }
@@ -548,7 +553,7 @@ public class CNCViewerPanel extends BasePanel {
             driver.close();
             notify.notify(info, "GCODE: " + count + " команд");
         } catch (Exception ee) {
-            notify.notify(error,"GCODE: " +ee.toString());
+            notify.notify(error,"GCODE: " +Utils.createFatalMessage(ee,10));
             driver.close();
             if (in != null) {
                 try {
@@ -583,7 +588,7 @@ public class CNCViewerPanel extends BasePanel {
                     }
                 }).start();
             } catch (Exception ee){
-                notify.notify(error,"GCODE: " +ee.toString());
+                notify.notify(error,"GCODE: " +Utils.createFatalMessage(ee,10));
                 driver.close();
                 if (in != null) {
                 try {
@@ -616,7 +621,7 @@ public class CNCViewerPanel extends BasePanel {
                     } catch (Exception ee){}
                 gCode = in.readLine();
                 } catch (IOException e) {
-                    ws.notifySync(error, "GCODE: " + e.toString());
+                    ws.notifySync(error, "GCODE: " + Utils.createFatalMessage(e,10));
                     try {
                         in.close();
                         } catch (IOException ex) {}
@@ -700,6 +705,8 @@ public class CNCViewerPanel extends BasePanel {
             MashineSettings ms = ws.global().mashine;
             in = new BufferedReader(new InputStreamReader(new FileInputStream(fname),"UTF8"));
             //--------------------- сброс последовательности -----------------------------------------------------------
+            getBaseFrame().setViewPanelEnable(PanelSTL3D);
+            getBaseFrame().refreshPanels();
             getBaseFrame().sendEvent(Events.GCode,0,0,"",null);
             final BufferedReader in2 = in;
             new Thread(new Runnable() {
@@ -709,7 +716,7 @@ public class CNCViewerPanel extends BasePanel {
                     }
                 }).start();
             } catch (Exception ee){
-                notify.notify(error,"GCODE: " +ee.toString());
+                notify.notify(error,"GCODE: " +Utils.createFatalMessage(ee,10));
                 if (in != null) {
                     try {
                         in.close();

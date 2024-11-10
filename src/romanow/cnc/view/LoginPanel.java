@@ -65,9 +65,12 @@ public class LoginPanel extends BasePanel {
     }
 
     @Override
-    public void onInit(boolean on) {
-        if (on)
-            initView();
+    public void onActivate() {
+        initView();
+        }
+
+    @Override
+    public void onDeactivate() {
         }
 
     @Override

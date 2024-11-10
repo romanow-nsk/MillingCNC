@@ -71,8 +71,12 @@ public class ModelSettingsPanel extends BasePanel  implements I_SettingsPanel{
     }
 
     @Override
-    public void onInit(boolean on) {
+    public void onActivate() {
         loadSettings();
+        }
+    @Override
+    public void onDeactivate() {
+
     }
 
     @Override
@@ -156,6 +160,8 @@ public class ModelSettingsPanel extends BasePanel  implements I_SettingsPanel{
         RepairLoops = new javax.swing.JCheckBox();
         LoopsWithSomeLineTypes = new javax.swing.JCheckBox();
         Mode2 = new javax.swing.JComboBox<>();
+        BlankZ = new javax.swing.JTextField();
+        Z0_8 = new javax.swing.JLabel();
 
         setLayout(null);
         add(jLabel1);
@@ -294,7 +300,7 @@ public class ModelSettingsPanel extends BasePanel  implements I_SettingsPanel{
         Z0_1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         Z0_1.setText("Шаг по вертикали (мм)");
         add(Z0_1);
-        Z0_1.setBounds(490, 175, 150, 20);
+        Z0_1.setBounds(530, 210, 150, 20);
 
         XYZ.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "X", "Y", "Z" }));
         add(XYZ);
@@ -382,7 +388,7 @@ public class ModelSettingsPanel extends BasePanel  implements I_SettingsPanel{
         Z0_4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         Z0_4.setText("Размер заготовки X(мм)");
         add(Z0_4);
-        Z0_4.setBounds(490, 40, 170, 20);
+        Z0_4.setBounds(530, 40, 170, 20);
 
         BlankHight.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         BlankHight.setText("0");
@@ -392,7 +398,7 @@ public class ModelSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(BlankHight);
-        BlankHight.setBounds(660, 65, 80, 30);
+        BlankHight.setBounds(700, 65, 80, 30);
 
         BlankWidth.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         BlankWidth.setText("0");
@@ -402,7 +408,7 @@ public class ModelSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(BlankWidth);
-        BlankWidth.setBounds(660, 30, 80, 30);
+        BlankWidth.setBounds(700, 30, 80, 30);
 
         CutterDiameter.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         CutterDiameter.setText("0");
@@ -412,17 +418,17 @@ public class ModelSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(CutterDiameter);
-        CutterDiameter.setBounds(660, 100, 80, 30);
+        CutterDiameter.setBounds(700, 135, 80, 30);
 
         Z0_5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        Z0_5.setText("Размер заготовки Y(мм)");
+        Z0_5.setText("Размер заготовки Z(мм)");
         add(Z0_5);
-        Z0_5.setBounds(490, 70, 170, 20);
+        Z0_5.setBounds(530, 105, 170, 20);
 
         Z0_6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         Z0_6.setText("Диаметр фрезы (мм)");
         add(Z0_6);
-        Z0_6.setBounds(490, 105, 150, 20);
+        Z0_6.setBounds(530, 140, 150, 20);
 
         StepMinus.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         StepMinus.setText("0");
@@ -432,7 +438,7 @@ public class ModelSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(StepMinus);
-        StepMinus.setBounds(660, 135, 80, 30);
+        StepMinus.setBounds(700, 170, 80, 30);
 
         VerticalStep.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         VerticalStep.setText("0");
@@ -442,12 +448,12 @@ public class ModelSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(VerticalStep);
-        VerticalStep.setBounds(660, 170, 80, 30);
+        VerticalStep.setBounds(700, 205, 80, 30);
 
         Z0_7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         Z0_7.setText("Коррекция шага (мм)");
         add(Z0_7);
-        Z0_7.setBounds(490, 140, 150, 20);
+        Z0_7.setBounds(530, 175, 150, 20);
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel2.setText("Фактура");
@@ -610,6 +616,21 @@ public class ModelSettingsPanel extends BasePanel  implements I_SettingsPanel{
         });
         add(Mode2);
         Mode2.setBounds(110, 330, 130, 30);
+
+        BlankZ.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        BlankZ.setText("0");
+        BlankZ.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                BlankZKeyPressed(evt);
+            }
+        });
+        add(BlankZ);
+        BlankZ.setBounds(700, 100, 80, 30);
+
+        Z0_8.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z0_8.setText("Размер заготовки Y(мм)");
+        add(Z0_8);
+        Z0_8.setBounds(530, 70, 170, 20);
     }// </editor-fold>//GEN-END:initComponents
     public boolean loadSettings(){
         try {
@@ -623,8 +644,9 @@ public class ModelSettingsPanel extends BasePanel  implements I_SettingsPanel{
             DecimalFormat df3 = new DecimalFormat("000.0", dfs);
             MarkingFieldHight.setText(df2.format(set.model.ModelHight.getVal()));
             MarkingFieldWidth.setText(df2.format(set.model.ModelWidth.getVal()));
-            BlankHight.setText(df2.format(set.model.BlankHight.getVal()));
-            BlankWidth.setText(df2.format(set.model.BlankWidth.getVal()));
+            BlankHight.setText(df2.format(set.model.BlankHight.getVal()*2));
+            BlankWidth.setText(df2.format(set.model.BlankWidth.getVal()*2));
+            BlankZ.setText(df2.format(set.model.BlankZ.getVal()));
             CutterDiameter.setText(df2.format(set.model.CutterDiameter.getVal()));
             StepMinus.setText(df2.format(set.model.StepMinus.getVal()));
             VerticalStep.setText(df2.format(set.model.VerticalStep.getVal()));
@@ -670,8 +692,9 @@ public class ModelSettingsPanel extends BasePanel  implements I_SettingsPanel{
             Settings set = ws.local();
             set.model.ZStart.setVal(Float.parseFloat(Zstart.getText()));
             set.model.ZFinish.setVal(Float.parseFloat(Zfinish.getText()));
-            set.model.BlankWidth.setVal(Float.parseFloat(BlankWidth.getText()));
-            set.model.BlankHight.setVal(Float.parseFloat(BlankHight.getText()));
+            set.model.BlankWidth.setVal(Float.parseFloat(BlankWidth.getText())/2);
+            set.model.BlankHight.setVal(Float.parseFloat(BlankHight.getText())/2);
+            set.model.BlankZ.setVal(Float.parseFloat(BlankZ.getText()));
             set.model.CutterDiameter.setVal(Float.parseFloat(CutterDiameter.getText()));
             set.model.StepMinus.setVal(Float.parseFloat(StepMinus.getText()));
             set.model.VerticalStep.setVal(Float.parseFloat(VerticalStep.getText()));
@@ -753,11 +776,11 @@ public class ModelSettingsPanel extends BasePanel  implements I_SettingsPanel{
     }//GEN-LAST:event_ShiftButtonActionPerformed
 
     private void BlankWidthKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BlankWidthKeyPressed
-        Utils.saveKeyPressed(evt,set.model.BlankWidth,set,notify);
+        Utils.saveKeyPressed(evt,set.model.BlankWidth,set,0.5,notify);
     }//GEN-LAST:event_BlankWidthKeyPressed
 
     private void BlankHightKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BlankHightKeyPressed
-        Utils.saveKeyPressed(evt,set.model.BlankHight,set,notify);
+        Utils.saveKeyPressed(evt,set.model.BlankHight,set,0.5,notify);
     }//GEN-LAST:event_BlankHightKeyPressed
 
     private void CutterDiameterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CutterDiameterKeyPressed
@@ -889,6 +912,10 @@ public class ModelSettingsPanel extends BasePanel  implements I_SettingsPanel{
         Utils.saveKeyPressed(evt,set.slice.FillingFlatness,set,notify);
     }//GEN-LAST:event_FillingFlatnessKeyPressed
 
+    private void BlankZKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BlankZKeyPressed
+        Utils.saveKeyPressed(evt,set.model.BlankZ,set,notify);
+    }//GEN-LAST:event_BlankZKeyPressed
+
     @Override
     public boolean saveSettings() {
         return saveSettings(null);
@@ -899,6 +926,7 @@ public class ModelSettingsPanel extends BasePanel  implements I_SettingsPanel{
     private javax.swing.JTextField ANGLE;
     private javax.swing.JTextField BlankHight;
     private javax.swing.JTextField BlankWidth;
+    private javax.swing.JTextField BlankZ;
     private javax.swing.JCheckBox Continuous;
     private javax.swing.JTextField CutterDiameter;
     private javax.swing.JTextField FillParametersAngle;
@@ -938,6 +966,7 @@ public class ModelSettingsPanel extends BasePanel  implements I_SettingsPanel{
     private javax.swing.JLabel Z0_5;
     private javax.swing.JLabel Z0_6;
     private javax.swing.JLabel Z0_7;
+    private javax.swing.JLabel Z0_8;
     private javax.swing.JTextField Zfinish;
     private javax.swing.JTextField Zstart;
     private javax.swing.JLabel jLabel1;

@@ -21,11 +21,16 @@ public class GCodePoints {
     public void write(BufferedWriter out, double layerZ, double x0, double y0) throws IOException {
         out.write(comment);
         out.newLine();
-        out.write(String.format(Locale.US,"G30 G91 Z%6.3f F5000",20.0));
+        out.write(String.format(Locale.US,"G30"));
         out.newLine();
         out.write(String.format(Locale.US,"G00 X%6.3f Y%6.3f F5000",points.get(0).x()+x0,points.get(0).y()+y0));
         out.newLine();
-        out.write(String.format(Locale.US,"G30 G91 Z%6.3f F5000",-layerZ));
+        //------------- Z стола - Z-заготовки - слой
+        double frameZ = WorkSpace.ws().global().mashine.WorkFrameZ.getVal();
+        double blankZ = WorkSpace.ws().global().model.BlankZ.getVal();
+        out.write(String.format(Locale.US,"G00 Z%6.3f F5000",frameZ-blankZ));
+        out.newLine();
+        out.write(String.format(Locale.US,"G01 Z%6.3f F5000",layerZ));
         out.newLine();
         int idx=0;
         if (WorkSpace.ws().global().slice.ARCGCodeMode.getVal()){

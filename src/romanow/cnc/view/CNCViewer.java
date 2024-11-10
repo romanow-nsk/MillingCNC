@@ -29,15 +29,11 @@ import java.util.ArrayList;
 import romanow.cnc.m3d.FileBinInputStream;
 import romanow.cnc.m3d.M3DFileBinInputStream;
 import romanow.cnc.m3d.M3DFileBinOutputStream;
-import romanow.cnc.m3d.M3DOperations;
 import romanow.cnc.m3d.M3DSequencer;
 import romanow.cnc.m3d.M3DSettings_2;
 import romanow.cnc.m3d.M3DTesing;
-import romanow.cnc.m3d.M3DViewPanel;
-import romanow.cnc.m3d.M3DVisio;
 import romanow.cnc.m3d.OKFull;
 import romanow.cnc.m3d.Slice2DViewer;
-import romanow.cnc.m3d.ViewAdapter;
 import romanow.cnc.m3d.ViewNotifyer;
 
 import static romanow.cnc.Values.*;
@@ -81,7 +77,7 @@ public class CNCViewer extends BaseFrame {
         PanelList.removeAll();
         for(BasePanel panel : getPanels()) {
             if (panel.isSelected())
-                panel.onClose();
+                panel.onDeactivate();
             }
         for(BasePanel panel : getPanels()){
             boolean bb = panel.isSelectedMode(WorkSpace.ws().viewMode());
@@ -89,7 +85,8 @@ public class CNCViewer extends BaseFrame {
                 PanelList.add(panel.getName(),panel);
                 }
             panel.setSelected(bb);
-            panel.onInit(bb);
+            if (bb)
+                panel.onActivate();
             }
         }
 

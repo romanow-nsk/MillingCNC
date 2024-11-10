@@ -43,6 +43,13 @@ public class Loop3DPanel extends BasePanel {
     public Loop3DPanel(BaseFrame base) {
         super(base);
         initComponents();
+        setPreferredSize(new Dimension(Values.FrameWidth, Values.FrameHeight-Values.FrameBottom*2));
+        GraphicsConfiguration config = SimpleUniverse.getPreferredConfiguration();
+        canvas = new PCanvas3D(config);
+        canvas.setBounds(200,10,Values.FrameWidth-200, Values.FrameHeight-Values.FrameBottom*2);
+        add(canvas);
+        //universe = new SimpleUniverse(canvas);
+        //canvas.initcanvas(universe);
         }
     private void setLayers(){
         LAYERS.removeAll();
@@ -63,6 +70,9 @@ public class Loop3DPanel extends BasePanel {
     @Override
     public void onEvent(int code, int par1, long par2, String par3, Object oo) {
         if (code== Events.GCode){
+            if (par1==0){
+                onActivate();
+                }
             if (par1==2){
                 layerZ = ((Double)oo).doubleValue();
                 }
@@ -138,9 +148,19 @@ public class Loop3DPanel extends BasePanel {
         }
 
     @Override
-    public void onInit(boolean on) {
-        if (!on)
-            return;
+    public void onDeactivate() {
+        universe.removeAllLocales();
+        universe.cleanup();
+        if (thread!=null){          // Тупо обломить поток
+            thread.stop();
+            thread=null;
+            }
+        }
+
+    @Override
+    public void onActivate() {
+        universe = new SimpleUniverse(canvas);
+        canvas.initcanvas(universe);
         data = WorkSpace.ws().data();
         setLayers();
         /*
@@ -155,13 +175,6 @@ public class Loop3DPanel extends BasePanel {
         //setLocationRelativeTo(null);
         setVisible(true);
         */
-        setPreferredSize(new Dimension(Values.FrameWidth, Values.FrameHeight-Values.FrameBottom*2));
-        GraphicsConfiguration config = SimpleUniverse.getPreferredConfiguration();
-        canvas = new PCanvas3D(config);
-        canvas.setBounds(200,10,Values.FrameWidth-200, Values.FrameHeight-Values.FrameBottom*2);
-        add(canvas);
-        universe = new SimpleUniverse(canvas);
-        canvas.initcanvas(universe);
         //pack();
         //setLocationRelativeTo(null);
         setVisible(true);
@@ -187,12 +200,7 @@ public class Loop3DPanel extends BasePanel {
 
     @Override
     public void onClose() {
-        universe.removeAllLocales();
-        universe.cleanup();
-        if (thread!=null){          // Тупо обломить поток
-            thread.stop();
-            thread=null;
-            }
+
         }
 
     /**

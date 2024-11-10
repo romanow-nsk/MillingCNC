@@ -36,6 +36,8 @@ public class ModelSettings implements I_File {
     public FloatParameter BlankWidth = new FloatParameter(0);
     /** заготовка Y мм */
     public FloatParameter BlankHight = new FloatParameter(0);
+    /** заготовка Z мм */
+    public FloatParameter BlankZ = new FloatParameter(0);
     /** диаметр фрезы мм */
     public FloatParameter CutterDiameter = new FloatParameter(1.0);
     /** коррекция шага для диаметра/2 мм */
@@ -59,6 +61,7 @@ public class ModelSettings implements I_File {
         out.PageServoOffsetsLeft =PageServoOffsetsLeft.clone();
         out.BlankWidth = BlankWidth.clone();
         out.BlankHight = BlankHight.clone();
+        out.BlankZ = BlankZ.clone();
         out.CutterDiameter = CutterDiameter.clone();
         out.StepMinus = StepMinus.clone();
         out.VerticalStep = VerticalStep.clone();
@@ -81,6 +84,7 @@ public class ModelSettings implements I_File {
         if (PageServoOffsetsTop==null) PageServoOffsetsTop = new FloatParameter(0);
         if (BlankWidth==null) BlankWidth = new FloatParameter(0);
         if (BlankHight==null) BlankHight = new FloatParameter(0);
+        if (BlankZ==null) BlankZ = new FloatParameter(0);
         if (CutterDiameter==null) CutterDiameter = new FloatParameter(1);
         if (StepMinus==null) StepMinus = new FloatParameter(0.02);
         if (VerticalStep==null) VerticalStep = new FloatParameter(1);
@@ -102,6 +106,7 @@ public class ModelSettings implements I_File {
         PageServoOffsetsTop.load(in);
         BlankWidth.load(in);
         BlankHight.load(in);
+        BlankZ.load(in);
         CutterDiameter.load(in);
         StepMinus.load(in);
         VerticalStep.load(in);
@@ -121,6 +126,7 @@ public class ModelSettings implements I_File {
         PageServoOffsetsTop.save(in);
         BlankWidth.save(in);
         BlankHight.save(in);
+        BlankZ.save(in);
         CutterDiameter.save(in);
         StepMinus.save(in);
         VerticalStep.save(in);

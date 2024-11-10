@@ -278,11 +278,15 @@ public class Utils {
         }).start();
     }
 
-    public static void saveKeyPressed(java.awt.event.KeyEvent evt, FloatParameter par, Settings set, I_Notify notify) {//GEN-FIRST:event_ZstartKeyPressed
+    public static void saveKeyPressed(java.awt.event.KeyEvent evt, FloatParameter par, Settings set, I_Notify notify) {
+        saveKeyPressed(evt,par,set,1.0,notify);
+        //GEN-FIRST:event_ZstartKeyPressed
+        }
+    public static void saveKeyPressed(java.awt.event.KeyEvent evt, FloatParameter par, Settings set, double koeff,I_Notify notify) {//GEN-FIRST:event_ZstartKeyPressed
         if(evt.getKeyCode()!=10) return;
         String ss = ((JTextField)evt.getComponent()).getText();
         try {
-            par.setVal(Float.parseFloat(ss));
+            par.setVal(Float.parseFloat(ss)*koeff);
             viewUpdate(evt,true);
             WorkSpace.ws().saveSettings();
             } catch (Exception ee){

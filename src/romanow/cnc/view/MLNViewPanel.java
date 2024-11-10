@@ -80,18 +80,20 @@ public class MLNViewPanel extends BasePanel {
         MODE.addItem("Контур замкнут");
         MODE.addItem("Нечетные точки");
         MODE.addItem("Нечет исправлен");
+        MAS.setValue(GraphPanel.MASOffset);
         }
 
     @Override
-    public void onInit(boolean on) {
-        if (!on)
-            return;
+    public void onActivate() {
         gPanel.setPaintParams(HORIZ,VERTIC);
         dz = ws.local().model.VerticalStep.getVal();
         data = ws.data();
         setLayers();
         selectMode(false);
         paintView(true);
+        }
+    @Override
+    public void onDeactivate() {
         }
 
     private I_Mouse mBack = new I_Mouse(){
