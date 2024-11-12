@@ -462,6 +462,11 @@ public class Slicer extends STLLoopGenerator {
                         ArrayList<STLLine> lines = new ArrayList<>();
                         for(int j=0;j<pointsGroup.size();j++){      // направления меняются на противоположное
                             ArrayList<STLPoint2D> tmp = pointsGroup.get(j);
+                            if (tmp.get(i).y()>tmp.get(i+1).y()){
+                                STLPoint2D pp = tmp.get(i);
+                                tmp.set(i,tmp.get(i+1));
+                                tmp.set(i+1,pp);
+                                }
                             tmp.get(i).shift(0,cutterSize);     // Концы подрезать
                             tmp.get(i+1).shift(0,-cutterSize);  // Концы подрезать
                             STLLine line = new STLLine(tmp.get(j%2==0 ? i : i+1),tmp.get(j%2==0 ? i+1 : i));
