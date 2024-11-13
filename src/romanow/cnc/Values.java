@@ -21,6 +21,15 @@ public class Values {
     public final static Color ColorDarkRed = new Color(0xD03030);
     public final static Color ColorYellow = new Color(0xFEBC49);
     public final static Color ColorGray = new Color(210,210,210);
+    public final static int ComPortStateOff=0;
+    public final static int ComPortStateOn=1;
+    public final static int ComPortStateBusy=2;
+    public final static int ComPortStateFail=3;
+    public final static String ComPortStates[]={
+            "/drawable-mdpi/status_gray.png",
+            "/drawable-mdpi/status_green.png",
+            "/drawable-mdpi/status_yellow.png",
+            "/drawable-mdpi/status_red.png"};
     // Маски панелей -----------------------------
     public final static int PanelLogin=0x01;
     public final static int PanelMain=0x02;

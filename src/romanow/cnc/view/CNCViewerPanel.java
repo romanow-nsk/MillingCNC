@@ -31,6 +31,8 @@ import romanow.cnc.m3d.ViewAdapter;
 import romanow.cnc.m3d.ViewNotifyer;
 
 import static romanow.cnc.Values.*;
+import static romanow.cnc.utils.Utils.viewUpdate;
+
 import romanow.cnc.m3d.Slice2DViewer;
 
 /**
@@ -43,6 +45,8 @@ public class CNCViewerPanel extends BasePanel {
     private ViewAdapter viewCommon = new ViewAdapter(null);
     private boolean stopOnWarning=false;
     private WorkSpace ws=null;
+    private int comPortState= ComPortStateOff;
+    private final COMPortGDriver driver = new COMPortGDriver();
     /**
      * Creates new form CNCViewerPanel
      */
@@ -54,6 +58,7 @@ public class CNCViewerPanel extends BasePanel {
         Progress.setMinimum(0);
         Progress.setValue(0);
         SliceMode.removeAll();
+        setComPortState(ComPortStateOff);
         for(String ss : SliceModes)
             SliceMode.addItem(ss);
         notify = new ViewNotifyer(LOG,Progress){
@@ -135,6 +140,11 @@ public class CNCViewerPanel extends BasePanel {
         }
 
 
+    public void setComPortState(int state){
+        COMPortOnOff.setIcon(new javax.swing.ImageIcon(getClass().getResource(ComPortStates[state])));
+        }
+
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -166,6 +176,8 @@ public class CNCViewerPanel extends BasePanel {
         jLabel42 = new javax.swing.JLabel();
         MILLINGView = new javax.swing.JButton();
         MLNLoad = new javax.swing.JButton();
+        GGodeToSend = new javax.swing.JTextField();
+        COMPortOnOff = new javax.swing.JButton();
 
         setLayout(null);
 
@@ -352,6 +364,25 @@ public class CNCViewerPanel extends BasePanel {
         });
         add(MLNLoad);
         MLNLoad.setBounds(720, 160, 140, 30);
+
+        GGodeToSend.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                GGodeToSendKeyPressed(evt);
+            }
+        });
+        add(GGodeToSend);
+        GGodeToSend.setBounds(720, 310, 290, 30);
+
+        COMPortOnOff.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/status_gray.png"))); // NOI18N
+        COMPortOnOff.setBorderPainted(false);
+        COMPortOnOff.setContentAreaFilled(false);
+        COMPortOnOff.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                COMPortOnOffActionPerformed(evt);
+            }
+        });
+        add(COMPortOnOff);
+        COMPortOnOff.setBounds(1010, 305, 40, 40);
     }// </editor-fold>//GEN-END:initComponents
 
     private void PAUSEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PAUSEActionPerformed
@@ -545,11 +576,13 @@ public class CNCViewerPanel extends BasePanel {
                 if (res.o1 != null) {
                     notify.notify(error, "GCODE - ошибка: " + res.o1);
                     break;
-                } else {
+                    }
+                else
+                    {
                     if (!res.o2.equals("ok"))
                         notify.notify(info, "GCODE - ответ " + res.o2);
+                    }
                 }
-            }
             in.close();
             driver.close();
             notify.notify(info, "GCODE: " + count + " команд");
@@ -566,19 +599,24 @@ public class CNCViewerPanel extends BasePanel {
     private void MILLINGMashineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MILLINGMashineActionPerformed
         final String fname = getBaseFrame().getInputFileName("Файл GCODE","gcode",false);
         if (fname==null) return;
-        final COMPortGDriver driver = new COMPortGDriver();
         BufferedReader in=null;
         try {
             MashineSettings ms = ws.global().mashine;
+            if (comPortState!= ComPortStateOff){
+                driver.close();
+                setComPortState(ComPortStateOff);
+                }
             in = new BufferedReader(new InputStreamReader(new FileInputStream(fname),"UTF8"));
             String ss = driver.open(ms.DeviceName.getVal()+ms.DeviceNum.getVal(),ms.BaudRate.getVal(),ms.DeviceTimeOut.getVal(),gCodeBack);
             int count=0;
             if (ss!=null){
+                setComPortState(ComPortStateFail);
                 notify.notify(error,ss);
                 if (in!=null)
                     in.close();
                 return;
                 }
+            setComPortState(ComPortStateOn);
             final BufferedReader in2 = in;
             //--------------------- сброс последовательности -----------------------------------------------------------
             //getBaseFrame().sendEvent(Events.GCode,0,0,"",null);
@@ -590,14 +628,20 @@ public class CNCViewerPanel extends BasePanel {
                 }).start();
             } catch (Exception ee){
                 notify.notify(error,"GCODE: " +Utils.createFatalMessage(ee,10));
-                driver.close();
-                if (in != null) {
-                try {
-                    in.close();
-                    } catch (IOException e) {}
+                closeComPort(in);
                 }
-            }
     }//GEN-LAST:event_MILLINGMashineActionPerformed
+
+    private void closeComPort(BufferedReader in){
+        setComPortState(ComPortStateOff);
+        driver.close();
+        if (in != null) {
+            try {
+                in.close();
+            } catch (IOException e) {}
+        }
+    }
+
 
     private void GCODESaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GCODESaveActionPerformed
         exportGCode();
@@ -772,6 +816,57 @@ public class CNCViewerPanel extends BasePanel {
                     finishOperation();
                 }).start();
     }//GEN-LAST:event_MLNLoadActionPerformed
+
+    private void GGodeToSendKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_GGodeToSendKeyPressed
+        if(evt.getKeyCode()!=10)
+            return;
+        if (comPortState!=ComPortStateOn){
+            viewUpdate(evt,false);
+            notify.notify(error,"GCODE: устройство не готово");
+            return;
+            }
+        Pair<String, String> res = driver.write(GGodeToSend.getText());
+        if (res.o1 != null) {
+            notify.notify(error, "GCODE - ошибка: " + res.o1);
+            viewUpdate(evt,false);
+            setComPortState(ComPortStateBusy);
+            }
+        else{
+            if (!res.o2.equals("ok")){
+                notify.notify(info, "GCODE - ответ " + res.o2);
+                viewUpdate(evt,false);
+                setComPortState(ComPortStateBusy);
+                }
+            else{
+                viewUpdate(evt,true);
+                }
+            }
+
+    }//GEN-LAST:event_GGodeToSendKeyPressed
+
+    private void COMPortOnOffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_COMPortOnOffActionPerformed
+        switch (comPortState){
+            case ComPortStateBusy:
+                closeComPort(null);
+                break;
+            case ComPortStateOn:
+                closeComPort(null);
+                break;
+            case ComPortStateFail:
+                closeComPort(null);
+                break;
+            case ComPortStateOff:
+                MashineSettings ms = ws.global().mashine;
+                String ss = driver.open(ms.DeviceName.getVal()+ms.DeviceNum.getVal(),ms.BaudRate.getVal(),ms.DeviceTimeOut.getVal(),gCodeBack);
+                if (ss!=null){
+                    setComPortState(ComPortStateFail);
+                    notify.notify(error,ss);
+                    return;
+                    }
+                setComPortState(ComPortStateOn);
+                break;
+            }
+    }//GEN-LAST:event_COMPortOnOffActionPerformed
 
     private void exportGCode(){
         if (test3()) return;
@@ -955,7 +1050,9 @@ public class CNCViewerPanel extends BasePanel {
         }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox BYSTEP;
+    private javax.swing.JButton COMPortOnOff;
     private javax.swing.JButton GCODESave;
+    private javax.swing.JTextField GGodeToSend;
     private javax.swing.JComboBox<String> LEVEL;
     private java.awt.TextArea LOG;
     private javax.swing.JCheckBox LogStop;
