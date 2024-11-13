@@ -538,7 +538,7 @@ public class CNCViewerPanel extends BasePanel {
                 java.awt.EventQueue.invokeLater(new Runnable(){
                     @Override
                     public void run() {
-                        getBaseFrame().sendEvent(Events.GCode,1,0,gcode1,null);
+                        //getBaseFrame().sendEvent(Events.GCode,1,0,gcode1,null);
                         }
                     });
                 Pair<String, String> res = driver.write(gCode);
@@ -581,7 +581,7 @@ public class CNCViewerPanel extends BasePanel {
                 }
             final BufferedReader in2 = in;
             //--------------------- сброс последовательности -----------------------------------------------------------
-            getBaseFrame().sendEvent(Events.GCode,0,0,"",null);
+            //getBaseFrame().sendEvent(Events.GCode,0,0,"",null);
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -623,15 +623,11 @@ public class CNCViewerPanel extends BasePanel {
                 gCode = in.readLine();
                 } catch (IOException e) {
                     ws.notifySync(error, "GCODE: " + Utils.createFatalMessage(e,10));
-                    try {
-                        in.close();
-                        } catch (IOException ex) {}
+                    try { in.close(); } catch (IOException ex) {}
                     return null;
                     }
                 if (gCode==null){
-                    try {
-                        in.close();
-                        } catch (IOException ex) {}
+                    try { in.close(); } catch (IOException ex) {}
                     break;
                     }
                 count++;
@@ -657,11 +653,17 @@ public class CNCViewerPanel extends BasePanel {
                 Character zz = new Character('Z');
                 Double dd = pars.get(new Character('G'));
                 if (dd==null){
-                    ws.notifySync(Values.warning,"Не найден тег G: "+gCode);
-                    continue;
+                    ws.notifySync(Values.warning,"GCode: "+count+" Не найден тег G: "+gCode);
+                    try { in.close(); } catch (IOException ex) {}
+                    return null;
                     }
                 switch (step){
                     case 1:
+                        Double vx = pars.get(xx);
+                        Double vy = pars.get(yy);
+                        if (vx==null || vy==null){
+                            ws.notifySync(Values.warning,"GCode: "+count+ " Не найдены X,Y: "+gCode);
+                            }
                         prevPoint = new STLPoint2D(pars.get(xx)-x0,pars.get(yy)-y0);
                         if (lines.size()!=0){
                             current.groups.add(lines);

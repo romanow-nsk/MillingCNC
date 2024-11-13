@@ -4,7 +4,7 @@
  */
 package romanow.cnc.view;
 
-import com.sun.deploy.security.SelectableSecurityManager;
+//import com.sun.deploy.security.SelectableSecurityManager;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 import romanow.cnc.Values;
 import romanow.cnc.settings.Settings;
@@ -73,7 +73,7 @@ public class Loop3DPanel extends BasePanel {
 
     private void setLayersGCode(){
         LAYERS.removeAll();
-        for(int i=0;i<data.size();i++){
+        for(int i=0;i<gCode.size();i++){
             GCodeLayer lr = gCode.get(i);
             LAYERS.addItem(String.format("%-4.2f мм / %d",lr.layerZ,i+1));
             }
