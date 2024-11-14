@@ -825,11 +825,12 @@ public class CNCViewerPanel extends BasePanel {
             notify.notify(error,"GCODE: устройство не готово");
             return;
             }
+        setComPortState(ComPortStateBusy);
         Pair<String, String> res = driver.write(GGodeToSend.getText());
         if (res.o1 != null) {
             notify.notify(error, "GCODE - ошибка: " + res.o1);
             viewUpdate(evt,false);
-            setComPortState(ComPortStateBusy);
+            setComPortState(ComPortStateFail);
             }
         else{
             if (!res.o2.equals("ok")){
@@ -839,6 +840,7 @@ public class CNCViewerPanel extends BasePanel {
                 }
             else{
                 viewUpdate(evt,true);
+                setComPortState(ComPortStateOn);
                 }
             }
 
