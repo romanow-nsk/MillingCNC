@@ -47,6 +47,11 @@ public class CNCViewerPanel extends BasePanel {
     private WorkSpace ws=null;
     private int comPortState= ComPortStateOff;
     private final COMPortGDriver driver = new COMPortGDriver();
+    private final static int SavedMaxSize=50;
+    private final static int KeyCodeUp=38;
+    private final static int KeyCodeEnter=10;
+    private ArrayList<String> savedGCodes = new ArrayList<>();
+    private int lastSavedCount=0;
     /**
      * Creates new form CNCViewerPanel
      */
@@ -141,6 +146,7 @@ public class CNCViewerPanel extends BasePanel {
 
 
     public void setComPortState(int state){
+        comPortState = state;
         COMPortOnOff.setIcon(new javax.swing.ImageIcon(getClass().getResource(ComPortStates[state])));
         }
 
@@ -558,6 +564,33 @@ public class CNCViewerPanel extends BasePanel {
             }
         };
 
+    private I_COMPortGReceiver gCodeManualBack = new I_COMPortGReceiver() {
+        @Override
+        public void onError(UNIException ee) {
+            notify.notify(error,"GCODE - ошибка: "+ee.toString());
+            setComPortState(ComPortStateFail);
+            }
+        @Override
+        public void onReceive(String ss) {
+            if (!ss.equals("ok")){
+                notify.notify(info, "GCODE: " + ss);
+                setComPortState(ComPortStateBusy);
+                }
+            else{
+                try {
+                    Thread.sleep(500);
+                    } catch (InterruptedException e) {}
+                setComPortState(ComPortStateOn);
+                }
+            }
+        @Override
+        public void onClose() {
+            notify.notify(info,"GCODE - отключение");
+            }
+        };
+
+
+
     private void sendGCode(BufferedReader in,COMPortGDriver driver) {
         int count = 0;
         try {
@@ -818,7 +851,15 @@ public class CNCViewerPanel extends BasePanel {
     }//GEN-LAST:event_MLNLoadActionPerformed
 
     private void GGodeToSendKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_GGodeToSendKeyPressed
-        if(evt.getKeyCode()!=10)
+        int keyCode = evt.getKeyCode();
+        if (keyCode==KeyCodeUp){
+            if (savedGCodes.size()==0 || lastSavedCount>=savedGCodes.size())
+                return;
+            GGodeToSend.setText(savedGCodes.get(savedGCodes.size()-1-lastSavedCount));
+            lastSavedCount++;
+            return;
+            }
+        if(evt.getKeyCode()!=KeyCodeEnter)
             return;
         if (comPortState!=ComPortStateOn){
             viewUpdate(evt,false);
@@ -826,24 +867,12 @@ public class CNCViewerPanel extends BasePanel {
             return;
             }
         setComPortState(ComPortStateBusy);
-        Pair<String, String> res = driver.write(GGodeToSend.getText());
-        if (res.o1 != null) {
-            notify.notify(error, "GCODE - ошибка: " + res.o1);
-            viewUpdate(evt,false);
-            setComPortState(ComPortStateFail);
-            }
-        else{
-            if (!res.o2.equals("ok")){
-                notify.notify(info, "GCODE - ответ " + res.o2);
-                viewUpdate(evt,false);
-                setComPortState(ComPortStateBusy);
-                }
-            else{
-                viewUpdate(evt,true);
-                setComPortState(ComPortStateOn);
-                }
-            }
-
+        driver.writeNoWait(GGodeToSend.getText());
+        savedGCodes.add(GGodeToSend.getText());
+        GGodeToSend.setText("");
+        lastSavedCount=0;
+        if (savedGCodes.size()>=SavedMaxSize)
+            savedGCodes.remove(0);
     }//GEN-LAST:event_GGodeToSendKeyPressed
 
     private void COMPortOnOffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_COMPortOnOffActionPerformed
@@ -859,7 +888,7 @@ public class CNCViewerPanel extends BasePanel {
                 break;
             case ComPortStateOff:
                 MashineSettings ms = ws.global().mashine;
-                String ss = driver.open(ms.DeviceName.getVal()+ms.DeviceNum.getVal(),ms.BaudRate.getVal(),ms.DeviceTimeOut.getVal(),gCodeBack);
+                String ss = driver.open(ms.DeviceName.getVal()+ms.DeviceNum.getVal(),ms.BaudRate.getVal(),ms.DeviceTimeOut.getVal(),gCodeManualBack);
                 if (ss!=null){
                     setComPortState(ComPortStateFail);
                     notify.notify(error,ss);

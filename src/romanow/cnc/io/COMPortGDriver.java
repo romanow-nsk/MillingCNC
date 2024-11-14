@@ -73,6 +73,16 @@ public class COMPortGDriver {
                 }
         return getAnswer();
         }
+
+    public void writeNoWait(String mes){
+        try {
+            System.out.println(""+port+": "+mes);
+            serialPort.writeString(mes+"\n");           // КОНЕЦ СТРОКИ
+            } catch (SerialPortException ex) {
+                back.onError(UNIException.io(ex));
+               }
+            }
+
     public Pair<String,String> getAnswer(){
         synchronized (this){
             if (writeStamp==0)
