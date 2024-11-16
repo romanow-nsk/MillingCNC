@@ -21,16 +21,19 @@ public class GCodePoints {
     public void write(BufferedWriter out, double layerZ, double x0, double y0) throws IOException {
         out.write(comment);
         out.newLine();
-        out.write(String.format(Locale.US,"G30"));
+        out.write(String.format(Locale.US,"G90"));
         out.newLine();
         out.write(String.format(Locale.US,"G00 X%-6.3f Y%-6.3f F5000",points.get(0).x()+x0,points.get(0).y()+y0));
         out.newLine();
-        //------------- Z стола - Z-заготовки - слой
-        double frameZ = WorkSpace.ws().global().mashine.WorkFrameZ.getVal();
-        double blankZ = WorkSpace.ws().global().model.BlankZ.getVal();
-        out.write(String.format(Locale.US,"G00 Z%-6.3f F5000",frameZ-blankZ));
+        //------------- от точки над верхней поверхностью + zUp
+        double zUp = WorkSpace.ws().global().model.ZUp.getVal();
+        out.write(String.format(Locale.US,"G91"));
         out.newLine();
-        out.write(String.format(Locale.US,"G01 Z%-6.3f F5000",layerZ));
+        out.write(String.format(Locale.US,"G00 Z%-6.3f F5000",-zUp));
+        out.newLine();
+        out.write(String.format(Locale.US,"G01 Z%-6.3f F5000",-layerZ));
+        out.newLine();
+        out.write(String.format(Locale.US,"G90"));
         out.newLine();
         int idx=0;
         if (WorkSpace.ws().global().slice.ARCGCodeMode.getVal()){
@@ -63,6 +66,10 @@ public class GCodePoints {
                 out.newLine();
                 }
             }
+        out.write(String.format(Locale.US,"G91"));
+        out.newLine();
+        out.write(String.format(Locale.US,"G00 Z%-6.3f F5000",zUp+layerZ));
+        out.newLine();
         }
     //------------------ Пара - индекс группы
     public ArrayList<ArcPointsGroup> createArcs(double layerZ){

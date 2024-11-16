@@ -63,7 +63,7 @@ public class COMPortGDriver {
         back.onError(uu);
         return ""+port+": "+uu.toString();
         }
-    public Pair<String,String> write(String mes){
+    public Pair<String,String> write(String mes,int delay){
         try {
             System.out.println(""+port+": "+mes);
             serialPort.writeString(mes+"\n");           // КОНЕЦ СТРОКИ
@@ -71,7 +71,10 @@ public class COMPortGDriver {
             } catch (SerialPortException ex) {
                 return new Pair<>(onError(ex),null);
                 }
-        return getAnswer();
+        if (delay==0)
+            return new Pair<>(null,"ok");
+        else
+            return getAnswer();
         }
 
     public void writeNoWait(String mes){
@@ -169,12 +172,14 @@ public class COMPortGDriver {
             public void onClose() {
                 System.out.println("close");
                 }
-            };
+            @Override
+            public void setOKTimeOut(int delyInMS) {}
+        };
         port.open("COM4",115200,10,rec);
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Pair<String,String> res = port.write("G00");
+                Pair<String,String> res = port.write("G00",1);
                 if(res.o1!=null)
                     System.out.println(res.o1);
                 else

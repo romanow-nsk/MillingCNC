@@ -74,6 +74,7 @@ public class Values {
     public final static int FrameTop=50;
     public final static int FrameBottom=50;
     public final static String FileType="mln";
+    public final static int ManualOKTimeOut=500;
     /** коэффициент заполнения моделью пространства при автомасштабировании +/-1 */
     public final static double DefaultModelScale=1;
     /** размер рабочего поля в мм*/

@@ -177,13 +177,16 @@ public class CNCViewerPanel extends BasePanel {
         STL3DViewLoops = new javax.swing.JButton();
         MLNView = new javax.swing.JButton();
         jLabel41 = new javax.swing.JLabel();
-        MILLINGMashine = new javax.swing.JButton();
+        GCODEMilling = new javax.swing.JButton();
         GCODESave = new javax.swing.JButton();
         jLabel42 = new javax.swing.JLabel();
-        MILLINGView = new javax.swing.JButton();
+        GCODEView = new javax.swing.JButton();
         MLNLoad = new javax.swing.JButton();
-        GGodeToSend = new javax.swing.JTextField();
+        GGODESend = new javax.swing.JTextField();
         COMPortOnOff = new javax.swing.JButton();
+        RELATIVE = new javax.swing.JCheckBox();
+        GCODEStop = new javax.swing.JButton();
+        GCODEPause = new javax.swing.JButton();
 
         setLayout(null);
 
@@ -274,7 +277,7 @@ public class CNCViewerPanel extends BasePanel {
         jLabel39.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel39.setText("G-код");
         add(jLabel39);
-        jLabel39.setBounds(880, 200, 140, 20);
+        jLabel39.setBounds(870, 160, 140, 20);
 
         jLabel40.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel40.setText("Модель");
@@ -322,16 +325,16 @@ public class CNCViewerPanel extends BasePanel {
         add(jLabel41);
         jLabel41.setBounds(870, 10, 80, 20);
 
-        MILLINGMashine.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        MILLINGMashine.setText("G-код (станок)");
-        MILLINGMashine.setBorder(new javax.swing.border.MatteBorder(null));
-        MILLINGMashine.addActionListener(new java.awt.event.ActionListener() {
+        GCODEMilling.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        GCODEMilling.setText("G-код (станок)");
+        GCODEMilling.setBorder(new javax.swing.border.MatteBorder(null));
+        GCODEMilling.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                MILLINGMashineActionPerformed(evt);
+                GCODEMillingActionPerformed(evt);
             }
         });
-        add(MILLINGMashine);
-        MILLINGMashine.setBounds(720, 230, 140, 30);
+        add(GCODEMilling);
+        GCODEMilling.setBounds(720, 290, 140, 30);
 
         GCODESave.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         GCODESave.setText("G-код (экспорт)");
@@ -342,23 +345,23 @@ public class CNCViewerPanel extends BasePanel {
             }
         });
         add(GCODESave);
-        GCODESave.setBounds(870, 230, 160, 30);
+        GCODESave.setBounds(870, 190, 160, 30);
 
         jLabel42.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel42.setText("Фрезерование");
         add(jLabel42);
-        jLabel42.setBounds(730, 200, 140, 20);
+        jLabel42.setBounds(730, 260, 140, 20);
 
-        MILLINGView.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        MILLINGView.setText("G-код (просмотр)");
-        MILLINGView.setBorder(new javax.swing.border.MatteBorder(null));
-        MILLINGView.addActionListener(new java.awt.event.ActionListener() {
+        GCODEView.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        GCODEView.setText("G-код (просмотр)");
+        GCODEView.setBorder(new javax.swing.border.MatteBorder(null));
+        GCODEView.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                MILLINGViewActionPerformed(evt);
+                GCODEViewActionPerformed(evt);
             }
         });
-        add(MILLINGView);
-        MILLINGView.setBounds(720, 270, 140, 30);
+        add(GCODEView);
+        GCODEView.setBounds(870, 230, 160, 30);
 
         MLNLoad.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         MLNLoad.setText("Загрузить MLN");
@@ -369,15 +372,15 @@ public class CNCViewerPanel extends BasePanel {
             }
         });
         add(MLNLoad);
-        MLNLoad.setBounds(720, 160, 140, 30);
+        MLNLoad.setBounds(720, 190, 140, 30);
 
-        GGodeToSend.addKeyListener(new java.awt.event.KeyAdapter() {
+        GGODESend.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                GGodeToSendKeyPressed(evt);
+                GGODESendKeyPressed(evt);
             }
         });
-        add(GGodeToSend);
-        GGodeToSend.setBounds(720, 310, 290, 30);
+        add(GGODESend);
+        GGODESend.setBounds(720, 370, 300, 30);
 
         COMPortOnOff.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/status_gray.png"))); // NOI18N
         COMPortOnOff.setBorderPainted(false);
@@ -388,7 +391,34 @@ public class CNCViewerPanel extends BasePanel {
             }
         });
         add(COMPortOnOff);
-        COMPortOnOff.setBounds(1010, 305, 40, 40);
+        COMPortOnOff.setBounds(1020, 360, 40, 40);
+
+        RELATIVE.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        RELATIVE.setText("Относительная СК");
+        add(RELATIVE);
+        RELATIVE.setBounds(720, 330, 140, 24);
+
+        GCODEStop.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        GCODEStop.setText("Завершить");
+        GCODEStop.setBorder(new javax.swing.border.MatteBorder(null));
+        GCODEStop.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                GCODEStopActionPerformed(evt);
+            }
+        });
+        add(GCODEStop);
+        GCODEStop.setBounds(880, 330, 140, 30);
+
+        GCODEPause.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        GCODEPause.setText("Пауза");
+        GCODEPause.setBorder(new javax.swing.border.MatteBorder(null));
+        GCODEPause.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                GCODEPauseActionPerformed(evt);
+            }
+        });
+        add(GCODEPause);
+        GCODEPause.setBounds(880, 290, 140, 30);
     }// </editor-fold>//GEN-END:initComponents
 
     private void PAUSEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PAUSEActionPerformed
@@ -562,9 +592,29 @@ public class CNCViewerPanel extends BasePanel {
         public void onClose() {
             notify.notify(info,"GCODE - отключение");
             }
-        };
+        @Override
+        public void setOKTimeOut(int delyInMS) {}
+    };
 
     private I_COMPortGReceiver gCodeManualBack = new I_COMPortGReceiver() {
+        @Override
+        public void setOKTimeOut(final int delayInMS){
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(delayInMS==0 ? ManualOKTimeOut : delayInMS);
+                        } catch (InterruptedException e) {}
+                    java.awt.EventQueue.invokeLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            notify.notify(warning,"GCODE: тайм-аут \'ok\'");
+                            setComPortState(ComPortStateOn);
+                        }
+                    });
+                    }
+                }).start();
+            }
         @Override
         public void onError(UNIException ee) {
             notify.notify(error,"GCODE - ошибка: "+ee.toString());
@@ -578,7 +628,7 @@ public class CNCViewerPanel extends BasePanel {
                 }
             else{
                 try {
-                    Thread.sleep(500);
+                    Thread.sleep(ManualOKTimeOut);
                     } catch (InterruptedException e) {}
                 setComPortState(ComPortStateOn);
                 }
@@ -591,7 +641,7 @@ public class CNCViewerPanel extends BasePanel {
 
 
 
-    private void sendGCode(BufferedReader in,COMPortGDriver driver) {
+    private void gCodeSend(BufferedReader in,COMPortGDriver driver,int timeOut) {
         int count = 0;
         try {
             String gCode = null;
@@ -605,7 +655,7 @@ public class CNCViewerPanel extends BasePanel {
                         //getBaseFrame().sendEvent(Events.GCode,1,0,gcode1,null);
                         }
                     });
-                Pair<String, String> res = driver.write(gCode);
+                Pair<String, String> res = driver.write(gCode,timeOut);
                 if (res.o1 != null) {
                     notify.notify(error, "GCODE - ошибка: " + res.o1);
                     break;
@@ -619,17 +669,15 @@ public class CNCViewerPanel extends BasePanel {
             in.close();
             driver.close();
             notify.notify(info, "GCODE: " + count + " команд");
-        } catch (Exception ee) {
-            notify.notify(error,"GCODE: " +Utils.createFatalMessage(ee,10));
-            driver.close();
-            if (in != null) {
-                try {
-                    in.close();
-                    } catch (IOException e) {}
+            } catch (Exception ee) {
+                notify.notify(error,"GCODE: " +Utils.createFatalMessage(ee,10));
+                driver.close();
+                if (in != null) {
+                    try { in.close(); } catch (IOException e) {}
+                    }
                 }
-            }
         }
-    private void MILLINGMashineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MILLINGMashineActionPerformed
+    private void GCODEMillingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GCODEMillingActionPerformed
         final String fname = getBaseFrame().getInputFileName("Файл GCODE","gcode",false);
         if (fname==null) return;
         BufferedReader in=null;
@@ -641,7 +689,6 @@ public class CNCViewerPanel extends BasePanel {
                 }
             in = new BufferedReader(new InputStreamReader(new FileInputStream(fname),"UTF8"));
             String ss = driver.open(ms.DeviceName.getVal()+ms.DeviceNum.getVal(),ms.BaudRate.getVal(),ms.DeviceTimeOut.getVal(),gCodeBack);
-            int count=0;
             if (ss!=null){
                 setComPortState(ComPortStateFail);
                 notify.notify(error,ss);
@@ -650,20 +697,24 @@ public class CNCViewerPanel extends BasePanel {
                 return;
                 }
             setComPortState(ComPortStateOn);
+            if (RELATIVE.isSelected())
+                in = gCodeConvertIntoRelative(in);
+            if (in==null)
+                return;
             final BufferedReader in2 = in;
             //--------------------- сброс последовательности -----------------------------------------------------------
             //getBaseFrame().sendEvent(Events.GCode,0,0,"",null);
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    sendGCode(in2,driver);
+                    gCodeSend(in2,driver,ws.global().mashine.DeviceTimeOut.getVal());
                     }
                 }).start();
             } catch (Exception ee){
                 notify.notify(error,"GCODE: " +Utils.createFatalMessage(ee,10));
                 closeComPort(in);
                 }
-    }//GEN-LAST:event_MILLINGMashineActionPerformed
+    }//GEN-LAST:event_GCODEMillingActionPerformed
 
     private void closeComPort(BufferedReader in){
         setComPortState(ComPortStateOff);
@@ -681,13 +732,131 @@ public class CNCViewerPanel extends BasePanel {
     }//GEN-LAST:event_GCODESaveActionPerformed
 
 
-
+    //------------------------------------------------------------------------------------------------------------------
+    private static String itoa(int val, int ndig){
+        String out="";
+        while(ndig--!=0){
+            out = ""+val%10+out;
+            val/=10;
+            }
+        return out;
+        }
+    private BufferedReader gCodeConvertIntoRelative(BufferedReader in){
+        boolean relativeMode=true;
+        BufferedWriter out = null;
+        ByteArrayOutputStream bout = new ByteArrayOutputStream();
+        try {
+            out = new BufferedWriter(new OutputStreamWriter(bout, "UTF8"));
+            }catch (Exception ee){
+                ws.notifySync(error, "GCODE: " + Utils.createFatalMessage(ee,10));
+                return null;
+                }
+        String gCode = null;
+        int count=0;
+        Double oldX = new Double(0);
+        Double oldY = new Double(0);
+        Double oldZ = new Double(0);
+        try {
+            out.write("G91");
+            out.newLine();
+            relativeMode = true;
+            while (true) {
+                gCode = in.readLine();
+                if (gCode == null) {
+                    try {
+                        in.close();
+                        } catch (IOException ex) {
+                    }
+                    break;
+                }
+                count++;
+                if (!gCode.startsWith("G")){
+                    out.write(gCode);
+                    out.newLine();
+                    continue;
+                    }
+                StringTokenizer tokenizer = new StringTokenizer(gCode);
+                ArrayList<String> tokens = new ArrayList<>();
+                while (tokenizer.hasMoreTokens())
+                    tokens.add(tokenizer.nextToken(" "));
+                HashMap<Character, Double> pars = new HashMap<>();
+                for (String token : tokens) {
+                    char cc = token.charAt(0);
+                    double dd = Double.parseDouble(token.substring(1));
+                    if (pars.get(cc) != null) {
+                        ws.notifySync(Values.warning, "Повторный тэг " + gCode);
+                        continue;
+                        }
+                    pars.put(cc, dd);
+                    }
+                Character xx = new Character('X');
+                Character yy = new Character('Y');
+                Character zz = new Character('Z');
+                Character ff = new Character('F');
+                Double dd = pars.get(new Character('G'));
+                if (dd == null) {
+                    ws.notifySync(Values.warning, "GCode: " + count + " Не найден тег G: " + gCode);
+                    out.write(gCode);
+                    out.newLine();
+                    continue;
+                    }
+                if (dd.intValue()==90){
+                    relativeMode = false;
+                    continue;
+                    }
+                else
+                if (dd.intValue()==91){
+                    relativeMode=true;
+                    continue;
+                    }
+                if (relativeMode){
+                    out.write(gCode);
+                    out.newLine();
+                    continue;
+                    }
+                String ss = "G"+itoa(dd.intValue(),2);
+                Double pp = pars.get(xx);
+                if (pp != null) {
+                    double vv = pp.doubleValue() - oldX.doubleValue();
+                    ss += String.format(" X%-6.2f", vv);
+                    oldX = pp;
+                    }
+                pp = pars.get(yy);
+                if (pp != null) {
+                    double vv = pp.doubleValue() - oldY.doubleValue();
+                    ss += String.format(" Y%-6.2f", vv);
+                    oldY = pp;
+                    }
+                pp = pars.get(zz);
+                if (pp != null) {
+                    double vv = pp.doubleValue() - oldZ.doubleValue();
+                    ss += String.format(" Z%-6.2f", vv);
+                    oldZ = pp;
+                    }
+                pp = pars.get(ff);
+                if (pp != null) {
+                    ss += String.format(" F%d", pp.intValue());
+                    }
+                ss = ss.replace(",",".");
+                out.write(ss);
+                out.newLine();
+                }
+            out.flush();
+            BufferedReader two = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(bout.toByteArray()), "UTF8"));
+            try { in.close(); } catch (IOException ex) {}
+            return two;
+            } catch (IOException e) {
+                ws.notifySync(error, "GCODE: " + Utils.createFatalMessage(e,10));
+                try { in.close(); } catch (IOException ex) {}
+                return null;
+                }
+        }
     //------------------------------------------------------------------------------------------------------------------
     private I_STLPoint2D prevPoint = new STLPoint2D(0,0);
     private double layerZ = 0;
     private Graphics gr=null;
     int step=0;                             // Обработка последовательности смены слоя
-    private ArrayList<GCodeLayer> parseGCode(BufferedReader in){
+    private ArrayList<GCodeLayer> gCodeParse(BufferedReader in){
         ArrayList<GCodeLayer> layers = new ArrayList<>();
         GCodeLayer current=null;
         ArrayList<STLLine> lines = new ArrayList<>();
@@ -799,7 +968,7 @@ public class CNCViewerPanel extends BasePanel {
             return layers;
             }
 
-    private void MILLINGViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MILLINGViewActionPerformed
+    private void GCODEViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GCODEViewActionPerformed
         if (!WorkSpace.ws().modelPresent()){
             notify.notify(error,"Не загружена модель: необходимы размерности");
             return;
@@ -812,7 +981,7 @@ public class CNCViewerPanel extends BasePanel {
             in = new BufferedReader(new InputStreamReader(new FileInputStream(fname),"UTF8"));
             //--------------------- сброс последовательности -----------------------------------------------------------
             final BufferedReader in2 = in;
-            ArrayList<GCodeLayer> res = parseGCode(in2);
+            ArrayList<GCodeLayer> res = gCodeParse(in2);
             if (res!=null) {
                 getBaseFrame().setViewPanelEnable(PanelSTL3DLoops);
                 getBaseFrame().refreshPanels();
@@ -828,7 +997,7 @@ public class CNCViewerPanel extends BasePanel {
                 }
             }
 
-    }//GEN-LAST:event_MILLINGViewActionPerformed
+    }//GEN-LAST:event_GCODEViewActionPerformed
 
 
     private void MLNLoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MLNLoadActionPerformed
@@ -850,12 +1019,12 @@ public class CNCViewerPanel extends BasePanel {
                 }).start();
     }//GEN-LAST:event_MLNLoadActionPerformed
 
-    private void GGodeToSendKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_GGodeToSendKeyPressed
+    private void GGODESendKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_GGODESendKeyPressed
         int keyCode = evt.getKeyCode();
         if (keyCode==KeyCodeUp){
             if (savedGCodes.size()==0 || lastSavedCount>=savedGCodes.size())
                 return;
-            GGodeToSend.setText(savedGCodes.get(savedGCodes.size()-1-lastSavedCount));
+            GGODESend.setText(savedGCodes.get(savedGCodes.size()-1-lastSavedCount));
             lastSavedCount++;
             return;
             }
@@ -867,13 +1036,15 @@ public class CNCViewerPanel extends BasePanel {
             return;
             }
         setComPortState(ComPortStateBusy);
-        driver.writeNoWait(GGodeToSend.getText());
-        savedGCodes.add(GGodeToSend.getText());
-        GGodeToSend.setText("");
+        driver.writeNoWait(GGODESend.getText());
+        gCodeManualBack.setOKTimeOut(ws.global().mashine.DeviceTimeOut.getVal()*1000);
+        savedGCodes.add(GGODESend.getText());
+        GGODESend.setText("");
         lastSavedCount=0;
         if (savedGCodes.size()>=SavedMaxSize)
             savedGCodes.remove(0);
-    }//GEN-LAST:event_GGodeToSendKeyPressed
+
+    }//GEN-LAST:event_GGODESendKeyPressed
 
     private void COMPortOnOffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_COMPortOnOffActionPerformed
         switch (comPortState){
@@ -898,6 +1069,14 @@ public class CNCViewerPanel extends BasePanel {
                 break;
             }
     }//GEN-LAST:event_COMPortOnOffActionPerformed
+
+    private void GCODEStopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GCODEStopActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_GCODEStopActionPerformed
+
+    private void GCODEPauseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GCODEPauseActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_GCODEPauseActionPerformed
 
     private void exportGCode(){
         if (test3()) return;
@@ -1082,18 +1261,21 @@ public class CNCViewerPanel extends BasePanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox BYSTEP;
     private javax.swing.JButton COMPortOnOff;
+    private javax.swing.JButton GCODEMilling;
+    private javax.swing.JButton GCODEPause;
     private javax.swing.JButton GCODESave;
-    private javax.swing.JTextField GGodeToSend;
+    private javax.swing.JButton GCODEStop;
+    private javax.swing.JButton GCODEView;
+    private javax.swing.JTextField GGODESend;
     private javax.swing.JComboBox<String> LEVEL;
     private java.awt.TextArea LOG;
     private javax.swing.JCheckBox LogStop;
     private javax.swing.JCheckBox LogToFile;
-    private javax.swing.JButton MILLINGMashine;
-    private javax.swing.JButton MILLINGView;
     private javax.swing.JButton MLNLoad;
     private javax.swing.JButton MLNView;
     private javax.swing.JButton PAUSE;
     private javax.swing.JProgressBar Progress;
+    private javax.swing.JCheckBox RELATIVE;
     private javax.swing.JButton SLICE;
     private javax.swing.JButton STL3DView;
     private javax.swing.JButton STL3DViewLoops;

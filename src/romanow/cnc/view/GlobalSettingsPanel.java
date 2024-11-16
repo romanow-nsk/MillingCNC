@@ -179,6 +179,9 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
         DeviceTimeOut = new javax.swing.JTextField();
         BlankZ = new javax.swing.JTextField();
         Z0_15 = new javax.swing.JLabel();
+        ZUp = new javax.swing.JTextField();
+        jSeparator1 = new javax.swing.JSeparator();
+        Z0_16 = new javax.swing.JLabel();
 
         setLayout(null);
         add(jLabel1);
@@ -266,7 +269,7 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(RotateButton);
-        RotateButton.setBounds(150, 600, 110, 30);
+        RotateButton.setBounds(400, 600, 110, 30);
 
         jLabel22.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel22.setText("Размер по Y (мм)");
@@ -288,7 +291,7 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(ANGLE);
-        ANGLE.setBounds(70, 600, 60, 30);
+        ANGLE.setBounds(320, 600, 60, 30);
 
         Zstart.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         Zstart.setText("0");
@@ -301,9 +304,9 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
         Zstart.setBounds(180, 240, 80, 30);
 
         Z0_2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        Z0_2.setText("Z конечное (мм) ");
+        Z0_2.setText("Z поднятие фрезы  (мм) ");
         add(Z0_2);
-        Z0_2.setBounds(10, 280, 120, 20);
+        Z0_2.setBounds(10, 315, 160, 20);
 
         jLabel46.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel46.setText("Модель");
@@ -327,11 +330,11 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
         Z0_1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         Z0_1.setText("Шаг по вертикали (мм)");
         add(Z0_1);
-        Z0_1.setBounds(10, 570, 170, 20);
+        Z0_1.setBounds(10, 530, 170, 20);
 
         XYZ.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "X", "Y", "Z" }));
         add(XYZ);
-        XYZ.setBounds(10, 600, 50, 30);
+        XYZ.setBounds(260, 600, 50, 30);
 
         jLabel25.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel25.setText("Линий");
@@ -396,7 +399,7 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(ShiftButton);
-        ShiftButton.setBounds(420, 600, 110, 30);
+        ShiftButton.setBounds(400, 560, 110, 30);
 
         SHIFT.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         SHIFT.setText("10.0");
@@ -406,11 +409,11 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(SHIFT);
-        SHIFT.setBounds(340, 600, 60, 30);
+        SHIFT.setBounds(320, 560, 60, 30);
 
         XYZShift.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "X", "Y", "Z" }));
         add(XYZShift);
-        XYZShift.setBounds(280, 600, 50, 30);
+        XYZShift.setBounds(260, 560, 50, 30);
 
         Z0_3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         Z0_3.setText("Z начальное (мм) ");
@@ -430,7 +433,7 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(BlankHight);
-        BlankHight.setBounds(180, 420, 80, 30);
+        BlankHight.setBounds(180, 380, 80, 30);
 
         BlankWidth.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         BlankWidth.setText("0");
@@ -440,7 +443,7 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(BlankWidth);
-        BlankWidth.setBounds(180, 385, 80, 30);
+        BlankWidth.setBounds(180, 345, 80, 30);
 
         CutterDiameter.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         CutterDiameter.setText("0");
@@ -450,17 +453,17 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(CutterDiameter);
-        CutterDiameter.setBounds(180, 490, 80, 30);
+        CutterDiameter.setBounds(180, 450, 80, 30);
 
         Z0_5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         Z0_5.setText("Размер заготовки Z(мм)");
         add(Z0_5);
-        Z0_5.setBounds(10, 465, 170, 20);
+        Z0_5.setBounds(10, 425, 170, 20);
 
         Z0_6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         Z0_6.setText("Диаметр фрезы (мм)");
         add(Z0_6);
-        Z0_6.setBounds(10, 500, 170, 20);
+        Z0_6.setBounds(10, 460, 170, 20);
 
         StepMinus.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         StepMinus.setText("0");
@@ -470,7 +473,7 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(StepMinus);
-        StepMinus.setBounds(180, 525, 80, 30);
+        StepMinus.setBounds(180, 486, 80, 30);
 
         VerticalStep.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         VerticalStep.setText("0");
@@ -480,17 +483,17 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(VerticalStep);
-        VerticalStep.setBounds(180, 560, 80, 30);
+        VerticalStep.setBounds(180, 520, 80, 30);
 
         Z0_7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         Z0_7.setText("Коррекция шага (мм)");
         add(Z0_7);
-        Z0_7.setBounds(10, 535, 170, 20);
+        Z0_7.setBounds(10, 495, 170, 20);
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel2.setText("Фактура");
         add(jLabel2);
-        jLabel2.setBounds(280, 325, 110, 20);
+        jLabel2.setBounds(280, 320, 110, 20);
 
         FillParametersOffset.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         FillParametersOffset.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -499,12 +502,12 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(FillParametersOffset);
-        FillParametersOffset.setBounds(430, 385, 80, 30);
+        FillParametersOffset.setBounds(430, 380, 80, 30);
 
         jLabel17.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel17.setText("Смещение клетки (мм)");
         add(jLabel17);
-        jLabel17.setBounds(280, 395, 160, 20);
+        jLabel17.setBounds(280, 390, 160, 20);
 
         FillParametersAngle.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         FillParametersAngle.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -513,12 +516,12 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(FillParametersAngle);
-        FillParametersAngle.setBounds(430, 420, 80, 30);
+        FillParametersAngle.setBounds(430, 415, 80, 30);
 
         jLabel18.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel18.setText("Угол начальный (°)");
         add(jLabel18);
-        jLabel18.setBounds(280, 430, 150, 20);
+        jLabel18.setBounds(280, 425, 150, 20);
 
         FillParametersFillCell.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         FillParametersFillCell.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -527,12 +530,12 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(FillParametersFillCell);
-        FillParametersFillCell.setBounds(430, 490, 80, 30);
+        FillParametersFillCell.setBounds(430, 485, 80, 30);
 
         jLabel19.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel19.setText("Размер клетки (мм)");
         add(jLabel19);
-        jLabel19.setBounds(280, 500, 140, 20);
+        jLabel19.setBounds(280, 495, 140, 20);
 
         FillingFlatness.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         FillingFlatness.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -541,7 +544,7 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(FillingFlatness);
-        FillingFlatness.setBounds(430, 525, 80, 30);
+        FillingFlatness.setBounds(430, 520, 80, 30);
 
         FillParametersAngleInc.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         FillParametersAngleInc.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -550,17 +553,17 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(FillParametersAngleInc);
-        FillParametersAngleInc.setBounds(430, 455, 80, 30);
+        FillParametersAngleInc.setBounds(430, 450, 80, 30);
 
         jLabel21.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel21.setText("Приращение угла (°)");
         add(jLabel21);
-        jLabel21.setBounds(280, 465, 150, 20);
+        jLabel21.setBounds(280, 460, 150, 20);
 
         jLabel24.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel24.setText("Сглаживание (мм)");
         add(jLabel24);
-        jLabel24.setBounds(280, 535, 140, 20);
+        jLabel24.setBounds(280, 530, 140, 20);
 
         MoveOptimize.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         MoveOptimize.setText("Оптимизация перемещений");
@@ -590,7 +593,7 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
         jLabel20.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel20.setText("Шаг растра (мм)");
         add(jLabel20);
-        jLabel20.setBounds(280, 360, 120, 20);
+        jLabel20.setBounds(280, 355, 120, 20);
 
         FillParametersRaster.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         FillParametersRaster.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -599,7 +602,7 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(FillParametersRaster);
-        FillParametersRaster.setBounds(430, 350, 80, 30);
+        FillParametersRaster.setBounds(430, 345, 80, 30);
 
         FlateCircuitSlice.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         FlateCircuitSlice.setText("Слайсинг плоских контуров");
@@ -647,7 +650,7 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(Mode2);
-        Mode2.setBounds(380, 315, 130, 30);
+        Mode2.setBounds(380, 310, 130, 30);
 
         jLabel13.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel13.setText("Статистика");
@@ -657,7 +660,7 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
         Z0_8.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         Z0_8.setText("Размер заготовки X(мм)");
         add(Z0_8);
-        Z0_8.setBounds(10, 395, 170, 20);
+        Z0_8.setBounds(10, 355, 170, 20);
 
         Z0_9.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         Z0_9.setText("Размер стола X(мм)");
@@ -704,7 +707,7 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(AutoCenter);
-        AutoCenter.setBounds(10, 350, 250, 24);
+        AutoCenter.setBounds(10, 590, 250, 24);
 
         AutoScale.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         AutoScale.setText("Автомасштабирование");
@@ -714,7 +717,7 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(AutoScale);
-        AutoScale.setBounds(10, 320, 250, 24);
+        AutoScale.setBounds(10, 560, 250, 24);
 
         ARCGCodeMode.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         ARCGCodeMode.setText("G code: круговая интерполяция");
@@ -790,12 +793,29 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(BlankZ);
-        BlankZ.setBounds(180, 455, 80, 30);
+        BlankZ.setBounds(180, 415, 80, 30);
 
         Z0_15.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         Z0_15.setText("Размер заготовки Y(мм)");
         add(Z0_15);
-        Z0_15.setBounds(10, 430, 170, 20);
+        Z0_15.setBounds(10, 390, 170, 20);
+
+        ZUp.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        ZUp.setText("0");
+        ZUp.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                ZUpKeyPressed(evt);
+            }
+        });
+        add(ZUp);
+        ZUp.setBounds(180, 310, 80, 30);
+        add(jSeparator1);
+        jSeparator1.setBounds(270, 207, 220, 10);
+
+        Z0_16.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z0_16.setText("Z конечное (мм) ");
+        add(Z0_16);
+        Z0_16.setBounds(10, 280, 120, 20);
     }// </editor-fold>//GEN-END:initComponents
     public boolean loadSettings(){
         try {
@@ -817,6 +837,7 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             Z.setText(df2.format(set.model.ModelZ.getVal()));
             Zstart.setText(df2.format(set.model.ZStart.getVal()));
             Zfinish.setText(df2.format(set.model.ZFinish.getVal()));
+            ZUp.setText(df2.format(set.model.ZUp.getVal()));
             PageServoOffsetsLeft.setText(df2.format(set.model.PageServoOffsetsLeft.getVal()));
             PageServoOffsetsTop.setText(df2.format(set.model.PageServoOffsetsTop.getVal()));
             ScaleFactor.setText(df.format(set.model.ScaleFactor.getVal()));
@@ -865,6 +886,7 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             Settings set = ws.local();
             set.model.ZStart.setVal(Float.parseFloat(Zstart.getText()));
             set.model.ZFinish.setVal(Float.parseFloat(Zfinish.getText()));
+            set.model.ZUp.setVal(Float.parseFloat(ZUp.getText()));
             set.model.BlankWidth.setVal(Float.parseFloat(BlankWidth.getText())/2);
             set.model.BlankHight.setVal(Float.parseFloat(BlankHight.getText())/2);
             set.model.BlankZ.setVal(Float.parseFloat(BlankZ.getText()));
@@ -1088,7 +1110,7 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
     }//GEN-LAST:event_FillingFlatnessKeyPressed
 
     private void WorkFrameZKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_WorkFrameZKeyPressed
-        Utils.saveKeyPressed(evt,set.slice.FillingFlatness,set,notify);
+        Utils.saveKeyPressed(evt,set.mashine.WorkFrameZ,set,notify);
     }//GEN-LAST:event_WorkFrameZKeyPressed
 
     private void WorkFrameXKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_WorkFrameXKeyPressed
@@ -1141,6 +1163,10 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
     private void BlankZKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BlankZKeyPressed
         Utils.saveKeyPressed(evt,set.model.BlankZ,set,notify);
     }//GEN-LAST:event_BlankZKeyPressed
+
+    private void ZUpKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ZUpKeyPressed
+        Utils.saveKeyPressed(evt,set.model.ZUp,set,notify);
+    }//GEN-LAST:event_ZUpKeyPressed
 
     @Override
     public boolean saveSettings() {
@@ -1202,6 +1228,7 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
     private javax.swing.JLabel Z0_13;
     private javax.swing.JLabel Z0_14;
     private javax.swing.JLabel Z0_15;
+    private javax.swing.JLabel Z0_16;
     private javax.swing.JLabel Z0_2;
     private javax.swing.JLabel Z0_3;
     private javax.swing.JLabel Z0_4;
@@ -1210,6 +1237,7 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
     private javax.swing.JLabel Z0_7;
     private javax.swing.JLabel Z0_8;
     private javax.swing.JLabel Z0_9;
+    private javax.swing.JTextField ZUp;
     private javax.swing.JTextField Zfinish;
     private javax.swing.JTextField Zstart;
     private javax.swing.JLabel jLabel1;
@@ -1235,6 +1263,7 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
     private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel46;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator5;
     // End of variables declaration//GEN-END:variables

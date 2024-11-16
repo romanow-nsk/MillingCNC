@@ -28,6 +28,8 @@ public class ModelSettings implements I_File {
     public FloatParameter ZStart = new FloatParameter(0);
     /** размер Z мм */
     public FloatParameter ZFinish = new FloatParameter(0);
+    /** подъем по Z от поверхности заготовка */
+    public FloatParameter ZUp = new FloatParameter(0);
     /** Смещение по X влево мм */
     public FloatParameter PageServoOffsetsLeft = new FloatParameter(0);
     /** Смещение по Y вверх мм */

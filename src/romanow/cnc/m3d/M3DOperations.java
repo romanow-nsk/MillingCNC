@@ -750,12 +750,15 @@ public class M3DOperations {
         Settings local = ws.local();
         double x0 = ws.global().mashine.WorkFrameX.getVal()/2;
         double y0 = ws.global().mashine.WorkFrameY.getVal()/2;
+        double zUp = ws.global().model.ZUp.getVal();
         int sz = data.size();
         double dz = local.model.VerticalStep.getVal();
         double layerZ = dz;
         notify.setProgress(0);
         lineCount=0;
-        out.write("G90");
+        out.write("G91");
+        out.newLine();
+        out.write(String.format("G00 Z%-6.3f",zUp).replace(",","."));
         out.newLine();
         for(int i=0;i<sz;i++,layerZ+=dz){
             int count=0;
@@ -831,7 +834,7 @@ public class M3DOperations {
             //----------- Для проверки группировки ------------------------------------------------------
             //notify.notify(Values.info,"Линий="+lines.size()+","+count);
             }
-        out.write(String.format(Locale.US,"G30 G91 Z%-6.3f",20.0));
+        out.write(String.format(Locale.US,"G30\nG91 Z%-6.3f",20.0));
         out.newLine();
         out.write("M30");
         out.newLine();

@@ -9,4 +9,5 @@ public interface I_COMPortGReceiver {
     public void onError(UNIException ee);
     public void onReceive(String ss);
     public void onClose();
+    public void setOKTimeOut(int delyInMS);
     }
