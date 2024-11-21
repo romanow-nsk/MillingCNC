@@ -742,6 +742,7 @@ public class CNCViewerPanel extends BasePanel {
         return out;
         }
     private BufferedReader gCodeConvertIntoRelative(BufferedReader in){
+        boolean firstAbsolute=true;
         boolean relativeMode=true;
         BufferedWriter out = null;
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
@@ -817,22 +818,23 @@ public class CNCViewerPanel extends BasePanel {
                 String ss = "G"+itoa(dd.intValue(),2);
                 Double pp = pars.get(xx);
                 if (pp != null) {
-                    double vv = pp.doubleValue() - oldX.doubleValue();
+                    double vv = firstAbsolute ? 0 : pp.doubleValue() - oldX.doubleValue();
                     ss += String.format(" X%-6.2f", vv);
                     oldX = pp;
                     }
                 pp = pars.get(yy);
                 if (pp != null) {
-                    double vv = pp.doubleValue() - oldY.doubleValue();
+                    double vv = firstAbsolute ? 0 : pp.doubleValue() - oldY.doubleValue();
                     ss += String.format(" Y%-6.2f", vv);
                     oldY = pp;
                     }
                 pp = pars.get(zz);
                 if (pp != null) {
-                    double vv = pp.doubleValue() - oldZ.doubleValue();
+                    double vv = firstAbsolute ? 0 : pp.doubleValue() - oldZ.doubleValue();
                     ss += String.format(" Z%-6.2f", vv);
                     oldZ = pp;
                     }
+                firstAbsolute = false;
                 pp = pars.get(ff);
                 if (pp != null) {
                     ss += String.format(" F%d", pp.intValue());
@@ -1036,13 +1038,26 @@ public class CNCViewerPanel extends BasePanel {
             return;
             }
         setComPortState(ComPortStateBusy);
-        driver.writeNoWait(GGODESend.getText());
-        gCodeManualBack.setOKTimeOut(ws.global().mashine.DeviceTimeOut.getVal()*1000);
-        savedGCodes.add(GGODESend.getText());
+        String gCode = GGODESend.getText();
+        savedGCodes.add(gCode);
         GGODESend.setText("");
         lastSavedCount=0;
         if (savedGCodes.size()>=SavedMaxSize)
             savedGCodes.remove(0);
+        Pair<String,String> ans = driver.write(gCode,ws.global().mashine.DeviceTimeOut.getVal());
+        if (ans.o1!=null){
+            notify.notify(error,"GCODE: "+ans.o1);
+            setComPortState(ComPortStateFail);
+            }
+        else{
+            if(!ans.o2.equals("ok"))
+                notify.notify(info,"GCODE: "+ans.o2);
+            setComPortState(ComPortStateOn);
+            }
+        /*
+        driver.writeNoWait(GGODESend.getText());
+        gCodeManualBack.setOKTimeOut(ws.global().mashine.DeviceTimeOut.getVal()*1000);
+         */
 
     }//GEN-LAST:event_GGODESendKeyPressed
 
