@@ -75,7 +75,7 @@ public class Loop3DPanel extends BasePanel {
         LAYERS.removeAll();
         for(int i=0;i<gCode.size();i++){
             GCodeLayer lr = gCode.get(i);
-            LAYERS.addItem(String.format("%-4.2f мм / %d",lr.layerZ,i+1));
+            LAYERS.addItem(String.format("%-4.2f мм / %d",lr.getLayerZ(),i+1));
             }
         cLayer = 0;
         }
@@ -171,7 +171,7 @@ public class Loop3DPanel extends BasePanel {
                 double zz = data.get(idx).z();
                 for (STLLine line2 : data.get(idx).segments().lines()) {
                      tmp.add(line2);
-                     paintView(tmp,z);
+                     paintView(tmp,(float) zz);
                      try{
                         Thread.sleep((50-SPEED.getValue())*2);
                         } catch (InterruptedException e) {}
@@ -183,7 +183,7 @@ public class Loop3DPanel extends BasePanel {
                     for(int ii=0;ii<lr.groups.size();ii++){
                         for (STLLine line2 : lr.groups.get(ii)) {
                             tmp.add(line2);
-                            paintView(tmp,(float) lr.layerZ);
+                            paintView(tmp,(float) lr.getLayerZ());
                             try{
                                 Thread.sleep((50-SPEED.getValue())*2);
                                 } catch (InterruptedException e) {}

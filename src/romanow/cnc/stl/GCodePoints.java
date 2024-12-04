@@ -12,34 +12,33 @@ import java.util.Locale;
 public class GCodePoints {
     public final ArrayList<I_STLPoint2D> points = new ArrayList<>();
     private final String comment;
-    public GCodePoints(String comment) {
+    private final I_STLPoint2D lastPoint;           // Для перемещения от предыдущей точки
+    public GCodePoints(String comment, I_STLPoint2D last) {
         this.comment = comment;
+        lastPoint = last;
         }
     public void add(I_STLPoint2D point2D){
         points.add(point2D);
         }
     public void write(BufferedWriter out, double layerZ, double x0, double y0) throws IOException {
-        out.write(comment);
+        out.write(comment);     // По умолчанию - относительно.....
         out.newLine();
-        out.write(String.format(Locale.US,"G90"));
-        out.newLine();
-        out.write(String.format(Locale.US,"G00 X%-6.3f Y%-6.3f F5000",points.get(0).x()+x0,points.get(0).y()+y0));
+        out.write(String.format(Locale.US,"G00 X%-6.3f Y%-6.3f F5000",points.get(0).x()-lastPoint.x(),points.get(0).y()-lastPoint.y()));
         out.newLine();
         //------------- от точки над верхней поверхностью + zUp
         double zUp = WorkSpace.ws().global().model.ZUp.getVal();
-        out.write(String.format(Locale.US,"G91"));
+        double zStep = WorkSpace.ws().global().model.VerticalStep.getVal();
+        out.write(String.format(Locale.US,"G00 Z%-6.3f F5000",-zUp-layerZ+zStep));
         out.newLine();
-        out.write(String.format(Locale.US,"G00 Z%-6.3f F5000",-zUp));
-        out.newLine();
-        out.write(String.format(Locale.US,"G01 Z%-6.3f F5000",-layerZ));
-        out.newLine();
-        out.write(String.format(Locale.US,"G90"));
+        out.write(String.format(Locale.US,"G01 Z%-6.3f F5000",-zStep));
         out.newLine();
         int idx=0;
         if (WorkSpace.ws().global().slice.ARCGCodeMode.getVal()){
+            out.write(String.format(Locale.US,"G90"));
+            out.newLine();
             ArrayList<ArcPointsGroup> groups = createArcs(layerZ);
-            for(ArcPointsGroup group :  groups){
-                for(int i=idx; i<=group.idx;i++){        // Начальную точку дуги надо вывести
+            for(ArcPointsGroup group :  groups){        // Дуга пока остается по-старому
+                for(int i=idx; i<=group.idx;i++){       // Начальную точку дуги надо вывести
                     out.write(String.format(Locale.US,"G01 X%-6.3f Y%-6.3f F5000",points.get(i).x()+x0,points.get(i).y()+y0));
                     out.newLine();
                     }
@@ -59,15 +58,15 @@ public class GCodePoints {
                 out.write(String.format(Locale.US,"G01 X%-6.3f Y%-6.3f F5000",points.get(i).x()+x0,points.get(i).y()+y0));
                 out.newLine();
                 }
+            out.write(String.format(Locale.US,"G91"));
+            out.newLine();
             }
         else{
             for(int i=1;i<points.size();i++){
-                out.write(String.format(Locale.US,"G01 X%-6.3f Y%-6.3f F5000",points.get(i).x()+x0,points.get(i).y()+y0));
+                out.write(String.format(Locale.US,"G01 X%-6.3f Y%-6.3f F5000",points.get(i).x()+-points.get(i-1).x(),points.get(i).y()-points.get(i-1).y()));
                 out.newLine();
                 }
             }
-        out.write(String.format(Locale.US,"G91"));
-        out.newLine();
         out.write(String.format(Locale.US,"G00 Z%-6.3f F5000",zUp+layerZ));
         out.newLine();
         }

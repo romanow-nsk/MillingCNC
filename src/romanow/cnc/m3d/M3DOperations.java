@@ -760,6 +760,7 @@ public class M3DOperations {
         out.newLine();
         out.write(String.format("G00 Z%-6.3f",zUp).replace(",","."));
         out.newLine();
+        I_STLPoint2D last = new STLPoint2D(0,0);
         for(int i=0;i<sz;i++,layerZ+=dz){
             int count=0;
             SliceLayer layer = data.get(i);
@@ -767,11 +768,12 @@ public class M3DOperations {
             GCodePoints current = null;
             out.write("( -------------- Слой "+(i+1)+"---------------------)");
             out.newLine();
+            out.write("G91");
+            out.newLine();
             Settings ls = layer.printSettings();
             if (ls == null) ls = local;
             //out.write("G900");
             //out.newLine();
-            I_STLPoint2D last = new STLPoint2D(0,0);
             int groupIdx=0;
             int lineIdx = 0;
             if (groupIdx<layer.groupIndexes().size()-1)
@@ -785,7 +787,7 @@ public class M3DOperations {
                         count += current.points.size()-1;
                         current.write(out,layerZ,x0,y0);
                         }
-                    current = new GCodePoints("( -------------- Группа "+(groupIdx+1)+"---------------------)");
+                    current = new GCodePoints("( -------------- Группа "+(groupIdx+1)+"---------------------)",last);
                     current.add(one);
                     /*
                     out.write("( -------------- Группа "+(groupIdx+1)+"---------------------)");
@@ -805,7 +807,7 @@ public class M3DOperations {
                 if (!last.equalsAbout(one)){
                     count += current.points.size()-1;
                     current.write(out,layerZ,x0,y0);
-                    current = new GCodePoints("( -------------- Перемещение в группе "+(groupIdx+1)+"---------------------)");
+                    current = new GCodePoints("( -------------- Перемещение в группе "+(groupIdx+1)+"---------------------)",last);
                     current.add(one);
                     /*
                     out.write("( -------------- Перемещение в группе "+(groupIdx+1)+"---------------------)");

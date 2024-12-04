@@ -854,11 +854,12 @@ public class CNCViewerPanel extends BasePanel {
                 }
         }
     //------------------------------------------------------------------------------------------------------------------
-    private I_STLPoint2D prevPoint = new STLPoint2D(0,0);
     private double layerZ = 0;
     private Graphics gr=null;
     int step=0;                             // Обработка последовательности смены слоя
     private ArrayList<GCodeLayer> gCodeParse(BufferedReader in){
+        I_STLPoint2D prevPoint = new STLPoint2D(0,0);
+        boolean absolute=false;
         ArrayList<GCodeLayer> layers = new ArrayList<>();
         GCodeLayer current=null;
         ArrayList<STLLine> lines = new ArrayList<>();
@@ -866,6 +867,10 @@ public class CNCViewerPanel extends BasePanel {
         int count=0;
         double x0 = WorkSpace.ws().global().mashine.WorkFrameX.getVal()/2;
         double y0 = WorkSpace.ws().global().mashine.WorkFrameY.getVal()/2;
+        double zUp = ws.global().model.ZUp.getVal();
+        I_STLPoint2D last = new STLPoint2D(0,0);
+        double lastZ = 0;
+        boolean up = true;              // Фреза поднята
         while (true) {
             try {
                 gCode = in.readLine();
@@ -900,66 +905,60 @@ public class CNCViewerPanel extends BasePanel {
                 Character yy = new Character('Y');
                 Character zz = new Character('Z');
                 Double dd = pars.get(new Character('G'));
+                double dz = 0;
                 if (dd==null){
                     ws.notifySync(Values.warning,"GCode: "+count+" Не найден тег G: "+gCode);
                     try { in.close(); } catch (IOException ex) {}
                     return null;
                     }
-                switch (step){
-                    case 1:
-                        Double vx = pars.get(xx);
-                        Double vy = pars.get(yy);
-                        if (vx==null || vy==null){
-                            ws.notifySync(Values.warning,"GCode: "+count+ " Не найдены X,Y: "+gCode);
-                            }
-                        prevPoint = new STLPoint2D(pars.get(xx)-x0,pars.get(yy)-y0);
-                        if (lines.size()!=0){
-                            current.groups.add(lines);
-                            //getBaseFrame().sendEventSynch(Events.GCode,1,0,"",lines);
-                            lines = new ArrayList<>();
-                            }
-                        step++;
+                switch ((int)dd.doubleValue()){
+                    case 90:
+                        absolute = true;
                         break;
-                    case 2:
-                        step++;
-                        break;
-                    case 3:
-                        double newZ = pars.get(zz);
-                        if (current==null)
-                            current = new GCodeLayer(newZ);
-                        if (newZ!=current.layerZ){
+                    case 91:
+                        absolute = false;
+                        if (current!=null)
                             layers.add(current);
-                            current = new GCodeLayer(newZ);
-                            }
-                        step=0;
+                        current = new GCodeLayer();
                         break;
-                    //-------------------------------------------------------------------------------
                     case 0:
-                        switch ((int)dd.doubleValue()){
-                        case 90:
-                            break;
-                        case 0:
-                            prevPoint = new STLPoint2D(pars.get(xx)-x0,pars.get(yy)-y0);
-                            break;
-                        case 1:
-                            I_STLPoint2D two = new STLPoint2D(pars.get(xx)-x0,pars.get(yy)-y0);
+                        if (pars.get(zz)!=null){
+                            dz = pars.get(zz).doubleValue();
+                            if (dz > 0 ){                       // перемещение вверх
+                                up = true;
+                                if (current!=null)
+                                    current.groups.add(lines);  // Добавить накопленную группу линий
+                                lines = new ArrayList<>();
+                                }
+                            else{                               // Перемещение вниз
+                                lastZ = -dz;
+                                }
+                            }
+                        else{                                   // Холостое перемещение над повехностью к новой точке
+                            prevPoint = new STLPoint2D(prevPoint.x()+pars.get(xx),prevPoint.y()+pars.get(yy));
+                            }
+                        break;
+                    case 1:
+                        if (pars.get(zz)!=null){
+                            lastZ = lastZ - dz - zUp;
+                            if (current!=null)
+                                current.setLayerZ(lastZ);
+                            }
+                        else{       // Фрезерование внутри группы
+                            I_STLPoint2D two = new STLPoint2D(prevPoint.x()+pars.get(xx),prevPoint.y()+pars.get(yy));
                             STLLine line = new STLLine(prevPoint,two);
                             prevPoint = two;
                             lines.add(line);
-                            break;
-                        case 2:         // Кривая - как линия
-                            two = new STLPoint2D(pars.get(xx)-x0,pars.get(yy)-y0);
-                            line = new STLLine(prevPoint,two);
-                            prevPoint = two;
-                            lines.add(line);
-                            break;
-                        case 30:
-                            step=1;
+                            }
+                        break;
+                    case 2:         // Кривая - как линия
+                        I_STLPoint2D two = new STLPoint2D(pars.get(xx)-x0,pars.get(yy)-y0);
+                        STLLine line = new STLLine(prevPoint,two);
+                        prevPoint = two;
+                        lines.add(line);
                         break;
                         }
-                    break;
                     //------------------------------------------------------------------------------
-                        }
                     }
             if (lines.size()!=0){
                 current.groups.add(lines);
@@ -967,6 +966,7 @@ public class CNCViewerPanel extends BasePanel {
                 }
             if (current!=null){}
                 layers.add(current);
+            layers.remove(0);                   // Пока убрать пустой лишний слой
             return layers;
             }
 
