@@ -26,6 +26,9 @@
       <element id="extracted-dir" path="$PROJECT_DIR$/libs/libusb4java-1.2.1-windows-x86.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/libs/libusb4java-1.2.0-windows-x86_64.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/libs/lwjgl-opengles-3.3.4.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/vecmath-1.7.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/java3d-1.7.1-core.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/java3d-utils-1.7.1.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

@@ -57,7 +57,7 @@ import java.sql.SQLException;
             message=message0;
             if (ee==null)
                 return;
-            message+=" : "+ee.getMessage();
+            message+=" : "+ee.getMessage()+"/"+ee.getLocalizedMessage();
             if (!stackTrace)
                 return;
             StackTraceElement dd[]=ee.getStackTrace();

@@ -50,7 +50,7 @@ public class Loop3DPanel171 extends BasePanel {
     private SimpleUniverse universe;
     private ArrayList<GCodeLayer> gCode=new ArrayList<>();
     private boolean gCodeMode=false;
-    private LineAttributes lineAttr = new LineAttributes();
+    private LineAttributes lineAttr = null;
     private final static float lineWidth=1.5f;
     private boolean byStep=false;
     private Object byStepSynch = new Object();
@@ -63,6 +63,7 @@ public class Loop3DPanel171 extends BasePanel {
      */
     public Loop3DPanel171(BaseFrame base) {
         super(base);
+        lineAttr = new LineAttributes(1,1,false);
         initComponents();
         lineAttr.setLineWidth(lineWidth);
         setPreferredSize(new Dimension(Values.FrameWidth, Values.FrameHeight-Values.FrameBottom*2));
