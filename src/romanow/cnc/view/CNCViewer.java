@@ -106,7 +106,7 @@ public class CNCViewer extends BaseFrame {
         addPanel(new STL3DViewPanel(this));
         addPanel(new ModelSettingsPanel(this));
         addPanel(new CommonViewPanel(this));
-        addPanel(new Loop3DPanel(this));
+        addPanel(new Loop3DPanel171(this));
         addPanel(new MLNViewPanel(this));
         //---------------------------------------------------------------------------------
         }
