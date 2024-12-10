@@ -80,6 +80,7 @@ public class ModelSettings implements I_File {
         if (BlankHight==null) BlankHight = new FloatParameter(0);
         if (CutterDiameter==null) CutterDiameter = new FloatParameter(0);
         if (ModelZ ==null) ModelZ = new FloatParameter(0);
+        if (ZUp ==null) ZUp = new FloatParameter(0);
         if (ZStart==null) ZStart = new FloatParameter(0);
         if (ZFinish==null) ZFinish = new FloatParameter(0);
         if (PageServoOffsetsLeft==null) PageServoOffsetsLeft = new FloatParameter(0);

@@ -85,7 +85,7 @@ public class WorkSpace implements I_File{
         //if (idx!=-1) ss = ss.substring(0,idx);
         //idx = ss.lastIndexOf("\\");
         //if (idx!=-1) ss = ss.substring(idx+1);
-        ss=ss.replace("/", "");
+        //ss=ss.replace("/", "");
         lastName = ss;
         fileStateChanged();
         }
