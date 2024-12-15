@@ -77,7 +77,7 @@ public class PModel171 extends BranchGroup {
     
 	public Shape3D addTriangles(List<STLTriangle> triangles, float kTransp) {
 		bnormstrip = true;
-		float f3[]=new float[3];
+		float f3[]=new float[4];
 		Color4f color = new Color4f(Color.yellow.getColorComponents(f3));
 		int ntri = triangles.size();
 		TriangleArray arr = new TriangleArray(ntri*3,GeometryArray.COORDINATES | GeometryArray.COLOR_4);

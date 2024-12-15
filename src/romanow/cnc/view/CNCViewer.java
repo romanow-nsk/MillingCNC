@@ -106,6 +106,7 @@ public class CNCViewer extends BaseFrame {
         addPanel(new STL3DViewPanel(this));
         addPanel(new ModelSettingsPanel(this));
         addPanel(new CommonViewPanel(this));
+        //addPanel(new Loop3DPanel(this));
         addPanel(new Loop3DPanel171(this));
         addPanel(new MLNViewPanel(this));
         //---------------------------------------------------------------------------------
@@ -138,7 +139,7 @@ public class CNCViewer extends BaseFrame {
             @Override
             public void uncaughtException(Thread t, Throwable e) {
                 String message="Непредусмотренное исключение - перешлите скан разработчикам\n";
-                String ss = e.getMessage();
+                String ss = e.getMessage()+"/"+e.getLocalizedMessage();
                 if (ss!=null) message += ss+"\n";
                 message+=e.toString()+"\n";
                 message+="Поток: "+t.getName()+"\n";

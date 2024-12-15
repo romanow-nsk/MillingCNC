@@ -6,6 +6,7 @@ package romanow.cnc.view;
 
 //import com.sun.deploy.security.SelectableSecurityManager;
 //import com.sun.j3d.utils.universe.SimpleUniverse;
+import com.jogamp.opengl.GLES2;
 import org.jogamp.java3d.*;
 import org.jogamp.java3d.utils.universe.SimpleUniverse;
 import org.jogamp.vecmath.Color3f;
@@ -63,9 +64,7 @@ public class Loop3DPanel171 extends BasePanel {
      */
     public Loop3DPanel171(BaseFrame base) {
         super(base);
-        lineAttr = new LineAttributes(1,1,false);
         initComponents();
-        lineAttr.setLineWidth(lineWidth);
         setPreferredSize(new Dimension(Values.FrameWidth, Values.FrameHeight-Values.FrameBottom*2));
         //universe = new SimpleUniverse(canvas);
         //canvas.initcanvas(universe);
@@ -263,6 +262,8 @@ public class Loop3DPanel171 extends BasePanel {
         add(canvas);
         universe = new SimpleUniverse(canvas);
         canvas.initcanvas(universe);
+        lineAttr = new LineAttributes(1,1,false);
+        lineAttr.setLineWidth(lineWidth);
         data = WorkSpace.ws().data();
         NextStep.setVisible(ByStep.isSelected());
         setLayers();
