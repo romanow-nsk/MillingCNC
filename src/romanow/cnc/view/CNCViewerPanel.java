@@ -59,6 +59,7 @@ public class CNCViewerPanel extends BasePanel {
         super(baseFrame);
         initComponents();
         ws = WorkSpace.ws();
+        setComponentsScale(0.8);
         Progress.setMaximum(100);
         Progress.setMinimum(0);
         Progress.setValue(0);

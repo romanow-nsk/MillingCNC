@@ -6,21 +6,17 @@ package romanow.cnc.view;
 
 //import com.sun.deploy.security.SelectableSecurityManager;
 //import com.sun.j3d.utils.universe.SimpleUniverse;
-import com.jogamp.opengl.GLES2;
 import org.jogamp.java3d.*;
 import org.jogamp.java3d.utils.universe.SimpleUniverse;
 import org.jogamp.vecmath.Color3f;
 import romanow.cnc.Values;
-import romanow.cnc.settings.Settings;
 import romanow.cnc.settings.WorkSpace;
 import romanow.cnc.slicer.SliceData;
 import romanow.cnc.slicer.SliceLayer;
 import romanow.cnc.stl.GCodeLayer;
 import romanow.cnc.stl.STLLine;
 import romanow.cnc.utils.Events;
-import romanow.cnc.viewer3d.PCanvas3D;
 import romanow.cnc.viewer3d.PCanvas3D171;
-import romanow.cnc.viewer3d.PModel;
 import romanow.cnc.viewer3d.PModel171;
 //---------- Старая Java3D ----------------------------------
 //import javax.media.j3d.Appearance;

@@ -9,6 +9,8 @@ import romanow.cnc.Values;
 import lombok.Getter;
 import romanow.cnc.m3d.I_PanelEvent;
 
+import java.awt.*;
+
 /**
  *
  * @author Admin
@@ -34,6 +36,21 @@ public abstract class BasePanel extends javax.swing.JPanel implements I_PanelEve
     /**
      * Creates new form BasePanel
      */
+
+    public void setComponentsScale(double scale){
+        Component list[] = getComponents();
+        for(Component component :  list){
+            Rectangle rec = component.getBounds();
+            rec.height = (int)(rec.height*scale);
+            rec.width = (int)(rec.width*scale);
+            rec.x = (int)(rec.x*scale);
+            rec.y = (int)(rec.y*scale);
+            component.setBounds(rec);
+            //System.out.println(component);
+            }
+        revalidate();
+        }
+
     public BasePanel(BaseFrame baseFrame0) {
         initComponents();
         baseFrame = baseFrame0;
