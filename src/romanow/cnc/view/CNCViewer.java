@@ -57,7 +57,9 @@ public class CNCViewer extends BaseFrame {
     private static int childCount=3;
     private WorkSpace ws=null;
 
-
+    public javax.swing.JTabbedPane getPAnelList(){
+        return PanelList;
+        }
     /**
      * Creates new form Viewer
      */
@@ -126,7 +128,6 @@ public class CNCViewer extends BaseFrame {
         ws().init();
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         System.out.printf("Разрешение экрана: %dx%d\n", screenSize.width, screenSize.height);
-        setBounds(200,50, Values.FrameWidth,Values.FrameHeight);
         setTitle(Values.getVersion()+" "+ws().currentFileTitle());
         String xx = null;
         try {
@@ -137,9 +138,13 @@ public class CNCViewer extends BaseFrame {
                 }
         if (ws().global().fullScreen){
             setExtendedState(JFrame.MAXIMIZED_BOTH);
+            setBounds(0,0, screenSize.width,screenSize.height);
+            PanelList.setBounds(10,0,screenSize.width-10,screenSize.height);
             //setUndecorated(true);
             //setBounds(0,0,screenSize.width,screenSize.height);
             }
+        else
+            setBounds(200,50, Values.FrameWidth,Values.FrameHeight);
         createPanels(ws().global().fullScreen ? screenSize : new Dimension(0,0) );
         notify = (ViewNotifyer) ws().getNotify();
         if (xx!=null)
@@ -161,7 +166,7 @@ public class CNCViewer extends BaseFrame {
                 }
             });
         //operate = new M3DOperations(notify);
-        setMenuBar(menuBar1);
+        //setMenuBar(menuBar1);
         mBar = menuBar1;
         /*
         preView = new M3DViewPanel();
@@ -187,7 +192,7 @@ public class CNCViewer extends BaseFrame {
         preView.setAdapter(ws().viewCommon());
         testing = new M3DTesing(notify);
         */
-        setMenuVisible();
+        //setMenuVisible();
         //visio = new M3DVisio(notify,ws().viewCommon());
         refreshPanels();
         }

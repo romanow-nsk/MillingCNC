@@ -9,6 +9,7 @@ import romanow.cnc.Values;
 import lombok.Getter;
 import romanow.cnc.m3d.I_PanelEvent;
 
+import javax.swing.*;
 import java.awt.*;
 
 /**
@@ -50,6 +51,31 @@ public abstract class BasePanel extends javax.swing.JPanel implements I_PanelEve
             rec.x = (int)(rec.x*scaleX);
             rec.y = (int)(rec.y*scaleY);
             component.setBounds(rec);
+            //int fontSize = (int)(14. * scaleY);
+            if (component instanceof JButton){
+                JButton button = (JButton)component;
+                int fontSize = button.getFont().getSize();
+                int style = button.getFont().getStyle();
+                button.setFont(new java.awt.Font("Segoe UI", style, (int)(fontSize*scaleY)));
+                }
+            if (component instanceof JCheckBox){
+                JCheckBox button = (JCheckBox)component;
+                int fontSize = button.getFont().getSize();
+                int style = button.getFont().getStyle();
+                button.setFont(new java.awt.Font("Segoe UI", style, (int)(fontSize*scaleY)));
+                }
+            if (component instanceof JComboBox){
+                JComboBox button = (JComboBox) component;
+                int fontSize = button.getFont().getSize();
+                int style = button.getFont().getStyle();
+                button.setFont(new java.awt.Font("Segoe UI", style, (int)(fontSize*scaleY)));
+                }
+            if (component instanceof JLabel){
+                JLabel button = (JLabel) component;
+                int fontSize = button.getFont().getSize();
+                int style = button.getFont().getStyle();
+                button.setFont(new java.awt.Font("Segoe UI", style, (int)(fontSize*scaleY)));
+            }
             //System.out.println(component);
             }
         revalidate();
