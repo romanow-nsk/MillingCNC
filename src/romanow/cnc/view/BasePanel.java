@@ -37,24 +37,31 @@ public abstract class BasePanel extends javax.swing.JPanel implements I_PanelEve
      * Creates new form BasePanel
      */
 
-    public void setComponentsScale(double scale){
+    public void setComponentsScale(Dimension dim){
+        if (dim.width!=0)
+            setBounds(0,0,dim.width,dim.height);
         Component list[] = getComponents();
         for(Component component :  list){
             Rectangle rec = component.getBounds();
-            rec.height = (int)(rec.height*scale);
-            rec.width = (int)(rec.width*scale);
-            rec.x = (int)(rec.x*scale);
-            rec.y = (int)(rec.y*scale);
+            double scaleY = ((double) dim.height)/Values.FrameHeight;
+            double scaleX = ((double) dim.width)/Values.FrameWidth;
+            rec.height = (int)(rec.height*scaleY);
+            rec.width = (int)(rec.width*scaleX);
+            rec.x = (int)(rec.x*scaleX);
+            rec.y = (int)(rec.y*scaleY);
             component.setBounds(rec);
             //System.out.println(component);
             }
         revalidate();
         }
 
-    public BasePanel(BaseFrame baseFrame0) {
+    public BasePanel(BaseFrame baseFrame0, Dimension dim) {
         initComponents();
         baseFrame = baseFrame0;
-        setBounds(0, 0,Values.FrameWidth,Values.FrameHeight-100);
+        if (dim.width==0)
+            setBounds(0, 0,Values.FrameWidth,Values.FrameHeight-100);
+        else
+            setBounds(0, 0, dim.width, dim.height-100);
         }
     public void sendEvent(int code, int par1, long par2, String par3,Object o){
         baseFrame.sendEvent(code,par1,par2,par3,o);
@@ -68,16 +75,7 @@ public abstract class BasePanel extends javax.swing.JPanel implements I_PanelEve
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        setLayout(null);
     }// </editor-fold>//GEN-END:initComponents
 
 

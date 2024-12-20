@@ -32,8 +32,8 @@ public class STL3DViewPanel extends BasePanel {
         }
 
 
-    public STL3DViewPanel(BaseFrame baseFrame) {
-        super(baseFrame);
+    public STL3DViewPanel(BaseFrame baseFrame,Dimension dim) {
+        super(baseFrame,dim);
         initComponents();
         setPreferredSize(new Dimension(Values.FrameWidth-100, Values.FrameHeight-Values.FrameBottom*2));
         GraphicsConfiguration config = SimpleUniverse.getPreferredConfiguration();

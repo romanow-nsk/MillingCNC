@@ -64,8 +64,8 @@ public class MLNViewPanel extends BasePanel {
     /**
      * Creates new form MLNViewPanel
      */
-    public MLNViewPanel(BaseFrame base) {
-        super(base);
+    public MLNViewPanel(BaseFrame base,Dimension dim) {
+        super(base,dim);
         initComponents();
         ws = WorkSpace.ws();
         statView = new StatisticPanel();

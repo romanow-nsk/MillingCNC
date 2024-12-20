@@ -6,7 +6,7 @@ import romanow.cnc.settings.WorkSpace;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.awt.FileDialog;
+import java.awt.*;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ public abstract class BaseFrame extends JFrame implements I_Important, I_PanelEv
     public WorkSpace ws(){ return ws; }
     public Settings local(){ return ws.local(); }
     public Settings global(){ return ws.global(); }
-    public void createPanels(){}
+    public void createPanels(Dimension dim){}
     public void refreshPanels(){}
     public void toFront(int mask){}
     private WorkSpace ws;

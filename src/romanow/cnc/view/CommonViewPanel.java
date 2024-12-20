@@ -25,8 +25,8 @@ public class CommonViewPanel extends BasePanel {
     /**
      * Creates new form CommonViewPanel
      */
-    public CommonViewPanel(BaseFrame base) {
-        super(base);
+    public CommonViewPanel(BaseFrame base,Dimension dim) {
+        super(base,dim);
         initComponents();
         WorkSpace.ws().preview(FLD);
         }

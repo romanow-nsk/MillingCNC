@@ -58,8 +58,8 @@ public class Loop3DPanel171 extends BasePanel {
     /**
      * Creates new form Loop3DPanel
      */
-    public Loop3DPanel171(BaseFrame base) {
-        super(base);
+    public Loop3DPanel171(BaseFrame base,Dimension dim) {
+        super(base,dim);
         initComponents();
         setPreferredSize(new Dimension(Values.FrameWidth, Values.FrameHeight-Values.FrameBottom*2));
         //universe = new SimpleUniverse(canvas);

@@ -36,6 +36,8 @@ import romanow.cnc.m3d.OKFull;
 import romanow.cnc.m3d.Slice2DViewer;
 import romanow.cnc.m3d.ViewNotifyer;
 
+import javax.swing.*;
+
 import static romanow.cnc.Values.*;
 
 /**
@@ -94,20 +96,24 @@ public class CNCViewer extends BaseFrame {
         getPanels().add(panel);
         }
     @Override
-    public void createPanels(){
+    public void createPanels(Dimension dim){
         //--------------------------------------------------------------------------------------------------------------
         ArrayList<BasePanel> panels = getPanels();
         panels.clear();
         PanelList.removeAll();
         //-------------------------------------------------------------------------------
-        addPanel(new LoginPanel(this));
-        addPanel(new CNCViewerPanel(this));
-        addPanel(new GlobalSettingsPanel(this));
-        addPanel(new STL3DViewPanel171(this));
-        addPanel(new ModelSettingsPanel(this));
-        addPanel(new CommonViewPanel(this));
-        addPanel(new Loop3DPanel171(this));
-        addPanel(new MLNViewPanel(this));
+        addPanel(new LoginPanel(this,dim));
+        addPanel(new CNCViewerPanel(this,dim));
+        addPanel(new GlobalSettingsPanel(this,dim));
+        addPanel(new STL3DViewPanel171(this,dim));
+        addPanel(new ModelSettingsPanel(this,dim));
+        addPanel(new CommonViewPanel(this,dim));
+        addPanel(new Loop3DPanel171(this,dim));
+        addPanel(new MLNViewPanel(this,dim));
+        if (dim.width!=0){
+            for(BasePanel panel : getPanels())
+                panel.setBounds(0,0,dim.width,dim.height);
+            }
         //---------------------------------------------------------------------------------
         }
 
@@ -129,7 +135,12 @@ public class CNCViewer extends BaseFrame {
                 xx = "Настойки не прочитаны - умолчание";
                 ws().saveSettings();
                 }
-        createPanels();
+        if (ws().global().fullScreen){
+            setExtendedState(JFrame.MAXIMIZED_BOTH);
+            //setUndecorated(true);
+            //setBounds(0,0,screenSize.width,screenSize.height);
+            }
+        createPanels(ws().global().fullScreen ? screenSize : new Dimension(0,0) );
         notify = (ViewNotifyer) ws().getNotify();
         if (xx!=null)
             notify.notify(warning,xx);

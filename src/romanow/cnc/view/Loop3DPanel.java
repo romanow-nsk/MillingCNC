@@ -52,8 +52,8 @@ public class Loop3DPanel extends BasePanel {
     /**
      * Creates new form Loop3DPanel
      */
-    public Loop3DPanel(BaseFrame base) {
-        super(base);
+    public Loop3DPanel(BaseFrame base,Dimension dim) {
+        super(base,dim);
         initComponents();
         lineAttr.setLineWidth(lineWidth);
         setPreferredSize(new Dimension(Values.FrameWidth, Values.FrameHeight-Values.FrameBottom*2));

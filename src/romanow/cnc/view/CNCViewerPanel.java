@@ -55,11 +55,12 @@ public class CNCViewerPanel extends BasePanel {
     /**
      * Creates new form CNCViewerPanel
      */
-    public CNCViewerPanel(BaseFrame baseFrame) {
-        super(baseFrame);
+    public CNCViewerPanel(BaseFrame baseFrame, Dimension dim) {
+        super(baseFrame,dim);
         initComponents();
         ws = WorkSpace.ws();
-        setComponentsScale(0.8);
+        if (dim.width!=0)
+            setComponentsScale(dim);
         Progress.setMaximum(100);
         Progress.setMinimum(0);
         Progress.setValue(0);

@@ -77,8 +77,8 @@ public class LoginPanel extends BasePanel {
     public void onClose() {
         }
 
-    public LoginPanel(BaseFrame baseFrame) {
-        super(baseFrame);
+    public LoginPanel(BaseFrame baseFrame,Dimension dim) {
+        super(baseFrame,dim);
         initComponents();
         }
 

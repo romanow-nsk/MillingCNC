@@ -69,7 +69,7 @@ public class Values {
     public final static int userConstructor=2;
     public final static int userAdmin=3;
     public final static String SettingsFileName="MillingCNC.xml";
-    public final static int FrameWidth=1280;
+    public final static int FrameWidth=1280;  // Соотношение сторон 5х8
     public final static int FrameHeight=800;
     public final static int FrameTop=50;
     public final static int FrameBottom=50;

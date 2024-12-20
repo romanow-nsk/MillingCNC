@@ -15,6 +15,7 @@ public class Settings implements I_File{
     public MashineSettings mashine = new MashineSettings();
     public Statistic statistic = new Statistic();
     public ArrayList<UserProfile> userList = new ArrayList();
+    public boolean fullScreen = false;
     //-----------------------------------------------------------------------------------------------
     public Settings(){}
 
@@ -34,6 +35,7 @@ public class Settings implements I_File{
         out.slice = slice.clone();
         out.model = model.clone();
         out.mashine = mashine.clone();
+        out.fullScreen = fullScreen;
         return out;
         }
     public void setZStartFinish(){
@@ -46,6 +48,7 @@ public class Settings implements I_File{
         slice.load(in);
         model.load(in);
         statistic.load(in);
+        fullScreen = in.readBoolean();
         }
     /** Сериализация в собственный двоичный формат */
     public void save(DataOutputStream in) throws IOException{
@@ -53,5 +56,6 @@ public class Settings implements I_File{
         slice.save(in);
         model.save(in);
         statistic.save(in);
+        in.writeBoolean(fullScreen);
         }
     }

@@ -15,6 +15,7 @@ import romanow.cnc.utils.I_Notify;
 import romanow.cnc.utils.Utils;
 import romanow.cnc.Values;
 
+import java.awt.*;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
@@ -33,15 +34,15 @@ public class ModelSettingsPanel extends BasePanel  implements I_SettingsPanel{
      * Creates new form M3SSettings
      */
     public ModelSettingsPanel(I_SettingsChanged changed0, Settings set0, I_Notify notify0) {
-        super(null);
+        super(null,null);
         initComponents();
         set = set0;
         changed = changed0;
         notify = notify0;
         loadSettings();
         }
-    public ModelSettingsPanel(BaseFrame base) {
-        super(base);
+    public ModelSettingsPanel(BaseFrame base, Dimension dim) {
+        super(base,dim);
         WorkSpace ws = WorkSpace.ws();
         set = ws.local();
         notify = ws.getNotify();
