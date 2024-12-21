@@ -67,6 +67,8 @@ public class MLNViewPanel extends BasePanel {
     public MLNViewPanel(BaseFrame base,Dimension dim) {
         super(base,dim);
         initComponents();
+        if (dim.width!=0)
+            setComponentsScale(dim);
         ws = WorkSpace.ws();
         statView = new StatisticPanel();
         statView.setBounds(900, 0, 250, 220);

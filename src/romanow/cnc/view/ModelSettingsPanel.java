@@ -43,6 +43,8 @@ public class ModelSettingsPanel extends BasePanel  implements I_SettingsPanel{
         }
     public ModelSettingsPanel(BaseFrame base, Dimension dim) {
         super(base,dim);
+        if (dim.width!=0)
+            setComponentsScale(dim);
         WorkSpace ws = WorkSpace.ws();
         set = ws.local();
         notify = ws.getNotify();

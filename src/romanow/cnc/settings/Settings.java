@@ -15,7 +15,7 @@ public class Settings implements I_File{
     public MashineSettings mashine = new MashineSettings();
     public Statistic statistic = new Statistic();
     public ArrayList<UserProfile> userList = new ArrayList();
-    public boolean fullScreen = false;
+    public boolean fullScreen = true;
     //-----------------------------------------------------------------------------------------------
     public Settings(){}
 

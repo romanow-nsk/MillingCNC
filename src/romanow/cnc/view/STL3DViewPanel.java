@@ -35,7 +35,12 @@ public class STL3DViewPanel extends BasePanel {
     public STL3DViewPanel(BaseFrame baseFrame,Dimension dim) {
         super(baseFrame,dim);
         initComponents();
-        setPreferredSize(new Dimension(Values.FrameWidth-100, Values.FrameHeight-Values.FrameBottom*2));
+        if (dim.width!=0){
+            setComponentsScale(dim);
+            setPreferredSize(createDim(dim,Values.FrameWidth-100, Values.FrameHeight-Values.FrameBottom*2));
+            }
+        else
+            setPreferredSize(new Dimension(Values.FrameWidth-100, Values.FrameHeight-Values.FrameBottom*2));
         GraphicsConfiguration config = SimpleUniverse.getPreferredConfiguration();
         canvas = new PCanvas3D(config);
         canvas.setBounds(0,0,Values.FrameWidth, Values.FrameHeight-Values.FrameBottom*2);

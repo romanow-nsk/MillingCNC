@@ -46,6 +46,8 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
         set = ws.global();
         notify = ws.getNotify();
         initComponents();
+        if (dim.width!=0)
+            setComponentsScale(dim);
         busy = true;
         Mode2.removeAll();
         Mode2.addItem("Растр");

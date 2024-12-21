@@ -80,6 +80,8 @@ public class LoginPanel extends BasePanel {
     public LoginPanel(BaseFrame baseFrame,Dimension dim) {
         super(baseFrame,dim);
         initComponents();
+        if (dim.width!=0)
+            setComponentsScale(dim);
         }
 
     public void initView() {

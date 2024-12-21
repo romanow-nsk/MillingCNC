@@ -4,9 +4,12 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/F:/CNC/MillingCNC/src/romanow/cnc/view/STL3DViewPanel.java</file>
+            <file>file:/F:/CNC/MillingCNC/src/romanow/cnc/view/GlobalSettingsPanel.java</file>
             <file>file:/F:/CNC/MillingCNC/src/romanow/cnc/view/STL3DViewPanel171.java</file>
+            <file>file:/F:/CNC/MillingCNC/src/romanow/cnc/view/BasePanel.java</file>
             <file>file:/F:/CNC/MillingCNC/src/romanow/cnc/view/CNCViewer.java</file>
             <file>file:/F:/CNC/MillingCNC/src/romanow/cnc/view/CNCViewerPanel.java</file>
+            <file>file:/F:/CNC/MillingCNC/src/romanow/cnc/view/BaseFrame.java</file>
         </group>
     </open-files>
 </project-private>

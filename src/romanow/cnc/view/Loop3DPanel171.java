@@ -61,7 +61,10 @@ public class Loop3DPanel171 extends BasePanel {
     public Loop3DPanel171(BaseFrame base,Dimension dim) {
         super(base,dim);
         initComponents();
-        setPreferredSize(new Dimension(Values.FrameWidth, Values.FrameHeight-Values.FrameBottom*2));
+        if (dim.width!=0){
+            setComponentsScale(dim);
+            }
+        setPreferredSize(createDim(dim,Values.FrameWidth-100, Values.FrameHeight-Values.FrameBottom*2));
         //universe = new SimpleUniverse(canvas);
         //canvas.initcanvas(universe);
         }
@@ -254,7 +257,7 @@ public class Loop3DPanel171 extends BasePanel {
         GCodeAnimate.setEnabled(false);
         GraphicsConfiguration config = SimpleUniverse.getPreferredConfiguration();
         canvas = new PCanvas3D171(config);
-        canvas.setBounds(200,10,Values.FrameWidth-200, Values.FrameHeight-Values.FrameBottom*2);
+        canvas.setBounds(createRec(dim,200,10,Values.FrameWidth-200, Values.FrameHeight-Values.FrameBottom*2));
         add(canvas);
         universe = new SimpleUniverse(canvas);
         canvas.initcanvas(universe);

@@ -28,6 +28,8 @@ public class CommonViewPanel extends BasePanel {
     public CommonViewPanel(BaseFrame base,Dimension dim) {
         super(base,dim);
         initComponents();
+        if (dim.width!=0)
+            setComponentsScale(dim);
         WorkSpace.ws().preview(FLD);
         }
     @Override

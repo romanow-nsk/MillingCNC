@@ -27,6 +27,7 @@ public abstract class BasePanel extends javax.swing.JPanel implements I_PanelEve
     public abstract void onActivate();
     public abstract void onDeactivate();
     public abstract void onClose();
+    protected Dimension dim=new Dimension(Values.FrameWidth,Values.FrameHeight);
 
     public boolean isSelectedMode(int mode){
         return ((modeMask() & mode)!=0) && modeEnabled();
@@ -38,6 +39,20 @@ public abstract class BasePanel extends javax.swing.JPanel implements I_PanelEve
      * Creates new form BasePanel
      */
 
+    public Dimension createDim(Dimension src,int w, int h){
+        if (src.width==0)
+            return new Dimension(w,h);
+        double scaleY = ((double) src.height)/Values.FrameHeight;
+        double scaleX = ((double) src.width)/Values.FrameWidth;
+        return new Dimension((int)(w*scaleX), (int)(h*scaleY));
+        }
+    public Rectangle createRec(Dimension src, int x0, int y0, int w, int h){
+        if (src.width==0)
+            return new Rectangle(x0,y0,w,h);
+        double scaleY = ((double) src.height)/Values.FrameHeight;
+        double scaleX = ((double) src.width)/Values.FrameWidth;
+        return new Rectangle((int)(x0*scaleX), (int)(y0*scaleY),(int)(w*scaleX), (int)(h*scaleY));
+        }
     public void setComponentsScale(Dimension dim){
         if (dim.width!=0)
             setBounds(0,0,dim.width,dim.height);
@@ -82,6 +97,7 @@ public abstract class BasePanel extends javax.swing.JPanel implements I_PanelEve
         }
 
     public BasePanel(BaseFrame baseFrame0, Dimension dim) {
+        this.dim = dim;
         initComponents();
         baseFrame = baseFrame0;
         if (dim.width==0)
