@@ -48,6 +48,8 @@ public class StatisticPanel extends javax.swing.JPanel {
         jLabel28 = new javax.swing.JLabel();
         SliceTime = new javax.swing.JTextField();
         jLabel17 = new javax.swing.JLabel();
+        jLabel29 = new javax.swing.JLabel();
+        jLabel30 = new javax.swing.JLabel();
 
         setLayout(null);
 
@@ -70,51 +72,61 @@ public class StatisticPanel extends javax.swing.JPanel {
         PrintTime.setBackground(new java.awt.Color(200, 200, 200));
         PrintTime.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         add(PrintTime);
-        PrintTime.setBounds(140, 160, 70, 30);
+        PrintTime.setBounds(110, 160, 70, 30);
 
         jLabel26.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel26.setText("Длина  (м)");
         add(jLabel26);
-        jLabel26.setBounds(10, 60, 80, 20);
+        jLabel26.setBounds(10, 55, 80, 20);
 
         LineCount.setEditable(false);
         LineCount.setBackground(new java.awt.Color(200, 200, 200));
         LineCount.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         add(LineCount);
-        LineCount.setBounds(140, 20, 70, 30);
+        LineCount.setBounds(110, 20, 70, 30);
 
         LineLength.setEditable(false);
         LineLength.setBackground(new java.awt.Color(200, 200, 200));
         LineLength.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         add(LineLength);
-        LineLength.setBounds(140, 55, 70, 30);
+        LineLength.setBounds(110, 55, 70, 30);
 
         MoveProc.setEditable(false);
         MoveProc.setBackground(new java.awt.Color(200, 200, 200));
         MoveProc.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         add(MoveProc);
-        MoveProc.setBounds(140, 90, 70, 30);
+        MoveProc.setBounds(110, 90, 70, 30);
 
         jLabel27.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel27.setText("Холостой ход (%)");
+        jLabel27.setText("ход (%)");
         add(jLabel27);
         jLabel27.setBounds(10, 100, 130, 20);
 
         jLabel28.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel28.setText("Время слайсинга");
+        jLabel28.setText("слайсинга");
         add(jLabel28);
-        jLabel28.setBounds(10, 130, 130, 20);
+        jLabel28.setBounds(10, 135, 130, 20);
 
         SliceTime.setEditable(false);
         SliceTime.setBackground(new java.awt.Color(200, 200, 200));
         SliceTime.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         add(SliceTime);
-        SliceTime.setBounds(140, 125, 70, 30);
+        SliceTime.setBounds(110, 125, 70, 30);
 
         jLabel17.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel17.setText("Время");
         add(jLabel17);
         jLabel17.setBounds(10, 155, 100, 20);
+
+        jLabel29.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel29.setText("Время ");
+        add(jLabel29);
+        jLabel29.setBounds(10, 120, 130, 20);
+
+        jLabel30.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel30.setText("Холостой");
+        add(jLabel30);
+        jLabel30.setBounds(10, 85, 90, 20);
     }// </editor-fold>//GEN-END:initComponents
 
 
@@ -131,5 +143,7 @@ public class StatisticPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
+    private javax.swing.JLabel jLabel30;
     // End of variables declaration//GEN-END:variables
 }

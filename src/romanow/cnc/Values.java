@@ -73,8 +73,14 @@ public class Values {
     public final static int FrameHeight=800;
     public final static int FrameTop=50;
     public final static int FrameBottom=50;
+    public final static int FrameMenuRightOffet=200;
     public final static String FileType="mln";
     public final static int ManualOKTimeOut=500;
+    public final static int MenuButtonX0=10;
+    public final static int MenuButtonY0=70;
+    public final static int MenuButtonXSize=150;
+    public final static int MenuButtonYSize=30;
+    public final static int MenuButtonStep=40;
     /** коэффициент заполнения моделью пространства при автомасштабировании +/-1 */
     public final static double DefaultModelScale=1;
     /** размер рабочего поля в мм*/

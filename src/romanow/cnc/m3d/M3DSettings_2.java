@@ -14,7 +14,7 @@ import romanow.cnc.utils.Events;
 import romanow.cnc.utils.I_Notify;
 
 import java.util.ArrayList;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 /**
  *
@@ -55,6 +55,8 @@ public class M3DSettings_2 extends BaseFrame implements I_SettingsChanged{
         @Override
         public void setProgress(int proc) {}
 
+        @Override
+        public void setProgressView(JProgressBar progressView) {}
         @Override
         public void info(String mes) { LOG.setText(mes); }
         @Override

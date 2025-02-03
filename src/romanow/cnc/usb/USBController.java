@@ -5,6 +5,7 @@ import romanow.cnc.utils.UNIException;
 import romanow.cnc.utils.Utils;
 import org.usb4java.*;
 
+import javax.swing.*;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
@@ -301,6 +302,10 @@ public class USBController {
                 }
             @Override
             public void setProgress(int proc) {}
+
+            @Override
+            public void setProgressView(JProgressBar progressView) {
+                }
             @Override
             public void info(String mes) {System.out.println(mes); }
             @Override

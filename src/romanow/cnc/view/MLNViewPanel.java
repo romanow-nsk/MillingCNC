@@ -71,10 +71,13 @@ public class MLNViewPanel extends BasePanel {
             setComponentsScale(dim);
         ws = WorkSpace.ws();
         statView = new StatisticPanel();
-        statView.setBounds(900, 0, 250, 220);
+        double scaleY = dim.width==0 ? 1 : ((double) dim.height)/Values.FrameHeight;
+        double scaleX = dim.width==0 ? 1: ((double) dim.width)/Values.FrameWidth;
+        statView.setBounds((int)(scaleX*880), 0, (int)(scaleX*250), (int)(scaleY*220));
+        BasePanel.setComponentsScale(statView,dim);
         add(statView);
         gPanel = new GraphPanel(mBack);
-        gPanel.setBounds(230, 10, 660);
+        gPanel.setBounds((int)(scaleX*230), (int)(scaleY*10), (int)((scaleX < scaleY ? scaleX : scaleY)*660));
         add(gPanel);
         MODE.addItem("Растр");
         MODE.addItem("Сечение");

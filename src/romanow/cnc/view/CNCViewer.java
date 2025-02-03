@@ -23,6 +23,8 @@ import romanow.cnc.viewer3d.STLViewer;
 import romanow.cnc.controller.*;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.*;
 import java.util.ArrayList;
 
@@ -46,11 +48,9 @@ import static romanow.cnc.Values.*;
  */
 public class CNCViewer extends BaseFrame {
     private I_Notify notify;
-    //private M3DOperations operate;
-    //private M3DVisio visio;
+    private Dimension dim;
     private M3DTesing testing;
-    //private ViewAdapter ws().viewCommon();
-    //private M3DViewPanel preView=null;
+    private JProgressBar progress;
 
     private MenuBar mBar;
     private Thread.UncaughtExceptionHandler defaultHandler=null;
@@ -83,23 +83,68 @@ public class CNCViewer extends BaseFrame {
             if (panel.isSelected())
                 panel.onDeactivate();
             }
-        for(BasePanel panel : getPanels()){
+        int idx=0;
+        Common.removeAll();
+        for(final BasePanel panel : getPanels()){
             boolean bb = panel.isSelectedMode(WorkSpace.ws().viewMode());
             if (bb){
                 PanelList.add(panel.getName(),panel);
+                final int idx2= idx;
+                JButton menuButton = new JButton();
+                menuButton.setBounds(MenuButtonX0,MenuButtonY0+idx*MenuButtonStep,MenuButtonXSize,MenuButtonYSize);
+                menuButton.setText(panel.getName());
+                int style = menuButton.getFont().getStyle();
+                menuButton.setFont(new java.awt.Font("Segoe UI", style, 14));
+                menuButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        //notify.notify(info,"Вкладка "+panel.getName());
+                        PanelList.setSelectedIndex(idx2);
+                        }
+                    });
+                Common.add(menuButton);
+                idx++;
                 }
             panel.setSelected(bb);
             if (bb)
                 panel.onActivate();
             }
+        progress = new JProgressBar();
+        progress.setMaximum(0);
+        progress.setMaximum(100);
+        progress.setValue(0);
+        progress.setBounds(MenuButtonX0,MenuButtonY0+idx*MenuButtonStep,MenuButtonXSize,MenuButtonYSize);
+        ws.getNotify().setProgressView(progress);
+        Common.add(progress);
+        if (dim.width!=0){
+            BasePanel.setComponentsScale(Common,dim);
+            }
+        revalidate();
+        Common.repaint(0,0,Common.getX(),Common.getY());
+        Common.revalidate();
         }
 
+    public void setProgress(int proc){
+        progress.setValue(proc);
+        }
     private void addPanel(BasePanel panel){
         getPanels().add(panel);
         }
     @Override
-    public void createPanels(Dimension dim){
+    public void createPanels(Dimension dim0){
+        dim = dim0;
+        double scaleY = ((double) dim.height)/Values.FrameHeight;
+        double scaleX = ((double) dim.width)/Values.FrameWidth;
+        int xx = (int)(scaleX*Values.FrameMenuRightOffet);
         //--------------------------------------------------------------------------------------------------------------
+        if (dim.width==0)
+            PanelList.setBounds(0, 0,Values.FrameWidth-Values.FrameMenuRightOffet,Values.FrameHeight);
+        else
+            PanelList.setBounds(0, 0, dim.width-xx, dim.height);
+        if (dim.width==0)
+            Common.setBounds(Values.FrameWidth-Values.FrameMenuRightOffet, 0,Values.FrameMenuRightOffet,Values.FrameHeight);
+        else
+            Common.setBounds(dim.width-xx, 0, xx, dim.height);
         ArrayList<BasePanel> panels = getPanels();
         panels.clear();
         PanelList.removeAll();
@@ -112,10 +157,12 @@ public class CNCViewer extends BaseFrame {
         addPanel(new CommonViewPanel(this,dim));
         addPanel(new Loop3DPanel171(this,dim));
         addPanel(new MLNViewPanel(this,dim));
-        if (dim.width!=0){
-            for(BasePanel panel : getPanels())
-                panel.setBounds(0,0,dim.width,dim.height);
-            }
+        addPanel(new CNCLogPanel(this,dim));
+        for(BasePanel panel : getPanels())
+            if (dim.width!=0)
+                panel.setBounds(0,0,dim.width-xx,dim.height);
+            else
+                panel.setBounds(0,0,Values.FrameWidth-Values.FrameMenuRightOffet,Values.FrameHeight);
         //---------------------------------------------------------------------------------
         }
 
@@ -139,7 +186,7 @@ public class CNCViewer extends BaseFrame {
         if (ws().global().fullScreen){
             setExtendedState(JFrame.MAXIMIZED_BOTH);
             setBounds(0,0, screenSize.width,screenSize.height);
-            PanelList.setBounds(10,0,screenSize.width-10,screenSize.height);
+            //PanelList.setBounds(10,0,screenSize.width-10,screenSize.height);
             //setUndecorated(true);
             //setBounds(0,0,screenSize.width,screenSize.height);
             }
@@ -323,6 +370,7 @@ public class CNCViewer extends BaseFrame {
         SLM3D_USB = new java.awt.MenuItem();
         SLM3D_UDP = new java.awt.MenuItem();
         PanelList = new javax.swing.JTabbedPane();
+        Common = new javax.swing.JPanel();
 
         file.setLabel("Модель");
         file.setName("File");
@@ -711,6 +759,10 @@ public class CNCViewer extends BaseFrame {
         PanelList.setBorder(new javax.swing.border.MatteBorder(null));
         getContentPane().add(PanelList);
         PanelList.setBounds(10, 0, 1200, 780);
+
+        Common.setLayout(null);
+        getContentPane().add(Common);
+        Common.setBounds(690, 0, 350, 530);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -1274,6 +1326,7 @@ public class CNCViewer extends BaseFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel Common;
     private java.awt.Menu Console;
     private java.awt.Menu Copy;
     private java.awt.MenuItem ExportGCode;
@@ -1328,6 +1381,5 @@ public class CNCViewer extends BaseFrame {
     private java.awt.MenuItem viewDirectToUsb;
     private java.awt.MenuItem viewLoops3D;
     private java.awt.MenuItem viewSLM3D;
-
     // End of variables declaration//GEN-END:variables
 }

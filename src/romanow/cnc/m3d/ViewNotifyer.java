@@ -1,5 +1,6 @@
 package romanow.cnc.m3d;
 
+import lombok.Setter;
 import romanow.cnc.utils.I_Notify;
 import romanow.cnc.Values;
 
@@ -11,7 +12,7 @@ import java.awt.*;
  */
 public class ViewNotifyer implements I_Notify{
     private TextArea LOG;
-    private JProgressBar progress;
+    private @Setter JProgressBar progress;
     private int level= Values.info;
     private boolean logSusupendState=false;
     private StringBuffer savedLog = new StringBuffer();
@@ -54,5 +55,10 @@ public class ViewNotifyer implements I_Notify{
                 ()->{
                     progress.setValue(proc);
                 });
-    }
+        }
+
+    @Override
+    public void setProgressView(JProgressBar progressView) {
+        progress = progressView;
+        }
 }

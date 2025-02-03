@@ -54,9 +54,12 @@ public abstract class BasePanel extends javax.swing.JPanel implements I_PanelEve
         return new Rectangle((int)(x0*scaleX), (int)(y0*scaleY),(int)(w*scaleX), (int)(h*scaleY));
         }
     public void setComponentsScale(Dimension dim){
-        if (dim.width!=0)
-            setBounds(0,0,dim.width,dim.height);
-        Component list[] = getComponents();
+        setComponentsScale(this,dim);
+        }
+    public static void setComponentsScale(JPanel panel, Dimension dim){
+        //if (dim.width!=0)
+        //    panel.setBounds(0,0,dim.width,dim.height);
+        Component list[] = panel.getComponents();
         for(Component component :  list){
             Rectangle rec = component.getBounds();
             double scaleY = ((double) dim.height)/Values.FrameHeight;
@@ -79,6 +82,12 @@ public abstract class BasePanel extends javax.swing.JPanel implements I_PanelEve
                 int style = button.getFont().getStyle();
                 button.setFont(new java.awt.Font("Segoe UI", style, (int)(fontSize*scaleY)));
                 }
+            if (component instanceof JTextField){
+                JTextField button = (JTextField) component;
+                int fontSize = button.getFont().getSize();
+                int style = button.getFont().getStyle();
+                button.setFont(new java.awt.Font("Segoe UI", style, (int)(fontSize*scaleY)));
+                }
             if (component instanceof JComboBox){
                 JComboBox button = (JComboBox) component;
                 int fontSize = button.getFont().getSize();
@@ -90,10 +99,24 @@ public abstract class BasePanel extends javax.swing.JPanel implements I_PanelEve
                 int fontSize = button.getFont().getSize();
                 int style = button.getFont().getStyle();
                 button.setFont(new java.awt.Font("Segoe UI", style, (int)(fontSize*scaleY)));
-            }
+                }
+            if (component instanceof TextArea){
+                TextArea button = (TextArea) component;
+                int fontSize = button.getFont().getSize();
+                int style = button.getFont().getStyle();
+                button.setFont(new java.awt.Font("Segoe UI", style, (int)(fontSize*scaleY)));
+                }
+            if (component instanceof JPanel){
+                JPanel panel2 = (JPanel) component;
+                panel2.setBounds(rec);
+                }
+            if (component instanceof JProgressBar){
+                JProgressBar progress = (JProgressBar) component;
+                progress.setBounds(rec);
+                }
             //System.out.println(component);
             }
-        revalidate();
+        panel.revalidate();
         }
 
     public BasePanel(BaseFrame baseFrame0, Dimension dim) {
@@ -101,9 +124,9 @@ public abstract class BasePanel extends javax.swing.JPanel implements I_PanelEve
         initComponents();
         baseFrame = baseFrame0;
         if (dim.width==0)
-            setBounds(0, 0,Values.FrameWidth,Values.FrameHeight-100);
+            setBounds(0, 0,Values.FrameWidth-Values.FrameMenuRightOffet,Values.FrameHeight-100);
         else
-            setBounds(0, 0, dim.width, dim.height-100);
+            setBounds(0, 0, dim.width-Values.FrameMenuRightOffet, dim.height-100);
         }
     public void sendEvent(int code, int par1, long par2, String par3,Object o){
         baseFrame.sendEvent(code,par1,par2,par3,o);
