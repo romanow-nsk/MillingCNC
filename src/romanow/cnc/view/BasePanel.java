@@ -106,6 +106,12 @@ public abstract class BasePanel extends javax.swing.JPanel implements I_PanelEve
                 int style = button.getFont().getStyle();
                 button.setFont(new java.awt.Font("Segoe UI", style, (int)(fontSize*scaleY)));
                 }
+            if (component instanceof JPasswordField){
+                JPasswordField button = (JPasswordField) component;
+                int fontSize = button.getFont().getSize();
+                int style = button.getFont().getStyle();
+                button.setFont(new java.awt.Font("Segoe UI", style, (int)(fontSize*scaleY)));
+                }
             if (component instanceof JPanel){
                 JPanel panel2 = (JPanel) component;
                 panel2.setBounds(rec);

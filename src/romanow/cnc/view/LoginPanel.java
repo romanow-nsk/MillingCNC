@@ -26,12 +26,12 @@ public class LoginPanel extends BasePanel {
         ArrayList<UserProfile> users = WorkSpace.ws().global().userList;
         UserList.removeAll();
         for(UserProfile uu : users){
-            UserList.add(uu.name);
+            UserList.addItem(uu.name);
             }
         // Password.setText("");
         //-------------- Отладка ------------------------
         Password.setText("admin");
-        UserList.select(1);
+        UserList.setSelectedIndex(1);
         }
 
     private void login(){
@@ -104,29 +104,29 @@ public class LoginPanel extends BasePanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        UserList = new java.awt.Choice();
         jLabel1 = new javax.swing.JLabel();
         Password = new javax.swing.JPasswordField();
         jButton1 = new javax.swing.JButton();
         MES = new javax.swing.JTextField();
+        UserList = new javax.swing.JComboBox<>();
 
         setLayout(null);
-        add(UserList);
-        UserList.setBounds(100, 10, 150, 25);
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel1.setText("Пароль");
         add(jLabel1);
-        jLabel1.setBounds(40, 50, 60, 14);
+        jLabel1.setBounds(260, 100, 60, 17);
 
+        Password.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         Password.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 PasswordKeyPressed(evt);
             }
         });
         add(Password);
-        Password.setBounds(100, 50, 150, 25);
+        Password.setBounds(350, 90, 210, 30);
 
+        jButton1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jButton1.setText("Войти");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -134,9 +134,20 @@ public class LoginPanel extends BasePanel {
             }
         });
         add(jButton1);
-        jButton1.setBounds(180, 80, 73, 30);
+        jButton1.setBounds(480, 140, 73, 30);
+
+        MES.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         add(MES);
-        MES.setBounds(40, 120, 220, 25);
+        MES.setBounds(50, 200, 520, 30);
+
+        UserList.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        UserList.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                UserListItemStateChanged(evt);
+            }
+        });
+        add(UserList);
+        UserList.setBounds(350, 40, 210, 30);
     }// </editor-fold>//GEN-END:initComponents
 
     private void PasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PasswordKeyPressed
@@ -149,11 +160,14 @@ public class LoginPanel extends BasePanel {
         login();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void UserListItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_UserListItemStateChanged
+    }//GEN-LAST:event_UserListItemStateChanged
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField MES;
     private javax.swing.JPasswordField Password;
-    private java.awt.Choice UserList;
+    private javax.swing.JComboBox<String> UserList;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
 
@@ -164,7 +178,8 @@ public class LoginPanel extends BasePanel {
 
     @Override
     public void onEvent(int code, int par1, long par2, String par3, Object oo) {
-        }
+
+    }
 
     @Override
     public void shutDown() {

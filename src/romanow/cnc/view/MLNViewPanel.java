@@ -996,6 +996,7 @@ public class MLNViewPanel extends BasePanel {
         add(ShowDelay);
         ShowDelay.setBounds(900, 340, 190, 20);
 
+        LAYERS.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         LAYERS.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 LAYERSItemStateChanged(evt);
@@ -1004,6 +1005,7 @@ public class MLNViewPanel extends BasePanel {
         add(LAYERS);
         LAYERS.setBounds(10, 60, 210, 30);
 
+        MODE.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         MODE.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 MODEItemStateChanged(evt);
