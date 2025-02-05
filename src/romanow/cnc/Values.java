@@ -161,6 +161,8 @@ public class Values {
     public final static double ARCLineMax=2;
     // Режим выделения дуг
     public final static boolean ARCGCodeMode=true;
+    public final static int PopupMessageDelay=5;
+    public final static int PopupLongDelay=10;
     public static void main(String argv[]){
         System.out.println(Double.parseDouble("0.00"));
         }

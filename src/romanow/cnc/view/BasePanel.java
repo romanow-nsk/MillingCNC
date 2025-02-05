@@ -56,10 +56,19 @@ public abstract class BasePanel extends javax.swing.JPanel implements I_PanelEve
     public void setComponentsScale(Dimension dim){
         setComponentsScale(this,dim);
         }
+    public static void setComponentsScale(JFrame frame, Dimension dim){
+        setComponentsScale(frame.getContentPane().getComponents(),dim);
+        frame.revalidate();
+        }
     public static void setComponentsScale(JPanel panel, Dimension dim){
+        setComponentsScale(panel.getComponents(),dim);
+        panel.revalidate();
+        }
+    public static void setComponentsScale(Component list[], Dimension dim){
+        if (dim.width==0)
+            return;
         //if (dim.width!=0)
         //    panel.setBounds(0,0,dim.width,dim.height);
-        Component list[] = panel.getComponents();
         for(Component component :  list){
             Rectangle rec = component.getBounds();
             double scaleY = ((double) dim.height)/Values.FrameHeight;
@@ -122,7 +131,6 @@ public abstract class BasePanel extends javax.swing.JPanel implements I_PanelEve
                 }
             //System.out.println(component);
             }
-        panel.revalidate();
         }
 
     public BasePanel(BaseFrame baseFrame0, Dimension dim) {

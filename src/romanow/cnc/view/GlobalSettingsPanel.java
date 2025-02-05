@@ -21,6 +21,8 @@ import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 import romanow.cnc.settingsView.I_SettingsPanel;
 
+import javax.swing.*;
+
 /**
  *
  * @author romanow
@@ -31,6 +33,9 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
     private I_Notify notify;
     private boolean busy=false;
     private WorkSpace ws = WorkSpace.ws();
+    private DecimalFormat df3;
+    private DecimalFormat df2;
+    private DecimalFormat df;
     /**
      * Creates new form M3SSettings
      */
@@ -188,6 +193,7 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
         jSeparator3 = new javax.swing.JSeparator();
         FullScreen = new javax.swing.JCheckBox();
 
+        setBorder(new javax.swing.border.MatteBorder(null));
         setLayout(null);
         add(jLabel1);
         jLabel1.setBounds(30, 20, 34, 0);
@@ -300,9 +306,11 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
 
         Zstart.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         Zstart.setText("0");
-        Zstart.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                ZstartKeyPressed(evt);
+        Zstart.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        Zstart.setEnabled(false);
+        Zstart.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ZstartMouseClicked(evt);
             }
         });
         add(Zstart);
@@ -484,9 +492,12 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
 
         VerticalStep.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         VerticalStep.setText("0");
-        VerticalStep.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                VerticalStepKeyPressed(evt);
+        VerticalStep.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        VerticalStep.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        VerticalStep.setEnabled(false);
+        VerticalStep.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                VerticalStepMouseClicked(evt);
             }
         });
         add(VerticalStep);
@@ -843,9 +854,9 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             busy = true;
             set.setNotNull();
             DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.US);
-            DecimalFormat df = new DecimalFormat("0.000", dfs);
-            DecimalFormat df2 = new DecimalFormat("0.00", dfs);
-            DecimalFormat df3 = new DecimalFormat("000.0", dfs);
+            df = new DecimalFormat("0.000", dfs);
+            df2 = new DecimalFormat("0.00", dfs);
+            df3 = new DecimalFormat("000.0", dfs);
             MarkingFieldHight.setText(df2.format(set.model.ModelHight.getVal()));
             MarkingFieldWidth.setText(df2.format(set.model.ModelWidth.getVal()));
             BlankHight.setText(df2.format(set.model.BlankHight.getVal()*2));
@@ -1010,14 +1021,6 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
 
     private void StepMinusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_StepMinusKeyPressed
         Utils.saveKeyPressed(evt,set.model.StepMinus,set,notify);    }//GEN-LAST:event_StepMinusKeyPressed
-
-    private void VerticalStepKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_VerticalStepKeyPressed
-        Utils.saveKeyPressed(evt,set.model.VerticalStep,set,notify);
-    }//GEN-LAST:event_VerticalStepKeyPressed
-
-    private void ZstartKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ZstartKeyPressed
-        Utils.saveKeyPressed(evt,set.model.ZStart,set,notify);
-    }//GEN-LAST:event_ZstartKeyPressed
 
     private void ZfinishKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ZfinishKeyPressed
         Utils.saveKeyPressed(evt,set.model.ZFinish,set,notify);
@@ -1195,6 +1198,38 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
         set.fullScreen = FullScreen.isSelected();
         Utils.viewUpdateCheck(FullScreen,true);
     }//GEN-LAST:event_FullScreenItemStateChanged
+
+
+    public void updateFloatField(JLabel label, JTextField field){
+        DigitPanel digit = new DigitPanel(dim,label.getText(), field.getText(), new I_RealValue() {
+            @Override
+            public void onEvent(String value) {
+                field.setText(value);
+                notify.notify(Values.info,"Изменен параметр: "+label.getText()+"="+value);
+                set.model.ZStart.setVal(Float.parseFloat(value));
+                WorkSpace.ws().saveSettings();
+                }
+            });
+        }
+
+    private void ZstartMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ZstartMouseClicked
+        updateFloatField(Z0_3,Zstart);
+        /*
+        DigitPanel digit = new DigitPanel(dim,"Z начальное (мм) ", Zstart.getText(), new I_RealValue() {
+            @Override
+            public void onEvent(String value) {
+                Zstart.setText(value);
+                notify.notify(Values.info,"Изменен параметр: "+"Z начальное (мм) = "+value);
+                set.model.ZStart.setVal(Float.parseFloat(value));
+                WorkSpace.ws().saveSettings();
+            }
+        });
+         */
+    }//GEN-LAST:event_ZstartMouseClicked
+
+    private void VerticalStepMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_VerticalStepMouseClicked
+        updateFloatField(Z0_1,VerticalStep);
+    }//GEN-LAST:event_VerticalStepMouseClicked
 
     @Override
     public boolean saveSettings() {
