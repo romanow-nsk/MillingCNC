@@ -337,6 +337,7 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
         add(Z0_1);
         Z0_1.setBounds(10, 530, 170, 20);
 
+        XYZ.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         XYZ.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "X", "Y", "Z" }));
         add(XYZ);
         XYZ.setBounds(280, 530, 50, 30);
@@ -416,6 +417,7 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
         add(SHIFT);
         SHIFT.setBounds(340, 490, 60, 30);
 
+        XYZShift.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         XYZShift.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "X", "Y", "Z" }));
         add(XYZShift);
         XYZShift.setBounds(280, 490, 50, 30);
@@ -649,6 +651,7 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
         add(LoopsWithSomeLineTypes);
         LoopsWithSomeLineTypes.setBounds(520, 510, 260, 24);
 
+        Mode2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         Mode2.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 Mode2ItemStateChanged(evt);
