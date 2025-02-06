@@ -34,16 +34,18 @@ public class BasePopupDialog extends javax.swing.JFrame {
         setBounds(x0,y0,winWidth,winHigh);
         setVisible(true);
         }
-    public void positionOn(JTextField field, Dimension dim, int x0, int y0){
+    public void positionOn(JTextField field, Dimension dim, int x0, int y0, boolean dialog){
         if (dim.width==0){
-            setBounds(x0+field.getX(),y0+field.getY(),winWidth,winHigh);
+            setBounds(Values.FrameX0+x0+field.getX(),Values.FrameY0+y0+field.getY(),winWidth,winHigh);
             }
         else{
-            double scaleY = ((double)dim.height)/Values.FrameHeight;
-            double scaleX = ((double) dim.width)/Values.FrameWidth;
-            setBounds((int)(field.getX()*scaleX),(int)(field.getY()*scaleY),winWidth,winHigh);
+            //double scaleY = ((double)dim.height)/Values.FrameHeight;
+            //double scaleX = ((double) dim.width)/Values.FrameWidth;
+            //setBounds((int)(field.getX()*scaleX),(int)(field.getY()*scaleY),winWidth,winHigh);
+            setBounds(field.getX()+x0,field.getY()+y0,winWidth,winHigh);
             }
-        setUndecorated(true);
+        if (!dialog)
+            setUndecorated(true);
         }
     private Thread thread=null;
     public void delayIt(){

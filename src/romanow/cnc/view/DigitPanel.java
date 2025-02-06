@@ -5,6 +5,8 @@
  */
 package romanow.cnc.view;
 
+import romanow.cnc.Values;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -56,15 +58,21 @@ public class DigitPanel extends BasePopupDialog {
         retryLongDelay();
         }
     public DigitPanel(Dimension dim, String title, JTextField field, I_RealValue back0) {
+        this(dim,title,field,false,back0);
+        }
+    public DigitPanel(Dimension dim, String title, JTextField field, boolean intMode, I_RealValue back0) {
         super(dim, 250,280);
         initComponents();
         back = back0;
         TITLE.setText(title);
         setValue(field.getText());
         BasePanel.setComponentsScale(this,dim);
-        revalidate();
-        positionOn(field,dim, 200,200);
+        positionOn(field,dim, 100,100, true);         // Уже пересчитан масштаб !!!!!!!!!!!!!!!
         retryLongDelay();
+        if (intMode)
+            Point.setVisible(false);
+        revalidate();
+        setVisible(true);
         }
     private void showString(){
         Value.setText(new String(cc,0,nn));

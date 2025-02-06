@@ -6,9 +6,8 @@
 package romanow.cnc.view;
 
 import romanow.cnc.m3d.I_SettingsChanged;
+import romanow.cnc.settings.*;
 import romanow.cnc.utils.Events;
-import romanow.cnc.settings.Settings;
-import romanow.cnc.settings.WorkSpace;
 import romanow.cnc.slicer.SliceData;
 import romanow.cnc.stl.MyAngle;
 import romanow.cnc.utils.I_Notify;
@@ -148,19 +147,19 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
         Z0_7 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         FillParametersOffset = new javax.swing.JTextField();
-        jLabel17 = new javax.swing.JLabel();
+        Z2_2 = new javax.swing.JLabel();
         FillParametersAngle = new javax.swing.JTextField();
-        jLabel18 = new javax.swing.JLabel();
+        Z2_3 = new javax.swing.JLabel();
         FillParametersFillCell = new javax.swing.JTextField();
-        jLabel19 = new javax.swing.JLabel();
+        Z2_5 = new javax.swing.JLabel();
         FillingFlatness = new javax.swing.JTextField();
         FillParametersAngleInc = new javax.swing.JTextField();
-        jLabel21 = new javax.swing.JLabel();
-        jLabel24 = new javax.swing.JLabel();
+        Z2_4 = new javax.swing.JLabel();
+        Z2_6 = new javax.swing.JLabel();
         MoveOptimize = new javax.swing.JCheckBox();
         SendLoops = new javax.swing.JCheckBox();
         jLabel39 = new javax.swing.JLabel();
-        jLabel20 = new javax.swing.JLabel();
+        Z2_1 = new javax.swing.JLabel();
         FillParametersRaster = new javax.swing.JTextField();
         FlateCircuitSlice = new javax.swing.JCheckBox();
         Continuous = new javax.swing.JCheckBox();
@@ -332,9 +331,11 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
 
         Zfinish.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         Zfinish.setText("0");
-        Zfinish.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                ZfinishKeyPressed(evt);
+        Zfinish.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        Zfinish.setEnabled(false);
+        Zfinish.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ZfinishMouseClicked(evt);
             }
         });
         add(Zfinish);
@@ -442,9 +443,11 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
 
         BlankHight.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         BlankHight.setText("0");
-        BlankHight.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                BlankHightKeyPressed(evt);
+        BlankHight.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        BlankHight.setEnabled(false);
+        BlankHight.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BlankHightMouseClicked(evt);
             }
         });
         add(BlankHight);
@@ -452,9 +455,11 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
 
         BlankWidth.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         BlankWidth.setText("0");
-        BlankWidth.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                BlankWidthKeyPressed(evt);
+        BlankWidth.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        BlankWidth.setEnabled(false);
+        BlankWidth.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BlankWidthMouseClicked(evt);
             }
         });
         add(BlankWidth);
@@ -462,9 +467,11 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
 
         CutterDiameter.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         CutterDiameter.setText("0");
-        CutterDiameter.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                CutterDiameterKeyPressed(evt);
+        CutterDiameter.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        CutterDiameter.setEnabled(false);
+        CutterDiameter.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                CutterDiameterMouseClicked(evt);
             }
         });
         add(CutterDiameter);
@@ -482,9 +489,11 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
 
         StepMinus.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         StepMinus.setText("0");
-        StepMinus.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                StepMinusKeyPressed(evt);
+        StepMinus.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        StepMinus.setEnabled(false);
+        StepMinus.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                StepMinusMouseClicked(evt);
             }
         });
         add(StepMinus);
@@ -511,77 +520,87 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel2.setText("Фактура");
         add(jLabel2);
-        jLabel2.setBounds(280, 250, 110, 20);
+        jLabel2.setBounds(280, 245, 110, 20);
 
         FillParametersOffset.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        FillParametersOffset.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                FillParametersOffsetKeyPressed(evt);
+        FillParametersOffset.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        FillParametersOffset.setEnabled(false);
+        FillParametersOffset.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                FillParametersOffsetMouseClicked(evt);
             }
         });
         add(FillParametersOffset);
         FillParametersOffset.setBounds(430, 315, 80, 30);
 
-        jLabel17.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel17.setText("Смещение клетки (мм)");
-        add(jLabel17);
-        jLabel17.setBounds(280, 320, 160, 20);
+        Z2_2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z2_2.setText("Смещение клетки (мм)");
+        add(Z2_2);
+        Z2_2.setBounds(280, 320, 160, 20);
 
         FillParametersAngle.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        FillParametersAngle.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                FillParametersAngleKeyPressed(evt);
+        FillParametersAngle.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        FillParametersAngle.setEnabled(false);
+        FillParametersAngle.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                FillParametersAngleMouseClicked(evt);
             }
         });
         add(FillParametersAngle);
         FillParametersAngle.setBounds(430, 350, 80, 30);
 
-        jLabel18.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel18.setText("Угол начальный (°)");
-        add(jLabel18);
-        jLabel18.setBounds(280, 360, 150, 20);
+        Z2_3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z2_3.setText("Угол начальный (°)");
+        add(Z2_3);
+        Z2_3.setBounds(280, 355, 150, 20);
 
         FillParametersFillCell.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        FillParametersFillCell.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                FillParametersFillCellKeyPressed(evt);
+        FillParametersFillCell.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        FillParametersFillCell.setEnabled(false);
+        FillParametersFillCell.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                FillParametersFillCellMouseClicked(evt);
             }
         });
         add(FillParametersFillCell);
         FillParametersFillCell.setBounds(430, 420, 80, 30);
 
-        jLabel19.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel19.setText("Размер клетки (мм)");
-        add(jLabel19);
-        jLabel19.setBounds(280, 430, 140, 20);
+        Z2_5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z2_5.setText("Размер клетки (мм)");
+        add(Z2_5);
+        Z2_5.setBounds(280, 425, 140, 20);
 
         FillingFlatness.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        FillingFlatness.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                FillingFlatnessKeyPressed(evt);
+        FillingFlatness.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        FillingFlatness.setEnabled(false);
+        FillingFlatness.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                FillingFlatnessMouseClicked(evt);
             }
         });
         add(FillingFlatness);
         FillingFlatness.setBounds(430, 455, 80, 30);
 
         FillParametersAngleInc.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        FillParametersAngleInc.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                FillParametersAngleIncKeyPressed(evt);
+        FillParametersAngleInc.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        FillParametersAngleInc.setEnabled(false);
+        FillParametersAngleInc.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                FillParametersAngleIncMouseClicked(evt);
             }
         });
         add(FillParametersAngleInc);
         FillParametersAngleInc.setBounds(430, 385, 80, 30);
 
-        jLabel21.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel21.setText("Приращение угла (°)");
-        add(jLabel21);
-        jLabel21.setBounds(280, 390, 150, 20);
+        Z2_4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z2_4.setText("Приращение угла (°)");
+        add(Z2_4);
+        Z2_4.setBounds(280, 390, 150, 20);
 
-        jLabel24.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel24.setText("Сглаживание (мм)");
-        add(jLabel24);
-        jLabel24.setBounds(280, 460, 140, 20);
+        Z2_6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z2_6.setText("Сглаживание (мм)");
+        add(Z2_6);
+        Z2_6.setBounds(280, 460, 140, 20);
 
         MoveOptimize.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         MoveOptimize.setText("Оптимизация перемещений");
@@ -606,17 +625,19 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
         jLabel39.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel39.setText("Слайсинг");
         add(jLabel39);
-        jLabel39.setBounds(280, 230, 80, 20);
+        jLabel39.setBounds(280, 215, 80, 20);
 
-        jLabel20.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel20.setText("Шаг растра (мм)");
-        add(jLabel20);
-        jLabel20.setBounds(280, 290, 120, 20);
+        Z2_1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z2_1.setText("Шаг растра (мм)");
+        add(Z2_1);
+        Z2_1.setBounds(280, 285, 120, 20);
 
         FillParametersRaster.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        FillParametersRaster.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                FillParametersRasterKeyPressed(evt);
+        FillParametersRaster.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        FillParametersRaster.setEnabled(false);
+        FillParametersRaster.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                FillParametersRasterMouseClicked(evt);
             }
         });
         add(FillParametersRaster);
@@ -684,9 +705,16 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
         Z0_9.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         Z0_9.setText("Размер стола X(мм)");
         add(Z0_9);
-        Z0_9.setBounds(520, 40, 170, 20);
+        Z0_9.setBounds(520, 35, 170, 20);
 
         WorkFrameZ.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        WorkFrameZ.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        WorkFrameZ.setEnabled(false);
+        WorkFrameZ.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                WorkFrameZMouseClicked(evt);
+            }
+        });
         WorkFrameZ.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 WorkFrameZKeyPressed(evt);
@@ -696,6 +724,13 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
         WorkFrameZ.setBounds(660, 100, 80, 30);
 
         WorkFrameX.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        WorkFrameX.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        WorkFrameX.setEnabled(false);
+        WorkFrameX.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                WorkFrameXMouseClicked(evt);
+            }
+        });
         WorkFrameX.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 WorkFrameXKeyPressed(evt);
@@ -705,6 +740,13 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
         WorkFrameX.setBounds(660, 30, 80, 30);
 
         WorkFrameY.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        WorkFrameY.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        WorkFrameY.setEnabled(false);
+        WorkFrameY.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                WorkFrameYMouseClicked(evt);
+            }
+        });
         WorkFrameY.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 WorkFrameYKeyPressed(evt);
@@ -716,7 +758,7 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
         Z0_10.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         Z0_10.setText("Размер стола Y(мм)");
         add(Z0_10);
-        Z0_10.setBounds(520, 75, 170, 20);
+        Z0_10.setBounds(520, 70, 170, 20);
 
         AutoCenter.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         AutoCenter.setText("Автоцентрирование");
@@ -751,9 +793,16 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
         Z0_11.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         Z0_11.setText("Размер стола Z(мм)");
         add(Z0_11);
-        Z0_11.setBounds(520, 110, 170, 20);
+        Z0_11.setBounds(520, 105, 170, 20);
 
         BaudRate.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        BaudRate.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        BaudRate.setEnabled(false);
+        BaudRate.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BaudRateMouseClicked(evt);
+            }
+        });
         BaudRate.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 BaudRateKeyPressed(evt);
@@ -763,6 +812,13 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
         BaudRate.setBounds(660, 210, 80, 30);
 
         DeviceName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        DeviceName.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        DeviceName.setEnabled(false);
+        DeviceName.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                DeviceNameMouseClicked(evt);
+            }
+        });
         DeviceName.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 DeviceNameKeyPressed(evt);
@@ -772,6 +828,13 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
         DeviceName.setBounds(660, 135, 80, 30);
 
         DevicePort.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        DevicePort.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        DevicePort.setEnabled(false);
+        DevicePort.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                DevicePortMouseClicked(evt);
+            }
+        });
         DevicePort.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 DevicePortKeyPressed(evt);
@@ -783,12 +846,12 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
         Z0_12.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         Z0_12.setText("Устройство");
         add(Z0_12);
-        Z0_12.setBounds(520, 145, 150, 20);
+        Z0_12.setBounds(520, 140, 150, 20);
 
         Z0_13.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         Z0_13.setText("Номер (порт)");
         add(Z0_13);
-        Z0_13.setBounds(520, 180, 150, 20);
+        Z0_13.setBounds(520, 175, 150, 20);
 
         Z0_14.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         Z0_14.setText("Скорость (бит/c)");
@@ -796,6 +859,13 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
         Z0_14.setBounds(520, 215, 150, 20);
 
         DeviceTimeOut.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        DeviceTimeOut.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        DeviceTimeOut.setEnabled(false);
+        DeviceTimeOut.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                DeviceTimeOutMouseClicked(evt);
+            }
+        });
         DeviceTimeOut.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 DeviceTimeOutKeyPressed(evt);
@@ -806,9 +876,11 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
 
         BlankZ.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         BlankZ.setText("0");
-        BlankZ.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                BlankZKeyPressed(evt);
+        BlankZ.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        BlankZ.setEnabled(false);
+        BlankZ.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BlankZMouseClicked(evt);
             }
         });
         add(BlankZ);
@@ -821,9 +893,11 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
 
         ZUp.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         ZUp.setText("0");
-        ZUp.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                ZUpKeyPressed(evt);
+        ZUp.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        ZUp.setEnabled(false);
+        ZUp.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ZUpMouseClicked(evt);
             }
         });
         add(ZUp);
@@ -1007,25 +1081,6 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
 
     }//GEN-LAST:event_ShiftButtonActionPerformed
 
-    private void BlankWidthKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BlankWidthKeyPressed
-        Utils.saveKeyPressed(evt,set.model.BlankWidth,set,0.5,notify);
-    }//GEN-LAST:event_BlankWidthKeyPressed
-
-    private void BlankHightKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BlankHightKeyPressed
-        Utils.saveKeyPressed(evt,set.model.BlankHight,set,0.5,notify);
-    }//GEN-LAST:event_BlankHightKeyPressed
-
-    private void CutterDiameterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CutterDiameterKeyPressed
-        Utils.saveKeyPressed(evt,set.model.CutterDiameter,set,notify);
-    }//GEN-LAST:event_CutterDiameterKeyPressed
-
-    private void StepMinusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_StepMinusKeyPressed
-        Utils.saveKeyPressed(evt,set.model.StepMinus,set,notify);    }//GEN-LAST:event_StepMinusKeyPressed
-
-    private void ZfinishKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ZfinishKeyPressed
-        Utils.saveKeyPressed(evt,set.model.ZFinish,set,notify);
-    }//GEN-LAST:event_ZfinishKeyPressed
-
     private void ANGLEKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ANGLEKeyPressed
         if(evt.getKeyCode()!=10) return;
         double angle;
@@ -1110,30 +1165,6 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
         Utils.viewUpdate(Mode2,true);
     }//GEN-LAST:event_Mode2ItemStateChanged
 
-    private void FillParametersRasterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FillParametersRasterKeyPressed
-        Utils.saveKeyPressed(evt,set.slice.FillParametersRaster,set,notify);
-    }//GEN-LAST:event_FillParametersRasterKeyPressed
-
-    private void FillParametersOffsetKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FillParametersOffsetKeyPressed
-        Utils.saveKeyPressed(evt,set.slice.FillParametersOffset,set,notify);
-    }//GEN-LAST:event_FillParametersOffsetKeyPressed
-
-    private void FillParametersAngleKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FillParametersAngleKeyPressed
-        Utils.saveKeyPressed(evt,set.slice.FillParametersAngle,set,notify);
-    }//GEN-LAST:event_FillParametersAngleKeyPressed
-
-    private void FillParametersAngleIncKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FillParametersAngleIncKeyPressed
-        Utils.saveKeyPressed(evt,set.slice.FillParametersAngleInc,set,notify);
-    }//GEN-LAST:event_FillParametersAngleIncKeyPressed
-
-    private void FillParametersFillCellKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FillParametersFillCellKeyPressed
-        Utils.saveKeyPressed(evt,set.slice.FillParametersFillCell,set,notify);
-    }//GEN-LAST:event_FillParametersFillCellKeyPressed
-
-    private void FillingFlatnessKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FillingFlatnessKeyPressed
-        Utils.saveKeyPressed(evt,set.slice.FillingFlatness,set,notify);
-    }//GEN-LAST:event_FillingFlatnessKeyPressed
-
     private void WorkFrameZKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_WorkFrameZKeyPressed
         Utils.saveKeyPressed(evt,set.mashine.WorkFrameZ,set,notify);
     }//GEN-LAST:event_WorkFrameZKeyPressed
@@ -1185,14 +1216,6 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
         Utils.saveKeyPressed(evt,set.mashine.DeviceTimeOut,set,notify);
     }//GEN-LAST:event_DeviceTimeOutKeyPressed
 
-    private void BlankZKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BlankZKeyPressed
-        Utils.saveKeyPressed(evt,set.model.BlankZ,set,notify);
-    }//GEN-LAST:event_BlankZKeyPressed
-
-    private void ZUpKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ZUpKeyPressed
-        Utils.saveKeyPressed(evt,set.model.ZUp,set,notify);
-    }//GEN-LAST:event_ZUpKeyPressed
-
     private void FullScreenItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_FullScreenItemStateChanged
         if (busy) return;
         set.fullScreen = FullScreen.isSelected();
@@ -1200,36 +1223,130 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
     }//GEN-LAST:event_FullScreenItemStateChanged
 
 
-    public void updateFloatField(JLabel label, JTextField field){
-        DigitPanel digit = new DigitPanel(dim,label.getText(), field.getText(), new I_RealValue() {
+    public void updateFloatField(JLabel label, JTextField field, FloatParameter par){
+        updateFloatField(label,field,par,1.0);
+        }
+    public void updateFloatField(JLabel label, JTextField field, FloatParameter par,double koeff){
+        DigitPanel digit = new DigitPanel(dim,label.getText(), field, false, new I_RealValue() {
             @Override
             public void onEvent(String value) {
                 field.setText(value);
                 notify.notify(Values.info,"Изменен параметр: "+label.getText()+"="+value);
-                set.model.ZStart.setVal(Float.parseFloat(value));
+                par.setVal(Float.parseFloat(value)/koeff);
+                WorkSpace.ws().saveSettings();
+                }
+            });
+        }
+    public void updateFloatField(JLabel label, JTextField field, IntParameter par){
+        DigitPanel digit = new DigitPanel(dim,label.getText(), field, true, new I_RealValue() {
+            @Override
+            public void onEvent(String value) {
+                field.setText(value);
+                notify.notify(Values.info,"Изменен параметр: "+label.getText()+"="+value);
+                par.setVal(Integer.parseInt(value));
+                WorkSpace.ws().saveSettings();
+                }
+            });
+        }
+    public void updateFloatField(JLabel label, JTextField field, StringParameter par){
+        KeyBoardPanel keyBoard = new KeyBoardPanel(dim,label.getText(), field, false,new I_RealValue() {
+            @Override
+            public void onEvent(String value) {
+                field.setText(value);
+                notify.notify(Values.info,"Изменен параметр: "+label.getText()+"="+value);
+                par.setVal(value);
                 WorkSpace.ws().saveSettings();
                 }
             });
         }
 
     private void ZstartMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ZstartMouseClicked
-        updateFloatField(Z0_3,Zstart);
-        /*
-        DigitPanel digit = new DigitPanel(dim,"Z начальное (мм) ", Zstart.getText(), new I_RealValue() {
-            @Override
-            public void onEvent(String value) {
-                Zstart.setText(value);
-                notify.notify(Values.info,"Изменен параметр: "+"Z начальное (мм) = "+value);
-                set.model.ZStart.setVal(Float.parseFloat(value));
-                WorkSpace.ws().saveSettings();
-            }
-        });
-         */
+        updateFloatField(Z0_3,Zstart,set.model.ZStart);
     }//GEN-LAST:event_ZstartMouseClicked
 
     private void VerticalStepMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_VerticalStepMouseClicked
-        updateFloatField(Z0_1,VerticalStep);
+        updateFloatField(Z0_1,VerticalStep,set.model.VerticalStep);
     }//GEN-LAST:event_VerticalStepMouseClicked
+
+    private void ZfinishMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ZfinishMouseClicked
+        updateFloatField(Z0_16,Zfinish,set.model.ZFinish);
+    }//GEN-LAST:event_ZfinishMouseClicked
+
+    private void ZUpMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ZUpMouseClicked
+        updateFloatField(Z0_2,ZUp,set.model.ZUp);
+    }//GEN-LAST:event_ZUpMouseClicked
+
+    private void BlankWidthMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BlankWidthMouseClicked
+        updateFloatField(Z0_8,BlankWidth,set.model.BlankWidth,2.0);
+    }//GEN-LAST:event_BlankWidthMouseClicked
+
+    private void BlankHightMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BlankHightMouseClicked
+        updateFloatField(Z0_15,BlankHight,set.model.BlankHight,2.0);
+    }//GEN-LAST:event_BlankHightMouseClicked
+
+    private void BlankZMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BlankZMouseClicked
+        updateFloatField(Z0_5,BlankZ,set.model.BlankZ);
+    }//GEN-LAST:event_BlankZMouseClicked
+
+    private void CutterDiameterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CutterDiameterMouseClicked
+        updateFloatField(Z0_6,CutterDiameter,set.model.CutterDiameter);
+    }//GEN-LAST:event_CutterDiameterMouseClicked
+
+    private void StepMinusMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_StepMinusMouseClicked
+        updateFloatField(Z0_7,StepMinus,set.model.StepMinus);
+    }//GEN-LAST:event_StepMinusMouseClicked
+
+    private void FillParametersRasterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FillParametersRasterMouseClicked
+        updateFloatField(Z2_1,FillParametersRaster,set.slice.FillParametersRaster);
+    }//GEN-LAST:event_FillParametersRasterMouseClicked
+
+    private void FillParametersOffsetMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FillParametersOffsetMouseClicked
+        updateFloatField(Z2_2,FillParametersOffset,set.slice.FillParametersOffset);
+    }//GEN-LAST:event_FillParametersOffsetMouseClicked
+
+    private void FillParametersAngleMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FillParametersAngleMouseClicked
+        updateFloatField(Z2_3,FillParametersAngle,set.slice.FillParametersAngle);
+    }//GEN-LAST:event_FillParametersAngleMouseClicked
+
+    private void FillParametersAngleIncMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FillParametersAngleIncMouseClicked
+        updateFloatField(Z2_4,FillParametersAngleInc,set.slice.FillParametersAngleInc);
+    }//GEN-LAST:event_FillParametersAngleIncMouseClicked
+
+    private void FillParametersFillCellMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FillParametersFillCellMouseClicked
+        updateFloatField(Z2_5,FillParametersFillCell,set.slice.FillParametersFillCell);
+    }//GEN-LAST:event_FillParametersFillCellMouseClicked
+
+    private void FillingFlatnessMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FillingFlatnessMouseClicked
+        updateFloatField(Z2_6,FillingFlatness,set.slice.FillingFlatness);
+    }//GEN-LAST:event_FillingFlatnessMouseClicked
+
+    private void WorkFrameXMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_WorkFrameXMouseClicked
+        updateFloatField(Z0_9,WorkFrameX,set.mashine.WorkFrameX);
+    }//GEN-LAST:event_WorkFrameXMouseClicked
+
+    private void WorkFrameYMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_WorkFrameYMouseClicked
+        updateFloatField(Z0_10,WorkFrameY,set.mashine.WorkFrameY);
+    }//GEN-LAST:event_WorkFrameYMouseClicked
+
+    private void WorkFrameZMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_WorkFrameZMouseClicked
+        updateFloatField(Z0_11,WorkFrameZ,set.mashine.WorkFrameZ);
+    }//GEN-LAST:event_WorkFrameZMouseClicked
+
+    private void DeviceNameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DeviceNameMouseClicked
+        updateFloatField(Z0_12,DeviceName,set.mashine.DeviceName);
+    }//GEN-LAST:event_DeviceNameMouseClicked
+
+    private void DevicePortMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DevicePortMouseClicked
+        updateFloatField(Z0_13,DevicePort,set.mashine.DeviceNum);
+    }//GEN-LAST:event_DevicePortMouseClicked
+
+    private void BaudRateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BaudRateMouseClicked
+        updateFloatField(Z0_14,BaudRate,set.mashine.BaudRate);
+    }//GEN-LAST:event_BaudRateMouseClicked
+
+    private void DeviceTimeOutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DeviceTimeOutMouseClicked
+        updateFloatField(Z0_4,DeviceTimeOut,set.mashine.DeviceTimeOut);
+    }//GEN-LAST:event_DeviceTimeOutMouseClicked
 
     @Override
     public boolean saveSettings() {
@@ -1301,6 +1418,12 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
     private javax.swing.JLabel Z0_7;
     private javax.swing.JLabel Z0_8;
     private javax.swing.JLabel Z0_9;
+    private javax.swing.JLabel Z2_1;
+    private javax.swing.JLabel Z2_2;
+    private javax.swing.JLabel Z2_3;
+    private javax.swing.JLabel Z2_4;
+    private javax.swing.JLabel Z2_5;
+    private javax.swing.JLabel Z2_6;
     private javax.swing.JTextField ZUp;
     private javax.swing.JTextField Zfinish;
     private javax.swing.JTextField Zstart;
@@ -1312,14 +1435,8 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
-    private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;

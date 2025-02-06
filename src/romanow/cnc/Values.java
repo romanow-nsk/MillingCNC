@@ -73,6 +73,8 @@ public class Values {
     public final static int FrameHeight=800;
     public final static int FrameTop=50;
     public final static int FrameBottom=50;
+    public final static int FrameX0=200;
+    public final static int FrameY0=50;
     public final static int FrameMenuRightOffet=200;
     public final static String FileType="mln";
     public final static int ManualOKTimeOut=500;

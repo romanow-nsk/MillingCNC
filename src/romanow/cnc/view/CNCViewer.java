@@ -191,7 +191,7 @@ public class CNCViewer extends BaseFrame {
             //setBounds(0,0,screenSize.width,screenSize.height);
             }
         else
-            setBounds(200,50, Values.FrameWidth,Values.FrameHeight);
+            setBounds(FrameX0,FrameY0, FrameWidth,FrameHeight);
         createPanels(ws().global().fullScreen ? screenSize : new Dimension(0,0) );
         notify = (ViewNotifyer) ws().getNotify();
         if (xx!=null)
