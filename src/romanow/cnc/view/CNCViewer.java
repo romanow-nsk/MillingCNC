@@ -48,7 +48,6 @@ import static romanow.cnc.Values.*;
  */
 public class CNCViewer extends BaseFrame {
     private I_Notify notify;
-    private Dimension dim;
     private M3DTesing testing;
     private JProgressBar progress;
 
@@ -116,8 +115,8 @@ public class CNCViewer extends BaseFrame {
         progress.setBounds(MenuButtonX0,MenuButtonY0+idx*MenuButtonStep,MenuButtonXSize,MenuButtonYSize);
         ws.getNotify().setProgressView(progress);
         Common.add(progress);
-        if (dim.width!=0){
-            BasePanel.setComponentsScale(Common,dim);
+        if (ws.global().fullScreen){
+            BasePanel.setComponentsScale(Common);
             }
         revalidate();
         Common.repaint(0,0,Common.getX(),Common.getY());
@@ -131,12 +130,13 @@ public class CNCViewer extends BaseFrame {
         getPanels().add(panel);
         }
     @Override
-    public void createPanels(Dimension dim0){
-        dim = dim0;
-        double scaleY = ((double) dim.height)/Values.FrameHeight;
-        double scaleX = ((double) dim.width)/Values.FrameWidth;
+    public void createPanels(){
+        WorkSpace ws = WorkSpace.ws();
+        double scaleY = ws.getScaleY();
+        double scaleX = ws.getScaleX();
         int xx = (int)(scaleX*Values.FrameMenuRightOffet);
         //--------------------------------------------------------------------------------------------------------------
+        Dimension dim = ws.getDim();
         if (dim.width==0)
             PanelList.setBounds(0, 0,Values.FrameWidth-Values.FrameMenuRightOffet,Values.FrameHeight);
         else
@@ -192,7 +192,8 @@ public class CNCViewer extends BaseFrame {
             }
         else
             setBounds(FrameX0,FrameY0, FrameWidth,FrameHeight);
-        createPanels(ws().global().fullScreen ? screenSize : new Dimension(0,0) );
+        ws().setDimension();
+        createPanels();
         notify = (ViewNotifyer) ws().getNotify();
         if (xx!=null)
             notify.notify(warning,xx);

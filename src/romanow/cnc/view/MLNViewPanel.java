@@ -74,7 +74,7 @@ public class MLNViewPanel extends BasePanel {
         double scaleY = dim.width==0 ? 1 : ((double) dim.height)/Values.FrameHeight;
         double scaleX = dim.width==0 ? 1: ((double) dim.width)/Values.FrameWidth;
         statView.setBounds((int)(scaleX*880), 0, (int)(scaleX*250), (int)(scaleY*220));
-        BasePanel.setComponentsScale(statView,dim);
+        BasePanel.setComponentsScale(statView);
         add(statView);
         gPanel = new GraphPanel(mBack);
         gPanel.setBounds((int)(scaleX*230), (int)(scaleY*10), (int)((scaleX < scaleY ? scaleX : scaleY)*660));

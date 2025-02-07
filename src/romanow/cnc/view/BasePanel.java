@@ -8,6 +8,11 @@ import lombok.Setter;
 import romanow.cnc.Values;
 import lombok.Getter;
 import romanow.cnc.m3d.I_PanelEvent;
+import romanow.cnc.settings.*;
+import romanow.cnc.view.design.JCheckBoxButton;
+import romanow.cnc.view.panels.DigitPanel;
+import romanow.cnc.view.panels.I_RealValue;
+import romanow.cnc.view.panels.KeyBoardPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -54,17 +59,18 @@ public abstract class BasePanel extends javax.swing.JPanel implements I_PanelEve
         return new Rectangle((int)(x0*scaleX), (int)(y0*scaleY),(int)(w*scaleX), (int)(h*scaleY));
         }
     public void setComponentsScale(Dimension dim){
-        setComponentsScale(this,dim);
+        setComponentsScale(this);
         }
-    public static void setComponentsScale(JFrame frame, Dimension dim){
-        setComponentsScale(frame.getContentPane().getComponents(),dim);
+    public static void setComponentsScale(JFrame frame){
+        setComponentsScale(frame.getContentPane().getComponents());
         frame.revalidate();
         }
-    public static void setComponentsScale(JPanel panel, Dimension dim){
-        setComponentsScale(panel.getComponents(),dim);
+    public static void setComponentsScale(JPanel panel){
+        setComponentsScale(panel.getComponents());
         panel.revalidate();
         }
-    public static void setComponentsScale(Component list[], Dimension dim){
+    public static void setComponentsScale(Component list[]){
+        Dimension dim = WorkSpace.ws().getDim();
         if (dim.width==0)
             return;
         //if (dim.width!=0)
@@ -131,6 +137,51 @@ public abstract class BasePanel extends javax.swing.JPanel implements I_PanelEve
                 }
             //System.out.println(component);
             }
+        }
+
+    public void updateField(String label, JTextField field, FloatParameter par){
+        updateField(label,field,par,1.0);
+    }
+    public void updateField(String label, JTextField field, FloatParameter par,double koeff){
+        DigitPanel digit = new DigitPanel(dim,label, field, false, new I_RealValue() {
+            @Override
+            public void onEvent(String value) {
+                field.setText(value);
+                WorkSpace.ws().getNotify().notify(Values.info,"Изменен параметр: "+label+"="+value);
+                par.setVal(Float.parseFloat(value)/koeff);
+                WorkSpace.ws().saveSettings();
+            }
+        });
+    }
+    public void updateField(String label, JTextField field, IntParameter par){
+        DigitPanel digit = new DigitPanel(dim,label, field, true, new I_RealValue() {
+            @Override
+            public void onEvent(String value) {
+                field.setText(value);
+                WorkSpace.ws().getNotify().notify(Values.info,"Изменен параметр: "+label+"="+value);
+                par.setVal(Integer.parseInt(value));
+                WorkSpace.ws().saveSettings();
+            }
+        });
+    }
+    public void updateField(String label, JTextField field, StringParameter par){
+        KeyBoardPanel keyBoard = new KeyBoardPanel(label, field, false,new I_RealValue() {
+            @Override
+            public void onEvent(String value) {
+                field.setText(value);
+                WorkSpace.ws().getNotify().notify(Values.info,"Изменен параметр: "+label+"="+value);
+                par.setVal(value);
+                WorkSpace.ws().saveSettings();
+            }
+        });
+    }
+
+
+    public void updateField(String label, JCheckBoxButton field, BooleanParameter par){
+        field.itemStateChanged();
+        WorkSpace.ws().getNotify().notify(Values.info,"Изменен параметр: "+label+"="+field.isSelected());
+        par.setVal(field.isSelected());
+        WorkSpace.ws().saveSettings();
         }
 
     public BasePanel(BaseFrame baseFrame0, Dimension dim) {

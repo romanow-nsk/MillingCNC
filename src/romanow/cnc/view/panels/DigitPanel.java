@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package romanow.cnc.view;
+package romanow.cnc.view.panels;
 
-import romanow.cnc.Values;
+import romanow.cnc.view.BasePanel;
+import romanow.cnc.view.BasePopupDialog;
 
 import javax.swing.*;
 import java.awt.*;
@@ -36,23 +37,23 @@ public class DigitPanel extends BasePopupDialog {
         retryLongDelay();
         }
     public DigitPanel(Dimension dim, String title, double val,I_RealValue back0) {
-        super(dim, 250,280);
+        super(250,280);
         initComponents();
         back = back0;
         TITLE.setText(title);
         setValue(val);
-        BasePanel.setComponentsScale(this,dim);
+        BasePanel.setComponentsScale(this);
         revalidate();
         positionOn(200,200);
         retryLongDelay();
         }
     public DigitPanel(Dimension dim, String title, String val,I_RealValue back0) {
-        super(dim, 250,280);
+        super(250,280);
         initComponents();
         back = back0;
         TITLE.setText(title);
         setValue(val);
-        BasePanel.setComponentsScale(this,dim);
+        BasePanel.setComponentsScale(this);
         revalidate();
         positionOn(200,200);
         retryLongDelay();
@@ -61,13 +62,13 @@ public class DigitPanel extends BasePopupDialog {
         this(dim,title,field,false,back0);
         }
     public DigitPanel(Dimension dim, String title, JTextField field, boolean intMode, I_RealValue back0) {
-        super(dim, 250,280);
+        super(250,280);
         initComponents();
         back = back0;
         TITLE.setText(title);
         setValue(field.getText());
-        BasePanel.setComponentsScale(this,dim);
-        positionOn(field,dim, 100,100, true);         // Уже пересчитан масштаб !!!!!!!!!!!!!!!
+        BasePanel.setComponentsScale(this);
+        positionOn(field, 100,-200, true);         // Уже пересчитан масштаб !!!!!!!!!!!!!!!
         retryLongDelay();
         if (intMode)
             Point.setVisible(false);

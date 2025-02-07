@@ -1,6 +1,7 @@
 package romanow.cnc.view;
 
 import romanow.cnc.Values;
+import romanow.cnc.settings.WorkSpace;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,15 +16,9 @@ public class BasePopupDialog extends javax.swing.JFrame {
         g.drawRect(2,2,winWidth-5,winHigh-5);
         }
     public BasePopupDialog(int ww, int hh){
-        winWidth=ww;
-        winHigh=hh;
-        setUndecorated(true);
-        }
-    public BasePopupDialog(Dimension dim, int ww, int hh){
-        double scaleY = dim.width==0 ? 1 : ((double) dim.height)/Values.FrameHeight;
-        double scaleX = dim.width==0 ? 1 : ((double) dim.width)/Values.FrameWidth;
-        winWidth=(int)(ww*scaleX);
-        winHigh=(int)(hh*scaleY);
+        WorkSpace ws = WorkSpace.ws();
+        winWidth=(int)(ww*ws.getScaleX());
+        winHigh=(int)(hh*ws.getScaleY());
         setUndecorated(true);
         }
     public void setWH(int ww, int hh){
@@ -34,7 +29,8 @@ public class BasePopupDialog extends javax.swing.JFrame {
         setBounds(x0,y0,winWidth,winHigh);
         setVisible(true);
         }
-    public void positionOn(JTextField field, Dimension dim, int x0, int y0, boolean dialog){
+    public void positionOn(JTextField field, int x0, int y0, boolean dialog){
+        Dimension dim = WorkSpace.ws().getDim();
         if (dim.width==0){
             setBounds(Values.FrameX0+x0+field.getX(),Values.FrameY0+y0+field.getY(),winWidth,winHigh);
             }
@@ -42,7 +38,10 @@ public class BasePopupDialog extends javax.swing.JFrame {
             //double scaleY = ((double)dim.height)/Values.FrameHeight;
             //double scaleX = ((double) dim.width)/Values.FrameWidth;
             //setBounds((int)(field.getX()*scaleX),(int)(field.getY()*scaleY),winWidth,winHigh);
-            setBounds(field.getX()+x0,field.getY()+y0,winWidth,winHigh);
+            int yy = field.getY()+y0;
+            if (yy < Values.FrameTop)
+                yy = Values.FrameTop;
+            setBounds(field.getX()+x0,yy,winWidth,winHigh);
             }
         if (!dialog)
             setUndecorated(true);

@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package romanow.cnc.view;
+package romanow.cnc.view.panels;
 
-import romanow.cnc.Values;
+import romanow.cnc.view.BasePanel;
+import romanow.cnc.view.BasePopupDialog;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,8 +31,8 @@ public class KeyBoardPanel extends BasePopupDialog {
     //public KeyBoardPanel(boolean pass0, JTextField field0, I_RealValue back0) {
     //    this(new Dimension(),"!!!!!!!!!!!!!!!!!!",pass0,field0,back0);
     //    }
-    public KeyBoardPanel(Dimension dim, String title, JTextField field0 , boolean pass0, I_RealValue back0) {
-        super(dim,670,250);
+    public KeyBoardPanel(String title, JTextField field0 , boolean pass0, I_RealValue back0) {
+        super(670,250);
         initComponents();
         TITLE.setText(title);
         field = field0;
@@ -44,8 +45,8 @@ public class KeyBoardPanel extends BasePopupDialog {
         back = back0;
         Shift.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/down.png"))); // NOI18N
         Value.setText(field.getText());
-        BasePanel.setComponentsScale(this,dim);
-        positionOn(field,dim, -200,100, true);         // Уже пересчитан масштаб !!!!!!!!!!!!!!!
+        BasePanel.setComponentsScale(this);
+        positionOn(field, -200,100, true);         // Уже пересчитан масштаб !!!!!!!!!!!!!!!
         retryLongDelay();
         revalidate();
         setVisible(true);

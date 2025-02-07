@@ -19,6 +19,10 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 import romanow.cnc.settingsView.I_SettingsPanel;
+import romanow.cnc.view.design.JCheckBoxButton;
+import romanow.cnc.view.panels.DigitPanel;
+import romanow.cnc.view.panels.I_RealValue;
+import romanow.cnc.view.panels.KeyBoardPanel;
 
 import javax.swing.*;
 
@@ -35,6 +39,19 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
     private DecimalFormat df3;
     private DecimalFormat df2;
     private DecimalFormat df;
+    private JCheckBoxButton autoScale;
+    private JCheckBoxButton autoCenter;
+    private JCheckBoxButton fullScreen;
+    private JCheckBoxButton arcGCodeMode;
+    private JCheckBoxButton moveOptimize;
+    private JCheckBoxButton continuous;
+    private JCheckBoxButton loopsWithSomeLineTypes;
+    private JCheckBoxButton sendLoops;
+    private JCheckBoxButton flateCircuitSlice;
+    private JCheckBoxButton repairLoops;
+    private FloatParameter shift = new FloatParameter(10);
+    private IntParameter angle = new IntParameter(90);
+
     /**
      * Creates new form M3SSettings
      */
@@ -59,6 +76,16 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
         Mode2.addItem("Случайная");
         Mode2.addItem("Фреза-1");
         busy = false;
+        autoScale = new JCheckBoxButton(AutoScaleButton);
+        autoCenter = new JCheckBoxButton(AutoCenterButton);
+        fullScreen = new JCheckBoxButton(FullScreenButton);
+        arcGCodeMode = new JCheckBoxButton(ARCGCodeModeButton);
+        moveOptimize = new JCheckBoxButton(MoveOptimizeButton);
+        continuous = new JCheckBoxButton(ContinuousButton);
+        loopsWithSomeLineTypes = new JCheckBoxButton(LoopsWithSomeLineTypesButton);
+        sendLoops = new JCheckBoxButton(SendLoopsButton);
+        flateCircuitSlice = new JCheckBoxButton(FlateCircuitSliceButton);
+        repairLoops = new JCheckBoxButton(RepairLoopsButton);
         }
 
     @Override
@@ -104,7 +131,7 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
         PageServoOffsetsLeft = new javax.swing.JTextField();
         PageServoOffsetsTop = new javax.swing.JTextField();
         ScaleFactor = new javax.swing.JTextField();
-        jLabel8 = new javax.swing.JLabel();
+        Z0_30 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
@@ -121,7 +148,7 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
         jSeparator2 = new javax.swing.JSeparator();
         jSeparator5 = new javax.swing.JSeparator();
         Zfinish = new javax.swing.JTextField();
-        Z0_1 = new javax.swing.JLabel();
+        Z0_18 = new javax.swing.JLabel();
         XYZ = new javax.swing.JComboBox<>();
         jLabel25 = new javax.swing.JLabel();
         PrintTime = new javax.swing.JTextField();
@@ -156,15 +183,9 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
         FillParametersAngleInc = new javax.swing.JTextField();
         Z2_4 = new javax.swing.JLabel();
         Z2_6 = new javax.swing.JLabel();
-        MoveOptimize = new javax.swing.JCheckBox();
-        SendLoops = new javax.swing.JCheckBox();
         jLabel39 = new javax.swing.JLabel();
         Z2_1 = new javax.swing.JLabel();
         FillParametersRaster = new javax.swing.JTextField();
-        FlateCircuitSlice = new javax.swing.JCheckBox();
-        Continuous = new javax.swing.JCheckBox();
-        RepairLoops = new javax.swing.JCheckBox();
-        LoopsWithSomeLineTypes = new javax.swing.JCheckBox();
         Mode2 = new javax.swing.JComboBox<>();
         jLabel13 = new javax.swing.JLabel();
         Z0_8 = new javax.swing.JLabel();
@@ -173,9 +194,6 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
         WorkFrameX = new javax.swing.JTextField();
         WorkFrameY = new javax.swing.JTextField();
         Z0_10 = new javax.swing.JLabel();
-        AutoCenter = new javax.swing.JCheckBox();
-        AutoScale = new javax.swing.JCheckBox();
-        ARCGCodeMode = new javax.swing.JCheckBox();
         Z0_11 = new javax.swing.JLabel();
         BaudRate = new javax.swing.JTextField();
         DeviceName = new javax.swing.JTextField();
@@ -190,7 +208,26 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
         jSeparator1 = new javax.swing.JSeparator();
         Z0_16 = new javax.swing.JLabel();
         jSeparator3 = new javax.swing.JSeparator();
-        FullScreen = new javax.swing.JCheckBox();
+        AutoScaleButton = new javax.swing.JButton();
+        Z0_17 = new javax.swing.JLabel();
+        AutoCenterButton = new javax.swing.JButton();
+        Z0_19 = new javax.swing.JLabel();
+        FullScreenButton = new javax.swing.JButton();
+        Z0_20 = new javax.swing.JLabel();
+        Z0_21 = new javax.swing.JLabel();
+        Z0_22 = new javax.swing.JLabel();
+        Z0_23 = new javax.swing.JLabel();
+        Z0_24 = new javax.swing.JLabel();
+        Z0_25 = new javax.swing.JLabel();
+        Z0_26 = new javax.swing.JLabel();
+        Z0_27 = new javax.swing.JLabel();
+        ARCGCodeModeButton = new javax.swing.JButton();
+        LoopsWithSomeLineTypesButton = new javax.swing.JButton();
+        ContinuousButton = new javax.swing.JButton();
+        MoveOptimizeButton = new javax.swing.JButton();
+        SendLoopsButton = new javax.swing.JButton();
+        FlateCircuitSliceButton = new javax.swing.JButton();
+        RepairLoopsButton = new javax.swing.JButton();
 
         setBorder(new javax.swing.border.MatteBorder(null));
         setLayout(null);
@@ -228,6 +265,13 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
         ScaleFactor.setEditable(false);
         ScaleFactor.setBackground(new java.awt.Color(255, 255, 255));
         ScaleFactor.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        ScaleFactor.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        ScaleFactor.setEnabled(false);
+        ScaleFactor.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ScaleFactorMouseClicked(evt);
+            }
+        });
         ScaleFactor.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 ScaleFactorKeyPressed(evt);
@@ -236,10 +280,10 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
         add(ScaleFactor);
         ScaleFactor.setBounds(180, 205, 80, 30);
 
-        jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel8.setText("Масштаб модели");
-        add(jLabel8);
-        jLabel8.setBounds(10, 215, 130, 20);
+        Z0_30.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z0_30.setText("Масштаб модели");
+        add(Z0_30);
+        Z0_30.setBounds(10, 215, 130, 20);
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel10.setText("Станок / программа");
@@ -295,6 +339,13 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
 
         ANGLE.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         ANGLE.setText("90");
+        ANGLE.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        ANGLE.setEnabled(false);
+        ANGLE.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ANGLEMouseClicked(evt);
+            }
+        });
         ANGLE.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 ANGLEKeyPressed(evt);
@@ -341,10 +392,10 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
         add(Zfinish);
         Zfinish.setBounds(180, 275, 80, 30);
 
-        Z0_1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        Z0_1.setText("Шаг по вертикали (мм)");
-        add(Z0_1);
-        Z0_1.setBounds(10, 530, 170, 20);
+        Z0_18.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z0_18.setText("Автоцентрирование");
+        add(Z0_18);
+        Z0_18.setBounds(10, 610, 170, 20);
 
         XYZ.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         XYZ.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "X", "Y", "Z" }));
@@ -418,6 +469,13 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
 
         SHIFT.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         SHIFT.setText("10.0");
+        SHIFT.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        SHIFT.setEnabled(false);
+        SHIFT.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                SHIFTMouseClicked(evt);
+            }
+        });
         SHIFT.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 SHIFTKeyPressed(evt);
@@ -602,26 +660,6 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
         add(Z2_6);
         Z2_6.setBounds(280, 460, 140, 20);
 
-        MoveOptimize.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        MoveOptimize.setText("Оптимизация перемещений");
-        MoveOptimize.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                MoveOptimizeItemStateChanged(evt);
-            }
-        });
-        add(MoveOptimize);
-        MoveOptimize.setBounds(520, 360, 250, 24);
-
-        SendLoops.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        SendLoops.setText("Оконтуривание");
-        SendLoops.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                SendLoopsItemStateChanged(evt);
-            }
-        });
-        add(SendLoops);
-        SendLoops.setBounds(520, 420, 180, 20);
-
         jLabel39.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel39.setText("Слайсинг");
         add(jLabel39);
@@ -642,46 +680,6 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
         });
         add(FillParametersRaster);
         FillParametersRaster.setBounds(430, 280, 80, 30);
-
-        FlateCircuitSlice.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        FlateCircuitSlice.setText("Слайсинг плоских контуров");
-        FlateCircuitSlice.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                FlateCircuitSliceItemStateChanged(evt);
-            }
-        });
-        add(FlateCircuitSlice);
-        FlateCircuitSlice.setBounds(520, 450, 240, 24);
-
-        Continuous.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        Continuous.setText("Непрерывная штриховка / Зигзаг");
-        Continuous.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                ContinuousItemStateChanged(evt);
-            }
-        });
-        add(Continuous);
-        Continuous.setBounds(520, 390, 270, 24);
-
-        RepairLoops.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        RepairLoops.setText("Принудительно замыкать контуры");
-        RepairLoops.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                RepairLoopsItemStateChanged(evt);
-            }
-        });
-        add(RepairLoops);
-        RepairLoops.setBounds(520, 480, 280, 24);
-
-        LoopsWithSomeLineTypes.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        LoopsWithSomeLineTypes.setText("Контуры из отрезков одного типа");
-        LoopsWithSomeLineTypes.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                LoopsWithSomeLineTypesItemStateChanged(evt);
-            }
-        });
-        add(LoopsWithSomeLineTypes);
-        LoopsWithSomeLineTypes.setBounds(520, 510, 260, 24);
 
         Mode2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         Mode2.addItemListener(new java.awt.event.ItemListener() {
@@ -759,36 +757,6 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
         Z0_10.setText("Размер стола Y(мм)");
         add(Z0_10);
         Z0_10.setBounds(520, 70, 170, 20);
-
-        AutoCenter.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        AutoCenter.setText("Автоцентрирование");
-        AutoCenter.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                AutoCenterItemStateChanged(evt);
-            }
-        });
-        add(AutoCenter);
-        AutoCenter.setBounds(10, 590, 250, 24);
-
-        AutoScale.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        AutoScale.setText("Автомасштабирование");
-        AutoScale.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                AutoScaleItemStateChanged(evt);
-            }
-        });
-        add(AutoScale);
-        AutoScale.setBounds(10, 560, 250, 24);
-
-        ARCGCodeMode.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        ARCGCodeMode.setText("G code: круговая интерполяция");
-        ARCGCodeMode.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                ARCGCodeModeItemStateChanged(evt);
-            }
-        });
-        add(ARCGCodeMode);
-        ARCGCodeMode.setBounds(520, 540, 260, 24);
 
         Z0_11.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         Z0_11.setText("Размер стола Z(мм)");
@@ -910,17 +878,137 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
         add(Z0_16);
         Z0_16.setBounds(10, 280, 120, 20);
         add(jSeparator3);
-        jSeparator3.setBounds(520, 350, 240, 10);
+        jSeparator3.setBounds(510, 330, 240, 10);
 
-        FullScreen.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        FullScreen.setText("Полный экран");
-        FullScreen.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                FullScreenItemStateChanged(evt);
+        AutoScaleButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AutoScaleButtonActionPerformed(evt);
             }
         });
-        add(FullScreen);
-        FullScreen.setBounds(520, 280, 220, 20);
+        add(AutoScaleButton);
+        AutoScaleButton.setBounds(180, 560, 50, 40);
+
+        Z0_17.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z0_17.setText("Шаг по вертикали (мм)");
+        add(Z0_17);
+        Z0_17.setBounds(10, 530, 170, 20);
+
+        AutoCenterButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AutoCenterButtonActionPerformed(evt);
+            }
+        });
+        add(AutoCenterButton);
+        AutoCenterButton.setBounds(180, 605, 50, 40);
+
+        Z0_19.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z0_19.setText("Автомасштабирование");
+        add(Z0_19);
+        Z0_19.setBounds(10, 570, 170, 20);
+
+        FullScreenButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                FullScreenButtonActionPerformed(evt);
+            }
+        });
+        add(FullScreenButton);
+        FullScreenButton.setBounds(660, 280, 50, 40);
+
+        Z0_20.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z0_20.setText("Полный экран");
+        add(Z0_20);
+        Z0_20.setBounds(520, 290, 120, 20);
+
+        Z0_21.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z0_21.setText("G code: круговая интерполяция");
+        add(Z0_21);
+        Z0_21.setBounds(520, 350, 220, 20);
+
+        Z0_22.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z0_22.setText("Оптимизация перемещений");
+        add(Z0_22);
+        Z0_22.setBounds(520, 400, 200, 20);
+
+        Z0_23.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z0_23.setText("Непрерывная штриховка / Зигзаг");
+        add(Z0_23);
+        Z0_23.setBounds(520, 440, 220, 20);
+
+        Z0_24.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z0_24.setText("Оконтуривание");
+        add(Z0_24);
+        Z0_24.setBounds(520, 480, 120, 20);
+
+        Z0_25.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z0_25.setText("Слайсинг плоских контуров");
+        add(Z0_25);
+        Z0_25.setBounds(520, 530, 200, 20);
+
+        Z0_26.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z0_26.setText("Принудительно замыкать контуры");
+        add(Z0_26);
+        Z0_26.setBounds(520, 570, 240, 20);
+
+        Z0_27.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z0_27.setText("Контуры из отрезков одного типа");
+        add(Z0_27);
+        Z0_27.setBounds(520, 620, 220, 20);
+
+        ARCGCodeModeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ARCGCodeModeButtonActionPerformed(evt);
+            }
+        });
+        add(ARCGCodeModeButton);
+        ARCGCodeModeButton.setBounds(750, 340, 50, 40);
+
+        LoopsWithSomeLineTypesButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LoopsWithSomeLineTypesButtonActionPerformed(evt);
+            }
+        });
+        add(LoopsWithSomeLineTypesButton);
+        LoopsWithSomeLineTypesButton.setBounds(750, 610, 50, 40);
+
+        ContinuousButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ContinuousButtonActionPerformed(evt);
+            }
+        });
+        add(ContinuousButton);
+        ContinuousButton.setBounds(750, 430, 50, 40);
+
+        MoveOptimizeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MoveOptimizeButtonActionPerformed(evt);
+            }
+        });
+        add(MoveOptimizeButton);
+        MoveOptimizeButton.setBounds(750, 385, 50, 40);
+
+        SendLoopsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SendLoopsButtonActionPerformed(evt);
+            }
+        });
+        add(SendLoopsButton);
+        SendLoopsButton.setBounds(750, 475, 50, 40);
+
+        FlateCircuitSliceButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                FlateCircuitSliceButtonActionPerformed(evt);
+            }
+        });
+        add(FlateCircuitSliceButton);
+        FlateCircuitSliceButton.setBounds(750, 520, 50, 40);
+
+        RepairLoopsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RepairLoopsButtonActionPerformed(evt);
+            }
+        });
+        add(RepairLoopsButton);
+        RepairLoopsButton.setBounds(750, 565, 50, 40);
     }// </editor-fold>//GEN-END:initComponents
     public boolean loadSettings(){
         try {
@@ -960,24 +1048,25 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             FillParametersAngleInc.setText(df.format(set.slice.FillParametersAngleInc.getVal()));
             FillParametersFillCell.setText(df.format(set.slice.FillParametersFillCell.getVal()));
             FillingFlatness.setText(df.format(set.slice.FillingFlatness.getVal()));
-            MoveOptimize.setSelected(set.slice.MoveOptimize.getVal());
-            SendLoops.setSelected(set.slice.SendLoops.getVal());
-            Continuous.setSelected(set.slice.FillContinuous.getVal());
-            FlateCircuitSlice.setSelected(set.slice.FlateCircuitSlice.getVal());
-            Continuous.setVisible(MoveOptimize.isSelected());
-            RepairLoops.setSelected(set.slice.RepairLoops.getVal());
-            LoopsWithSomeLineTypes.setSelected(set.slice.LoopsWithSomeLineTypes.getVal());
+            moveOptimize.setSelected(set.slice.MoveOptimize.getVal());
+            sendLoops.setSelected(set.slice.SendLoops.getVal());
+            continuous.setSelected(set.slice.FillContinuous.getVal());
+            flateCircuitSlice.setSelected(set.slice.FlateCircuitSlice.getVal());
+            ContinuousButton.setVisible(moveOptimize.isSelected());
+            Z0_23.setVisible(moveOptimize.isSelected());
+            repairLoops.setSelected(set.slice.RepairLoops.getVal());
+            loopsWithSomeLineTypes.setSelected(set.slice.LoopsWithSomeLineTypes.getVal());
             WorkFrameX.setText(df2.format(set.mashine.WorkFrameX.getVal()));
             WorkFrameY.setText(df2.format(set.mashine.WorkFrameY.getVal()));
             WorkFrameZ.setText(df2.format(set.mashine.WorkFrameZ.getVal()));
-            AutoCenter.setSelected(set.model.AutoCenter.getVal());
-            AutoScale.setSelected(set.model.AutoScale.getVal());
-            ARCGCodeMode.setSelected(set.slice.ARCGCodeMode.getVal());
+            autoScale.setSelected(set.model.AutoScale.getVal());
+            autoCenter.setSelected(set.model.AutoCenter.getVal());
+            arcGCodeMode.setSelected(set.slice.ARCGCodeMode.getVal());
             DeviceName.setText(set.mashine.DeviceName.getVal());
             DevicePort.setText(""+set.mashine.DeviceNum.getVal());
             BaudRate.setText(""+set.mashine.BaudRate.getVal());
             DeviceTimeOut.setText(""+set.mashine.DeviceTimeOut.getVal());
-            FullScreen.setSelected(set.fullScreen);
+            fullScreen.setSelected(set.fullScreen);
         } catch (Exception ee){
                 notify.notify(Values.error, Utils.createFatalMessage(ee,5));
                 busy = false;
@@ -999,8 +1088,8 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             set.model.CutterDiameter.setVal(Float.parseFloat(CutterDiameter.getText()));
             set.model.StepMinus.setVal(Float.parseFloat(StepMinus.getText()));
             set.model.VerticalStep.setVal(Float.parseFloat(VerticalStep.getText()));
-            set.model.AutoCenter.setVal(AutoCenter.isSelected());
-            set.model.AutoScale.setVal(AutoScale.isSelected());
+            set.model.AutoCenter.setVal(autoCenter.isSelected());
+            set.model.AutoScale.setVal(autoScale.isSelected());
             //---------------------------------------------------------------------------------------
             set.slice.Mode.setVal(Mode2.getSelectedIndex());
             set.slice.FillParametersRaster.setVal(Float.parseFloat(FillParametersRaster.getText()));
@@ -1009,17 +1098,17 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             set.slice.FillParametersAngleInc.setVal(Float.parseFloat(FillParametersAngleInc.getText()));
             set.slice.FillParametersFillCell.setVal(Float.parseFloat(FillParametersFillCell.getText()));
             set.slice.FillingFlatness.setVal(Float.parseFloat(FillingFlatness.getText()));
-            set.slice.MoveOptimize.setVal(MoveOptimize.isSelected());
-            set.slice.SendLoops.setVal(SendLoops.isSelected());
-            set.slice.FlateCircuitSlice.setVal(FlateCircuitSlice.isSelected());
-            set.slice.FillContinuous.setVal(Continuous.isSelected());
-            set.slice.RepairLoops.setVal(RepairLoops.isSelected());
-            set.slice.LoopsWithSomeLineTypes.setVal(LoopsWithSomeLineTypes.isSelected());
-            set.slice.ARCGCodeMode.setVal(ARCGCodeMode.isSelected());
+            set.slice.MoveOptimize.setVal(moveOptimize.isSelected());
+            set.slice.SendLoops.setVal(sendLoops.isSelected());
+            set.slice.FlateCircuitSlice.setVal(flateCircuitSlice.isSelected());
+            set.slice.FillContinuous.setVal(continuous.isSelected());
+            set.slice.RepairLoops.setVal(repairLoops.isSelected());
+            set.slice.LoopsWithSomeLineTypes.setVal(loopsWithSomeLineTypes.isSelected());
+            set.slice.ARCGCodeMode.setVal(arcGCodeMode.isSelected());
             set.mashine.BaudRate.setVal(Integer.parseInt(BaudRate.getText()));
             set.mashine.DeviceName.setVal(DeviceName.getText());
             set.mashine.DeviceNum.setVal(Integer.parseInt(DevicePort.getText()));
-            set.fullScreen = FullScreen.isSelected();
+            set.fullScreen = fullScreen.isSelected();
             sendEvent(Events.Settings,0,0,null,null);
             if (par!=null)
                 notify.notify(Values.info,"Изменен параметр: "+par);
@@ -1121,44 +1210,6 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
         ws.sendEvent(Events.Rotate);
     }//GEN-LAST:event_SHIFTKeyPressed
 
-    private void MoveOptimizeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_MoveOptimizeItemStateChanged
-        if (busy) return;
-        set.slice.MoveOptimize.setVal(MoveOptimize.isSelected());
-        Continuous.setVisible(MoveOptimize.isSelected());
-        Utils.viewUpdateCheck(MoveOptimize,true);
-    }//GEN-LAST:event_MoveOptimizeItemStateChanged
-
-    private void ContinuousItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_ContinuousItemStateChanged
-        if (busy) return;
-        set.slice.FillContinuous.setVal(Continuous.isSelected());
-        Utils.viewUpdateCheck(Continuous,true);
-    }//GEN-LAST:event_ContinuousItemStateChanged
-
-    private void SendLoopsItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_SendLoopsItemStateChanged
-        if (busy) return;
-        set.slice.SendLoops.setVal(SendLoops.isSelected());
-        Utils.viewUpdateCheck(SendLoops,true);
-
-    }//GEN-LAST:event_SendLoopsItemStateChanged
-
-    private void FlateCircuitSliceItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_FlateCircuitSliceItemStateChanged
-        if (busy) return;
-        set.slice.FlateCircuitSlice.setVal(FlateCircuitSlice.isSelected());
-        Utils.viewUpdateCheck(FlateCircuitSlice,true);
-    }//GEN-LAST:event_FlateCircuitSliceItemStateChanged
-
-    private void RepairLoopsItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_RepairLoopsItemStateChanged
-        if (busy) return;
-        set.slice.RepairLoops.setVal(RepairLoops.isSelected());
-        Utils.viewUpdateCheck(RepairLoops,true);
-    }//GEN-LAST:event_RepairLoopsItemStateChanged
-
-    private void LoopsWithSomeLineTypesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_LoopsWithSomeLineTypesItemStateChanged
-        if (busy) return;
-        set.slice.LoopsWithSomeLineTypes.setVal(LoopsWithSomeLineTypes.isSelected());
-        Utils.viewUpdateCheck(LoopsWithSomeLineTypes,true);
-    }//GEN-LAST:event_LoopsWithSomeLineTypesItemStateChanged
-
     private void Mode2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_Mode2ItemStateChanged
         if (busy) return;
         set.slice.Mode.setVal(Mode2.getSelectedIndex());
@@ -1181,25 +1232,6 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
         Utils.saveKeyPressed(evt,set.model.ScaleFactor,set,notify);
     }//GEN-LAST:event_ScaleFactorKeyPressed
 
-    private void AutoCenterItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_AutoCenterItemStateChanged
-        if (busy) return;
-        set.model.AutoCenter.setVal(AutoCenter.isSelected());
-        Utils.viewUpdateCheck(AutoCenter,true);
-    }//GEN-LAST:event_AutoCenterItemStateChanged
-
-    private void AutoScaleItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_AutoScaleItemStateChanged
-        if (busy) return;
-        set.model.AutoScale.setVal(AutoScale.isSelected());
-        Utils.viewUpdateCheck(AutoScale,true);
-
-    }//GEN-LAST:event_AutoScaleItemStateChanged
-
-    private void ARCGCodeModeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_ARCGCodeModeItemStateChanged
-        if (busy) return;
-        set.slice.ARCGCodeMode.setVal(ARCGCodeMode.isSelected());
-        Utils.viewUpdateCheck(ARCGCodeMode,true);
-    }//GEN-LAST:event_ARCGCodeModeItemStateChanged
-
     private void BaudRateKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BaudRateKeyPressed
         Utils.saveKeyPressed(evt,set.mashine.BaudRate,set,notify);
     }//GEN-LAST:event_BaudRateKeyPressed
@@ -1216,137 +1248,152 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
         Utils.saveKeyPressed(evt,set.mashine.DeviceTimeOut,set,notify);
     }//GEN-LAST:event_DeviceTimeOutKeyPressed
 
-    private void FullScreenItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_FullScreenItemStateChanged
-        if (busy) return;
-        set.fullScreen = FullScreen.isSelected();
-        Utils.viewUpdateCheck(FullScreen,true);
-    }//GEN-LAST:event_FullScreenItemStateChanged
 
-
-    public void updateFloatField(JLabel label, JTextField field, FloatParameter par){
-        updateFloatField(label,field,par,1.0);
-        }
-    public void updateFloatField(JLabel label, JTextField field, FloatParameter par,double koeff){
-        DigitPanel digit = new DigitPanel(dim,label.getText(), field, false, new I_RealValue() {
-            @Override
-            public void onEvent(String value) {
-                field.setText(value);
-                notify.notify(Values.info,"Изменен параметр: "+label.getText()+"="+value);
-                par.setVal(Float.parseFloat(value)/koeff);
-                WorkSpace.ws().saveSettings();
-                }
-            });
-        }
-    public void updateFloatField(JLabel label, JTextField field, IntParameter par){
-        DigitPanel digit = new DigitPanel(dim,label.getText(), field, true, new I_RealValue() {
-            @Override
-            public void onEvent(String value) {
-                field.setText(value);
-                notify.notify(Values.info,"Изменен параметр: "+label.getText()+"="+value);
-                par.setVal(Integer.parseInt(value));
-                WorkSpace.ws().saveSettings();
-                }
-            });
-        }
-    public void updateFloatField(JLabel label, JTextField field, StringParameter par){
-        KeyBoardPanel keyBoard = new KeyBoardPanel(dim,label.getText(), field, false,new I_RealValue() {
-            @Override
-            public void onEvent(String value) {
-                field.setText(value);
-                notify.notify(Values.info,"Изменен параметр: "+label.getText()+"="+value);
-                par.setVal(value);
-                WorkSpace.ws().saveSettings();
-                }
-            });
-        }
 
     private void ZstartMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ZstartMouseClicked
-        updateFloatField(Z0_3,Zstart,set.model.ZStart);
+        updateField(Z0_3.getText(),Zstart,set.model.ZStart);
     }//GEN-LAST:event_ZstartMouseClicked
 
     private void VerticalStepMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_VerticalStepMouseClicked
-        updateFloatField(Z0_1,VerticalStep,set.model.VerticalStep);
+        updateField(Z0_17.getText(),VerticalStep,set.model.VerticalStep);
     }//GEN-LAST:event_VerticalStepMouseClicked
 
     private void ZfinishMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ZfinishMouseClicked
-        updateFloatField(Z0_16,Zfinish,set.model.ZFinish);
+        updateField(Z0_16.getText(),Zfinish,set.model.ZFinish);
     }//GEN-LAST:event_ZfinishMouseClicked
 
     private void ZUpMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ZUpMouseClicked
-        updateFloatField(Z0_2,ZUp,set.model.ZUp);
+        updateField(Z0_2.getText(),ZUp,set.model.ZUp);
     }//GEN-LAST:event_ZUpMouseClicked
 
     private void BlankWidthMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BlankWidthMouseClicked
-        updateFloatField(Z0_8,BlankWidth,set.model.BlankWidth,2.0);
+        updateField(Z0_8.getText(),BlankWidth,set.model.BlankWidth,2.0);
     }//GEN-LAST:event_BlankWidthMouseClicked
 
     private void BlankHightMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BlankHightMouseClicked
-        updateFloatField(Z0_15,BlankHight,set.model.BlankHight,2.0);
+        updateField(Z0_15.getText(),BlankHight,set.model.BlankHight,2.0);
     }//GEN-LAST:event_BlankHightMouseClicked
 
     private void BlankZMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BlankZMouseClicked
-        updateFloatField(Z0_5,BlankZ,set.model.BlankZ);
+        updateField(Z0_5.getText(),BlankZ,set.model.BlankZ);
     }//GEN-LAST:event_BlankZMouseClicked
 
     private void CutterDiameterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CutterDiameterMouseClicked
-        updateFloatField(Z0_6,CutterDiameter,set.model.CutterDiameter);
+        updateField(Z0_6.getText(),CutterDiameter,set.model.CutterDiameter);
     }//GEN-LAST:event_CutterDiameterMouseClicked
 
     private void StepMinusMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_StepMinusMouseClicked
-        updateFloatField(Z0_7,StepMinus,set.model.StepMinus);
+        updateField(Z0_7.getText(),StepMinus,set.model.StepMinus);
     }//GEN-LAST:event_StepMinusMouseClicked
 
     private void FillParametersRasterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FillParametersRasterMouseClicked
-        updateFloatField(Z2_1,FillParametersRaster,set.slice.FillParametersRaster);
+        updateField(Z2_1.getText(),FillParametersRaster,set.slice.FillParametersRaster);
     }//GEN-LAST:event_FillParametersRasterMouseClicked
 
     private void FillParametersOffsetMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FillParametersOffsetMouseClicked
-        updateFloatField(Z2_2,FillParametersOffset,set.slice.FillParametersOffset);
+        updateField(Z2_2.getText(),FillParametersOffset,set.slice.FillParametersOffset);
     }//GEN-LAST:event_FillParametersOffsetMouseClicked
 
     private void FillParametersAngleMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FillParametersAngleMouseClicked
-        updateFloatField(Z2_3,FillParametersAngle,set.slice.FillParametersAngle);
+        updateField(Z2_3.getText(),FillParametersAngle,set.slice.FillParametersAngle);
     }//GEN-LAST:event_FillParametersAngleMouseClicked
 
     private void FillParametersAngleIncMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FillParametersAngleIncMouseClicked
-        updateFloatField(Z2_4,FillParametersAngleInc,set.slice.FillParametersAngleInc);
+        updateField(Z2_4.getText(),FillParametersAngleInc,set.slice.FillParametersAngleInc);
     }//GEN-LAST:event_FillParametersAngleIncMouseClicked
 
     private void FillParametersFillCellMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FillParametersFillCellMouseClicked
-        updateFloatField(Z2_5,FillParametersFillCell,set.slice.FillParametersFillCell);
+        updateField(Z2_5.getText(),FillParametersFillCell,set.slice.FillParametersFillCell);
     }//GEN-LAST:event_FillParametersFillCellMouseClicked
 
     private void FillingFlatnessMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FillingFlatnessMouseClicked
-        updateFloatField(Z2_6,FillingFlatness,set.slice.FillingFlatness);
+        updateField(Z2_6.getText(),FillingFlatness,set.slice.FillingFlatness);
     }//GEN-LAST:event_FillingFlatnessMouseClicked
 
     private void WorkFrameXMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_WorkFrameXMouseClicked
-        updateFloatField(Z0_9,WorkFrameX,set.mashine.WorkFrameX);
+        updateField(Z0_9.getText(),WorkFrameX,set.mashine.WorkFrameX);
     }//GEN-LAST:event_WorkFrameXMouseClicked
 
     private void WorkFrameYMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_WorkFrameYMouseClicked
-        updateFloatField(Z0_10,WorkFrameY,set.mashine.WorkFrameY);
+        updateField(Z0_10.getText(),WorkFrameY,set.mashine.WorkFrameY);
     }//GEN-LAST:event_WorkFrameYMouseClicked
 
     private void WorkFrameZMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_WorkFrameZMouseClicked
-        updateFloatField(Z0_11,WorkFrameZ,set.mashine.WorkFrameZ);
+        updateField(Z0_11.getText(),WorkFrameZ,set.mashine.WorkFrameZ);
     }//GEN-LAST:event_WorkFrameZMouseClicked
 
     private void DeviceNameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DeviceNameMouseClicked
-        updateFloatField(Z0_12,DeviceName,set.mashine.DeviceName);
+        updateField(Z0_12.getText(),DeviceName,set.mashine.DeviceName);
     }//GEN-LAST:event_DeviceNameMouseClicked
 
     private void DevicePortMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DevicePortMouseClicked
-        updateFloatField(Z0_13,DevicePort,set.mashine.DeviceNum);
+        updateField(Z0_13.getText(),DevicePort,set.mashine.DeviceNum);
     }//GEN-LAST:event_DevicePortMouseClicked
 
     private void BaudRateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BaudRateMouseClicked
-        updateFloatField(Z0_14,BaudRate,set.mashine.BaudRate);
+        updateField(Z0_14.getText(),BaudRate,set.mashine.BaudRate);
     }//GEN-LAST:event_BaudRateMouseClicked
 
     private void DeviceTimeOutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DeviceTimeOutMouseClicked
-        updateFloatField(Z0_4,DeviceTimeOut,set.mashine.DeviceTimeOut);
+        updateField(Z0_4.getText(),DeviceTimeOut,set.mashine.DeviceTimeOut);
     }//GEN-LAST:event_DeviceTimeOutMouseClicked
+
+    private void AutoScaleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AutoScaleButtonActionPerformed
+        updateField(Z0_19.getText(),autoScale,set.model.AutoScale);
+    }//GEN-LAST:event_AutoScaleButtonActionPerformed
+
+    private void AutoCenterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AutoCenterButtonActionPerformed
+        updateField(Z0_18.getText(),autoCenter,set.model.AutoCenter);
+    }//GEN-LAST:event_AutoCenterButtonActionPerformed
+
+    private void FullScreenButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FullScreenButtonActionPerformed
+        fullScreen.itemStateChanged();
+        WorkSpace.ws().getNotify().notify(Values.info,"Изменен параметр: "+Z0_20.getText()+"="+fullScreen.isSelected());
+        WorkSpace.ws().settings().fullScreen = fullScreen.isSelected();
+        WorkSpace.ws().saveSettings();
+    }//GEN-LAST:event_FullScreenButtonActionPerformed
+
+    private void ARCGCodeModeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ARCGCodeModeButtonActionPerformed
+        updateField(Z0_21.getText(),arcGCodeMode,set.slice.ARCGCodeMode);
+    }//GEN-LAST:event_ARCGCodeModeButtonActionPerformed
+
+    private void LoopsWithSomeLineTypesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoopsWithSomeLineTypesButtonActionPerformed
+        updateField(Z0_27.getText(),loopsWithSomeLineTypes,set.slice.LoopsWithSomeLineTypes);
+    }//GEN-LAST:event_LoopsWithSomeLineTypesButtonActionPerformed
+
+    private void ContinuousButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ContinuousButtonActionPerformed
+        updateField(Z0_23.getText(),continuous,set.slice.FillContinuous);
+    }//GEN-LAST:event_ContinuousButtonActionPerformed
+
+    private void MoveOptimizeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MoveOptimizeButtonActionPerformed
+        updateField(Z0_22.getText(),moveOptimize,set.slice.MoveOptimize);
+        ContinuousButton.setVisible(moveOptimize.isSelected());
+        Z0_23.setVisible(moveOptimize.isSelected());
+    }//GEN-LAST:event_MoveOptimizeButtonActionPerformed
+
+    private void SendLoopsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SendLoopsButtonActionPerformed
+        updateField(Z0_24.getText(),sendLoops,set.slice.SendLoops);
+    }//GEN-LAST:event_SendLoopsButtonActionPerformed
+
+    private void FlateCircuitSliceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FlateCircuitSliceButtonActionPerformed
+        updateField(Z0_25.getText(),flateCircuitSlice,set.slice.FlateCircuitSlice);
+    }//GEN-LAST:event_FlateCircuitSliceButtonActionPerformed
+
+    private void RepairLoopsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RepairLoopsButtonActionPerformed
+        updateField(Z0_26.getText(),repairLoops,set.slice.RepairLoops);
+    }//GEN-LAST:event_RepairLoopsButtonActionPerformed
+
+    private void SHIFTMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SHIFTMouseClicked
+        updateField(ShiftButton.getText(),SHIFT,shift);
+    }//GEN-LAST:event_SHIFTMouseClicked
+
+    private void ANGLEMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ANGLEMouseClicked
+        updateField(RotateButton.getText(),ANGLE,angle);
+    }//GEN-LAST:event_ANGLEMouseClicked
+
+    private void ScaleFactorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ScaleFactorMouseClicked
+        updateField(Z0_30.getText(),ScaleFactor,set.model.ScaleFactor);
+    }//GEN-LAST:event_ScaleFactorMouseClicked
 
     @Override
     public boolean saveSettings() {
@@ -1356,14 +1403,14 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField ANGLE;
-    private javax.swing.JCheckBox ARCGCodeMode;
-    private javax.swing.JCheckBox AutoCenter;
-    private javax.swing.JCheckBox AutoScale;
+    private javax.swing.JButton ARCGCodeModeButton;
+    private javax.swing.JButton AutoCenterButton;
+    private javax.swing.JButton AutoScaleButton;
     private javax.swing.JTextField BaudRate;
     private javax.swing.JTextField BlankHight;
     private javax.swing.JTextField BlankWidth;
     private javax.swing.JTextField BlankZ;
-    private javax.swing.JCheckBox Continuous;
+    private javax.swing.JButton ContinuousButton;
     private javax.swing.JTextField CutterDiameter;
     private javax.swing.JTextField DeviceName;
     private javax.swing.JTextField DevicePort;
@@ -1374,24 +1421,24 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
     private javax.swing.JTextField FillParametersOffset;
     private javax.swing.JTextField FillParametersRaster;
     private javax.swing.JTextField FillingFlatness;
-    private javax.swing.JCheckBox FlateCircuitSlice;
-    private javax.swing.JCheckBox FullScreen;
+    private javax.swing.JButton FlateCircuitSliceButton;
+    private javax.swing.JButton FullScreenButton;
     private javax.swing.JTextField LineCount;
     private javax.swing.JTextField LineLength;
-    private javax.swing.JCheckBox LoopsWithSomeLineTypes;
+    private javax.swing.JButton LoopsWithSomeLineTypesButton;
     private javax.swing.JTextField MarkingFieldHight;
     private javax.swing.JTextField MarkingFieldWidth;
     private javax.swing.JComboBox<String> Mode2;
-    private javax.swing.JCheckBox MoveOptimize;
+    private javax.swing.JButton MoveOptimizeButton;
     private javax.swing.JTextField MoveProc;
     private javax.swing.JTextField PageServoOffsetsLeft;
     private javax.swing.JTextField PageServoOffsetsTop;
     private javax.swing.JTextField PrintTime;
-    private javax.swing.JCheckBox RepairLoops;
+    private javax.swing.JButton RepairLoopsButton;
     private javax.swing.JButton RotateButton;
     private javax.swing.JTextField SHIFT;
     private javax.swing.JTextField ScaleFactor;
-    private javax.swing.JCheckBox SendLoops;
+    private javax.swing.JButton SendLoopsButton;
     private javax.swing.JButton ShiftButton;
     private javax.swing.JTextField SliceTime;
     private javax.swing.JTextField StepMinus;
@@ -1402,7 +1449,6 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
     private javax.swing.JComboBox<String> XYZ;
     private javax.swing.JComboBox<String> XYZShift;
     private javax.swing.JTextField Z;
-    private javax.swing.JLabel Z0_1;
     private javax.swing.JLabel Z0_10;
     private javax.swing.JLabel Z0_11;
     private javax.swing.JLabel Z0_12;
@@ -1410,8 +1456,20 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
     private javax.swing.JLabel Z0_14;
     private javax.swing.JLabel Z0_15;
     private javax.swing.JLabel Z0_16;
+    private javax.swing.JLabel Z0_17;
+    private javax.swing.JLabel Z0_18;
+    private javax.swing.JLabel Z0_19;
     private javax.swing.JLabel Z0_2;
+    private javax.swing.JLabel Z0_20;
+    private javax.swing.JLabel Z0_21;
+    private javax.swing.JLabel Z0_22;
+    private javax.swing.JLabel Z0_23;
+    private javax.swing.JLabel Z0_24;
+    private javax.swing.JLabel Z0_25;
+    private javax.swing.JLabel Z0_26;
+    private javax.swing.JLabel Z0_27;
     private javax.swing.JLabel Z0_3;
+    private javax.swing.JLabel Z0_30;
     private javax.swing.JLabel Z0_4;
     private javax.swing.JLabel Z0_5;
     private javax.swing.JLabel Z0_6;
@@ -1443,7 +1501,6 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel46;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;

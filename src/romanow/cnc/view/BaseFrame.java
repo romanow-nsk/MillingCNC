@@ -29,7 +29,7 @@ public abstract class BaseFrame extends JFrame implements I_Important, I_PanelEv
     public WorkSpace ws(){ return ws; }
     public Settings local(){ return ws.local(); }
     public Settings global(){ return ws.global(); }
-    public void createPanels(Dimension dim){}
+    public void createPanels(){}
     public void refreshPanels(){}
     public void toFront(int mask){}
     private WorkSpace ws;

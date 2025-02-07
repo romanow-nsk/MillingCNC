@@ -1,6 +1,7 @@
 package romanow.cnc.settings;
 
 import com.thoughtworks.xstream.XStream;
+import lombok.Getter;
 import romanow.cnc.commands.Command;
 import romanow.cnc.console.COMPortDriver;
 import romanow.cnc.io.I_File;
@@ -16,6 +17,7 @@ import romanow.cnc.utils.UNIException;
 import romanow.cnc.Values;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -51,6 +53,21 @@ public class WorkSpace implements I_File{
     private int viewMode=Values.PanelLogin;
     private boolean closing=false;
     private COMPortDriver com = new COMPortDriver();
+    @Getter private Dimension dim = new Dimension();
+    @Getter private double scaleX=1;
+    @Getter private double scaleY=1;
+    @Getter private double scaleMin=1;
+    public void setDimension(){
+        if (global.fullScreen){
+            dim = Toolkit.getDefaultToolkit().getScreenSize();
+            }
+        else{
+            dim = new Dimension();
+            }
+        scaleY = dim.width==0 ? 1 : ((double) dim.height)/Values.FrameHeight;
+        scaleX = dim.width==0 ? 1 : ((double) dim.width)/Values.FrameWidth;
+        scaleMin = scaleX < scaleY ? scaleX : scaleY;
+        }
     //--------------------------------------------------------------------------
     public COMPortDriver comPort(){ return com; }
     public void closeApplication(){ 
