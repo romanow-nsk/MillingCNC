@@ -40,7 +40,6 @@ public class MLNViewPanel extends BasePanel {
     private double dz;
     private int lIndexes[];
     private int lSize=0;
-    private boolean onlyLoop=false;
     private int cLoop=0;
     private SliceLayer layer=null;
     private I_Notify notify;
@@ -62,6 +61,11 @@ public class MLNViewPanel extends BasePanel {
     private STLPoint2D pp;
     private WorkSpace ws;
     private JCheckBoxButton grid;
+    private JCheckBoxButton points0;
+    private JCheckBoxButton points2;
+    private JCheckBoxButton points3;
+    private JCheckBoxButton onlyLoop;
+    private JCheckBoxButton moveToNearest;
 
     /**
      * Creates new form MLNViewPanel
@@ -69,17 +73,35 @@ public class MLNViewPanel extends BasePanel {
     public MLNViewPanel(CNCViewer base) {
         super(base);
         initComponents();
-        setComponentsScale();
         ws = WorkSpace.ws();
-        double scaleY = WorkSpace.ws().getScaleX();
-        double scaleX = WorkSpace.ws().getScaleY();
+        double scaleY = ws.getScaleX();
+        double scaleX = ws.getScaleY();
         grid = new JCheckBoxButton(GridButton);
+        grid.setSelected(true);
+        points0 = new JCheckBoxButton(Points0Button);
+        points0.setSelected(true);
+        points2 = new JCheckBoxButton(Points2Button);
+        points2.setSelected(true);
+        points3 = new JCheckBoxButton(Points3Button);
+        points3.setSelected(true);
+        onlyLoop = new JCheckBoxButton(OnlyLoopButton);
+        onlyLoop.setSelected(true);
+        moveToNearest = new JCheckBoxButton(MoveToNearestButton);
+        moveToNearest.setSelected(true);
+        setComponentsScale();
         statView = new StatisticPanel();
+        if (ws.global().fullScreen)
+            statView.setBounds((int)(scaleX*980), (int)(scaleY*10), (int)(scaleX*250), (int)(scaleY*220));
+        else
+            statView.setBounds(890, 10, 250, 220);
         BasePanel.setComponentsScale(statView);
-        statView.setBounds((int)(scaleX*980), 0, (int)(scaleX*250), (int)(scaleY*220));
         add(statView);
         gPanel = new GraphPanel(mBack);
-        gPanel.setBounds((int)(scaleX*290), (int)(scaleY*10), (int)((scaleX < scaleY ? scaleX : scaleY)*680));
+        if (ws.global().fullScreen)
+            gPanel.setBounds((int)(scaleX*250), (int)(scaleY*10), (int)(ws.getScaleMin()*680));
+        else
+            gPanel.setBounds(210,10,680);
+        BasePanel.setComponentsScale(gPanel);
         add(gPanel);
         MODE.addItem("Растр");
         MODE.addItem("Сечение");
@@ -169,7 +191,7 @@ public class MLNViewPanel extends BasePanel {
     private boolean testOnlyLoopMode(){
         if (layer==null)
             return false;
-        if (mode==2 && onlyLoop)
+        if (mode==2 && onlyLoop.isSelected())
             return true;
         return false;
     }
@@ -179,7 +201,7 @@ public class MLNViewPanel extends BasePanel {
         two = null;
     }
     private I_STLPoint2D nearest(I_STLPoint2D pp){
-        if (!MoveToNearest.isSelected()) return pp;
+        if (!moveToNearest.isSelected()) return pp;
         if (pp==null) return pp;
         STLLineGroup gg = mode==0 ? layer.segments() : layer.lines();
         I_STLPoint2D pp2 = gg.nearestPoint(pp,Values.NearestPointDistance);
@@ -260,14 +282,12 @@ public class MLNViewPanel extends BasePanel {
     }
     private void onlyLoopMode(boolean repaint){
         if (mode!=2)
-            OnlyLoop.setSelected(false);
-        else
-            onlyLoop = OnlyLoop.isSelected();
-        LoopPlus.setVisible(onlyLoop);
-        LoopMinus.setVisible(onlyLoop);
-        LoopList2.setVisible(onlyLoop);
-        LoopCalc.setVisible(onlyLoop);
-        DeleteLoop.setVisible(onlyLoop);
+            onlyLoop.setSelected(false);
+        LoopPlus.setVisible(onlyLoop.isSelected());
+        LoopMinus.setVisible(onlyLoop.isSelected());
+        LoopList2.setVisible(onlyLoop.isSelected());
+        LoopCalc.setVisible(onlyLoop.isSelected());
+        DeleteLoop.setVisible(onlyLoop.isSelected());
         if (repaint)
             paintView(false);
     }
@@ -364,7 +384,7 @@ public class MLNViewPanel extends BasePanel {
             for (int i=0;i<layer.loops().size();i++)
                 LoopList2.addItem(""+(i+1));
             cLoop=0;
-        }
+            }
         gPanel.setPaintParams(HORIZ,VERTIC);
         if (grid.isSelected())
             gPanel.paintGrid(gridColor);
@@ -373,13 +393,13 @@ public class MLNViewPanel extends BasePanel {
         if (mode<=2)
             statView.setValues(layer.rezult());
         if (mode==2) {
-            if (onlyLoop) {
+            if (onlyLoop.isSelected()) {
                 if (layer.loops().size()!=0)
                     paintLoop(layer.loops().get(cLoop));
             } else {
                 for (STLLoop loop : layer.loops()) {
                     int loopType = loop.loopLineMode();
-                    boolean viz = loopType == 0 && Points0.isSelected() || loopType == 2 && Points2.isSelected() || loopType == 3 && Points3.isSelected();
+                    boolean viz = loopType == 0 && points0.isSelected() || loopType == 2 && points2.isSelected() || loopType == 3 && points3.isSelected();
                     if (viz)
                         paintLoop(loop);
                 }
@@ -463,7 +483,7 @@ public class MLNViewPanel extends BasePanel {
         if (mode<3) lastLayer = cLayer;         // Последний слой в первых 3 категориях
         mode = MODE.getSelectedIndex();
         if (mode!=2)
-            OnlyLoop.setSelected(false);
+            onlyLoop.setSelected(false);
         if (oldMode>=3 || mode>=3)              // Если не происходит смены первых трех
             setLayers();
         onlyLoopMode(repaint);
@@ -479,10 +499,10 @@ public class MLNViewPanel extends BasePanel {
         B6.setVisible(vv);
         B7.setVisible(vv);
         boolean loops = mode==2;
-        Points0.setVisible(loops);
-        Points2.setVisible(loops);
-        Points3.setVisible(loops);
-        OnlyLoop.setVisible(loops);
+        points0.setVisible(loops);
+        points2.setVisible(loops);
+        points3.setVisible(loops);
+        onlyLoop.setVisible(loops);
         LineRemove.setVisible(mode==0 || mode==1);
         LineInsert.setVisible(mode==0 || mode==1);
         ShowPrint.setVisible(mode==0);
@@ -591,11 +611,7 @@ public class MLNViewPanel extends BasePanel {
         PREV = new javax.swing.JButton();
         NEXT = new javax.swing.JButton();
         MES = new javax.swing.JTextField();
-        Points0 = new javax.swing.JCheckBox();
-        Points2 = new javax.swing.JCheckBox();
-        Points3 = new javax.swing.JCheckBox();
         jLabel1 = new javax.swing.JLabel();
-        OnlyLoop = new javax.swing.JCheckBox();
         LoopPlus = new javax.swing.JButton();
         LoopMinus = new javax.swing.JButton();
         DeleteLoop = new javax.swing.JButton();
@@ -613,7 +629,6 @@ public class MLNViewPanel extends BasePanel {
         B7 = new javax.swing.JButton();
         LineLabel1 = new javax.swing.JLabel();
         LineInsert = new javax.swing.JButton();
-        MoveToNearest = new javax.swing.JCheckBox();
         MY = new javax.swing.JTextField();
         PY = new javax.swing.JTextField();
         X = new javax.swing.JLabel();
@@ -631,8 +646,19 @@ public class MLNViewPanel extends BasePanel {
         jLabel4 = new javax.swing.JLabel();
         X3 = new javax.swing.JLabel();
         ShowPrint = new javax.swing.JButton();
-        GridButton = new javax.swing.JButton();
+        Points2Button = new javax.swing.JButton();
         Z0_1 = new javax.swing.JLabel();
+        GridButton = new javax.swing.JButton();
+        Z0_2 = new javax.swing.JLabel();
+        Points3Button = new javax.swing.JButton();
+        Z0_3 = new javax.swing.JLabel();
+        Points0Button = new javax.swing.JButton();
+        Z0_4 = new javax.swing.JLabel();
+        OnlyLoopButton = new javax.swing.JButton();
+        Z0_5 = new javax.swing.JLabel();
+        MoveToNearestButton = new javax.swing.JButton();
+        Z0_6 = new javax.swing.JLabel();
+        Z0_7 = new javax.swing.JLabel();
 
         setLayout(null);
 
@@ -669,7 +695,7 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(VERTIC);
-        VERTIC.setBounds(230, 420, 20, 270);
+        VERTIC.setBounds(180, 420, 20, 270);
 
         MAS.setMaximum(50);
         MAS.setMinimum(1);
@@ -704,60 +730,17 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(NEXT);
-        NEXT.setBounds(170, 170, 40, 40);
+        NEXT.setBounds(150, 170, 40, 40);
 
         MES.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         MES.setEnabled(false);
         add(MES);
         MES.setBounds(200, 700, 880, 30);
 
-        Points0.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        Points0.setSelected(true);
-        Points0.setText("Сечение");
-        Points0.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                Points0ItemStateChanged(evt);
-            }
-        });
-        add(Points0);
-        Points0.setBounds(10, 500, 90, 24);
-
-        Points2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        Points2.setSelected(true);
-        Points2.setText("Сторона");
-        Points2.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                Points2ItemStateChanged(evt);
-            }
-        });
-        add(Points2);
-        Points2.setBounds(10, 420, 100, 24);
-
-        Points3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        Points3.setSelected(true);
-        Points3.setText("Плоскость");
-        Points3.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                Points3ItemStateChanged(evt);
-            }
-        });
-        add(Points3);
-        Points3.setBounds(10, 460, 100, 24);
-
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel1.setText("Масштаб");
         add(jLabel1);
         jLabel1.setBounds(910, 410, 110, 20);
-
-        OnlyLoop.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        OnlyLoop.setText("Просмотр по контурам");
-        OnlyLoop.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                OnlyLoopItemStateChanged(evt);
-            }
-        });
-        add(OnlyLoop);
-        OnlyLoop.setBounds(10, 540, 210, 24);
 
         LoopPlus.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         LoopPlus.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/right.PNG"))); // NOI18N
@@ -769,7 +752,7 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(LoopPlus);
-        LoopPlus.setBounds(150, 650, 40, 40);
+        LoopPlus.setBounds(140, 650, 40, 40);
 
         LoopMinus.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         LoopMinus.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/left.PNG"))); // NOI18N
@@ -808,7 +791,7 @@ public class MLNViewPanel extends BasePanel {
         B5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         B5.setText("0.0");
         add(B5);
-        B5.setBounds(150, 300, 70, 30);
+        B5.setBounds(150, 300, 50, 30);
 
         B3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         B3.setText("Добавить слой");
@@ -828,7 +811,7 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(B2);
-        B2.setBounds(10, 260, 130, 30);
+        B2.setBounds(10, 260, 120, 30);
 
         LineRemove.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         LineRemove.setText("Удалить линию");
@@ -855,11 +838,11 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(B4);
-        B4.setBounds(10, 340, 210, 30);
+        B4.setBounds(10, 340, 200, 30);
         add(jSeparator2);
-        jSeparator2.setBounds(10, 375, 220, 10);
+        jSeparator2.setBounds(10, 375, 190, 10);
         add(jSeparator3);
-        jSeparator3.setBounds(10, 530, 210, 10);
+        jSeparator3.setBounds(10, 550, 210, 0);
 
         B6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         B6.setText("Загрузить сечение");
@@ -879,7 +862,7 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(B7);
-        B7.setBounds(10, 220, 130, 30);
+        B7.setBounds(10, 220, 120, 30);
 
         LineLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         LineLabel1.setText("Редактировать");
@@ -895,12 +878,6 @@ public class MLNViewPanel extends BasePanel {
         });
         add(LineInsert);
         LineInsert.setBounds(910, 625, 170, 30);
-
-        MoveToNearest.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        MoveToNearest.setSelected(true);
-        MoveToNearest.setText("Привязка к ближайшей");
-        add(MoveToNearest);
-        MoveToNearest.setBounds(910, 540, 190, 24);
 
         MY.setEditable(false);
         MY.setBackground(new java.awt.Color(200, 200, 200));
@@ -922,7 +899,7 @@ public class MLNViewPanel extends BasePanel {
         X.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         X.setText("Y");
         add(X);
-        X.setBounds(220, 430, 20, 20);
+        X.setBounds(185, 400, 20, 20);
 
         X1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         X1.setText("X");
@@ -985,7 +962,7 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(LAYERS);
-        LAYERS.setBounds(10, 100, 210, 30);
+        LAYERS.setBounds(10, 100, 190, 30);
 
         MODE.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         MODE.addItemListener(new java.awt.event.ItemListener() {
@@ -994,11 +971,11 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(MODE);
-        MODE.setBounds(10, 20, 210, 30);
+        MODE.setBounds(10, 20, 190, 30);
 
         LoopList2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         add(LoopList2);
-        LoopList2.setBounds(10, 600, 210, 30);
+        LoopList2.setBounds(10, 600, 170, 30);
 
         X2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         X2.setText("X");
@@ -1008,7 +985,7 @@ public class MLNViewPanel extends BasePanel {
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel4.setText("Контуры");
         add(jLabel4);
-        jLabel4.setBounds(20, 390, 110, 20);
+        jLabel4.setBounds(20, 380, 110, 20);
 
         X3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         X3.setText("Y");
@@ -1025,18 +1002,88 @@ public class MLNViewPanel extends BasePanel {
         add(ShowPrint);
         ShowPrint.setBounds(900, 300, 120, 30);
 
+        Points2Button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Points2ButtonActionPerformed(evt);
+            }
+        });
+        add(Points2Button);
+        Points2Button.setBounds(120, 400, 50, 40);
+
+        Z0_1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z0_1.setText("Сетка (мм)");
+        add(Z0_1);
+        Z0_1.setBounds(70, 140, 90, 20);
+
         GridButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 GridButtonActionPerformed(evt);
             }
         });
         add(GridButton);
-        GridButton.setBounds(80, 170, 50, 40);
+        GridButton.setBounds(70, 170, 50, 40);
 
-        Z0_1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        Z0_1.setText("Сетка (мм)");
-        add(Z0_1);
-        Z0_1.setBounds(80, 140, 90, 20);
+        Z0_2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z0_2.setText("По контурам");
+        add(Z0_2);
+        Z0_2.setBounds(20, 560, 90, 20);
+
+        Points3Button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Points3ButtonActionPerformed(evt);
+            }
+        });
+        add(Points3Button);
+        Points3Button.setBounds(120, 450, 50, 40);
+
+        Z0_3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z0_3.setText("Сторона");
+        add(Z0_3);
+        Z0_3.setBounds(20, 410, 90, 20);
+
+        Points0Button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Points0ButtonActionPerformed(evt);
+            }
+        });
+        add(Points0Button);
+        Points0Button.setBounds(120, 500, 50, 40);
+
+        Z0_4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z0_4.setText("Плоскость");
+        add(Z0_4);
+        Z0_4.setBounds(20, 460, 90, 20);
+
+        OnlyLoopButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                OnlyLoopButtonActionPerformed(evt);
+            }
+        });
+        add(OnlyLoopButton);
+        OnlyLoopButton.setBounds(120, 550, 50, 40);
+
+        Z0_5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z0_5.setText("к ближайшей");
+        add(Z0_5);
+        Z0_5.setBounds(910, 560, 90, 20);
+
+        MoveToNearestButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MoveToNearestButtonActionPerformed(evt);
+            }
+        });
+        add(MoveToNearestButton);
+        MoveToNearestButton.setBounds(1030, 540, 50, 40);
+
+        Z0_6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z0_6.setText("Сечение");
+        add(Z0_6);
+        Z0_6.setBounds(20, 510, 90, 20);
+
+        Z0_7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z0_7.setText("Привязка");
+        add(Z0_7);
+        Z0_7.setBounds(910, 540, 90, 20);
     }// </editor-fold>//GEN-END:initComponents
 
     private void HORIZStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_HORIZStateChanged
@@ -1067,24 +1114,6 @@ public class MLNViewPanel extends BasePanel {
     private void NEXTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NEXTActionPerformed
         toNext();
     }//GEN-LAST:event_NEXTActionPerformed
-
-    private void Points0ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_Points0ItemStateChanged
-        selectMode(true);
-        paintView(true);
-    }//GEN-LAST:event_Points0ItemStateChanged
-
-    private void Points2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_Points2ItemStateChanged
-        selectMode(true);
-        paintView(true);
-    }//GEN-LAST:event_Points2ItemStateChanged
-
-    private void Points3ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_Points3ItemStateChanged
-        selectMode(true);
-    }//GEN-LAST:event_Points3ItemStateChanged
-
-    private void OnlyLoopItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_OnlyLoopItemStateChanged
-        selectMode(true);
-    }//GEN-LAST:event_OnlyLoopItemStateChanged
 
     private void LoopPlusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoopPlusActionPerformed
         if (cLoop == layer.loops().size()-1)
@@ -1301,10 +1330,34 @@ public class MLNViewPanel extends BasePanel {
         showRun=!showRun;
     }//GEN-LAST:event_ShowPrintActionPerformed
 
+    private void Points2ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Points2ButtonActionPerformed
+        points2.itemStateChanged();
+        paintView(false);
+    }//GEN-LAST:event_Points2ButtonActionPerformed
+
     private void GridButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GridButtonActionPerformed
         grid.itemStateChanged();
         paintView(false);
     }//GEN-LAST:event_GridButtonActionPerformed
+
+    private void Points3ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Points3ButtonActionPerformed
+        points3.itemStateChanged();
+        paintView(false);
+    }//GEN-LAST:event_Points3ButtonActionPerformed
+
+    private void Points0ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Points0ButtonActionPerformed
+        points0.itemStateChanged();
+        paintView(false);
+    }//GEN-LAST:event_Points0ButtonActionPerformed
+
+    private void OnlyLoopButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OnlyLoopButtonActionPerformed
+        onlyLoop.itemStateChanged();
+        selectMode(true);
+    }//GEN-LAST:event_OnlyLoopButtonActionPerformed
+
+    private void MoveToNearestButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MoveToNearestButtonActionPerformed
+        moveToNearest.itemStateChanged();
+    }//GEN-LAST:event_MoveToNearestButtonActionPerformed
 
     @Override
     public void refresh() {
@@ -1340,15 +1393,15 @@ public class MLNViewPanel extends BasePanel {
     private javax.swing.JTextField MX;
     private javax.swing.JTextField MY;
     private javax.swing.JButton MergeLayers;
-    private javax.swing.JCheckBox MoveToNearest;
+    private javax.swing.JButton MoveToNearestButton;
     private javax.swing.JButton NEXT;
-    private javax.swing.JCheckBox OnlyLoop;
+    private javax.swing.JButton OnlyLoopButton;
     private javax.swing.JButton PREV;
     private javax.swing.JTextField PX;
     private javax.swing.JTextField PY;
-    private javax.swing.JCheckBox Points0;
-    private javax.swing.JCheckBox Points2;
-    private javax.swing.JCheckBox Points3;
+    private javax.swing.JButton Points0Button;
+    private javax.swing.JButton Points2Button;
+    private javax.swing.JButton Points3Button;
     private javax.swing.JSlider ShowDelay;
     private javax.swing.JButton ShowPrint;
     private javax.swing.JSlider VERTIC;
@@ -1357,6 +1410,12 @@ public class MLNViewPanel extends BasePanel {
     private javax.swing.JLabel X2;
     private javax.swing.JLabel X3;
     private javax.swing.JLabel Z0_1;
+    private javax.swing.JLabel Z0_2;
+    private javax.swing.JLabel Z0_3;
+    private javax.swing.JLabel Z0_4;
+    private javax.swing.JLabel Z0_5;
+    private javax.swing.JLabel Z0_6;
+    private javax.swing.JLabel Z0_7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

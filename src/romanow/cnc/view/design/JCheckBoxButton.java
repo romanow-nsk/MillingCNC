@@ -23,5 +23,7 @@ public class JCheckBoxButton {
         button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/toggle-"+(selected ? "on" : "off")+"-48.PNG")));
         button.revalidate();
         }
-
+    public void setVisible(boolean bb){
+        button.setVisible(bb);
+        }
 }

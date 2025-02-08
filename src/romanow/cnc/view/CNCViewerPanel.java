@@ -965,7 +965,6 @@ public class CNCViewerPanel extends BasePanel {
                         setMenuVisible();
                         String ss= "Загружен файл "+fname;
                         ws.getNotify().notify(Values.info,ss);
-                        ws.popup(ss);
                     } catch (IOException e) {
                             String ss= "Ошибка загрузки файла "+fname+": "+e.toString();
                             ws.getNotify().notify(Values.error,ss);

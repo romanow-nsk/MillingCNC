@@ -76,10 +76,10 @@ public abstract class BasePanel extends javax.swing.JPanel implements I_PanelEve
             return;
         //if (dim.width!=0)
         //    panel.setBounds(0,0,dim.width,dim.height);
+        double scaleY = WorkSpace.ws().getScaleY();
+        double scaleX = WorkSpace.ws().getScaleX();
         for(Component component :  list){
             Rectangle rec = component.getBounds();
-            double scaleY = ((double) dim.height)/Values.FrameHeight;
-            double scaleX = ((double) dim.width)/Values.FrameWidth;
             rec.height = (int)(rec.height*scaleY);
             rec.width = (int)(rec.width*scaleX);
             rec.x = (int)(rec.x*scaleX);
