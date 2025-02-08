@@ -32,11 +32,12 @@ public class STL3DViewPanel extends BasePanel {
         }
 
 
-    public STL3DViewPanel(BaseFrame baseFrame,Dimension dim) {
-        super(baseFrame,dim);
+    public STL3DViewPanel(CNCViewer baseFrame) {
+        super(baseFrame);
         initComponents();
+        Dimension dim = WorkSpace.ws().getDim();
         if (dim.width!=0){
-            setComponentsScale(dim);
+            setComponentsScale();
             setPreferredSize(createDim(dim,Values.FrameWidth-100, Values.FrameHeight-Values.FrameBottom*2));
             }
         else

@@ -33,17 +33,11 @@ import romanow.cnc.m3d.ViewNotifyer;
 import static romanow.cnc.Values.*;
 import static romanow.cnc.utils.Utils.viewUpdate;
 
-import romanow.cnc.m3d.Slice2DViewer;
-
 /**
  *
  * @author Admin
  */
 public class CNCViewerPanel extends BasePanel {
-    private ViewNotifyer notify;
-    private BufferedWriter logFile = null;
-    private ViewAdapter viewCommon = new ViewAdapter(null);
-    private boolean stopOnWarning=false;
     private WorkSpace ws=null;
     private int comPortState= ComPortStateOff;
     private final COMPortGDriver driver = new COMPortGDriver();
@@ -52,19 +46,43 @@ public class CNCViewerPanel extends BasePanel {
     private final static int KeyCodeEnter=10;
     private ArrayList<String> savedGCodes = new ArrayList<>();
     private int lastSavedCount=0;
+    private ViewNotifyer notify;
+    private BufferedWriter logFile = null;
+    private ViewAdapter viewCommon = new ViewAdapter(null);
+    private boolean stopOnWarning=false;
     /**
      * Creates new form CNCViewerPanel
      */
-    public CNCViewerPanel(BaseFrame baseFrame, Dimension dim) {
-        super(baseFrame,dim);
+    public CNCViewerPanel(CNCViewer baseFrame) {
+        super(baseFrame);
         initComponents();
         ws = WorkSpace.ws();
+        Dimension dim = ws.getDim();
         if (dim.width!=0)
-            setComponentsScale(dim);
+            setComponentsScale();
         SliceMode.removeAll();
         setComPortState(ComPortStateOff);
         for(String ss : SliceModes)
             SliceMode.addItem(ss);
+        setMenuVisible();
+        ViewAdapter viewCommon = new ViewAdapter(){       // Объект-адаптер для визуальных методов
+            @Override
+            public boolean onStepLine() {
+                if (BYSTEP.isSelected()){
+                    pause(true);
+                    PAUSE.setText("продолжить");
+                }
+                return super.onStepLine();
+            }
+            @Override
+            public boolean onStepLayer() {
+                if (BYSTEP.isSelected()){
+                    pause(true);
+                    PAUSE.setText("продолжить");
+                }
+                return super.onStepLayer();
+            }
+        };
         notify = new ViewNotifyer(LOG,null){
             @Override
             public void notify(final int level0, final String mes) {
@@ -75,45 +93,26 @@ public class CNCViewerPanel extends BasePanel {
                                 try {
                                     logFile.write(Utils.currentTime()+ " "+mes);
                                     logFile.newLine();
-                                    } catch (IOException ex) { closeLogFile(ex);}
-                                }
+                                } catch (IOException ex) { closeLogFile(ex);}
+                            }
                             if (level0>=Values.error){
                                 viewCommon.finish();
                                 PAUSE.setText("...");
-                                }
+                            }
                             if (level0 >Values.warning || stopOnWarning && level0==Values.warning){           // выше warning  - приостановить
                                 if (viewCommon.isRunning()) {
                                     viewCommon.pause(true);
                                     PAUSE.setText("продолжить");
-                                    }
                                 }
-                            });
-                }
-            };
-        viewCommon = new ViewAdapter(){       // Объект-адаптер для визуальных методов
-            @Override
-            public boolean onStepLine() {
-                if (BYSTEP.isSelected()){
-                    pause(true);
-                    PAUSE.setText("продолжить");
-                    }
-                return super.onStepLine();
-                }
-            @Override
-            public boolean onStepLayer() {
-                if (BYSTEP.isSelected()){
-                    pause(true);
-                    PAUSE.setText("продолжить");
-                    }
-                return super.onStepLayer();
-                }
-            };
+                            }
+                        });
+            }
+        };
         ws.setNotify(notify,viewCommon);
-        setMenuVisible();
         }
 
     private void toLog(String ss){
-        notify.notify(common,ss);
+        WorkSpace.ws().getNotify().notify(common,ss);
         }
 
     @Override
@@ -160,12 +159,6 @@ public class CNCViewerPanel extends BasePanel {
     private void initComponents() {
 
         LOG = new java.awt.TextArea();
-        PAUSE = new javax.swing.JButton();
-        STOP = new javax.swing.JButton();
-        BYSTEP = new javax.swing.JCheckBox();
-        LEVEL = new javax.swing.JComboBox<>();
-        LogStop = new javax.swing.JCheckBox();
-        LogToFile = new javax.swing.JCheckBox();
         STLLoad = new javax.swing.JButton();
         STL3DView = new javax.swing.JButton();
         jLabel39 = new javax.swing.JLabel();
@@ -185,68 +178,18 @@ public class CNCViewerPanel extends BasePanel {
         RELATIVE = new javax.swing.JCheckBox();
         GCODEStop = new javax.swing.JButton();
         GCODEPause = new javax.swing.JButton();
+        LEVEL = new javax.swing.JComboBox<>();
+        LogToFile = new javax.swing.JCheckBox();
+        STOP = new javax.swing.JButton();
+        PAUSE = new javax.swing.JButton();
+        LogStop = new javax.swing.JCheckBox();
+        BYSTEP = new javax.swing.JCheckBox();
 
         setLayout(null);
 
         LOG.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         add(LOG);
-        LOG.setBounds(10, 10, 480, 710);
-
-        PAUSE.setText("...");
-        PAUSE.setPreferredSize(new java.awt.Dimension(91, 25));
-        PAUSE.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                PAUSEActionPerformed(evt);
-            }
-        });
-        add(PAUSE);
-        PAUSE.setBounds(510, 520, 100, 30);
-
-        STOP.setText("...");
-        STOP.setPreferredSize(new java.awt.Dimension(81, 25));
-        STOP.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                STOPActionPerformed(evt);
-            }
-        });
-        add(STOP);
-        STOP.setBounds(510, 570, 100, 30);
-
-        BYSTEP.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        BYSTEP.setText("По шагам");
-        add(BYSTEP);
-        BYSTEP.setBounds(700, 520, 130, 24);
-
-        LEVEL.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        LEVEL.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "информ.", "важное", "предупр.", "сбой" }));
-        LEVEL.setPreferredSize(new java.awt.Dimension(72, 25));
-        LEVEL.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                LEVELItemStateChanged(evt);
-            }
-        });
-        add(LEVEL);
-        LEVEL.setBounds(510, 610, 140, 30);
-
-        LogStop.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        LogStop.setText("Остановить лог");
-        LogStop.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                LogStopItemStateChanged(evt);
-            }
-        });
-        add(LogStop);
-        LogStop.setBounds(700, 560, 150, 24);
-
-        LogToFile.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        LogToFile.setText("Лог в файле");
-        LogToFile.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                LogToFileItemStateChanged(evt);
-            }
-        });
-        add(LogToFile);
-        LogToFile.setBounds(700, 610, 120, 20);
+        LOG.setBounds(10, 10, 550, 680);
 
         STLLoad.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         STLLoad.setText("Загрузить STL");
@@ -257,7 +200,7 @@ public class CNCViewerPanel extends BasePanel {
             }
         });
         add(STLLoad);
-        STLLoad.setBounds(510, 40, 140, 30);
+        STLLoad.setBounds(580, 40, 140, 30);
 
         STL3DView.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         STL3DView.setText("3D STL");
@@ -268,17 +211,17 @@ public class CNCViewerPanel extends BasePanel {
             }
         });
         add(STL3DView);
-        STL3DView.setBounds(510, 80, 140, 30);
+        STL3DView.setBounds(580, 80, 140, 30);
 
         jLabel39.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel39.setText("G-код");
         add(jLabel39);
-        jLabel39.setBounds(660, 160, 140, 20);
+        jLabel39.setBounds(730, 160, 140, 20);
 
         jLabel40.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel40.setText("Модель");
         add(jLabel40);
-        jLabel40.setBounds(510, 10, 80, 20);
+        jLabel40.setBounds(580, 10, 80, 20);
 
         SLICE.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         SLICE.setText("Слайсинг");
@@ -289,10 +232,10 @@ public class CNCViewerPanel extends BasePanel {
             }
         });
         add(SLICE);
-        SLICE.setBounds(660, 80, 160, 30);
+        SLICE.setBounds(730, 80, 160, 30);
 
         add(SliceMode);
-        SliceMode.setBounds(660, 40, 160, 30);
+        SliceMode.setBounds(730, 40, 160, 30);
 
         STL3DViewLoops.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         STL3DViewLoops.setText("3D STL+слайсинг");
@@ -303,7 +246,7 @@ public class CNCViewerPanel extends BasePanel {
             }
         });
         add(STL3DViewLoops);
-        STL3DViewLoops.setBounds(510, 120, 140, 30);
+        STL3DViewLoops.setBounds(580, 120, 140, 30);
 
         MLNView.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         MLNView.setText("MLN по слоям");
@@ -314,12 +257,12 @@ public class CNCViewerPanel extends BasePanel {
             }
         });
         add(MLNView);
-        MLNView.setBounds(660, 120, 160, 30);
+        MLNView.setBounds(730, 120, 160, 30);
 
         jLabel41.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel41.setText("Слайсинг");
         add(jLabel41);
-        jLabel41.setBounds(660, 10, 80, 20);
+        jLabel41.setBounds(730, 10, 80, 20);
 
         GCODEMilling.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         GCODEMilling.setText("G-код (станок)");
@@ -330,7 +273,7 @@ public class CNCViewerPanel extends BasePanel {
             }
         });
         add(GCODEMilling);
-        GCODEMilling.setBounds(510, 290, 140, 30);
+        GCODEMilling.setBounds(580, 290, 140, 30);
 
         GCODESave.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         GCODESave.setText("G-код (экспорт)");
@@ -341,12 +284,12 @@ public class CNCViewerPanel extends BasePanel {
             }
         });
         add(GCODESave);
-        GCODESave.setBounds(660, 190, 160, 30);
+        GCODESave.setBounds(730, 190, 160, 30);
 
         jLabel42.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel42.setText("Фрезерование");
         add(jLabel42);
-        jLabel42.setBounds(520, 260, 140, 20);
+        jLabel42.setBounds(590, 260, 140, 20);
 
         GCODEView.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         GCODEView.setText("G-код (просмотр)");
@@ -357,7 +300,7 @@ public class CNCViewerPanel extends BasePanel {
             }
         });
         add(GCODEView);
-        GCODEView.setBounds(660, 230, 160, 30);
+        GCODEView.setBounds(730, 230, 160, 30);
 
         MLNLoad.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         MLNLoad.setText("Загрузить MLN");
@@ -368,7 +311,7 @@ public class CNCViewerPanel extends BasePanel {
             }
         });
         add(MLNLoad);
-        MLNLoad.setBounds(510, 190, 140, 30);
+        MLNLoad.setBounds(580, 190, 140, 30);
 
         GGODESend.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -376,7 +319,7 @@ public class CNCViewerPanel extends BasePanel {
             }
         });
         add(GGODESend);
-        GGODESend.setBounds(510, 370, 310, 30);
+        GGODESend.setBounds(580, 370, 310, 30);
 
         COMPortOnOff.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/status_gray.png"))); // NOI18N
         COMPortOnOff.setBorderPainted(false);
@@ -387,12 +330,12 @@ public class CNCViewerPanel extends BasePanel {
             }
         });
         add(COMPortOnOff);
-        COMPortOnOff.setBounds(830, 360, 40, 40);
+        COMPortOnOff.setBounds(900, 360, 40, 40);
 
         RELATIVE.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         RELATIVE.setText("Относительная СК");
         add(RELATIVE);
-        RELATIVE.setBounds(510, 330, 140, 24);
+        RELATIVE.setBounds(580, 330, 140, 24);
 
         GCODEStop.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         GCODEStop.setText("Завершить");
@@ -403,7 +346,7 @@ public class CNCViewerPanel extends BasePanel {
             }
         });
         add(GCODEStop);
-        GCODEStop.setBounds(670, 330, 150, 30);
+        GCODEStop.setBounds(740, 330, 150, 30);
 
         GCODEPause.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         GCODEPause.setText("Пауза");
@@ -414,63 +357,71 @@ public class CNCViewerPanel extends BasePanel {
             }
         });
         add(GCODEPause);
-        GCODEPause.setBounds(670, 290, 150, 30);
+        GCODEPause.setBounds(740, 290, 150, 30);
+
+        LEVEL.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        LEVEL.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "информ.", "важное", "предупр.", "сбой" }));
+        LEVEL.setPreferredSize(new java.awt.Dimension(72, 25));
+        LEVEL.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                LEVELItemStateChanged(evt);
+            }
+        });
+        add(LEVEL);
+        LEVEL.setBounds(570, 660, 140, 30);
+
+        LogToFile.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        LogToFile.setText("Лог в файле");
+        LogToFile.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                LogToFileItemStateChanged(evt);
+            }
+        });
+        add(LogToFile);
+        LogToFile.setBounds(650, 700, 120, 20);
+
+        STOP.setText("...");
+        STOP.setPreferredSize(new java.awt.Dimension(81, 25));
+        STOP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                STOPActionPerformed(evt);
+            }
+        });
+        add(STOP);
+        STOP.setBounds(120, 700, 100, 30);
+
+        PAUSE.setText("...");
+        PAUSE.setPreferredSize(new java.awt.Dimension(91, 25));
+        PAUSE.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PAUSEActionPerformed(evt);
+            }
+        });
+        add(PAUSE);
+        PAUSE.setBounds(10, 700, 100, 30);
+
+        LogStop.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        LogStop.setText("Остановить лог");
+        LogStop.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                LogStopItemStateChanged(evt);
+            }
+        });
+        add(LogStop);
+        LogStop.setBounds(490, 700, 150, 24);
+
+        BYSTEP.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        BYSTEP.setText("По шагам");
+        add(BYSTEP);
+        BYSTEP.setBounds(380, 700, 130, 24);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void PAUSEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PAUSEActionPerformed
-        if (!viewCommon.isRunning())
-        return;
-        if (viewCommon.changePause()){
-            PAUSE.setText("продолжить");
-        }
-        else{
-            PAUSE.setText("остановить");
-        }
-    }//GEN-LAST:event_PAUSEActionPerformed
-
-    private void STOPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_STOPActionPerformed
-        viewCommon.finish();
-        PAUSE.setText("...");
-        STOP.setText("...");
-        getBaseFrame().sendEvent(Events.OperateFinish,0,0,null,null);
-    }//GEN-LAST:event_STOPActionPerformed
-
-    private void LEVELItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_LEVELItemStateChanged
-        notify.setLevel(LEVEL.getSelectedIndex());
-    }//GEN-LAST:event_LEVELItemStateChanged
-
-    private void LogStopItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_LogStopItemStateChanged
-        notify.logSuspendState(LogStop.isSelected());
-    }//GEN-LAST:event_LogStopItemStateChanged
-
-    private void LogToFileItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_LogToFileItemStateChanged
-        if (LogToFile.isSelected())
-        openLogFile();
-        else
-        closeLogFile(null);
-    }//GEN-LAST:event_LogToFileItemStateChanged
-
-    private void startView(int lineDelay,int layerDelay){
-        sendEvent(Events.OnWarning,0,0,null,null);
-        viewCommon.start(lineDelay,layerDelay);
-        PAUSE.setText("остановить");
-        STOP.setText("прервать");
-        }
-    private void finishOperation(){
-        PAUSE.setText("...");
-        STOP.setText("...");
-        viewCommon.finish();
-        notify.log("Операция завершена "+ Utils.toTimeString(viewCommon.timeInMs()/1000)+" сек");
-        notify.setProgress(0);
-        setMenuVisible();
-        }
 
     private void openModel(){
         try {
-            if (test1()) return;
+            if (getBaseFrame().test1()) return;
             final String fname = getBaseFrame().getInputFileName("Файл STL","stl",false);
             if (fname==null) return;
-            ws.loadModel(fname, notify);
+            ws.loadModel(fname, WorkSpace.ws().getNotify());
             setMenuVisible();
             getBaseFrame().refreshPanels();
             } catch (UNIException ee){ toLog(ee.toString());}
@@ -493,7 +444,7 @@ public class CNCViewerPanel extends BasePanel {
                         ws.load(new DataInputStream(new FileInputStream(fname)));
                         ws.lastName(fname);
                         ws.fileStateChanged();
-                    } catch (IOException e) { notify.notify(Values.error,e.toString()); }
+                    } catch (IOException e) { ws.getNotify().notify(Values.error,e.toString()); }
                     finishOperation();
                 }).start();
          */
@@ -578,15 +529,15 @@ public class CNCViewerPanel extends BasePanel {
     private I_COMPortGReceiver gCodeBack = new I_COMPortGReceiver() {
         @Override
         public void onError(UNIException ee) {
-            notify.notify(error,"GCODE - ошибка: "+ee.toString());
+            WorkSpace.ws().getNotify().notify(error,"GCODE - ошибка: "+ee.toString());
             }
         @Override
         public void onReceive(String ss) {
-            notify.notify(info,"GCODE - асинхронный ответ: "+ss);
+            WorkSpace.ws().getNotify().notify(info,"GCODE - асинхронный ответ: "+ss);
             }
         @Override
         public void onClose() {
-            notify.notify(info,"GCODE - отключение");
+            WorkSpace.ws().getNotify().notify(info,"GCODE - отключение");
             }
         @Override
         public void setOKTimeOut(int delyInMS) {}
@@ -604,7 +555,7 @@ public class CNCViewerPanel extends BasePanel {
                     java.awt.EventQueue.invokeLater(new Runnable() {
                         @Override
                         public void run() {
-                            notify.notify(warning,"GCODE: тайм-аут \'ok\'");
+                            ws.getNotify().notify(warning,"GCODE: тайм-аут \'ok\'");
                             setComPortState(ComPortStateOn);
                         }
                     });
@@ -613,13 +564,13 @@ public class CNCViewerPanel extends BasePanel {
             }
         @Override
         public void onError(UNIException ee) {
-            notify.notify(error,"GCODE - ошибка: "+ee.toString());
+            ws.getNotify().notify(error,"GCODE - ошибка: "+ee.toString());
             setComPortState(ComPortStateFail);
             }
         @Override
         public void onReceive(String ss) {
             if (!ss.equals("ok")){
-                notify.notify(info, "GCODE: " + ss);
+                ws.getNotify().notify(info, "GCODE: " + ss);
                 setComPortState(ComPortStateBusy);
                 }
             else{
@@ -631,7 +582,7 @@ public class CNCViewerPanel extends BasePanel {
             }
         @Override
         public void onClose() {
-            notify.notify(info,"GCODE - отключение");
+            ws.getNotify().notify(info,"GCODE - отключение");
             }
         };
 
@@ -643,7 +594,7 @@ public class CNCViewerPanel extends BasePanel {
             String gCode = null;
             while ((gCode = in.readLine()) != null) {
                 count++;
-                notify.notify(info, "GCODE: " + gCode);
+                ws.getNotify().notify(info, "GCODE: " + gCode);
                 final String gcode1 = gCode;
                 java.awt.EventQueue.invokeLater(new Runnable(){
                     @Override
@@ -653,20 +604,20 @@ public class CNCViewerPanel extends BasePanel {
                     });
                 Pair<String, String> res = driver.write(gCode,timeOut);
                 if (res.o1 != null) {
-                    notify.notify(error, "GCODE - ошибка: " + res.o1);
+                    ws.getNotify().notify(error, "GCODE - ошибка: " + res.o1);
                     break;
                     }
                 else
                     {
                     if (!res.o2.equals("ok"))
-                        notify.notify(info, "GCODE - ответ " + res.o2);
+                        ws.getNotify().notify(info, "GCODE - ответ " + res.o2);
                     }
                 }
             in.close();
             driver.close();
-            notify.notify(info, "GCODE: " + count + " команд");
+            ws.getNotify().notify(info, "GCODE: " + count + " команд");
             } catch (Exception ee) {
-                notify.notify(error,"GCODE: " +Utils.createFatalMessage(ee,10));
+                ws.getNotify().notify(error,"GCODE: " +Utils.createFatalMessage(ee,10));
                 driver.close();
                 if (in != null) {
                     try { in.close(); } catch (IOException e) {}
@@ -687,7 +638,7 @@ public class CNCViewerPanel extends BasePanel {
             String ss = driver.open(ms.DeviceName.getVal()+ms.DeviceNum.getVal(),ms.BaudRate.getVal(),ms.DeviceTimeOut.getVal(),gCodeBack);
             if (ss!=null){
                 setComPortState(ComPortStateFail);
-                notify.notify(error,ss);
+                ws.getNotify().notify(error,ss);
                 if (in!=null)
                     in.close();
                 return;
@@ -707,7 +658,7 @@ public class CNCViewerPanel extends BasePanel {
                     }
                 }).start();
             } catch (Exception ee){
-                notify.notify(error,"GCODE: " +Utils.createFatalMessage(ee,10));
+                ws.getNotify().notify(error,"GCODE: " +Utils.createFatalMessage(ee,10));
                 closeComPort(in);
                 }
     }//GEN-LAST:event_GCODEMillingActionPerformed
@@ -968,7 +919,7 @@ public class CNCViewerPanel extends BasePanel {
 
     private void GCODEViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GCODEViewActionPerformed
         if (!WorkSpace.ws().modelPresent()){
-            notify.notify(error,"Не загружена модель: необходимы размерности");
+            ws.getNotify().notify(error,"Не загружена модель: необходимы размерности");
             return;
             }
         final String fname = getBaseFrame().getInputFileName("Файл GCODE","gcode",false);
@@ -987,7 +938,7 @@ public class CNCViewerPanel extends BasePanel {
                 getBaseFrame().sendEvent(Events.GCode, 0, 0, "", res);
                 }
             } catch (Exception ee){
-                notify.notify(error,"GCODE: " +Utils.createFatalMessage(ee,10));
+                WorkSpace.ws().getNotify().notify(error,"GCODE: " +Utils.createFatalMessage(ee,10));
                 if (in != null) {
                     try {
                         in.close();
@@ -999,21 +950,28 @@ public class CNCViewerPanel extends BasePanel {
 
 
     private void MLNLoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MLNLoadActionPerformed
-        if (test1()) return;
+        if (getBaseFrame().test1()) return;
         final String fname = getBaseFrame().getInputFileName("Файл слайсинга",Values.FileType,true);
         if (fname==null) return;
-        startView(0,0);
+        getBaseFrame().startView(0,0);
         new Thread(
                 ()->{
                     try {
                         ws.removeAll();
-                        setMenuVisible();
                         ws.load(new DataInputStream(new FileInputStream(fname)));
                         ws.lastName(fname);
                         ws.fileStateChanged();
                         ws.dataState(Sliced);
-                        } catch (IOException e) { notify.notify(Values.error,e.toString()); }
-                    finishOperation();
+                        setMenuVisible();
+                        String ss= "Загружен файл "+fname;
+                        ws.getNotify().notify(Values.info,ss);
+                        ws.popup(ss);
+                    } catch (IOException e) {
+                            String ss= "Ошибка загрузки файла "+fname+": "+e.toString();
+                            ws.getNotify().notify(Values.error,ss);
+                            ws.popup(ss);
+                            }
+                    getBaseFrame().finishOperation();
                 }).start();
     }//GEN-LAST:event_MLNLoadActionPerformed
 
@@ -1030,7 +988,7 @@ public class CNCViewerPanel extends BasePanel {
             return;
         if (comPortState!=ComPortStateOn){
             viewUpdate(evt,false);
-            notify.notify(error,"GCODE: устройство не готово");
+            WorkSpace.ws().getNotify().notify(error,"GCODE: устройство не готово");
             return;
             }
         setComPortState(ComPortStateBusy);
@@ -1042,12 +1000,12 @@ public class CNCViewerPanel extends BasePanel {
             savedGCodes.remove(0);
         Pair<String,String> ans = driver.write(gCode,ws.global().mashine.DeviceTimeOut.getVal());
         if (ans.o1!=null){
-            notify.notify(error,"GCODE: "+ans.o1);
+            WorkSpace.ws().getNotify().notify(error,"GCODE: "+ans.o1);
             setComPortState(ComPortStateFail);
             }
         else{
             if(!ans.o2.equals("ok"))
-                notify.notify(info,"GCODE: "+ans.o2);
+                WorkSpace.ws().getNotify().notify(info,"GCODE: "+ans.o2);
             setComPortState(ComPortStateOn);
             }
         /*
@@ -1073,7 +1031,7 @@ public class CNCViewerPanel extends BasePanel {
                 String ss = driver.open(ms.DeviceName.getVal()+ms.DeviceNum.getVal(),ms.BaudRate.getVal(),ms.DeviceTimeOut.getVal(),gCodeManualBack);
                 if (ss!=null){
                     setComPortState(ComPortStateFail);
-                    notify.notify(error,ss);
+                    ws.getNotify().notify(error,ss);
                     return;
                     }
                 setComPortState(ComPortStateOn);
@@ -1089,21 +1047,54 @@ public class CNCViewerPanel extends BasePanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_GCODEPauseActionPerformed
 
+    private void LEVELItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_LEVELItemStateChanged
+        notify.setLevel(LEVEL.getSelectedIndex());
+    }//GEN-LAST:event_LEVELItemStateChanged
+
+    private void LogToFileItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_LogToFileItemStateChanged
+        if (LogToFile.isSelected())
+        openLogFile();
+        else
+        closeLogFile(null);
+    }//GEN-LAST:event_LogToFileItemStateChanged
+
+    private void STOPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_STOPActionPerformed
+        viewCommon.finish();
+        PAUSE.setText("...");
+        STOP.setText("...");
+        sendEvent(Events.OperateFinish,0,0,null,null);
+    }//GEN-LAST:event_STOPActionPerformed
+
+    private void PAUSEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PAUSEActionPerformed
+        if (!viewCommon.isRunning())
+        return;
+        if (viewCommon.changePause()){
+            PAUSE.setText("продолжить");
+        }
+        else{
+            PAUSE.setText("остановить");
+        }
+    }//GEN-LAST:event_PAUSEActionPerformed
+
+    private void LogStopItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_LogStopItemStateChanged
+        notify.logSuspendState(LogStop.isSelected());
+    }//GEN-LAST:event_LogStopItemStateChanged
+
     private void exportGCode(){
-        if (test3()) return;
+        if (getBaseFrame().test3()) return;
         String dir = ws.defaultFileName();
         dir = Utils.changeFileExt(dir, "gcode");
         final String outname = getBaseFrame().getOutputFileName("Файл gcode","gcode",dir);
         if (outname==null)
             return;
-        notify.log("Экспорт в файл "+outname);
-        startView(0,0);
+        WorkSpace.ws().getNotify().log("Экспорт в файл "+outname);
+        getBaseFrame().startView(0,0);
         new Thread(
                 ()->{
                     try {
                         ws.operate().exportToGCode(ws.viewCommon(),new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outname))));
-                    } catch (IOException e) { notify.notify(Values.error,e.toString()); }
-                    finishOperation();
+                    } catch (IOException e) { WorkSpace.ws().getNotify().notify(Values.error,e.toString()); }
+                    getBaseFrame().finishOperation();
                 }).start();
         }
 
@@ -1112,51 +1103,50 @@ public class CNCViewerPanel extends BasePanel {
         ws.fileStateChanged();
         }
     private void sliceTo3D() {
-        if (test2()) return;
-        startView(0,0);
+        if (getBaseFrame().test2()) return;
+        getBaseFrame().startView(0,0);
         new Thread(
                 ()->{
                     SliceData data = new SliceData();
                     ws.data(data);
-                    ws.operate().sliceTo(new SliceDataGenerator(data,viewCommon),viewCommon);
+                    ws.operate().sliceTo(new SliceDataGenerator(data,getBaseFrame().getViewCommon()),getBaseFrame().getViewCommon());
                     if (!data.isSliceStop())
                         dataChanged();
-                    finishOperation();
+                    getBaseFrame().finishOperation();
                 }).start();
         }
     private void sliceConcurent() {
-        if (test2()) return;
-        startView(0,0);
+        if (getBaseFrame().test2()) return;
+        getBaseFrame().startView(0,0);
         new Thread(
                 ()->{
-                    SliceData data = ws.operate().sliceConcurent(viewCommon);
+                    SliceData data = ws.operate().sliceConcurent(getBaseFrame().getViewCommon());
                     ws.data(data);
                     ws.lastName("");
                     if (!data.isSliceStop()){
                         dataChanged();
                         }
-                    finishOperation();
+                    getBaseFrame().finishOperation();
                 }).start();
         }
     private void sliceConcurentToFile(boolean defName) {
-        if (test2()) return;
+        if (getBaseFrame().test2()) return;
         String dir = ws.defaultFileName();
         final String outname = defName ? dir : getBaseFrame().getOutputFileName("Файл слайсинга",Values.FileType,dir);
         if (outname == null) return;
-
-        startView(0,0);
+        getBaseFrame().startView(0,0);
         new Thread(
                 ()->{
                     try {
-                        notify.log("Слайсинг в файл "+outname);
-                        SliceData data = ws.operate().sliceConcurent(viewCommon,new DataOutputStream(new FileOutputStream(outname)));
+                        WorkSpace.ws().getNotify().log("Слайсинг в файл "+outname);
+                        SliceData data = ws.operate().sliceConcurent(getBaseFrame().getViewCommon(),new DataOutputStream(new FileOutputStream(outname)));
                         ws.lastName(defName ? "" : outname);
                         //------------- Состояние dataState не меняется ----------------------------------------
                         if (!data.isSliceStop()){
                             dataChanged();
                             }
-                    } catch (IOException e) { notify.notify(Values.error,e.toString()); }
-                    finishOperation();
+                    } catch (IOException e) { WorkSpace.ws().getNotify().notify(Values.error,e.toString()); }
+                    getBaseFrame().finishOperation();
                 }).start();
         }
 
@@ -1191,36 +1181,39 @@ public class CNCViewerPanel extends BasePanel {
          */
     }
 
-    private boolean test1(){
-        if (viewCommon.isRunning()){
-            toLog("Прервать предыдущую операцию");
-            return true;
-            }
-        return false;
-        }
-    private boolean test2(){
-        if (test1()) return true;
-        if (!ws.modelPresent()){
-            toLog("Отсутствует STL-модель");
-            return true;
-            }
-        return false;
-        }
-    private boolean test3(){
-        if (test1()) return true;
-        if (!ws.slicePresent()){
-            toLog("Отсутствует растр");
-            return true;
-            }
-        return false;
-        }
-
 
     @Override
     public void refresh() {
         }
 
-    @Override
+    public void openLogFile(){
+        if (logFile!=null)
+            return;
+        try {
+            Date xx = new Date();
+            if (ws.modelName().length()==0){
+                notify.log("Лог-файл только с моделью");
+                LogToFile.setSelected(false);
+                return;
+            }
+            String fname = ws.defaultDir()+ ws.modelName()+"_log "+Utils.currentLogName()+".txt";
+            ws.testDefaultDir();
+            logFile = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fname),"Windows-1251"));
+            LogToFile.setSelected(true);
+            } catch (Exception ex) {
+                notify.notify(Values.error, ex.getMessage());
+                }
+        }
+    private void closeLogFile(Exception ex){
+        if (logFile==null)
+            return;
+        try { logFile.flush(); logFile.close(); } catch (IOException ex1) {}
+        logFile=null;
+        LogToFile.setSelected(false);
+        if (ex!=null)
+               notify.notify(Values.error, ex.getMessage());
+        }
+
     public void onEvent(int code, int par1, long par2, String par3, Object oo) {
         switch (code){
             case Events.Log:
@@ -1242,33 +1235,7 @@ public class CNCViewerPanel extends BasePanel {
     public void shutDown() {
         }
 
-    public void openLogFile(){
-        if (logFile!=null)
-            return;
-        try {
-            Date xx = new Date();
-            if (ws.modelName().length()==0){
-                notify.log("Лог-файл только с моделью");
-                LogToFile.setSelected(false);
-                return;
-            }
-            String fname = ws.defaultDir()+ ws.modelName()+"_log "+Utils.currentLogName()+".txt";
-            ws.testDefaultDir();
-            logFile = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fname),"Windows-1251"));
-            LogToFile.setSelected(true);
-        } catch (Exception ex) {
-            notify.notify(Values.error, ex.getMessage());
-        }
-    }
-    private void closeLogFile(Exception ex){
-        if (logFile==null)
-            return;
-        try { logFile.flush(); logFile.close(); } catch (IOException ex1) {}
-        logFile=null;
-        LogToFile.setSelected(false);
-        if (ex!=null)
-            notify.notify(Values.error, ex.getMessage());
-        }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox BYSTEP;
     private javax.swing.JButton COMPortOnOff;

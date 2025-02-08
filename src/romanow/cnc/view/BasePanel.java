@@ -8,6 +8,7 @@ import lombok.Setter;
 import romanow.cnc.Values;
 import lombok.Getter;
 import romanow.cnc.m3d.I_PanelEvent;
+import romanow.cnc.m3d.ViewNotifyer;
 import romanow.cnc.settings.*;
 import romanow.cnc.view.design.JCheckBoxButton;
 import romanow.cnc.view.panels.DigitPanel;
@@ -24,7 +25,7 @@ import java.awt.*;
 public abstract class BasePanel extends javax.swing.JPanel implements I_PanelEvent{
 
     //-----------------------------------------------------------------------------------------------------
-    @Getter private BaseFrame baseFrame;
+    @Getter private CNCViewer baseFrame;
     @Getter private boolean selected=false;
     public abstract  String getName();
     public abstract  int modeMask();
@@ -32,7 +33,6 @@ public abstract class BasePanel extends javax.swing.JPanel implements I_PanelEve
     public abstract void onActivate();
     public abstract void onDeactivate();
     public abstract void onClose();
-    protected Dimension dim=new Dimension(Values.FrameWidth,Values.FrameHeight);
 
     public boolean isSelectedMode(int mode){
         return ((modeMask() & mode)!=0) && modeEnabled();
@@ -40,6 +40,7 @@ public abstract class BasePanel extends javax.swing.JPanel implements I_PanelEve
     public void setSelected(boolean bb){
         selected = bb;
         }
+    protected ViewNotifyer notify;
     /**
      * Creates new form BasePanel
      */
@@ -58,7 +59,7 @@ public abstract class BasePanel extends javax.swing.JPanel implements I_PanelEve
         double scaleX = ((double) src.width)/Values.FrameWidth;
         return new Rectangle((int)(x0*scaleX), (int)(y0*scaleY),(int)(w*scaleX), (int)(h*scaleY));
         }
-    public void setComponentsScale(Dimension dim){
+    public void setComponentsScale(){
         setComponentsScale(this);
         }
     public static void setComponentsScale(JFrame frame){
@@ -143,6 +144,7 @@ public abstract class BasePanel extends javax.swing.JPanel implements I_PanelEve
         updateField(label,field,par,1.0);
     }
     public void updateField(String label, JTextField field, FloatParameter par,double koeff){
+        Dimension dim = WorkSpace.ws().getDim();
         DigitPanel digit = new DigitPanel(dim,label, field, false, new I_RealValue() {
             @Override
             public void onEvent(String value) {
@@ -154,6 +156,7 @@ public abstract class BasePanel extends javax.swing.JPanel implements I_PanelEve
         });
     }
     public void updateField(String label, JTextField field, IntParameter par){
+        Dimension dim = WorkSpace.ws().getDim();
         DigitPanel digit = new DigitPanel(dim,label, field, true, new I_RealValue() {
             @Override
             public void onEvent(String value) {
@@ -184,10 +187,11 @@ public abstract class BasePanel extends javax.swing.JPanel implements I_PanelEve
         WorkSpace.ws().saveSettings();
         }
 
-    public BasePanel(BaseFrame baseFrame0, Dimension dim) {
-        this.dim = dim;
+    public BasePanel(CNCViewer baseFrame0) {
         initComponents();
         baseFrame = baseFrame0;
+        notify = WorkSpace.ws().getNotify();
+        Dimension dim = WorkSpace.ws().getDim();
         if (dim.width==0)
             setBounds(0, 0,Values.FrameWidth-Values.FrameMenuRightOffet,Values.FrameHeight-100);
         else

@@ -34,17 +34,16 @@ public class ModelSettingsPanel extends BasePanel  implements I_SettingsPanel{
      * Creates new form M3SSettings
      */
     public ModelSettingsPanel(I_SettingsChanged changed0, Settings set0, I_Notify notify0) {
-        super(null,null);
+        super(null);
         initComponents();
         set = set0;
         changed = changed0;
         notify = notify0;
         loadSettings();
         }
-    public ModelSettingsPanel(BaseFrame base, Dimension dim) {
-        super(base,dim);
-        if (dim.width!=0)
-            setComponentsScale(dim);
+    public ModelSettingsPanel(CNCViewer base) {
+        super(base);
+        setComponentsScale();
         WorkSpace ws = WorkSpace.ws();
         set = ws.local();
         notify = ws.getNotify();

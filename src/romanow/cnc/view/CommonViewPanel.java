@@ -25,11 +25,10 @@ public class CommonViewPanel extends BasePanel {
     /**
      * Creates new form CommonViewPanel
      */
-    public CommonViewPanel(BaseFrame base,Dimension dim) {
-        super(base,dim);
+    public CommonViewPanel(CNCViewer base) {
+        super(base);
         initComponents();
-        if (dim.width!=0)
-            setComponentsScale(dim);
+        setComponentsScale();
         WorkSpace.ws().preview(FLD);
         }
     @Override

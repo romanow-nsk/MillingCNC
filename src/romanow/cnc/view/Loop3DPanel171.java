@@ -58,12 +58,11 @@ public class Loop3DPanel171 extends BasePanel {
     /**
      * Creates new form Loop3DPanel
      */
-    public Loop3DPanel171(BaseFrame base,Dimension dim) {
-        super(base,dim);
+    public Loop3DPanel171(CNCViewer base) {
+        super(base);
+        Dimension dim = WorkSpace.ws().getDim();
         initComponents();
-        if (dim.width!=0){
-            setComponentsScale(dim);
-            }
+        setComponentsScale();
         setPreferredSize(createDim(dim,Values.FrameWidth-100, Values.FrameHeight-Values.FrameBottom*2));
         //universe = new SimpleUniverse(canvas);
         //canvas.initcanvas(universe);
@@ -257,6 +256,7 @@ public class Loop3DPanel171 extends BasePanel {
         GCodeAnimate.setEnabled(false);
         GraphicsConfiguration config = SimpleUniverse.getPreferredConfiguration();
         canvas = new PCanvas3D171(config);
+        Dimension dim = WorkSpace.ws().getDim();
         canvas.setBounds(createRec(dim,200,10,Values.FrameWidth-200, Values.FrameHeight-Values.FrameBottom*2));
         add(canvas);
         universe = new SimpleUniverse(canvas);

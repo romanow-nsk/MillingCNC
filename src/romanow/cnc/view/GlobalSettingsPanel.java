@@ -56,19 +56,18 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
      * Creates new form M3SSettings
      */
     public GlobalSettingsPanel(I_SettingsChanged changed0, Settings set0, I_Notify notify0) {
-        super(null,null);
+        super(null);
         initComponents();
         set = set0;
         changed = changed0;
         notify = notify0;
         }
-    public GlobalSettingsPanel(BaseFrame base, Dimension dim) {
-        super(base,dim);
+    public GlobalSettingsPanel(CNCViewer base) {
+        super(base);
         set = ws.global();
         notify = ws.getNotify();
         initComponents();
-        if (dim.width!=0)
-            setComponentsScale(dim);
+        setComponentsScale();
         busy = true;
         Mode2.removeAll();
         Mode2.addItem("Растр");
@@ -1348,9 +1347,10 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
 
     private void FullScreenButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FullScreenButtonActionPerformed
         fullScreen.itemStateChanged();
-        WorkSpace.ws().getNotify().notify(Values.info,"Изменен параметр: "+Z0_20.getText()+"="+fullScreen.isSelected());
-        WorkSpace.ws().settings().fullScreen = fullScreen.isSelected();
-        WorkSpace.ws().saveSettings();
+        WorkSpace ws = WorkSpace.ws();
+        ws.getNotify().notify(Values.info,"Изменен параметр: "+Z0_20.getText()+"="+fullScreen.isSelected());
+        ws.global().fullScreen = fullScreen.isSelected();
+        ws.saveSettings();
     }//GEN-LAST:event_FullScreenButtonActionPerformed
 
     private void ARCGCodeModeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ARCGCodeModeButtonActionPerformed

@@ -8,6 +8,7 @@ import romanow.cnc.io.I_File;
 import romanow.cnc.m3d.M3DOperations;
 import romanow.cnc.m3d.M3DVisio;
 import romanow.cnc.m3d.ViewAdapter;
+import romanow.cnc.m3d.ViewNotifyer;
 import romanow.cnc.view.BaseFrame;
 import romanow.cnc.utils.Events;
 import romanow.cnc.slicer.SliceData;
@@ -15,6 +16,7 @@ import romanow.cnc.stl.STLModel3D;
 import romanow.cnc.utils.I_Notify;
 import romanow.cnc.utils.UNIException;
 import romanow.cnc.Values;
+import romanow.cnc.view.panels.CNCPopup;
 
 import javax.swing.*;
 import java.awt.*;
@@ -38,7 +40,7 @@ public class WorkSpace implements I_File{
     /** настройки из импортируемых форматов */
     private Settings temp=new Settings();
     /** Для логирования внутренних ошибок */
-    private I_Notify notify=null;
+    private ViewNotifyer notify=null;
     private ViewAdapter viewCommon = null;
     private JPanel preview=null;
     private M3DOperations operate=null;
@@ -156,13 +158,13 @@ public class WorkSpace implements I_File{
         return one;
         }
     public static Settings set(){ return WorkSpace.ws().local(); }
-    public void setNotify(I_Notify not, ViewAdapter viewCommon0){
+    public void setNotify(ViewNotifyer not, ViewAdapter viewCommon0){
         notify = not;
         viewCommon = viewCommon0;
         operate = new M3DOperations(not);
         visio = new M3DVisio(not,viewCommon);
         }
-    public I_Notify getNotify(){
+    public ViewNotifyer getNotify(){
         return notify;
         }
     public void notify(String ss){
@@ -393,4 +395,11 @@ public class WorkSpace implements I_File{
         if (!ff.exists())
             ff.mkdir();
         }
+    //------------------------------------------------------------------------------------------------------------------
+    public void popup(String mes, boolean longDelay){
+        CNCPopup pop = new CNCPopup(mes,longDelay ? Values.PopupMessageDelay : Values.PopupLongDelay);
+        }
+    public void popup(String mes){
+        CNCPopup pop = new CNCPopup(mes,Values.PopupMessageDelay);
+    }
 }

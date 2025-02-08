@@ -19,6 +19,7 @@ import romanow.cnc.stl.*;
 import romanow.cnc.utils.Events;
 import romanow.cnc.utils.I_Notify;
 import romanow.cnc.utils.Utils;
+import romanow.cnc.view.design.JCheckBoxButton;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -60,24 +61,25 @@ public class MLNViewPanel extends BasePanel {
     private int nb=0;
     private STLPoint2D pp;
     private WorkSpace ws;
+    private JCheckBoxButton grid;
 
     /**
      * Creates new form MLNViewPanel
      */
-    public MLNViewPanel(BaseFrame base,Dimension dim) {
-        super(base,dim);
+    public MLNViewPanel(CNCViewer base) {
+        super(base);
         initComponents();
-        if (dim.width!=0)
-            setComponentsScale(dim);
+        setComponentsScale();
         ws = WorkSpace.ws();
+        double scaleY = WorkSpace.ws().getScaleX();
+        double scaleX = WorkSpace.ws().getScaleY();
+        grid = new JCheckBoxButton(GridButton);
         statView = new StatisticPanel();
-        double scaleY = dim.width==0 ? 1 : ((double) dim.height)/Values.FrameHeight;
-        double scaleX = dim.width==0 ? 1: ((double) dim.width)/Values.FrameWidth;
-        statView.setBounds((int)(scaleX*880), 0, (int)(scaleX*250), (int)(scaleY*220));
         BasePanel.setComponentsScale(statView);
+        statView.setBounds((int)(scaleX*980), 0, (int)(scaleX*250), (int)(scaleY*220));
         add(statView);
         gPanel = new GraphPanel(mBack);
-        gPanel.setBounds((int)(scaleX*230), (int)(scaleY*10), (int)((scaleX < scaleY ? scaleX : scaleY)*660));
+        gPanel.setBounds((int)(scaleX*290), (int)(scaleY*10), (int)((scaleX < scaleY ? scaleX : scaleY)*680));
         add(gPanel);
         MODE.addItem("Растр");
         MODE.addItem("Сечение");
@@ -364,7 +366,7 @@ public class MLNViewPanel extends BasePanel {
             cLoop=0;
         }
         gPanel.setPaintParams(HORIZ,VERTIC);
-        if (Grid.isSelected())
+        if (grid.isSelected())
             gPanel.paintGrid(gridColor);
         gPanel.setColor(Color.black);
         //MES.setText("z="+String .format("%5.2f",layer.z()*)+" длина="+layer.rezult().printLength()+" время="+layer.rezult().printTime());
@@ -616,13 +618,11 @@ public class MLNViewPanel extends BasePanel {
         PY = new javax.swing.JTextField();
         X = new javax.swing.JLabel();
         X1 = new javax.swing.JLabel();
-        Grid = new javax.swing.JCheckBox();
         MX = new javax.swing.JTextField();
         PX = new javax.swing.JTextField();
         GroupSize = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        ShowPrint = new javax.swing.JToggleButton();
+        MergeLayers = new javax.swing.JButton();
         ShowDelay = new javax.swing.JSlider();
         LAYERS = new javax.swing.JComboBox<>();
         MODE = new javax.swing.JComboBox<>();
@@ -630,6 +630,9 @@ public class MLNViewPanel extends BasePanel {
         X2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         X3 = new javax.swing.JLabel();
+        ShowPrint = new javax.swing.JButton();
+        GridButton = new javax.swing.JButton();
+        Z0_1 = new javax.swing.JLabel();
 
         setLayout(null);
 
@@ -648,7 +651,7 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(HORIZ);
-        HORIZ.setBounds(900, 420, 200, 20);
+        HORIZ.setBounds(900, 390, 200, 20);
 
         VERTIC.setMinimum(-100);
         VERTIC.setOrientation(javax.swing.JSlider.VERTICAL);
@@ -666,7 +669,7 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(VERTIC);
-        VERTIC.setBounds(200, 460, 20, 200);
+        VERTIC.setBounds(230, 420, 20, 270);
 
         MAS.setMaximum(50);
         MAS.setMinimum(1);
@@ -677,10 +680,10 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(MAS);
-        MAS.setBounds(900, 460, 200, 20);
+        MAS.setBounds(900, 430, 200, 20);
 
         PREV.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        PREV.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/left.PNG"))); // NOI18N
+        PREV.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/left.png"))); // NOI18N
         PREV.setBorderPainted(false);
         PREV.setContentAreaFilled(false);
         PREV.addActionListener(new java.awt.event.ActionListener() {
@@ -689,7 +692,7 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(PREV);
-        PREV.setBounds(10, 90, 40, 40);
+        PREV.setBounds(10, 170, 40, 40);
 
         NEXT.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         NEXT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/right.PNG"))); // NOI18N
@@ -701,12 +704,12 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(NEXT);
-        NEXT.setBounds(180, 90, 40, 40);
+        NEXT.setBounds(170, 170, 40, 40);
 
         MES.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         MES.setEnabled(false);
         add(MES);
-        MES.setBounds(200, 675, 840, 30);
+        MES.setBounds(200, 700, 880, 30);
 
         Points0.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         Points0.setSelected(true);
@@ -717,7 +720,7 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(Points0);
-        Points0.setBounds(10, 310, 90, 24);
+        Points0.setBounds(10, 500, 90, 24);
 
         Points2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         Points2.setSelected(true);
@@ -728,7 +731,7 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(Points2);
-        Points2.setBounds(120, 280, 100, 24);
+        Points2.setBounds(10, 420, 100, 24);
 
         Points3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         Points3.setSelected(true);
@@ -739,12 +742,12 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(Points3);
-        Points3.setBounds(120, 310, 100, 24);
+        Points3.setBounds(10, 460, 100, 24);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel1.setText("Масштаб");
         add(jLabel1);
-        jLabel1.setBounds(910, 440, 110, 20);
+        jLabel1.setBounds(910, 410, 110, 20);
 
         OnlyLoop.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         OnlyLoop.setText("Просмотр по контурам");
@@ -754,7 +757,7 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(OnlyLoop);
-        OnlyLoop.setBounds(10, 350, 210, 24);
+        OnlyLoop.setBounds(10, 540, 210, 24);
 
         LoopPlus.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         LoopPlus.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/right.PNG"))); // NOI18N
@@ -766,7 +769,7 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(LoopPlus);
-        LoopPlus.setBounds(150, 415, 40, 38);
+        LoopPlus.setBounds(150, 650, 40, 40);
 
         LoopMinus.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         LoopMinus.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/left.PNG"))); // NOI18N
@@ -778,7 +781,7 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(LoopMinus);
-        LoopMinus.setBounds(10, 415, 40, 40);
+        LoopMinus.setBounds(10, 650, 40, 40);
 
         DeleteLoop.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         DeleteLoop.setText("Удалить контур");
@@ -788,7 +791,7 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(DeleteLoop);
-        DeleteLoop.setBounds(10, 460, 170, 30);
+        DeleteLoop.setBounds(10, 700, 170, 30);
 
         LoopCalc.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         LoopCalc.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/question.png"))); // NOI18N
@@ -800,12 +803,12 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(LoopCalc);
-        LoopCalc.setBounds(80, 415, 38, 40);
+        LoopCalc.setBounds(70, 650, 54, 40);
 
         B5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         B5.setText("0.0");
         add(B5);
-        B5.setBounds(150, 205, 70, 30);
+        B5.setBounds(150, 300, 70, 30);
 
         B3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         B3.setText("Добавить слой");
@@ -815,7 +818,7 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(B3);
-        B3.setBounds(10, 205, 130, 30);
+        B3.setBounds(10, 300, 130, 30);
 
         B2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         B2.setText("Удалить слой");
@@ -825,7 +828,7 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(B2);
-        B2.setBounds(10, 170, 130, 30);
+        B2.setBounds(10, 260, 130, 30);
 
         LineRemove.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         LineRemove.setText("Удалить линию");
@@ -835,12 +838,12 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(LineRemove);
-        LineRemove.setBounds(10, 610, 170, 26);
+        LineRemove.setBounds(910, 590, 170, 26);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel2.setText("Слой");
         add(jLabel2);
-        jLabel2.setBounds(10, 40, 80, 17);
+        jLabel2.setBounds(20, 70, 80, 17);
         add(jSeparator1);
         jSeparator1.setBounds(10, 493, 180, 0);
 
@@ -852,11 +855,11 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(B4);
-        B4.setBounds(10, 240, 210, 30);
+        B4.setBounds(10, 340, 210, 30);
         add(jSeparator2);
-        jSeparator2.setBounds(10, 275, 220, 10);
+        jSeparator2.setBounds(10, 375, 220, 10);
         add(jSeparator3);
-        jSeparator3.setBounds(10, 340, 210, 10);
+        jSeparator3.setBounds(10, 530, 210, 10);
 
         B6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         B6.setText("Загрузить сечение");
@@ -866,7 +869,7 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(B6);
-        B6.setBounds(10, 675, 170, 30);
+        B6.setBounds(910, 660, 170, 30);
 
         B7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         B7.setText("Слайсинг");
@@ -876,12 +879,12 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(B7);
-        B7.setBounds(10, 135, 130, 30);
+        B7.setBounds(10, 220, 130, 30);
 
         LineLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         LineLabel1.setText("Редактировать");
         add(LineLabel1);
-        LineLabel1.setBounds(10, 495, 140, 17);
+        LineLabel1.setBounds(910, 455, 140, 17);
 
         LineInsert.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         LineInsert.setText("Добавить линию");
@@ -891,20 +894,20 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(LineInsert);
-        LineInsert.setBounds(10, 640, 170, 30);
+        LineInsert.setBounds(910, 625, 170, 30);
 
         MoveToNearest.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         MoveToNearest.setSelected(true);
         MoveToNearest.setText("Привязка к ближайшей");
         add(MoveToNearest);
-        MoveToNearest.setBounds(10, 580, 190, 24);
+        MoveToNearest.setBounds(910, 540, 190, 24);
 
         MY.setEditable(false);
         MY.setBackground(new java.awt.Color(200, 200, 200));
         MY.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         MY.setText("0");
         add(MY);
-        MY.setBounds(110, 550, 70, 25);
+        MY.setBounds(1010, 510, 70, 25);
 
         PY.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         PY.setText("0");
@@ -914,35 +917,24 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(PY);
-        PY.setBounds(30, 550, 70, 25);
+        PY.setBounds(930, 510, 70, 25);
 
         X.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         X.setText("Y");
         add(X);
-        X.setBounds(205, 440, 20, 20);
+        X.setBounds(220, 430, 20, 20);
 
         X1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         X1.setText("X");
         add(X1);
-        X1.setBounds(910, 400, 20, 20);
-
-        Grid.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        Grid.setSelected(true);
-        Grid.setText("Сетка (мм)");
-        Grid.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                GridItemStateChanged(evt);
-            }
-        });
-        add(Grid);
-        Grid.setBounds(70, 100, 110, 24);
+        X1.setBounds(910, 370, 20, 20);
 
         MX.setEditable(false);
         MX.setBackground(new java.awt.Color(200, 200, 200));
         MX.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         MX.setText("0");
         add(MX);
-        MX.setBounds(110, 520, 70, 25);
+        MX.setBounds(1010, 480, 70, 25);
 
         PX.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         PX.setText("0");
@@ -952,39 +944,29 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(PX);
-        PX.setBounds(30, 520, 70, 25);
+        PX.setBounds(930, 480, 70, 25);
 
         GroupSize.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         GroupSize.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2", "3", "4", "5", "6", "7", "8", "9", "10" }));
         GroupSize.setMinimumSize(new java.awt.Dimension(37, 25));
         GroupSize.setPreferredSize(new java.awt.Dimension(37, 25));
         add(GroupSize);
-        GroupSize.setBounds(970, 230, 50, 25);
+        GroupSize.setBounds(970, 220, 50, 30);
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel3.setText("NxN : 1");
         add(jLabel3);
-        jLabel3.setBounds(900, 230, 50, 20);
+        jLabel3.setBounds(900, 225, 50, 20);
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton1.setText("Слить слои");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        MergeLayers.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        MergeLayers.setText("Слить слои");
+        MergeLayers.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                MergeLayersActionPerformed(evt);
             }
         });
-        add(jButton1);
-        jButton1.setBounds(900, 260, 120, 30);
-
-        ShowPrint.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        ShowPrint.setText("Развертка");
-        ShowPrint.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ShowPrintActionPerformed(evt);
-            }
-        });
-        add(ShowPrint);
-        ShowPrint.setBounds(900, 300, 120, 30);
+        add(MergeLayers);
+        MergeLayers.setBounds(900, 260, 120, 30);
 
         ShowDelay.setMajorTickSpacing(1);
         ShowDelay.setValue(10);
@@ -1003,7 +985,7 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(LAYERS);
-        LAYERS.setBounds(10, 60, 210, 30);
+        LAYERS.setBounds(10, 100, 210, 30);
 
         MODE.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         MODE.addItemListener(new java.awt.event.ItemListener() {
@@ -1012,26 +994,49 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(MODE);
-        MODE.setBounds(10, 10, 210, 30);
+        MODE.setBounds(10, 20, 210, 30);
 
         LoopList2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         add(LoopList2);
-        LoopList2.setBounds(10, 380, 210, 30);
+        LoopList2.setBounds(10, 600, 210, 30);
 
         X2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         X2.setText("X");
         add(X2);
-        X2.setBounds(10, 525, 20, 20);
+        X2.setBounds(910, 480, 20, 20);
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel4.setText("Контуры");
         add(jLabel4);
-        jLabel4.setBounds(10, 280, 110, 20);
+        jLabel4.setBounds(20, 390, 110, 20);
 
         X3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         X3.setText("Y");
         add(X3);
-        X3.setBounds(10, 555, 20, 20);
+        X3.setBounds(910, 515, 20, 20);
+
+        ShowPrint.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        ShowPrint.setText("Развертка");
+        ShowPrint.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ShowPrintActionPerformed(evt);
+            }
+        });
+        add(ShowPrint);
+        ShowPrint.setBounds(900, 300, 120, 30);
+
+        GridButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                GridButtonActionPerformed(evt);
+            }
+        });
+        add(GridButton);
+        GridButton.setBounds(80, 170, 50, 40);
+
+        Z0_1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z0_1.setText("Сетка (мм)");
+        add(Z0_1);
+        Z0_1.setBounds(80, 140, 90, 20);
     }// </editor-fold>//GEN-END:initComponents
 
     private void HORIZStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_HORIZStateChanged
@@ -1236,10 +1241,6 @@ public class MLNViewPanel extends BasePanel {
         }catch(Exception ee){ notify.notify(Values.error,"Формат целого числа ????");}
     }//GEN-LAST:event_PYKeyPressed
 
-    private void GridItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_GridItemStateChanged
-        paintView(false);
-    }//GEN-LAST:event_GridItemStateChanged
-
     private void PXKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PXKeyPressed
         if(evt.getKeyCode()!=10) return;
         if (one==null && two==null) return;
@@ -1251,7 +1252,7 @@ public class MLNViewPanel extends BasePanel {
         }catch(Exception ee){ notify.notify(Values.error,"Формат целого числа ????");}
     }//GEN-LAST:event_PXKeyPressed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void MergeLayersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MergeLayersActionPerformed
         if (data.isMerged()){
             notify.notify(Values.error,"Повторное слияние невозможно");
             return;
@@ -1267,7 +1268,20 @@ public class MLNViewPanel extends BasePanel {
             data.mergeLayers(gg);
             setLayers();
             });
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_MergeLayersActionPerformed
+
+    private void ShowDelayStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_ShowDelayStateChanged
+        showDelay = ShowDelay.getValue();
+    }//GEN-LAST:event_ShowDelayStateChanged
+
+    private void MODEItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_MODEItemStateChanged
+        selectMode(true);
+        paintView(true);
+    }//GEN-LAST:event_MODEItemStateChanged
+
+    private void LAYERSItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_LAYERSItemStateChanged
+        selectLayer();
+    }//GEN-LAST:event_LAYERSItemStateChanged
 
     private void ShowPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ShowPrintActionPerformed
         if (!showRun){
@@ -1287,18 +1301,10 @@ public class MLNViewPanel extends BasePanel {
         showRun=!showRun;
     }//GEN-LAST:event_ShowPrintActionPerformed
 
-    private void ShowDelayStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_ShowDelayStateChanged
-        showDelay = ShowDelay.getValue();
-    }//GEN-LAST:event_ShowDelayStateChanged
-
-    private void MODEItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_MODEItemStateChanged
-        selectMode(true);
-        paintView(true);
-    }//GEN-LAST:event_MODEItemStateChanged
-
-    private void LAYERSItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_LAYERSItemStateChanged
-        selectLayer();
-    }//GEN-LAST:event_LAYERSItemStateChanged
+    private void GridButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GridButtonActionPerformed
+        grid.itemStateChanged();
+        paintView(false);
+    }//GEN-LAST:event_GridButtonActionPerformed
 
     @Override
     public void refresh() {
@@ -1317,7 +1323,7 @@ public class MLNViewPanel extends BasePanel {
     private javax.swing.JButton B6;
     private javax.swing.JButton B7;
     private javax.swing.JButton DeleteLoop;
-    private javax.swing.JCheckBox Grid;
+    private javax.swing.JButton GridButton;
     private javax.swing.JComboBox<String> GroupSize;
     private javax.swing.JSlider HORIZ;
     private javax.swing.JComboBox<String> LAYERS;
@@ -1333,6 +1339,7 @@ public class MLNViewPanel extends BasePanel {
     private javax.swing.JComboBox<String> MODE;
     private javax.swing.JTextField MX;
     private javax.swing.JTextField MY;
+    private javax.swing.JButton MergeLayers;
     private javax.swing.JCheckBox MoveToNearest;
     private javax.swing.JButton NEXT;
     private javax.swing.JCheckBox OnlyLoop;
@@ -1343,13 +1350,13 @@ public class MLNViewPanel extends BasePanel {
     private javax.swing.JCheckBox Points2;
     private javax.swing.JCheckBox Points3;
     private javax.swing.JSlider ShowDelay;
-    private javax.swing.JToggleButton ShowPrint;
+    private javax.swing.JButton ShowPrint;
     private javax.swing.JSlider VERTIC;
     private javax.swing.JLabel X;
     private javax.swing.JLabel X1;
     private javax.swing.JLabel X2;
     private javax.swing.JLabel X3;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel Z0_1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

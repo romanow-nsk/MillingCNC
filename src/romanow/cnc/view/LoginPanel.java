@@ -77,11 +77,10 @@ public class LoginPanel extends BasePanel {
     public void onClose() {
         }
 
-    public LoginPanel(BaseFrame baseFrame,Dimension dim) {
-        super(baseFrame,dim);
+    public LoginPanel(CNCViewer baseFrame) {
+        super(baseFrame);
         initComponents();
-        if (dim.width!=0)
-            setComponentsScale(dim);
+        setComponentsScale();
         }
 
     public void initView() {

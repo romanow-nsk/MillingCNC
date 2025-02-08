@@ -5,11 +5,13 @@
  */
 package romanow.cnc.view;
 
+import lombok.Getter;
 import romanow.cnc.Values;
 import romanow.cnc.console.DistortionEditor;
 import romanow.cnc.console.LaserConsole;
 import romanow.cnc.console.TestConsole;
 import romanow.cnc.io.BinOutputStream;
+import romanow.cnc.m3d.*;
 import romanow.cnc.settings.WorkSpace;
 import romanow.cnc.settingsView.UserListEditor;
 import romanow.cnc.slicer.*;
@@ -27,16 +29,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.util.ArrayList;
-
-import romanow.cnc.m3d.FileBinInputStream;
-import romanow.cnc.m3d.M3DFileBinInputStream;
-import romanow.cnc.m3d.M3DFileBinOutputStream;
-import romanow.cnc.m3d.M3DSequencer;
-import romanow.cnc.m3d.M3DSettings_2;
-import romanow.cnc.m3d.M3DTesing;
-import romanow.cnc.m3d.OKFull;
-import romanow.cnc.m3d.Slice2DViewer;
-import romanow.cnc.m3d.ViewNotifyer;
+import java.util.Date;
 
 import javax.swing.*;
 
@@ -47,17 +40,23 @@ import static romanow.cnc.Values.*;
  * @author romanow
  */
 public class CNCViewer extends BaseFrame {
-    private I_Notify notify;
+    private ViewNotifyer notify;
     private M3DTesing testing;
     private JProgressBar progress;
-
     private MenuBar mBar;
     private Thread.UncaughtExceptionHandler defaultHandler=null;
     private static int childCount=3;
     private WorkSpace ws=null;
+    private BufferedWriter logFile = null;
+    @Getter private ViewAdapter viewCommon = new ViewAdapter(null);
+    private boolean stopOnWarning=false;
 
-    public javax.swing.JTabbedPane getPAnelList(){
+    public javax.swing.JTabbedPane getPanelList(){
         return PanelList;
+        }
+    @Override
+    public JProgressBar getProgress(){
+        return progress;
         }
     /**
      * Creates new form Viewer
@@ -97,7 +96,8 @@ public class CNCViewer extends BaseFrame {
                 menuButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        //notify.notify(info,"Вкладка "+panel.getName());
+                        //ws.popup("Вкладка "+panel.getName());
+                        //notify.notify(info,);
                         PanelList.setSelectedIndex(idx2);
                         }
                     });
@@ -108,13 +108,12 @@ public class CNCViewer extends BaseFrame {
             if (bb)
                 panel.onActivate();
             }
-        progress = new JProgressBar();
+        JProgressBar progress = new JProgressBar();
         progress.setMaximum(0);
         progress.setMaximum(100);
         progress.setValue(0);
-        progress.setBounds(MenuButtonX0,MenuButtonY0+idx*MenuButtonStep,MenuButtonXSize,MenuButtonYSize);
-        ws.getNotify().setProgressView(progress);
         Common.add(progress);
+        ws.getNotify().setProgressView(progress);
         if (ws.global().fullScreen){
             BasePanel.setComponentsScale(Common);
             }
@@ -149,15 +148,15 @@ public class CNCViewer extends BaseFrame {
         panels.clear();
         PanelList.removeAll();
         //-------------------------------------------------------------------------------
-        addPanel(new LoginPanel(this,dim));
-        addPanel(new CNCViewerPanel(this,dim));
-        addPanel(new GlobalSettingsPanel(this,dim));
-        addPanel(new STL3DViewPanel171(this,dim));
-        addPanel(new ModelSettingsPanel(this,dim));
-        addPanel(new CommonViewPanel(this,dim));
-        addPanel(new Loop3DPanel171(this,dim));
-        addPanel(new MLNViewPanel(this,dim));
-        addPanel(new CNCLogPanel(this,dim));
+        addPanel(new CNCViewerPanel(this));
+        //addPanel(new CNCLogPanel(this));
+        addPanel(new GlobalSettingsPanel(this));
+        addPanel(new STL3DViewPanel171(this));
+        addPanel(new ModelSettingsPanel(this));
+        addPanel(new CommonViewPanel(this));
+        addPanel(new Loop3DPanel171(this));
+        addPanel(new MLNViewPanel(this));
+        addPanel(new LoginPanel(this));
         for(BasePanel panel : getPanels())
             if (dim.width!=0)
                 panel.setBounds(0,0,dim.width-xx,dim.height);
@@ -213,36 +212,10 @@ public class CNCViewer extends BaseFrame {
                 notify.notify(Values.fatal,message);
                 }
             });
-        //operate = new M3DOperations(notify);
-        //setMenuBar(menuBar1);
         mBar = menuBar1;
-        /*
-        preView = new M3DViewPanel();
-        preView.setVisible(false);
-        ws().viewCommon() = new ViewAdapter(preView.fld()){       // Объект-адаптер для визуальных методов
-            @Override
-            public boolean onStepLine() {
-                if (BYSTEP.isSelected()){
-                    pause(true);
-                    PAUSE.setText("продолжить");
-                    }
-                return super.onStepLine();
-                }
-            @Override
-            public boolean onStepLayer() {
-                if (BYSTEP.isSelected()){
-                    pause(true);
-                    PAUSE.setText("продолжить");
-                    }
-                return super.onStepLayer();
-            }
-        };
-        preView.setAdapter(ws().viewCommon());
-        testing = new M3DTesing(notify);
-        */
-        //setMenuVisible();
-        //visio = new M3DVisio(notify,ws().viewCommon());
+        //---------------------------------------------------------------------------------------------------------------
         refreshPanels();
+        toBack();
         }
 
     private void setWidth(boolean full){
@@ -267,7 +240,7 @@ public class CNCViewer extends BaseFrame {
         }
 
     
-    private void finishOperation(){
+    public void finishOperation(){
         //PAUSE.setText("...");
         //STOP.setText("...");
         ws().ws().viewCommon().finish();
@@ -276,7 +249,7 @@ public class CNCViewer extends BaseFrame {
         setMenuVisible();
         setWidth(false);
         }
-    private void breakOperation(){
+    public void breakOperation(){
         ws().viewCommon().finish();
         finishOperation();
         }
@@ -759,11 +732,11 @@ public class CNCViewer extends BaseFrame {
 
         PanelList.setBorder(new javax.swing.border.MatteBorder(null));
         getContentPane().add(PanelList);
-        PanelList.setBounds(10, 0, 1200, 780);
+        PanelList.setBounds(0, 0, 680, 720);
 
         Common.setLayout(null);
         getContentPane().add(Common);
-        Common.setBounds(690, 0, 350, 530);
+        Common.setBounds(690, 10, 180, 700);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -1072,14 +1045,14 @@ public class CNCViewer extends BaseFrame {
         new TestConsole(notify);
     }//GEN-LAST:event_TestConsoleActionPerformed
 
-    private boolean test1(){
+    public boolean test1(){
         if (ws().viewCommon().isRunning()){
             toLog("Прервать предыдущую операцию");
             return true;
             }
         return false;
         }
-    private boolean test2(){
+    public boolean test2(){
         if (test1()) return true;
         if (!ws().modelPresent()){
             toLog("Отсутствует STL-модель");
@@ -1087,15 +1060,15 @@ public class CNCViewer extends BaseFrame {
             }
         return false;
         }
-    private boolean test3(){
+    public boolean test3(){
         if (test1()) return true;
         if (!ws().slicePresent()){
             toLog("Отсутствует растр");
             return true;
-        }
+            }
         return false;
-    }
-    private void startView(int lineDelay,int layerDelay){
+        }
+    public void startView(int lineDelay,int layerDelay){
         sendEvent(Events.OnWarning,0,0,null,null);
         ws().viewCommon().start(lineDelay,layerDelay);
         //PAUSE.setText("остановить");
@@ -1303,6 +1276,9 @@ public class CNCViewer extends BaseFrame {
     @Override
     public void shutDown() {
     }
+
+
+
     /**
      * @param args the command line arguments
      */

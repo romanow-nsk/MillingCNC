@@ -33,6 +33,7 @@ public abstract class BaseFrame extends JFrame implements I_Important, I_PanelEv
     public void refreshPanels(){}
     public void toFront(int mask){}
     private WorkSpace ws;
+    public JProgressBar getProgress(){ return null; };
     //-------------------------------------------------------------------------------
     public BaseFrame(){
         ws = WorkSpace.ws();
@@ -89,6 +90,7 @@ public abstract class BaseFrame extends JFrame implements I_Important, I_PanelEv
     public void sendEvent(int code, int par1, long par2, String par3,Object oo){
         for(BasePanel panel : panels)
             panel.onEvent(code,par1,par2,par3,oo);
+        onEvent(code,par1,par2,par3,oo);                    //  И себе....
         ws.sendEvent(this,code,par1,par2,par3,oo);
         }
     public void sendEventSynch(int code, int par1, long par2, String par3,Object oo){

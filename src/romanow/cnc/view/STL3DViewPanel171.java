@@ -33,12 +33,11 @@ public class STL3DViewPanel171 extends BasePanel {
         }
 
 
-    public STL3DViewPanel171(BaseFrame baseFrame,Dimension dim) {
-        super(baseFrame,dim);
+    public STL3DViewPanel171(CNCViewer baseFrame) {
+        super(baseFrame);
         initComponents();
-        if (dim.width!=0){
-            setComponentsScale(dim);
-            }
+        setComponentsScale();
+        Dimension dim = WorkSpace.ws().getDim();
         Dimension dim1 = createDim(dim,Values.FrameWidth-100, Values.FrameHeight-Values.FrameBottom*2);
         setPreferredSize(dim1);
         GraphicsConfiguration config = SimpleUniverse.getPreferredConfiguration();
