@@ -145,7 +145,7 @@ public abstract class BasePanel extends javax.swing.JPanel implements I_PanelEve
     }
     public void updateField(String label, JTextField field, FloatParameter par,double koeff){
         Dimension dim = WorkSpace.ws().getDim();
-        DigitPanel digit = new DigitPanel(dim,label, field, false, new I_RealValue() {
+        DigitPanel digit = new DigitPanel(label, field, false, new I_RealValue() {
             @Override
             public void onEvent(String value) {
                 field.setText(value);
@@ -157,7 +157,7 @@ public abstract class BasePanel extends javax.swing.JPanel implements I_PanelEve
     }
     public void updateField(String label, JTextField field, IntParameter par){
         Dimension dim = WorkSpace.ws().getDim();
-        DigitPanel digit = new DigitPanel(dim,label, field, true, new I_RealValue() {
+        DigitPanel digit = new DigitPanel(label, field, true, new I_RealValue() {
             @Override
             public void onEvent(String value) {
                 field.setText(value);

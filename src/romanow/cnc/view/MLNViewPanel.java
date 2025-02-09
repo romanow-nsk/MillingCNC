@@ -20,6 +20,8 @@ import romanow.cnc.utils.Events;
 import romanow.cnc.utils.I_Notify;
 import romanow.cnc.utils.Utils;
 import romanow.cnc.view.design.JCheckBoxButton;
+import romanow.cnc.view.panels.DigitPanel;
+import romanow.cnc.view.panels.I_RealValue;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -659,6 +661,7 @@ public class MLNViewPanel extends BasePanel {
         MoveToNearestButton = new javax.swing.JButton();
         Z0_6 = new javax.swing.JLabel();
         Z0_7 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
 
         setLayout(null);
 
@@ -677,7 +680,7 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(HORIZ);
-        HORIZ.setBounds(900, 390, 200, 20);
+        HORIZ.setBounds(900, 390, 190, 20);
 
         VERTIC.setMinimum(-100);
         VERTIC.setOrientation(javax.swing.JSlider.VERTICAL);
@@ -706,7 +709,7 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(MAS);
-        MAS.setBounds(900, 430, 200, 20);
+        MAS.setBounds(910, 430, 180, 20);
 
         PREV.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         PREV.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/left.png"))); // NOI18N
@@ -721,7 +724,7 @@ public class MLNViewPanel extends BasePanel {
         PREV.setBounds(10, 170, 40, 40);
 
         NEXT.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        NEXT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/right.PNG"))); // NOI18N
+        NEXT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/right.png"))); // NOI18N
         NEXT.setBorderPainted(false);
         NEXT.setContentAreaFilled(false);
         NEXT.addActionListener(new java.awt.event.ActionListener() {
@@ -738,12 +741,12 @@ public class MLNViewPanel extends BasePanel {
         MES.setBounds(200, 700, 880, 30);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel1.setText("Масштаб");
+        jLabel1.setText("Скорость анимации");
         add(jLabel1);
-        jLabel1.setBounds(910, 410, 110, 20);
+        jLabel1.setBounds(910, 330, 180, 20);
 
         LoopPlus.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        LoopPlus.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/right.PNG"))); // NOI18N
+        LoopPlus.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/right.png"))); // NOI18N
         LoopPlus.setContentAreaFilled(false);
         LoopPlus.setDefaultCapable(false);
         LoopPlus.addActionListener(new java.awt.event.ActionListener() {
@@ -755,7 +758,7 @@ public class MLNViewPanel extends BasePanel {
         LoopPlus.setBounds(140, 650, 40, 40);
 
         LoopMinus.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        LoopMinus.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/left.PNG"))); // NOI18N
+        LoopMinus.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/left.png"))); // NOI18N
         LoopMinus.setBorderPainted(false);
         LoopMinus.setContentAreaFilled(false);
         LoopMinus.addActionListener(new java.awt.event.ActionListener() {
@@ -790,6 +793,13 @@ public class MLNViewPanel extends BasePanel {
 
         B5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         B5.setText("0.0");
+        B5.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        B5.setEnabled(false);
+        B5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                B5MouseClicked(evt);
+            }
+        });
         add(B5);
         B5.setBounds(150, 300, 50, 30);
 
@@ -888,9 +898,11 @@ public class MLNViewPanel extends BasePanel {
 
         PY.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         PY.setText("0");
-        PY.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                PYKeyPressed(evt);
+        PY.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        PY.setEnabled(false);
+        PY.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                PYMouseClicked(evt);
             }
         });
         add(PY);
@@ -915,9 +927,11 @@ public class MLNViewPanel extends BasePanel {
 
         PX.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         PX.setText("0");
-        PX.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                PXKeyPressed(evt);
+        PX.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        PX.setEnabled(false);
+        PX.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                PXMouseClicked(evt);
             }
         });
         add(PX);
@@ -928,12 +942,12 @@ public class MLNViewPanel extends BasePanel {
         GroupSize.setMinimumSize(new java.awt.Dimension(37, 25));
         GroupSize.setPreferredSize(new java.awt.Dimension(37, 25));
         add(GroupSize);
-        GroupSize.setBounds(970, 220, 50, 30);
+        GroupSize.setBounds(970, 210, 50, 30);
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel3.setText("NxN : 1");
         add(jLabel3);
-        jLabel3.setBounds(900, 225, 50, 20);
+        jLabel3.setBounds(900, 215, 50, 20);
 
         MergeLayers.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         MergeLayers.setText("Слить слои");
@@ -943,7 +957,7 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(MergeLayers);
-        MergeLayers.setBounds(900, 260, 120, 30);
+        MergeLayers.setBounds(900, 250, 120, 30);
 
         ShowDelay.setMajorTickSpacing(1);
         ShowDelay.setValue(10);
@@ -953,7 +967,7 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(ShowDelay);
-        ShowDelay.setBounds(900, 340, 190, 20);
+        ShowDelay.setBounds(900, 350, 190, 20);
 
         LAYERS.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         LAYERS.addItemListener(new java.awt.event.ItemListener() {
@@ -993,14 +1007,14 @@ public class MLNViewPanel extends BasePanel {
         X3.setBounds(910, 515, 20, 20);
 
         ShowPrint.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        ShowPrint.setText("Развертка");
+        ShowPrint.setText("Анимация");
         ShowPrint.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ShowPrintActionPerformed(evt);
             }
         });
         add(ShowPrint);
-        ShowPrint.setBounds(900, 300, 120, 30);
+        ShowPrint.setBounds(900, 290, 120, 30);
 
         Points2Button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1084,6 +1098,11 @@ public class MLNViewPanel extends BasePanel {
         Z0_7.setText("Привязка");
         add(Z0_7);
         Z0_7.setBounds(910, 540, 90, 20);
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel5.setText("Масштаб");
+        add(jLabel5);
+        jLabel5.setBounds(910, 410, 110, 20);
     }// </editor-fold>//GEN-END:initComponents
 
     private void HORIZStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_HORIZStateChanged
@@ -1259,28 +1278,6 @@ public class MLNViewPanel extends BasePanel {
         paintView(false);
     }//GEN-LAST:event_LineInsertActionPerformed
 
-    private void PYKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PYKeyPressed
-        if(evt.getKeyCode()!=10) return;
-        if (one==null && two==null) return;
-        I_STLPoint2D pp = two!=null ? two :one;
-        try {
-            double vv = Double.parseDouble(PY.getText());
-            pp.y(vv);
-            paintView(false);
-        }catch(Exception ee){ notify.notify(Values.error,"Формат целого числа ????");}
-    }//GEN-LAST:event_PYKeyPressed
-
-    private void PXKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PXKeyPressed
-        if(evt.getKeyCode()!=10) return;
-        if (one==null && two==null) return;
-        I_STLPoint2D pp = two!=null ? two :one;
-        try {
-            double vv = Double.parseDouble(PX.getText());
-            pp.x(vv);
-            paintView(false);
-        }catch(Exception ee){ notify.notify(Values.error,"Формат целого числа ????");}
-    }//GEN-LAST:event_PXKeyPressed
-
     private void MergeLayersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MergeLayersActionPerformed
         if (data.isMerged()){
             notify.notify(Values.error,"Повторное слияние невозможно");
@@ -1359,6 +1356,53 @@ public class MLNViewPanel extends BasePanel {
         moveToNearest.itemStateChanged();
     }//GEN-LAST:event_MoveToNearestButtonActionPerformed
 
+    private void PXMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_PXMouseClicked
+        if (one==null && two==null){
+            WorkSpace.ws().popup("Не выбрана точка");
+            return;
+            }
+        DigitPanel digit = new DigitPanel("Координата X",PX, new I_RealValue() {
+            @Override
+            public void onEvent(String value) {
+                PX.setText(value);
+                I_STLPoint2D pp = two!=null ? two :one;
+                try {
+                    double vv = Double.parseDouble(value);
+                    pp.x(vv);
+                    paintView(false);
+                    } catch(Exception ee){ notify.notify(Values.error,"Формат вещественного числа ????");}
+                }
+            });
+    }//GEN-LAST:event_PXMouseClicked
+
+    private void PYMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_PYMouseClicked
+        if (one==null && two==null){
+            WorkSpace.ws().popup("Не выбрана точка");
+            return;
+            }
+        DigitPanel digit = new DigitPanel("Координата X",PY, new I_RealValue() {
+            @Override
+            public void onEvent(String value) {
+                PY.setText(value);
+                I_STLPoint2D pp = two!=null ? two :one;
+                try {
+                    double vv = Double.parseDouble(value);
+                    pp.y(vv);
+                    paintView(false);
+                    } catch(Exception ee){ notify.notify(Values.error,"Формат вещественного числа ????");}
+                }
+            });
+    }//GEN-LAST:event_PYMouseClicked
+
+    private void B5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_B5MouseClicked
+        DigitPanel digit = new DigitPanel("Глубина слоя",B5, new I_RealValue() {
+            @Override
+            public void onEvent(String value) {
+                B5.setText(value);
+                }
+            });
+    }//GEN-LAST:event_B5MouseClicked
+
     @Override
     public void refresh() {
         }
@@ -1420,6 +1464,7 @@ public class MLNViewPanel extends BasePanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;

@@ -41,7 +41,7 @@
           <Font name="Tahoma" size="14" style="1"/>
         </Property>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/drawable-mdpi/left.PNG"/>
+          <Image iconType="3" name="/drawable-mdpi/left.png"/>
         </Property>
         <Property name="borderPainted" type="boolean" value="false"/>
         <Property name="contentAreaFilled" type="boolean" value="false"/>
@@ -61,7 +61,7 @@
           <Font name="Tahoma" size="14" style="1"/>
         </Property>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/drawable-mdpi/right.PNG"/>
+          <Image iconType="3" name="/drawable-mdpi/right.png"/>
         </Property>
         <Property name="borderPainted" type="boolean" value="false"/>
         <Property name="contentAreaFilled" type="boolean" value="false"/>

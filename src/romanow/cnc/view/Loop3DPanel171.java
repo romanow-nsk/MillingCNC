@@ -342,7 +342,7 @@ public class Loop3DPanel171 extends BasePanel {
         ModelView.setBounds(20, 20, 150, 24);
 
         PREV.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        PREV.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/left.PNG"))); // NOI18N
+        PREV.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/left.png"))); // NOI18N
         PREV.setBorderPainted(false);
         PREV.setContentAreaFilled(false);
         PREV.addActionListener(new java.awt.event.ActionListener() {
@@ -354,7 +354,7 @@ public class Loop3DPanel171 extends BasePanel {
         PREV.setBounds(20, 110, 40, 40);
 
         NEXT.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        NEXT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/right.PNG"))); // NOI18N
+        NEXT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/right.png"))); // NOI18N
         NEXT.setBorderPainted(false);
         NEXT.setContentAreaFilled(false);
         NEXT.addActionListener(new java.awt.event.ActionListener() {

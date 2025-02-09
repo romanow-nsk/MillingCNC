@@ -153,7 +153,7 @@ public class KeyBoardPanel extends BasePopupDialog {
         B9.setBounds(490, 50, 50, 40);
 
         Back.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        Back.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/left.PNG"))); // NOI18N
+        Back.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/left.png"))); // NOI18N
         Back.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BackActionPerformed(evt);

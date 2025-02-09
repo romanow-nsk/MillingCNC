@@ -36,7 +36,7 @@ public class DigitPanel extends BasePopupDialog {
         positionOn(200,200);
         retryLongDelay();
         }
-    public DigitPanel(Dimension dim, String title, double val,I_RealValue back0) {
+    public DigitPanel(String title, double val,I_RealValue back0) {
         super(250,280);
         initComponents();
         back = back0;
@@ -47,7 +47,10 @@ public class DigitPanel extends BasePopupDialog {
         positionOn(200,200);
         retryLongDelay();
         }
-    public DigitPanel(Dimension dim, String title, String val,I_RealValue back0) {
+    public DigitPanel(String title, String val,I_RealValue back0) {
+        this(title,val,false,back0);
+        }
+    public DigitPanel(String title, String val,boolean intMode,I_RealValue back0) {
         super(250,280);
         initComponents();
         back = back0;
@@ -56,12 +59,14 @@ public class DigitPanel extends BasePopupDialog {
         BasePanel.setComponentsScale(this);
         revalidate();
         positionOn(200,200);
+        if (intMode)
+            Point.setVisible(false);
         retryLongDelay();
         }
-    public DigitPanel(Dimension dim, String title, JTextField field, I_RealValue back0) {
-        this(dim,title,field,false,back0);
+    public DigitPanel(String title, JTextField field, I_RealValue back0) {
+        this(title,field,false,back0);
         }
-    public DigitPanel(Dimension dim, String title, JTextField field, boolean intMode, I_RealValue back0) {
+    public DigitPanel(String title, JTextField field, boolean intMode, I_RealValue back0) {
         super(250,280);
         initComponents();
         back = back0;
@@ -149,7 +154,7 @@ public class DigitPanel extends BasePopupDialog {
         B9.setBounds(130, 80, 50, 40);
 
         Back.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        Back.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/left.PNG"))); // NOI18N
+        Back.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/left.png"))); // NOI18N
         Back.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BackActionPerformed(evt);

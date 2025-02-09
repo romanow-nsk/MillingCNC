@@ -15,12 +15,12 @@ public class JCheckBoxButton {
         }
     public void setSelected(boolean sel){
         selected = sel;
-        button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/toggle-"+(selected ? "on" : "off")+"-48.PNG")));
+        button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/toggle-"+(selected ? "on" : "off")+"-48.png")));
         button.revalidate();
         }
     public void itemStateChanged(){
         selected = !selected;
-        button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/toggle-"+(selected ? "on" : "off")+"-48.PNG")));
+        button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/toggle-"+(selected ? "on" : "off")+"-48.png")));
         button.revalidate();
         }
     public void setVisible(boolean bb){
