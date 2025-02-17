@@ -56,6 +56,7 @@ public class CNCViewerPanel extends BasePanel {
     public CNCViewerPanel(CNCViewer baseFrame) {
         super(baseFrame);
         initComponents();
+        CNCReset.setVisible(false);
         ws = WorkSpace.ws();
         Dimension dim = ws.getDim();
         if (dim.width!=0)
@@ -176,20 +177,19 @@ public class CNCViewerPanel extends BasePanel {
         GGODESend = new javax.swing.JTextField();
         COMPortOnOff = new javax.swing.JButton();
         RELATIVE = new javax.swing.JCheckBox();
-        GCODEStop = new javax.swing.JButton();
-        GCODEPause = new javax.swing.JButton();
-        LEVEL = new javax.swing.JComboBox<>();
-        LogToFile = new javax.swing.JCheckBox();
         STOP = new javax.swing.JButton();
         PAUSE = new javax.swing.JButton();
+        LEVEL = new javax.swing.JComboBox<>();
+        LogToFile = new javax.swing.JCheckBox();
         LogStop = new javax.swing.JCheckBox();
         BYSTEP = new javax.swing.JCheckBox();
+        CNCReset = new javax.swing.JButton();
 
         setLayout(null);
 
         LOG.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         add(LOG);
-        LOG.setBounds(10, 10, 550, 680);
+        LOG.setBounds(10, 10, 550, 710);
 
         STLLoad.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         STLLoad.setText("Загрузить STL");
@@ -337,27 +337,27 @@ public class CNCViewerPanel extends BasePanel {
         add(RELATIVE);
         RELATIVE.setBounds(580, 330, 140, 24);
 
-        GCODEStop.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        GCODEStop.setText("Завершить");
-        GCODEStop.setBorder(new javax.swing.border.MatteBorder(null));
-        GCODEStop.addActionListener(new java.awt.event.ActionListener() {
+        STOP.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        STOP.setText("Завершить");
+        STOP.setBorder(new javax.swing.border.MatteBorder(null));
+        STOP.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                GCODEStopActionPerformed(evt);
+                STOPActionPerformed(evt);
             }
         });
-        add(GCODEStop);
-        GCODEStop.setBounds(740, 330, 150, 30);
+        add(STOP);
+        STOP.setBounds(740, 330, 150, 30);
 
-        GCODEPause.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        GCODEPause.setText("Пауза");
-        GCODEPause.setBorder(new javax.swing.border.MatteBorder(null));
-        GCODEPause.addActionListener(new java.awt.event.ActionListener() {
+        PAUSE.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        PAUSE.setText("Пауза");
+        PAUSE.setBorder(new javax.swing.border.MatteBorder(null));
+        PAUSE.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                GCODEPauseActionPerformed(evt);
+                PAUSEActionPerformed(evt);
             }
         });
-        add(GCODEPause);
-        GCODEPause.setBounds(740, 290, 150, 30);
+        add(PAUSE);
+        PAUSE.setBounds(740, 290, 150, 30);
 
         LEVEL.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         LEVEL.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "информ.", "важное", "предупр.", "сбой" }));
@@ -378,27 +378,7 @@ public class CNCViewerPanel extends BasePanel {
             }
         });
         add(LogToFile);
-        LogToFile.setBounds(650, 700, 120, 20);
-
-        STOP.setText("...");
-        STOP.setPreferredSize(new java.awt.Dimension(81, 25));
-        STOP.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                STOPActionPerformed(evt);
-            }
-        });
-        add(STOP);
-        STOP.setBounds(120, 700, 100, 30);
-
-        PAUSE.setText("...");
-        PAUSE.setPreferredSize(new java.awt.Dimension(91, 25));
-        PAUSE.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                PAUSEActionPerformed(evt);
-            }
-        });
-        add(PAUSE);
-        PAUSE.setBounds(10, 700, 100, 30);
+        LogToFile.setBounds(830, 700, 120, 20);
 
         LogStop.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         LogStop.setText("Остановить лог");
@@ -408,12 +388,23 @@ public class CNCViewerPanel extends BasePanel {
             }
         });
         add(LogStop);
-        LogStop.setBounds(490, 700, 150, 24);
+        LogStop.setBounds(680, 700, 150, 24);
 
         BYSTEP.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         BYSTEP.setText("По шагам");
         add(BYSTEP);
-        BYSTEP.setBounds(380, 700, 130, 24);
+        BYSTEP.setBounds(570, 700, 130, 24);
+
+        CNCReset.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/remove.png"))); // NOI18N
+        CNCReset.setBorderPainted(false);
+        CNCReset.setContentAreaFilled(false);
+        CNCReset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CNCResetActionPerformed(evt);
+            }
+        });
+        add(CNCReset);
+        CNCReset.setBounds(900, 280, 50, 50);
     }// </editor-fold>//GEN-END:initComponents
 
     private void openModel(){
@@ -590,9 +581,16 @@ public class CNCViewerPanel extends BasePanel {
 
     private void gCodeSend(BufferedReader in,COMPortGDriver driver,int timeOut) {
         int count = 0;
+        viewCommon.start();
         try {
             String gCode = null;
-            while ((gCode = in.readLine()) != null) {
+            while (viewCommon.isRunning() && (gCode = in.readLine()) != null) {
+                if (viewCommon.isPause()){
+                    try {
+                        Thread.sleep(1000);
+                        } catch (Exception ee){}
+                    continue;
+                    }
                 count++;
                 ws.getNotify().notify(info, "GCODE: " + gCode);
                 final String gcode1 = gCode;
@@ -605,20 +603,23 @@ public class CNCViewerPanel extends BasePanel {
                 Pair<String, String> res = driver.write(gCode,timeOut);
                 if (res.o1 != null) {
                     ws.getNotify().notify(error, "GCODE - ошибка: " + res.o1);
-                    break;
+                    viewCommon.finish();
                     }
                 else
                     {
-                    if (!res.o2.equals("ok"))
+                    if (!res.o2.equals("ok")){
                         ws.getNotify().notify(info, "GCODE - ответ " + res.o2);
+                        if (res.o2.startsWith("error"))
+                            viewCommon.finish();
+                        }
                     }
                 }
             in.close();
-            driver.close();
+            //driver.close();
             ws.getNotify().notify(info, "GCODE: " + count + " команд");
             } catch (Exception ee) {
                 ws.getNotify().notify(error,"GCODE: " +Utils.createFatalMessage(ee,10));
-                driver.close();
+                //driver.close();
                 if (in != null) {
                     try { in.close(); } catch (IOException e) {}
                     }
@@ -666,6 +667,7 @@ public class CNCViewerPanel extends BasePanel {
     private void closeComPort(BufferedReader in){
         setComPortState(ComPortStateOff);
         driver.close();
+        CNCReset.setVisible(false);
         if (in != null) {
             try {
                 in.close();
@@ -1034,17 +1036,28 @@ public class CNCViewerPanel extends BasePanel {
                     return;
                     }
                 setComPortState(ComPortStateOn);
+                CNCReset.setVisible(true);
                 break;
             }
     }//GEN-LAST:event_COMPortOnOffActionPerformed
 
-    private void GCODEStopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GCODEStopActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_GCODEStopActionPerformed
+    private void STOPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_STOPActionPerformed
+        viewCommon.finish();
+        PAUSE.setText("...");
+        STOP.setText("...");
+        sendEvent(Events.OperateFinish,0,0,null,null);
+    }//GEN-LAST:event_STOPActionPerformed
 
-    private void GCODEPauseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GCODEPauseActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_GCODEPauseActionPerformed
+    private void PAUSEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PAUSEActionPerformed
+        if (!viewCommon.isRunning())
+            return;
+        if (viewCommon.changePause()){
+            PAUSE.setText("продолжить");
+        }
+        else{
+            PAUSE.setText("остановить");
+        }
+    }//GEN-LAST:event_PAUSEActionPerformed
 
     private void LEVELItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_LEVELItemStateChanged
         notify.setLevel(LEVEL.getSelectedIndex());
@@ -1057,27 +1070,35 @@ public class CNCViewerPanel extends BasePanel {
         closeLogFile(null);
     }//GEN-LAST:event_LogToFileItemStateChanged
 
-    private void STOPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_STOPActionPerformed
-        viewCommon.finish();
-        PAUSE.setText("...");
-        STOP.setText("...");
-        sendEvent(Events.OperateFinish,0,0,null,null);
-    }//GEN-LAST:event_STOPActionPerformed
-
-    private void PAUSEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PAUSEActionPerformed
-        if (!viewCommon.isRunning())
-        return;
-        if (viewCommon.changePause()){
-            PAUSE.setText("продолжить");
-        }
-        else{
-            PAUSE.setText("остановить");
-        }
-    }//GEN-LAST:event_PAUSEActionPerformed
-
     private void LogStopItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_LogStopItemStateChanged
         notify.logSuspendState(LogStop.isSelected());
     }//GEN-LAST:event_LogStopItemStateChanged
+
+
+    public void sendOneCommmand(String cmd){
+        Pair<String,String> ans = driver.write(cmd,ws.global().mashine.DeviceTimeOut.getVal());
+        if (ans.o1!=null){
+            WorkSpace.ws().getNotify().notify(error,"Reset: "+ans.o1);
+            setComPortState(ComPortStateFail);
+            }
+        else{
+            if(!ans.o2.equals("ok"))
+                WorkSpace.ws().getNotify().notify(info,"Reset: "+ans.o2);
+            else{
+                viewCommon.finish();
+                PAUSE.setText("...");
+                STOP.setText("...");
+                sendEvent(Events.OperateFinish,0,0,null,null);
+                }
+            setComPortState(ComPortStateOn);
+            }
+        }
+
+    private void CNCResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CNCResetActionPerformed
+        char ctrlX[] = {(char)0x18};
+        sendOneCommmand(new String(ctrlX));
+        sendOneCommmand("$X");
+    }//GEN-LAST:event_CNCResetActionPerformed
 
     private void exportGCode(){
         if (getBaseFrame().test3()) return;
@@ -1237,11 +1258,10 @@ public class CNCViewerPanel extends BasePanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox BYSTEP;
+    private javax.swing.JButton CNCReset;
     private javax.swing.JButton COMPortOnOff;
     private javax.swing.JButton GCODEMilling;
-    private javax.swing.JButton GCODEPause;
     private javax.swing.JButton GCODESave;
-    private javax.swing.JButton GCODEStop;
     private javax.swing.JButton GCODEView;
     private javax.swing.JTextField GGODESend;
     private javax.swing.JComboBox<String> LEVEL;

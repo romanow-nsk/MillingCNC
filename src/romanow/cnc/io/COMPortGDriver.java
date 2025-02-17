@@ -79,7 +79,9 @@ public class COMPortGDriver {
 
     public void writeNoWait(String mes){
         try {
-            System.out.println(""+port+": "+mes);
+            String ss = ""+port+": "+mes;
+            WorkSpace.ws().notify(Values.info,ss);
+            System.out.println(ss);
             serialPort.writeString(mes+"\n");           // КОНЕЦ СТРОКИ
             } catch (SerialPortException ex) {
                 back.onError(UNIException.io(ex));
@@ -109,7 +111,9 @@ public class COMPortGDriver {
             writeStamp=0;
             }
         //------------------ Тайм-аут игнорируем
-        System.out.println(">>>"+port+": тайм-аут");
+        String ss = ">>>"+port+": тайм-аут";
+        WorkSpace.ws().notify(Values.info,ss);
+        System.out.println(ss);
         return new Pair<>(null,"ok");
         //return new Pair<>(""+port+": тайм-аут "+timeout+" сек, нет ответа",null);
         }
@@ -139,7 +143,9 @@ public class COMPortGDriver {
                     else{
                         synchronized (COMPortGDriver.this){
                             answer = data.substring(0,idx);
-                            System.out.println(">>>"+port+": "+answer);
+                            String sss = ">>>"+port+": "+answer;
+                            WorkSpace.ws().notify(Values.info,sss);
+                            System.out.println(sss);
                             data = "";
                            if (writeStamp==0){
                                final String ss = answer;
