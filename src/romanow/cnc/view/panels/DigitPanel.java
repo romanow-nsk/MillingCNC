@@ -73,7 +73,7 @@ public class DigitPanel extends BasePopupDialog {
         TITLE.setText(title);
         setValue(field.getText());
         BasePanel.setComponentsScale(this);
-        positionOn(field, 100,-200, true);         // Уже пересчитан масштаб !!!!!!!!!!!!!!!
+        positionOn(field, -250,-200, true);         // Уже пересчитан масштаб !!!!!!!!!!!!!!!
         retryLongDelay();
         if (intMode)
             Point.setVisible(false);

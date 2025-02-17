@@ -46,7 +46,7 @@ public class KeyBoardPanel extends BasePopupDialog {
         Shift.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/down.png"))); // NOI18N
         Value.setText(field.getText());
         BasePanel.setComponentsScale(this);
-        positionOn(field, -200,100, true);         // Уже пересчитан масштаб !!!!!!!!!!!!!!!
+        positionOn(field, -500,100, true);         // Уже пересчитан масштаб !!!!!!!!!!!!!!!
         retryLongDelay();
         revalidate();
         setVisible(true);

@@ -92,7 +92,7 @@ public class CNCViewer extends BaseFrame {
                 menuButton.setBounds(MenuButtonX0,MenuButtonY0+idx*MenuButtonStep,MenuButtonXSize,MenuButtonYSize);
                 menuButton.setText(panel.getName());
                 int style = menuButton.getFont().getStyle();
-                menuButton.setFont(new java.awt.Font("Segoe UI", style, 14));
+                menuButton.setFont(new java.awt.Font("Segoe UI", style, 24));
                 menuButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {

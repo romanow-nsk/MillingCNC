@@ -32,7 +32,10 @@ public class BasePopupDialog extends javax.swing.JFrame {
     public void positionOn(JTextField field, int x0, int y0, boolean dialog){
         Dimension dim = WorkSpace.ws().getDim();
         if (dim.width==0){
-            setBounds(Values.FrameX0+x0+field.getX(),Values.FrameY0+y0+field.getY(),winWidth,winHigh);
+                int yy =  Values.FrameY0+y0+field.getY();
+                if (yy<50)
+                    yy=50;
+            setBounds(Values.FrameX0+x0+field.getX(),yy,winWidth,winHigh);
             }
         else{
             //double scaleY = ((double)dim.height)/Values.FrameHeight;
@@ -41,7 +44,10 @@ public class BasePopupDialog extends javax.swing.JFrame {
             int yy = field.getY()+y0;
             if (yy < Values.FrameTop)
                 yy = Values.FrameTop;
-            setBounds(field.getX()+x0,yy,winWidth,winHigh);
+            int xx = field.getX()+(int)(x0*WorkSpace.ws().getScaleX());
+            if (xx<10)
+                xx=field.getX()+(int)(50*WorkSpace.ws().getScaleX());
+            setBounds(xx,yy,winWidth,winHigh);
             }
         if (!dialog)
             setUndecorated(true);

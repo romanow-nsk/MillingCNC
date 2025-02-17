@@ -204,7 +204,6 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
         BlankZ = new javax.swing.JTextField();
         Z0_15 = new javax.swing.JLabel();
         ZUp = new javax.swing.JTextField();
-        jSeparator1 = new javax.swing.JSeparator();
         Z0_16 = new javax.swing.JLabel();
         jSeparator3 = new javax.swing.JSeparator();
         AutoScaleButton = new javax.swing.JButton();
@@ -235,35 +234,35 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
 
         MarkingFieldWidth.setEditable(false);
         MarkingFieldWidth.setBackground(new java.awt.Color(200, 200, 200));
-        MarkingFieldWidth.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        MarkingFieldWidth.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         MarkingFieldWidth.setEnabled(false);
         add(MarkingFieldWidth);
-        MarkingFieldWidth.setBounds(180, 30, 80, 30);
+        MarkingFieldWidth.setBounds(250, 20, 90, 40);
 
         Z.setEditable(false);
         Z.setBackground(new java.awt.Color(200, 200, 200));
-        Z.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         Z.setEnabled(false);
         add(Z);
-        Z.setBounds(180, 170, 80, 30);
+        Z.setBounds(250, 200, 90, 40);
 
         PageServoOffsetsLeft.setEditable(false);
         PageServoOffsetsLeft.setBackground(new java.awt.Color(200, 200, 200));
-        PageServoOffsetsLeft.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        PageServoOffsetsLeft.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         PageServoOffsetsLeft.setEnabled(false);
         add(PageServoOffsetsLeft);
-        PageServoOffsetsLeft.setBounds(180, 100, 80, 30);
+        PageServoOffsetsLeft.setBounds(250, 110, 90, 40);
 
         PageServoOffsetsTop.setEditable(false);
         PageServoOffsetsTop.setBackground(new java.awt.Color(200, 200, 200));
-        PageServoOffsetsTop.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        PageServoOffsetsTop.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         PageServoOffsetsTop.setEnabled(false);
         add(PageServoOffsetsTop);
-        PageServoOffsetsTop.setBounds(180, 135, 80, 30);
+        PageServoOffsetsTop.setBounds(250, 156, 90, 40);
 
         ScaleFactor.setEditable(false);
         ScaleFactor.setBackground(new java.awt.Color(255, 255, 255));
-        ScaleFactor.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        ScaleFactor.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         ScaleFactor.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         ScaleFactor.setEnabled(false);
         ScaleFactor.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -277,44 +276,44 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(ScaleFactor);
-        ScaleFactor.setBounds(180, 205, 80, 30);
+        ScaleFactor.setBounds(250, 3245, 90, 40);
 
-        Z0_30.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z0_30.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         Z0_30.setText("Масштаб модели");
         add(Z0_30);
-        Z0_30.setBounds(10, 215, 130, 20);
+        Z0_30.setBounds(10, 250, 220, 32);
 
-        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel10.setText("Станок / программа");
         add(jLabel10);
-        jLabel10.setBounds(520, 10, 220, 20);
+        jLabel10.setBounds(710, 0, 280, 30);
 
-        jLabel11.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel11.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel11.setText("Размер по X (мм)");
         add(jLabel11);
-        jLabel11.setBounds(10, 40, 110, 20);
+        jLabel11.setBounds(10, 30, 220, 30);
 
-        jLabel12.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel12.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel12.setText("Размер по Z (мм)");
         add(jLabel12);
-        jLabel12.setBounds(10, 180, 110, 20);
+        jLabel12.setBounds(10, 210, 220, 32);
 
-        jLabel14.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel14.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel14.setText("Смещ. X влево (мм)");
         add(jLabel14);
-        jLabel14.setBounds(10, 110, 170, 20);
+        jLabel14.setBounds(10, 120, 230, 30);
 
-        jLabel15.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel15.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel15.setText("Смещ.  Y вверх (мм)");
         add(jLabel15);
-        jLabel15.setBounds(10, 145, 140, 20);
+        jLabel15.setBounds(10, 160, 230, 32);
 
-        jLabel16.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel16.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel16.setText("Время фрезер.");
         add(jLabel16);
-        jLabel16.setBounds(280, 180, 110, 20);
+        jLabel16.setBounds(360, 210, 200, 32);
 
-        RotateButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        RotateButton.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         RotateButton.setText("Поворот");
         RotateButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -322,21 +321,21 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(RotateButton);
-        RotateButton.setBounds(410, 530, 100, 30);
+        RotateButton.setBounds(560, 650, 140, 40);
 
-        jLabel22.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel22.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel22.setText("Размер по Y (мм)");
         add(jLabel22);
-        jLabel22.setBounds(10, 75, 120, 20);
+        jLabel22.setBounds(10, 80, 210, 30);
 
         MarkingFieldHight.setEditable(false);
         MarkingFieldHight.setBackground(new java.awt.Color(200, 200, 200));
-        MarkingFieldHight.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        MarkingFieldHight.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         MarkingFieldHight.setEnabled(false);
         add(MarkingFieldHight);
-        MarkingFieldHight.setBounds(180, 65, 80, 30);
+        MarkingFieldHight.setBounds(250, 65, 90, 40);
 
-        ANGLE.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        ANGLE.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         ANGLE.setText("90");
         ANGLE.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         ANGLE.setEnabled(false);
@@ -351,9 +350,9 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(ANGLE);
-        ANGLE.setBounds(340, 530, 60, 30);
+        ANGLE.setBounds(460, 650, 90, 40);
 
-        Zstart.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Zstart.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         Zstart.setText("0");
         Zstart.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         Zstart.setEnabled(false);
@@ -363,23 +362,23 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(Zstart);
-        Zstart.setBounds(180, 240, 80, 30);
+        Zstart.setBounds(250, 290, 90, 40);
 
-        Z0_2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        Z0_2.setText("Z поднятие фрезы  (мм) ");
+        Z0_2.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        Z0_2.setText("Z поднятие фрезы ");
         add(Z0_2);
-        Z0_2.setBounds(10, 315, 160, 20);
+        Z0_2.setBounds(10, 390, 220, 32);
 
-        jLabel46.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel46.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel46.setText("Модель");
         add(jLabel46);
-        jLabel46.setBounds(10, 10, 100, 20);
+        jLabel46.setBounds(10, 0, 150, 30);
         add(jSeparator2);
         jSeparator2.setBounds(580, 152, 180, 0);
         add(jSeparator5);
         jSeparator5.setBounds(770, 330, 0, 3);
 
-        Zfinish.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Zfinish.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         Zfinish.setText("0");
         Zfinish.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         Zfinish.setEnabled(false);
@@ -389,74 +388,74 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(Zfinish);
-        Zfinish.setBounds(180, 275, 80, 30);
+        Zfinish.setBounds(250, 335, 90, 40);
 
-        Z0_18.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z0_18.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         Z0_18.setText("Автоцентрирование");
         add(Z0_18);
-        Z0_18.setBounds(10, 610, 170, 20);
+        Z0_18.setBounds(360, 700, 240, 32);
 
-        XYZ.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        XYZ.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         XYZ.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "X", "Y", "Z" }));
         add(XYZ);
-        XYZ.setBounds(280, 530, 50, 30);
+        XYZ.setBounds(360, 650, 90, 40);
 
-        jLabel25.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel25.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel25.setText("Линий");
         add(jLabel25);
-        jLabel25.setBounds(280, 45, 80, 20);
+        jLabel25.setBounds(360, 30, 160, 32);
 
         PrintTime.setEditable(false);
         PrintTime.setBackground(new java.awt.Color(200, 200, 200));
-        PrintTime.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        PrintTime.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         PrintTime.setEnabled(false);
         add(PrintTime);
-        PrintTime.setBounds(400, 170, 80, 30);
+        PrintTime.setBounds(600, 200, 90, 40);
 
-        jLabel26.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel26.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel26.setText("Длина  (м)");
         add(jLabel26);
-        jLabel26.setBounds(280, 75, 110, 20);
+        jLabel26.setBounds(360, 70, 190, 32);
 
         LineCount.setEditable(false);
         LineCount.setBackground(new java.awt.Color(200, 200, 200));
-        LineCount.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        LineCount.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         LineCount.setEnabled(false);
         add(LineCount);
-        LineCount.setBounds(400, 30, 80, 30);
+        LineCount.setBounds(600, 20, 90, 40);
 
         LineLength.setEditable(false);
         LineLength.setBackground(new java.awt.Color(200, 200, 200));
-        LineLength.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        LineLength.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         LineLength.setEnabled(false);
         add(LineLength);
-        LineLength.setBounds(400, 65, 80, 30);
+        LineLength.setBounds(600, 65, 90, 40);
 
         MoveProc.setEditable(false);
         MoveProc.setBackground(new java.awt.Color(200, 200, 200));
-        MoveProc.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        MoveProc.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         MoveProc.setEnabled(false);
         add(MoveProc);
-        MoveProc.setBounds(400, 100, 80, 30);
+        MoveProc.setBounds(600, 110, 90, 40);
 
-        jLabel27.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel27.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel27.setText("Холостой ход (%)");
         add(jLabel27);
-        jLabel27.setBounds(280, 110, 120, 20);
+        jLabel27.setBounds(360, 120, 200, 32);
 
-        jLabel28.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel28.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel28.setText("Время слайсинга");
         add(jLabel28);
-        jLabel28.setBounds(280, 145, 120, 20);
+        jLabel28.setBounds(360, 170, 200, 30);
 
         SliceTime.setEditable(false);
         SliceTime.setBackground(new java.awt.Color(200, 200, 200));
-        SliceTime.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        SliceTime.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         SliceTime.setEnabled(false);
         add(SliceTime);
-        SliceTime.setBounds(400, 135, 80, 30);
+        SliceTime.setBounds(600, 155, 90, 40);
 
-        ShiftButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        ShiftButton.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         ShiftButton.setText("Сдвиг");
         ShiftButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -464,9 +463,9 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(ShiftButton);
-        ShiftButton.setBounds(410, 490, 100, 30);
+        ShiftButton.setBounds(560, 605, 140, 40);
 
-        SHIFT.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        SHIFT.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         SHIFT.setText("10.0");
         SHIFT.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         SHIFT.setEnabled(false);
@@ -481,24 +480,24 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(SHIFT);
-        SHIFT.setBounds(340, 490, 60, 30);
+        SHIFT.setBounds(460, 605, 90, 40);
 
-        XYZShift.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        XYZShift.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         XYZShift.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "X", "Y", "Z" }));
         add(XYZShift);
-        XYZShift.setBounds(280, 490, 50, 30);
+        XYZShift.setBounds(360, 605, 90, 40);
 
-        Z0_3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z0_3.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         Z0_3.setText("Z начальное (мм) ");
         add(Z0_3);
-        Z0_3.setBounds(10, 250, 130, 20);
+        Z0_3.setBounds(10, 300, 220, 32);
 
-        Z0_4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z0_4.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         Z0_4.setText("Тайм-аут (c)");
         add(Z0_4);
-        Z0_4.setBounds(520, 250, 130, 20);
+        Z0_4.setBounds(710, 300, 210, 32);
 
-        BlankHight.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        BlankHight.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         BlankHight.setText("0");
         BlankHight.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         BlankHight.setEnabled(false);
@@ -508,9 +507,9 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(BlankHight);
-        BlankHight.setBounds(180, 380, 80, 30);
+        BlankHight.setBounds(250, 470, 90, 40);
 
-        BlankWidth.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        BlankWidth.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         BlankWidth.setText("0");
         BlankWidth.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         BlankWidth.setEnabled(false);
@@ -520,9 +519,9 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(BlankWidth);
-        BlankWidth.setBounds(180, 345, 80, 30);
+        BlankWidth.setBounds(250, 425, 90, 40);
 
-        CutterDiameter.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        CutterDiameter.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         CutterDiameter.setText("0");
         CutterDiameter.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         CutterDiameter.setEnabled(false);
@@ -532,19 +531,19 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(CutterDiameter);
-        CutterDiameter.setBounds(180, 450, 80, 30);
+        CutterDiameter.setBounds(250, 560, 90, 40);
 
-        Z0_5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        Z0_5.setText("Размер заготовки Z(мм)");
+        Z0_5.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        Z0_5.setText("Размер заготовки Z");
         add(Z0_5);
-        Z0_5.setBounds(10, 425, 170, 20);
+        Z0_5.setBounds(10, 530, 230, 32);
 
-        Z0_6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z0_6.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         Z0_6.setText("Диаметр фрезы (мм)");
         add(Z0_6);
-        Z0_6.setBounds(10, 460, 170, 20);
+        Z0_6.setBounds(10, 570, 230, 30);
 
-        StepMinus.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        StepMinus.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         StepMinus.setText("0");
         StepMinus.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         StepMinus.setEnabled(false);
@@ -554,9 +553,9 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(StepMinus);
-        StepMinus.setBounds(180, 486, 80, 30);
+        StepMinus.setBounds(250, 605, 90, 40);
 
-        VerticalStep.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        VerticalStep.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         VerticalStep.setText("0");
         VerticalStep.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         VerticalStep.setDisabledTextColor(new java.awt.Color(0, 0, 0));
@@ -567,19 +566,19 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(VerticalStep);
-        VerticalStep.setBounds(180, 520, 80, 30);
+        VerticalStep.setBounds(250, 650, 90, 40);
 
-        Z0_7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        Z0_7.setText("Коррекция шага (мм)");
+        Z0_7.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        Z0_7.setText("Коррекция шага (мм) ");
         add(Z0_7);
-        Z0_7.setBounds(10, 495, 170, 20);
+        Z0_7.setBounds(10, 610, 260, 32);
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel2.setText("Фактура");
         add(jLabel2);
-        jLabel2.setBounds(280, 245, 110, 20);
+        jLabel2.setBounds(360, 300, 190, 32);
 
-        FillParametersOffset.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        FillParametersOffset.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         FillParametersOffset.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         FillParametersOffset.setEnabled(false);
         FillParametersOffset.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -588,14 +587,14 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(FillParametersOffset);
-        FillParametersOffset.setBounds(430, 315, 80, 30);
+        FillParametersOffset.setBounds(600, 380, 90, 40);
 
-        Z2_2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        Z2_2.setText("Смещение клетки (мм)");
+        Z2_2.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        Z2_2.setText("Смещение клетки");
         add(Z2_2);
-        Z2_2.setBounds(280, 320, 160, 20);
+        Z2_2.setBounds(360, 390, 210, 32);
 
-        FillParametersAngle.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        FillParametersAngle.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         FillParametersAngle.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         FillParametersAngle.setEnabled(false);
         FillParametersAngle.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -604,14 +603,14 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(FillParametersAngle);
-        FillParametersAngle.setBounds(430, 350, 80, 30);
+        FillParametersAngle.setBounds(600, 425, 90, 38);
 
-        Z2_3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z2_3.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         Z2_3.setText("Угол начальный (°)");
         add(Z2_3);
-        Z2_3.setBounds(280, 355, 150, 20);
+        Z2_3.setBounds(360, 430, 210, 30);
 
-        FillParametersFillCell.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        FillParametersFillCell.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         FillParametersFillCell.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         FillParametersFillCell.setEnabled(false);
         FillParametersFillCell.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -620,14 +619,14 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(FillParametersFillCell);
-        FillParametersFillCell.setBounds(430, 420, 80, 30);
+        FillParametersFillCell.setBounds(600, 515, 90, 40);
 
-        Z2_5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z2_5.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         Z2_5.setText("Размер клетки (мм)");
         add(Z2_5);
-        Z2_5.setBounds(280, 425, 140, 20);
+        Z2_5.setBounds(360, 520, 240, 32);
 
-        FillingFlatness.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        FillingFlatness.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         FillingFlatness.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         FillingFlatness.setEnabled(false);
         FillingFlatness.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -636,9 +635,9 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(FillingFlatness);
-        FillingFlatness.setBounds(430, 455, 80, 30);
+        FillingFlatness.setBounds(600, 560, 90, 40);
 
-        FillParametersAngleInc.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        FillParametersAngleInc.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         FillParametersAngleInc.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         FillParametersAngleInc.setEnabled(false);
         FillParametersAngleInc.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -647,29 +646,29 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(FillParametersAngleInc);
-        FillParametersAngleInc.setBounds(430, 385, 80, 30);
+        FillParametersAngleInc.setBounds(600, 470, 90, 40);
 
-        Z2_4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z2_4.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         Z2_4.setText("Приращение угла (°)");
         add(Z2_4);
-        Z2_4.setBounds(280, 390, 150, 20);
+        Z2_4.setBounds(360, 480, 228, 32);
 
-        Z2_6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z2_6.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         Z2_6.setText("Сглаживание (мм)");
         add(Z2_6);
-        Z2_6.setBounds(280, 460, 140, 20);
+        Z2_6.setBounds(360, 570, 240, 30);
 
-        jLabel39.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel39.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel39.setText("Слайсинг");
         add(jLabel39);
-        jLabel39.setBounds(280, 215, 80, 20);
+        jLabel39.setBounds(360, 260, 190, 30);
 
-        Z2_1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z2_1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         Z2_1.setText("Шаг растра (мм)");
         add(Z2_1);
-        Z2_1.setBounds(280, 285, 120, 20);
+        Z2_1.setBounds(360, 350, 190, 32);
 
-        FillParametersRaster.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        FillParametersRaster.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         FillParametersRaster.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         FillParametersRaster.setEnabled(false);
         FillParametersRaster.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -678,33 +677,33 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(FillParametersRaster);
-        FillParametersRaster.setBounds(430, 280, 80, 30);
+        FillParametersRaster.setBounds(600, 335, 90, 40);
 
-        Mode2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Mode2.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         Mode2.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 Mode2ItemStateChanged(evt);
             }
         });
         add(Mode2);
-        Mode2.setBounds(380, 240, 130, 30);
+        Mode2.setBounds(510, 290, 180, 40);
 
-        jLabel13.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel13.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel13.setText("Статистика");
         add(jLabel13);
-        jLabel13.setBounds(280, 10, 100, 20);
+        jLabel13.setBounds(360, 0, 190, 30);
 
-        Z0_8.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        Z0_8.setText("Размер заготовки X(мм)");
+        Z0_8.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        Z0_8.setText("Размер заготовки X");
         add(Z0_8);
-        Z0_8.setBounds(10, 355, 170, 20);
+        Z0_8.setBounds(10, 440, 230, 32);
 
-        Z0_9.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z0_9.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         Z0_9.setText("Размер стола X(мм)");
         add(Z0_9);
-        Z0_9.setBounds(520, 35, 170, 20);
+        Z0_9.setBounds(710, 30, 260, 30);
 
-        WorkFrameZ.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        WorkFrameZ.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         WorkFrameZ.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         WorkFrameZ.setEnabled(false);
         WorkFrameZ.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -718,9 +717,9 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(WorkFrameZ);
-        WorkFrameZ.setBounds(660, 100, 80, 30);
+        WorkFrameZ.setBounds(980, 110, 90, 40);
 
-        WorkFrameX.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        WorkFrameX.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         WorkFrameX.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         WorkFrameX.setEnabled(false);
         WorkFrameX.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -734,9 +733,9 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(WorkFrameX);
-        WorkFrameX.setBounds(660, 30, 80, 30);
+        WorkFrameX.setBounds(980, 20, 90, 40);
 
-        WorkFrameY.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        WorkFrameY.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         WorkFrameY.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         WorkFrameY.setEnabled(false);
         WorkFrameY.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -750,19 +749,19 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(WorkFrameY);
-        WorkFrameY.setBounds(660, 65, 80, 30);
+        WorkFrameY.setBounds(980, 65, 90, 40);
 
-        Z0_10.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z0_10.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         Z0_10.setText("Размер стола Y(мм)");
         add(Z0_10);
-        Z0_10.setBounds(520, 70, 170, 20);
+        Z0_10.setBounds(710, 80, 250, 30);
 
-        Z0_11.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z0_11.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         Z0_11.setText("Размер стола Z(мм)");
         add(Z0_11);
-        Z0_11.setBounds(520, 105, 170, 20);
+        Z0_11.setBounds(710, 120, 250, 32);
 
-        BaudRate.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        BaudRate.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         BaudRate.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         BaudRate.setEnabled(false);
         BaudRate.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -776,9 +775,9 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(BaudRate);
-        BaudRate.setBounds(660, 210, 80, 30);
+        BaudRate.setBounds(980, 245, 90, 40);
 
-        DeviceName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        DeviceName.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         DeviceName.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         DeviceName.setEnabled(false);
         DeviceName.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -792,9 +791,9 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(DeviceName);
-        DeviceName.setBounds(660, 135, 80, 30);
+        DeviceName.setBounds(980, 155, 90, 40);
 
-        DevicePort.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        DevicePort.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         DevicePort.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         DevicePort.setEnabled(false);
         DevicePort.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -808,24 +807,24 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(DevicePort);
-        DevicePort.setBounds(660, 170, 80, 30);
+        DevicePort.setBounds(980, 200, 90, 40);
 
-        Z0_12.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z0_12.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         Z0_12.setText("Устройство");
         add(Z0_12);
-        Z0_12.setBounds(520, 140, 150, 20);
+        Z0_12.setBounds(710, 160, 210, 32);
 
-        Z0_13.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z0_13.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         Z0_13.setText("Номер (порт)");
         add(Z0_13);
-        Z0_13.setBounds(520, 175, 150, 20);
+        Z0_13.setBounds(710, 210, 240, 32);
 
-        Z0_14.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z0_14.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         Z0_14.setText("Скорость (бит/c)");
         add(Z0_14);
-        Z0_14.setBounds(520, 215, 150, 20);
+        Z0_14.setBounds(710, 260, 250, 32);
 
-        DeviceTimeOut.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        DeviceTimeOut.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         DeviceTimeOut.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         DeviceTimeOut.setEnabled(false);
         DeviceTimeOut.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -839,9 +838,9 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(DeviceTimeOut);
-        DeviceTimeOut.setBounds(660, 245, 80, 30);
+        DeviceTimeOut.setBounds(980, 290, 90, 40);
 
-        BlankZ.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        BlankZ.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         BlankZ.setText("0");
         BlankZ.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         BlankZ.setEnabled(false);
@@ -851,14 +850,14 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(BlankZ);
-        BlankZ.setBounds(180, 415, 80, 30);
+        BlankZ.setBounds(250, 515, 90, 40);
 
-        Z0_15.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        Z0_15.setText("Размер заготовки Y(мм)");
+        Z0_15.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        Z0_15.setText("Размер заготовки Y");
         add(Z0_15);
-        Z0_15.setBounds(10, 390, 170, 20);
+        Z0_15.setBounds(10, 480, 230, 32);
 
-        ZUp.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        ZUp.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         ZUp.setText("0");
         ZUp.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         ZUp.setEnabled(false);
@@ -868,16 +867,14 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(ZUp);
-        ZUp.setBounds(180, 310, 80, 30);
-        add(jSeparator1);
-        jSeparator1.setBounds(270, 207, 220, 3);
+        ZUp.setBounds(250, 380, 90, 40);
 
-        Z0_16.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z0_16.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         Z0_16.setText("Z конечное (мм) ");
         add(Z0_16);
-        Z0_16.setBounds(10, 280, 120, 20);
+        Z0_16.setBounds(10, 350, 220, 30);
         add(jSeparator3);
-        jSeparator3.setBounds(510, 330, 240, 10);
+        jSeparator3.setBounds(710, 380, 280, 10);
 
         AutoScaleButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -885,12 +882,12 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(AutoScaleButton);
-        AutoScaleButton.setBounds(180, 560, 50, 40);
+        AutoScaleButton.setBounds(290, 695, 50, 40);
 
-        Z0_17.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        Z0_17.setText("Шаг по вертикали (мм)");
+        Z0_17.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        Z0_17.setText("Шаг по вертикали");
         add(Z0_17);
-        Z0_17.setBounds(10, 530, 170, 20);
+        Z0_17.setBounds(10, 660, 240, 32);
 
         AutoCenterButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -898,12 +895,12 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(AutoCenterButton);
-        AutoCenterButton.setBounds(180, 605, 50, 40);
+        AutoCenterButton.setBounds(610, 695, 50, 40);
 
-        Z0_19.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z0_19.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         Z0_19.setText("Автомасштабирование");
         add(Z0_19);
-        Z0_19.setBounds(10, 570, 170, 20);
+        Z0_19.setBounds(10, 700, 280, 32);
 
         FullScreenButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -911,47 +908,47 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(FullScreenButton);
-        FullScreenButton.setBounds(660, 280, 50, 40);
+        FullScreenButton.setBounds(1030, 335, 50, 40);
 
-        Z0_20.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z0_20.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         Z0_20.setText("Полный экран");
         add(Z0_20);
-        Z0_20.setBounds(520, 290, 120, 20);
+        Z0_20.setBounds(710, 340, 230, 32);
 
-        Z0_21.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        Z0_21.setText("G code: круговая интерполяция");
+        Z0_21.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        Z0_21.setText("Круговая интерполяция");
         add(Z0_21);
-        Z0_21.setBounds(520, 350, 220, 20);
+        Z0_21.setBounds(710, 390, 310, 32);
 
-        Z0_22.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z0_22.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         Z0_22.setText("Оптимизация перемещений");
         add(Z0_22);
-        Z0_22.setBounds(520, 400, 200, 20);
+        Z0_22.setBounds(710, 430, 340, 32);
 
-        Z0_23.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        Z0_23.setText("Непрерывная штриховка / Зигзаг");
+        Z0_23.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        Z0_23.setText("Непрерывно / Зигзаг");
         add(Z0_23);
-        Z0_23.setBounds(520, 440, 220, 20);
+        Z0_23.setBounds(710, 480, 290, 32);
 
-        Z0_24.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z0_24.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         Z0_24.setText("Оконтуривание");
         add(Z0_24);
-        Z0_24.setBounds(520, 480, 120, 20);
+        Z0_24.setBounds(710, 520, 270, 32);
 
-        Z0_25.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z0_25.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         Z0_25.setText("Слайсинг плоских контуров");
         add(Z0_25);
-        Z0_25.setBounds(520, 530, 200, 20);
+        Z0_25.setBounds(710, 570, 320, 32);
 
-        Z0_26.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        Z0_26.setText("Принудительно замыкать контуры");
+        Z0_26.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        Z0_26.setText("Замыкать контуры");
         add(Z0_26);
-        Z0_26.setBounds(520, 570, 240, 20);
+        Z0_26.setBounds(710, 610, 290, 32);
 
-        Z0_27.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        Z0_27.setText("Контуры из отрезков одного типа");
+        Z0_27.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        Z0_27.setText("Контуры из однотипных отрезков");
         add(Z0_27);
-        Z0_27.setBounds(520, 620, 220, 20);
+        Z0_27.setBounds(710, 660, 330, 32);
 
         ARCGCodeModeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -959,7 +956,7 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(ARCGCodeModeButton);
-        ARCGCodeModeButton.setBounds(750, 340, 50, 40);
+        ARCGCodeModeButton.setBounds(1030, 380, 50, 40);
 
         LoopsWithSomeLineTypesButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -967,7 +964,7 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(LoopsWithSomeLineTypesButton);
-        LoopsWithSomeLineTypesButton.setBounds(750, 610, 50, 40);
+        LoopsWithSomeLineTypesButton.setBounds(1030, 650, 50, 40);
 
         ContinuousButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -975,7 +972,7 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(ContinuousButton);
-        ContinuousButton.setBounds(750, 430, 50, 40);
+        ContinuousButton.setBounds(1030, 470, 50, 40);
 
         MoveOptimizeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -983,7 +980,7 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(MoveOptimizeButton);
-        MoveOptimizeButton.setBounds(750, 385, 50, 40);
+        MoveOptimizeButton.setBounds(1030, 425, 50, 40);
 
         SendLoopsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -991,7 +988,7 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(SendLoopsButton);
-        SendLoopsButton.setBounds(750, 475, 50, 40);
+        SendLoopsButton.setBounds(1030, 515, 50, 40);
 
         FlateCircuitSliceButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -999,7 +996,7 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(FlateCircuitSliceButton);
-        FlateCircuitSliceButton.setBounds(750, 520, 50, 40);
+        FlateCircuitSliceButton.setBounds(1030, 560, 50, 40);
 
         RepairLoopsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1007,7 +1004,7 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(RepairLoopsButton);
-        RepairLoopsButton.setBounds(750, 565, 50, 40);
+        RepairLoopsButton.setBounds(1030, 605, 50, 40);
     }// </editor-fold>//GEN-END:initComponents
     public boolean loadSettings(){
         try {
@@ -1501,7 +1498,6 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel46;
-    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator5;
