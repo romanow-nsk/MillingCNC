@@ -167,6 +167,7 @@ public class CNCViewer extends BaseFrame {
 
     public CNCViewer() {
         super();
+        setUndecorated(true);
         if (!tryToStart()) return;
         ws = WorkSpace.ws();
         initComponents();
@@ -734,9 +735,10 @@ public class CNCViewer extends BaseFrame {
         getContentPane().add(PanelList);
         PanelList.setBounds(0, 0, 680, 720);
 
+        Common.setBorder(new javax.swing.border.MatteBorder(null));
         Common.setLayout(null);
         getContentPane().add(Common);
-        Common.setBounds(690, 10, 180, 700);
+        Common.setBounds(690, 0, 180, 720);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -1275,6 +1277,12 @@ public class CNCViewer extends BaseFrame {
 
     @Override
     public void shutDown() {
+        for(BasePanel panel : getPanels()) {
+            if (panel.isSelected())
+                panel.onDeactivate();
+            panel.shutDown();
+        }
+    dispose();
     }
 
 

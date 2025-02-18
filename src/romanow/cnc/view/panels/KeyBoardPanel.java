@@ -7,6 +7,7 @@ package romanow.cnc.view.panels;
 
 import romanow.cnc.view.BasePanel;
 import romanow.cnc.view.BasePopupDialog;
+import romanow.cnc.view.design.JCheckBoxButton;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,25 +25,29 @@ public class KeyBoardPanel extends BasePopupDialog {
     private char cc[]=new char[maxDigits];
     private int nn=0;
     private int pointIdx=-1;
-    private boolean pass=false;
     private I_RealValue back=null;
     private boolean shift=false;
     private JTextField field;
+    private JCheckBoxButton hideText;
+    private boolean pass=false;
     //public KeyBoardPanel(boolean pass0, JTextField field0, I_RealValue back0) {
     //    this(new Dimension(),"!!!!!!!!!!!!!!!!!!",pass0,field0,back0);
     //    }
     public KeyBoardPanel(String title, JTextField field0 , boolean pass0, I_RealValue back0) {
         super(670,250);
         initComponents();
+        hideText = new JCheckBoxButton(HideText);
         TITLE.setText(title);
         field = field0;
+        pass = pass0;
+        HideText.setVisible(pass);
+        hideText.setSelected(false);
+        back = back0;
         char zz[] = field.getText().toCharArray();
         nn=zz.length;
         for(int i=0;i<nn;i++)
             cc[i]=zz[i];
         showString();
-        pass = pass0;
-        back = back0;
         Shift.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/down.png"))); // NOI18N
         Value.setText(field.getText());
         BasePanel.setComponentsScale(this);
@@ -53,11 +58,10 @@ public class KeyBoardPanel extends BasePopupDialog {
         retryLongDelay();
         }
     private void showString(){
-        if (pass){
-            char zz[] = new char[nn*2];
-            for(int i=0;i<nn;i+=2){
-                zz[i]='.';
-                zz[i+1]=' ';
+        if (pass && !hideText.isSelected()){
+            char zz[] = new char[nn];
+            for(int i=0;i<nn;i++){
+                zz[i]='*';
                 }
             String cc= new String(zz);
             Value.setText(cc);
@@ -134,13 +138,14 @@ public class KeyBoardPanel extends BasePopupDialog {
         B37 = new javax.swing.JButton();
         B39 = new javax.swing.JButton();
         TITLE = new javax.swing.JLabel();
+        HideText = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(null);
 
         Value.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         getContentPane().add(Value);
-        Value.setBounds(260, 10, 400, 30);
+        Value.setBounds(260, 10, 340, 30);
 
         B9.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         B9.setText("9");
@@ -160,7 +165,7 @@ public class KeyBoardPanel extends BasePopupDialog {
             }
         });
         getContentPane().add(Back);
-        Back.setBounds(610, 110, 50, 50);
+        Back.setBounds(610, 130, 50, 50);
 
         B8.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         B8.setText("8");
@@ -269,7 +274,7 @@ public class KeyBoardPanel extends BasePopupDialog {
             }
         });
         getContentPane().add(OK);
-        OK.setBounds(610, 50, 50, 50);
+        OK.setBounds(610, 70, 50, 50);
 
         B10.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         B10.setText("3");
@@ -564,6 +569,14 @@ public class KeyBoardPanel extends BasePopupDialog {
         getContentPane().add(TITLE);
         TITLE.setBounds(20, 10, 230, 30);
 
+        HideText.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                HideTextActionPerformed(evt);
+            }
+        });
+        getContentPane().add(HideText);
+        HideText.setBounds(610, 10, 50, 40);
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -750,6 +763,13 @@ public class KeyBoardPanel extends BasePopupDialog {
         procDigit(',');
     }//GEN-LAST:event_B39ActionPerformed
 
+    private void HideTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HideTextActionPerformed
+        if (pass){
+            hideText.itemStateChanged();
+            showString();
+            }
+    }//GEN-LAST:event_HideTextActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -829,6 +849,7 @@ public class KeyBoardPanel extends BasePopupDialog {
     private javax.swing.JButton B9;
     private javax.swing.JButton Back;
     private javax.swing.JButton Canсel;
+    private javax.swing.JButton HideText;
     private javax.swing.JButton OK;
     private javax.swing.JButton Point;
     private javax.swing.JButton Shift;

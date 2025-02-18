@@ -9,6 +9,8 @@ import romanow.cnc.settings.UserProfile;
 import romanow.cnc.settings.WorkSpace;
 import romanow.cnc.utils.StringCrypter;
 import romanow.cnc.utils.UNIException;
+import romanow.cnc.view.panels.I_RealValue;
+import romanow.cnc.view.panels.KeyBoardPanel;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -51,7 +53,7 @@ public class LoginPanel extends BasePanel {
 
     @Override
     public String getName() {
-        return "Авторизация";
+        return "Вход";
         }
 
     @Override
@@ -105,9 +107,10 @@ public class LoginPanel extends BasePanel {
 
         jLabel1 = new javax.swing.JLabel();
         Password = new javax.swing.JPasswordField();
-        jButton1 = new javax.swing.JButton();
+        Login = new javax.swing.JButton();
         MES = new javax.swing.JTextField();
         UserList = new javax.swing.JComboBox<>();
+        Exit = new javax.swing.JButton();
 
         setLayout(null);
 
@@ -116,37 +119,52 @@ public class LoginPanel extends BasePanel {
         add(jLabel1);
         jLabel1.setBounds(260, 100, 60, 17);
 
-        Password.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Password.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        Password.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                PasswordMouseClicked(evt);
+            }
+        });
         Password.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 PasswordKeyPressed(evt);
             }
         });
         add(Password);
-        Password.setBounds(350, 90, 210, 30);
+        Password.setBounds(350, 90, 280, 40);
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton1.setText("Войти");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        Login.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        Login.setText("Войти");
+        Login.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                LoginActionPerformed(evt);
             }
         });
-        add(jButton1);
-        jButton1.setBounds(480, 140, 73, 30);
+        add(Login);
+        Login.setBounds(490, 150, 140, 40);
 
-        MES.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        MES.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         add(MES);
-        MES.setBounds(50, 200, 520, 30);
+        MES.setBounds(50, 200, 580, 40);
 
-        UserList.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        UserList.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         UserList.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 UserListItemStateChanged(evt);
             }
         });
         add(UserList);
-        UserList.setBounds(350, 40, 210, 30);
+        UserList.setBounds(350, 40, 280, 40);
+
+        Exit.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        Exit.setText("Выйти");
+        Exit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ExitActionPerformed(evt);
+            }
+        });
+        add(Exit);
+        Exit.setBounds(50, 152, 160, 40);
     }// </editor-fold>//GEN-END:initComponents
 
     private void PasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PasswordKeyPressed
@@ -155,34 +173,45 @@ public class LoginPanel extends BasePanel {
         }
     }//GEN-LAST:event_PasswordKeyPressed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void LoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginActionPerformed
         login();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_LoginActionPerformed
 
     private void UserListItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_UserListItemStateChanged
     }//GEN-LAST:event_UserListItemStateChanged
 
+    private void ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitActionPerformed
+        getBaseFrame().shutDown();
+    }//GEN-LAST:event_ExitActionPerformed
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField MES;
-    private javax.swing.JPasswordField Password;
-    private javax.swing.JComboBox<String> UserList;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
+    private void PasswordMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_PasswordMouseClicked
+        KeyBoardPanel keyBoard = new KeyBoardPanel("Пароль", Password, true,new I_RealValue() {
+            @Override
+            public void onEvent(String value) {
+                Password.setText(value);
+                login();
+                }
+            });
+    }//GEN-LAST:event_PasswordMouseClicked
 
     @Override
     public void refresh() {
-
     }
 
     @Override
     public void onEvent(int code, int par1, long par2, String par3, Object oo) {
-
     }
 
     @Override
     public void shutDown() {
-
     }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Exit;
+    private javax.swing.JButton Login;
+    private javax.swing.JTextField MES;
+    private javax.swing.JPasswordField Password;
+    private javax.swing.JComboBox<String> UserList;
+    private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }
