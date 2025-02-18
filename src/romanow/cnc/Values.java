@@ -80,7 +80,7 @@ public class Values {
     public final static int ManualOKTimeOut=500;
     public final static int MenuButtonX0=10;
     public final static int MenuButtonY0=70;
-    public final static int MenuButtonXSize=150;
+    public final static int MenuButtonXSize=180;
     public final static int MenuButtonYSize=40;
     public final static int MenuButtonStep=50;
     /** коэффициент заполнения моделью пространства при автомасштабировании +/-1 */

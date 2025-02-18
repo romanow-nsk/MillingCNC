@@ -67,6 +67,12 @@ public class Loop3DPanel171 extends BasePanel {
         //universe = new SimpleUniverse(canvas);
         //canvas.initcanvas(universe);
         }
+    @Override
+    public boolean isSelectedMode(){            // Промотр 3D для любой загруженной модели
+        int state = WorkSpace.ws().dataState();
+        return state == Values.Sliced;
+        //return ((modeMask() & mode)!=0) && modeEnabled();
+        }
     private void setLayers(){
         LAYERS.removeAll();
         if (!WorkSpace.ws().slicePresent())
@@ -131,6 +137,8 @@ public class Loop3DPanel171 extends BasePanel {
 
 
     private void paintView(ArrayList<STLLine> lines, float z){
+        if (WorkSpace.ws().dataState()!=Values.Sliced)
+            return;
         model.cleanup();
         if (ModelView.isSelected()) {
             model.addChild(modelView);
@@ -227,7 +235,7 @@ public class Loop3DPanel171 extends BasePanel {
 
     @Override
     public String getName() {
-        return "STL(3D)+контуры";
+        return "Анимация 3D";
         }
 
     @Override

@@ -221,7 +221,7 @@ public class Loop3DPanel extends BasePanel {
 
     @Override
     public String getName() {
-        return "STL(3D)+контуры";
+        return "Контуры 3D";
         }
 
     @Override

@@ -31,7 +31,6 @@ public class STL3DViewPanel extends BasePanel {
     public void refresh(){
         }
 
-
     public STL3DViewPanel(CNCViewer baseFrame) {
         super(baseFrame);
         initComponents();

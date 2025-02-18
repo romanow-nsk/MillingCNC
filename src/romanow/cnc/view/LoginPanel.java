@@ -110,7 +110,6 @@ public class LoginPanel extends BasePanel {
         Login = new javax.swing.JButton();
         MES = new javax.swing.JTextField();
         UserList = new javax.swing.JComboBox<>();
-        Exit = new javax.swing.JButton();
 
         setLayout(null);
 
@@ -155,16 +154,6 @@ public class LoginPanel extends BasePanel {
         });
         add(UserList);
         UserList.setBounds(350, 40, 280, 40);
-
-        Exit.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        Exit.setText("Выйти");
-        Exit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ExitActionPerformed(evt);
-            }
-        });
-        add(Exit);
-        Exit.setBounds(50, 152, 160, 40);
     }// </editor-fold>//GEN-END:initComponents
 
     private void PasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PasswordKeyPressed
@@ -179,10 +168,6 @@ public class LoginPanel extends BasePanel {
 
     private void UserListItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_UserListItemStateChanged
     }//GEN-LAST:event_UserListItemStateChanged
-
-    private void ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitActionPerformed
-        getBaseFrame().shutDown();
-    }//GEN-LAST:event_ExitActionPerformed
 
     private void PasswordMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_PasswordMouseClicked
         KeyBoardPanel keyBoard = new KeyBoardPanel("Пароль", Password, true,new I_RealValue() {
@@ -207,7 +192,6 @@ public class LoginPanel extends BasePanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton Exit;
     private javax.swing.JButton Login;
     private javax.swing.JTextField MES;
     private javax.swing.JPasswordField Password;

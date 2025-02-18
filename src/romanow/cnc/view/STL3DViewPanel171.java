@@ -67,6 +67,11 @@ public class STL3DViewPanel171 extends BasePanel {
         return dState == Values.Sliced || dState==Values.Loaded;
         }
 
+        @Override
+    public boolean isSelectedMode(){            // Промотр 3D для любой загруженной модели
+        int state = WorkSpace.ws().dataState();
+        return state == Values.Loaded || state == Values.Sliced;
+        }
     @Override
     public void onActivate() {
         setVisible(true);

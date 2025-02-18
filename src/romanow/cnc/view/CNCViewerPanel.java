@@ -161,13 +161,10 @@ public class CNCViewerPanel extends BasePanel {
 
         LOG = new java.awt.TextArea();
         STLLoad = new javax.swing.JButton();
-        STL3DView = new javax.swing.JButton();
         jLabel39 = new javax.swing.JLabel();
         jLabel40 = new javax.swing.JLabel();
         SLICE = new javax.swing.JButton();
         SliceMode = new javax.swing.JComboBox<>();
-        STL3DViewLoops = new javax.swing.JButton();
-        MLNView = new javax.swing.JButton();
         jLabel41 = new javax.swing.JLabel();
         GCODEMilling = new javax.swing.JButton();
         GCODESave = new javax.swing.JButton();
@@ -191,7 +188,7 @@ public class CNCViewerPanel extends BasePanel {
         add(LOG);
         LOG.setBounds(10, 10, 550, 710);
 
-        STLLoad.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        STLLoad.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         STLLoad.setText("Загрузить STL");
         STLLoad.setBorder(new javax.swing.border.MatteBorder(null));
         STLLoad.addActionListener(new java.awt.event.ActionListener() {
@@ -200,30 +197,19 @@ public class CNCViewerPanel extends BasePanel {
             }
         });
         add(STLLoad);
-        STLLoad.setBounds(580, 40, 140, 30);
+        STLLoad.setBounds(580, 50, 200, 40);
 
-        STL3DView.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        STL3DView.setText("3D STL");
-        STL3DView.setBorder(new javax.swing.border.MatteBorder(null));
-        STL3DView.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                STL3DViewActionPerformed(evt);
-            }
-        });
-        add(STL3DView);
-        STL3DView.setBounds(580, 80, 140, 30);
-
-        jLabel39.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel39.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel39.setText("G-код");
         add(jLabel39);
-        jLabel39.setBounds(730, 160, 140, 20);
+        jLabel39.setBounds(580, 150, 140, 29);
 
-        jLabel40.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel40.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel40.setText("Модель");
         add(jLabel40);
-        jLabel40.setBounds(580, 10, 80, 20);
+        jLabel40.setBounds(580, 10, 140, 30);
 
-        SLICE.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        SLICE.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         SLICE.setText("Слайсинг");
         SLICE.setBorder(new javax.swing.border.MatteBorder(null));
         SLICE.addActionListener(new java.awt.event.ActionListener() {
@@ -232,39 +218,18 @@ public class CNCViewerPanel extends BasePanel {
             }
         });
         add(SLICE);
-        SLICE.setBounds(730, 80, 160, 30);
+        SLICE.setBounds(790, 100, 240, 40);
 
+        SliceMode.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         add(SliceMode);
-        SliceMode.setBounds(730, 40, 160, 30);
+        SliceMode.setBounds(790, 50, 240, 40);
 
-        STL3DViewLoops.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        STL3DViewLoops.setText("3D STL+слайсинг");
-        STL3DViewLoops.setBorder(new javax.swing.border.MatteBorder(null));
-        STL3DViewLoops.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                STL3DViewLoopsActionPerformed(evt);
-            }
-        });
-        add(STL3DViewLoops);
-        STL3DViewLoops.setBounds(580, 120, 140, 30);
-
-        MLNView.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        MLNView.setText("MLN по слоям");
-        MLNView.setBorder(new javax.swing.border.MatteBorder(null));
-        MLNView.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                MLNViewActionPerformed(evt);
-            }
-        });
-        add(MLNView);
-        MLNView.setBounds(730, 120, 160, 30);
-
-        jLabel41.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel41.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel41.setText("Слайсинг");
         add(jLabel41);
-        jLabel41.setBounds(730, 10, 80, 20);
+        jLabel41.setBounds(790, 10, 150, 29);
 
-        GCODEMilling.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        GCODEMilling.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         GCODEMilling.setText("G-код (станок)");
         GCODEMilling.setBorder(new javax.swing.border.MatteBorder(null));
         GCODEMilling.addActionListener(new java.awt.event.ActionListener() {
@@ -273,9 +238,9 @@ public class CNCViewerPanel extends BasePanel {
             }
         });
         add(GCODEMilling);
-        GCODEMilling.setBounds(580, 290, 140, 30);
+        GCODEMilling.setBounds(580, 290, 200, 40);
 
-        GCODESave.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        GCODESave.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         GCODESave.setText("G-код (экспорт)");
         GCODESave.setBorder(new javax.swing.border.MatteBorder(null));
         GCODESave.addActionListener(new java.awt.event.ActionListener() {
@@ -284,14 +249,14 @@ public class CNCViewerPanel extends BasePanel {
             }
         });
         add(GCODESave);
-        GCODESave.setBounds(730, 190, 160, 30);
+        GCODESave.setBounds(580, 190, 200, 40);
 
-        jLabel42.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel42.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel42.setText("Фрезерование");
         add(jLabel42);
-        jLabel42.setBounds(590, 260, 140, 20);
+        jLabel42.setBounds(580, 250, 220, 30);
 
-        GCODEView.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        GCODEView.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         GCODEView.setText("G-код (просмотр)");
         GCODEView.setBorder(new javax.swing.border.MatteBorder(null));
         GCODEView.addActionListener(new java.awt.event.ActionListener() {
@@ -300,9 +265,9 @@ public class CNCViewerPanel extends BasePanel {
             }
         });
         add(GCODEView);
-        GCODEView.setBounds(730, 230, 160, 30);
+        GCODEView.setBounds(790, 190, 240, 40);
 
-        MLNLoad.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        MLNLoad.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         MLNLoad.setText("Загрузить MLN");
         MLNLoad.setBorder(new javax.swing.border.MatteBorder(null));
         MLNLoad.addActionListener(new java.awt.event.ActionListener() {
@@ -311,15 +276,16 @@ public class CNCViewerPanel extends BasePanel {
             }
         });
         add(MLNLoad);
-        MLNLoad.setBounds(580, 190, 140, 30);
+        MLNLoad.setBounds(580, 100, 200, 40);
 
+        GGODESend.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         GGODESend.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 GGODESendKeyPressed(evt);
             }
         });
         add(GGODESend);
-        GGODESend.setBounds(580, 370, 310, 30);
+        GGODESend.setBounds(580, 400, 370, 40);
 
         COMPortOnOff.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/status_gray.png"))); // NOI18N
         COMPortOnOff.setBorderPainted(false);
@@ -330,14 +296,14 @@ public class CNCViewerPanel extends BasePanel {
             }
         });
         add(COMPortOnOff);
-        COMPortOnOff.setBounds(900, 360, 40, 40);
+        COMPortOnOff.setBounds(980, 400, 40, 40);
 
         RELATIVE.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         RELATIVE.setText("Относительная СК");
         add(RELATIVE);
-        RELATIVE.setBounds(580, 330, 140, 24);
+        RELATIVE.setBounds(580, 350, 140, 24);
 
-        STOP.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        STOP.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         STOP.setText("Завершить");
         STOP.setBorder(new javax.swing.border.MatteBorder(null));
         STOP.addActionListener(new java.awt.event.ActionListener() {
@@ -346,9 +312,9 @@ public class CNCViewerPanel extends BasePanel {
             }
         });
         add(STOP);
-        STOP.setBounds(740, 330, 150, 30);
+        STOP.setBounds(790, 340, 160, 40);
 
-        PAUSE.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        PAUSE.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         PAUSE.setText("Пауза");
         PAUSE.setBorder(new javax.swing.border.MatteBorder(null));
         PAUSE.addActionListener(new java.awt.event.ActionListener() {
@@ -357,9 +323,9 @@ public class CNCViewerPanel extends BasePanel {
             }
         });
         add(PAUSE);
-        PAUSE.setBounds(740, 290, 150, 30);
+        PAUSE.setBounds(790, 290, 160, 40);
 
-        LEVEL.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        LEVEL.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         LEVEL.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "информ.", "важное", "предупр.", "сбой" }));
         LEVEL.setPreferredSize(new java.awt.Dimension(72, 25));
         LEVEL.addItemListener(new java.awt.event.ItemListener() {
@@ -368,7 +334,7 @@ public class CNCViewerPanel extends BasePanel {
             }
         });
         add(LEVEL);
-        LEVEL.setBounds(570, 660, 140, 30);
+        LEVEL.setBounds(570, 650, 170, 40);
 
         LogToFile.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         LogToFile.setText("Лог в файле");
@@ -404,7 +370,7 @@ public class CNCViewerPanel extends BasePanel {
             }
         });
         add(CNCReset);
-        CNCReset.setBounds(900, 280, 50, 50);
+        CNCReset.setBounds(970, 280, 50, 50);
     }// </editor-fold>//GEN-END:initComponents
 
     private void openModel(){
@@ -414,6 +380,9 @@ public class CNCViewerPanel extends BasePanel {
             if (fname==null) return;
             ws.loadModel(fname, WorkSpace.ws().getNotify());
             setMenuVisible();
+            if (ws.model().loaded()){
+                getBaseFrame().setViewPanelEnable(PanelSTL3D);
+                }
             getBaseFrame().refreshPanels();
             } catch (UNIException ee){ toLog(ee.toString());}
         }
@@ -442,26 +411,6 @@ public class CNCViewerPanel extends BasePanel {
     }//GEN-LAST:event_STLLoadActionPerformed
 
     private Color savedColor;
-    private void STL3DViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_STL3DViewActionPerformed
-        if (!ws.model().loaded()){
-            toLog("Не загружен STL-файл");
-            return;
-            }
-        if (getBaseFrame().isViewPanelEnable(PanelSTL3D)){
-            getBaseFrame().setViewPanelDisable(PanelSTL3D);
-            STL3DView.setBackground(savedColor);
-            getBaseFrame().refreshPanels();
-            }
-        else{
-            getBaseFrame().setViewPanelEnable(PanelSTL3D);
-            savedColor = STL3DView.getBackground();
-            STL3DView.setBackground(ColorDarkGreen);
-            getBaseFrame().refreshPanels();
-            getBaseFrame().toFront(PanelSTL3D);
-            }
-        //new STLViewer(viewCommon).setVisible(true);
-    }//GEN-LAST:event_STL3DViewActionPerformed
-
     private void SLICEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SLICEActionPerformed
         switch (SliceMode.getSelectedIndex()){
             case SliceModeSequent:
@@ -478,44 +427,6 @@ public class CNCViewerPanel extends BasePanel {
                 break;
         }
     }//GEN-LAST:event_SLICEActionPerformed
-
-    private void STL3DViewLoopsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_STL3DViewLoopsActionPerformed
-        if (!ws.model().loaded()){
-            toLog("Не загружен STL-файл");
-            return;
-            }
-        if (getBaseFrame().isViewPanelEnable(PanelSTL3DLoops)){
-            getBaseFrame().setViewPanelDisable(PanelSTL3DLoops);
-            STL3DViewLoops.setBackground(savedColor);
-            getBaseFrame().refreshPanels();
-            }
-        else{
-            getBaseFrame().setViewPanelEnable(PanelSTL3DLoops);
-            savedColor = STL3DView.getBackground();
-            STL3DViewLoops.setBackground(ColorDarkGreen);
-            getBaseFrame().refreshPanels();
-            getBaseFrame().toFront(PanelSTL3DLoops);
-            }
-    }//GEN-LAST:event_STL3DViewLoopsActionPerformed
-
-    private void MLNViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MLNViewActionPerformed
-        if (!ws.slicePresent()){
-            toLog("Не выполнен слайсинг");
-            return;
-            }
-        if (getBaseFrame().isViewPanelEnable(PanelMLN)){
-            getBaseFrame().setViewPanelDisable(PanelMLN);
-            MLNView.setBackground(savedColor);
-            getBaseFrame().refreshPanels();
-        }
-        else{
-            getBaseFrame().setViewPanelEnable(PanelMLN);
-            savedColor = MLNView.getBackground();
-            MLNView.setBackground(ColorDarkGreen);
-            getBaseFrame().refreshPanels();
-            getBaseFrame().toFront(PanelMLN);
-            }
-    }//GEN-LAST:event_MLNViewActionPerformed
 
     private I_COMPortGReceiver gCodeBack = new I_COMPortGReceiver() {
         @Override
@@ -972,7 +883,13 @@ public class CNCViewerPanel extends BasePanel {
                             ws.getNotify().notify(Values.error,ss);
                             ws.popup(ss);
                             }
-                    getBaseFrame().finishOperation();
+                    Utils.delayInGUI(0, new Runnable() {
+                        @Override
+                        public void run() {
+                            getBaseFrame().finishOperation();
+                            getBaseFrame().refreshPanels();
+                            }
+                        });
                 }).start();
     }//GEN-LAST:event_MLNLoadActionPerformed
 
@@ -1177,11 +1094,8 @@ public class CNCViewerPanel extends BasePanel {
         int userType = ws.currentUser().accessMode;
         boolean isAdmin = userType==Values.userAdmin;
         boolean canSave = userType==Values.userAdmin || userType==Values.userConstructor;
-        STL3DView.setEnabled(loaded || sliced);
         SLICE.setEnabled(loaded || sliced);
         SliceMode.setEditable(loaded || sliced);
-        STL3DViewLoops.setEnabled(sliced);
-        MLNView.setEnabled(sliced);
         GCODESave.setEnabled(sliced);
         /*
         mBar.getMenu(mSlice).setEnabled(loaded || sliced);
@@ -1269,12 +1183,9 @@ public class CNCViewerPanel extends BasePanel {
     private javax.swing.JCheckBox LogStop;
     private javax.swing.JCheckBox LogToFile;
     private javax.swing.JButton MLNLoad;
-    private javax.swing.JButton MLNView;
     private javax.swing.JButton PAUSE;
     private javax.swing.JCheckBox RELATIVE;
     private javax.swing.JButton SLICE;
-    private javax.swing.JButton STL3DView;
-    private javax.swing.JButton STL3DViewLoops;
     private javax.swing.JButton STLLoad;
     private javax.swing.JButton STOP;
     private javax.swing.JComboBox<String> SliceMode;

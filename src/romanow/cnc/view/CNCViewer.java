@@ -84,7 +84,7 @@ public class CNCViewer extends BaseFrame {
         int idx=0;
         Common.removeAll();
         for(final BasePanel panel : getPanels()){
-            boolean bb = panel.isSelectedMode(WorkSpace.ws().viewMode());
+            boolean bb = panel.isSelectedMode();
             if (bb){
                 PanelList.add(panel.getName(),panel);
                 final int idx2= idx;
@@ -96,8 +96,6 @@ public class CNCViewer extends BaseFrame {
                 menuButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        //ws.popup("Вкладка "+panel.getName());
-                        //notify.notify(info,);
                         PanelList.setSelectedIndex(idx2);
                         }
                     });
@@ -108,6 +106,26 @@ public class CNCViewer extends BaseFrame {
             if (bb)
                 panel.onActivate();
             }
+        JButton menuButton = new JButton();
+        menuButton.setBounds(MenuButtonX0,MenuButtonY0+idx*MenuButtonStep,MenuButtonXSize,MenuButtonYSize);
+        menuButton.setText("Выход");
+        int style = menuButton.getFont().getStyle();
+        menuButton.setFont(new java.awt.Font("Segoe UI", style, 24));
+        menuButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                WorkSpace.ws().popup("Завершение работы");
+                Utils.delayInGUI(3,new Runnable(){
+                    @Override
+                    public void run() {
+                        shutDown();
+                    }
+                });
+                }
+            });
+        Common.add(menuButton);
+        idx++;
+
         JProgressBar progress = new JProgressBar();
         progress.setMaximum(0);
         progress.setMaximum(100);
@@ -153,7 +171,7 @@ public class CNCViewer extends BaseFrame {
         addPanel(new GlobalSettingsPanel(this));
         addPanel(new STL3DViewPanel171(this));
         addPanel(new ModelSettingsPanel(this));
-        addPanel(new CommonViewPanel(this));
+        //addPanel(new CommonViewPanel(this));                // Пока нельзя убирать.... ws.preview
         addPanel(new Loop3DPanel171(this));
         addPanel(new MLNViewPanel(this));
         addPanel(new LoginPanel(this));
@@ -220,7 +238,8 @@ public class CNCViewer extends BaseFrame {
         }
 
     private void setWidth(boolean full){
-        ws.preview().setVisible(full);
+        if (ws.preview()!=null)
+            ws.preview().setVisible(full);
         }
 
 

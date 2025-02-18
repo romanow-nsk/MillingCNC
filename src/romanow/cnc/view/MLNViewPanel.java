@@ -72,6 +72,12 @@ public class MLNViewPanel extends BasePanel {
     /**
      * Creates new form MLNViewPanel
      */
+
+    @Override
+    public boolean isSelectedMode(){            // Промотр 3D для любой загруженной модели
+        return WorkSpace.ws().slicePresent();
+        }
+
     public MLNViewPanel(CNCViewer base) {
         super(base);
         initComponents();
