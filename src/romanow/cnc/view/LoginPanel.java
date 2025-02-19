@@ -113,10 +113,10 @@ public class LoginPanel extends BasePanel {
 
         setLayout(null);
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel1.setText("Пароль");
         add(jLabel1);
-        jLabel1.setBounds(260, 100, 60, 17);
+        jLabel1.setBounds(230, 90, 100, 29);
 
         Password.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         Password.addMouseListener(new java.awt.event.MouseAdapter() {

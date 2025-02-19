@@ -21,7 +21,7 @@
     <Component class="java.awt.TextArea" name="LOG">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Dialog" size="14" style="0"/>
+          <Font name="Dialog" size="18" style="0"/>
         </Property>
       </Properties>
       <Constraints>
@@ -54,7 +54,7 @@
     <Component class="javax.swing.JLabel" name="jLabel39">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Tahoma" size="24" style="1"/>
+          <Font name="Tahoma" size="24" style="0"/>
         </Property>
         <Property name="text" type="java.lang.String" value="G-&#x43a;&#x43e;&#x434;"/>
       </Properties>
@@ -67,7 +67,7 @@
     <Component class="javax.swing.JLabel" name="jLabel40">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Tahoma" size="24" style="1"/>
+          <Font name="Tahoma" size="24" style="0"/>
         </Property>
         <Property name="text" type="java.lang.String" value="&#x41c;&#x43e;&#x434;&#x435;&#x43b;&#x44c;"/>
       </Properties>
@@ -119,7 +119,7 @@
     <Component class="javax.swing.JLabel" name="jLabel41">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Tahoma" size="24" style="1"/>
+          <Font name="Tahoma" size="24" style="0"/>
         </Property>
         <Property name="text" type="java.lang.String" value="&#x421;&#x43b;&#x430;&#x439;&#x441;&#x438;&#x43d;&#x433;"/>
       </Properties>
@@ -178,7 +178,7 @@
     <Component class="javax.swing.JLabel" name="jLabel42">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Tahoma" size="24" style="1"/>
+          <Font name="Tahoma" size="24" style="0"/>
         </Property>
         <Property name="text" type="java.lang.String" value="&#x424;&#x440;&#x435;&#x437;&#x435;&#x440;&#x43e;&#x432;&#x430;&#x43d;&#x438;&#x435;"/>
       </Properties>
@@ -248,7 +248,7 @@
     <Component class="javax.swing.JButton" name="COMPortOnOff">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/drawable-mdpi/status_gray.png"/>
+          <Image iconType="3" name="/drawable-mdpi/icon2/icons8-turn-gray-72.png"/>
         </Property>
         <Property name="borderPainted" type="boolean" value="false"/>
         <Property name="contentAreaFilled" type="boolean" value="false"/>
@@ -258,7 +258,7 @@
       </Events>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="900" y="300" width="40" height="40"/>
+          <AbsoluteConstraints x="900" y="290" width="60" height="60"/>
         </Constraint>
       </Constraints>
     </Component>

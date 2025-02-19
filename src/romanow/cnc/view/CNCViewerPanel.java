@@ -192,7 +192,7 @@ public class CNCViewerPanel extends BasePanel {
 
         setLayout(null);
 
-        LOG.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        LOG.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         add(LOG);
         LOG.setBounds(10, 10, 550, 710);
 
@@ -207,12 +207,12 @@ public class CNCViewerPanel extends BasePanel {
         add(STLLoad);
         STLLoad.setBounds(580, 50, 200, 40);
 
-        jLabel39.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel39.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel39.setText("G-код");
         add(jLabel39);
         jLabel39.setBounds(580, 150, 140, 29);
 
-        jLabel40.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel40.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel40.setText("Модель");
         add(jLabel40);
         jLabel40.setBounds(580, 10, 140, 30);
@@ -232,7 +232,7 @@ public class CNCViewerPanel extends BasePanel {
         add(SliceMode);
         SliceMode.setBounds(790, 50, 240, 40);
 
-        jLabel41.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel41.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel41.setText("Слайсинг");
         add(jLabel41);
         jLabel41.setBounds(790, 10, 150, 29);
@@ -261,7 +261,7 @@ public class CNCViewerPanel extends BasePanel {
         add(GCODESave);
         GCODESave.setBounds(580, 190, 200, 40);
 
-        jLabel42.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel42.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel42.setText("Фрезерование");
         add(jLabel42);
         jLabel42.setBounds(580, 250, 220, 30);
@@ -297,7 +297,7 @@ public class CNCViewerPanel extends BasePanel {
         add(GGODESend);
         GGODESend.setBounds(580, 410, 450, 40);
 
-        COMPortOnOff.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/status_gray.png"))); // NOI18N
+        COMPortOnOff.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/icon2/icons8-turn-gray-72.png"))); // NOI18N
         COMPortOnOff.setBorderPainted(false);
         COMPortOnOff.setContentAreaFilled(false);
         COMPortOnOff.addActionListener(new java.awt.event.ActionListener() {
@@ -306,7 +306,7 @@ public class CNCViewerPanel extends BasePanel {
             }
         });
         add(COMPortOnOff);
-        COMPortOnOff.setBounds(900, 300, 40, 40);
+        COMPortOnOff.setBounds(900, 290, 60, 60);
 
         Stop.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         Stop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/icon2/icons8-stop-72.png"))); // NOI18N
