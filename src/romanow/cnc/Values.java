@@ -30,6 +30,7 @@ public class Values {
             "/drawable-mdpi/status_green.png",
             "/drawable-mdpi/status_yellow.png",
             "/drawable-mdpi/status_red.png"};
+    public final static String mdpi = "/drawable-mdpi/icon2/icons8-";
     // Маски панелей -----------------------------
     public final static int PanelLogin=0x01;
     public final static int PanelMain=0x02;

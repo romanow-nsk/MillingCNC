@@ -145,10 +145,12 @@ public class Loop3DPanel171 extends BasePanel {
             }
         if (data != null) {
             int idx = LAYERS.getSelectedIndex();
-            if (Source.isSelected())
-                model.addSource(data.get(idx));
-            else
-                model.addLoop(data.get(idx));
+            if (idx!=-1){
+                if (Source.isSelected())
+                    model.addSource(data.get(idx));
+                else
+                    model.addLoop(data.get(idx));
+                }
             }
         if (lines!=null){
             int colorIdx=0;
@@ -359,7 +361,7 @@ public class Loop3DPanel171 extends BasePanel {
             }
         });
         add(PREV);
-        PREV.setBounds(20, 110, 40, 40);
+        PREV.setBounds(20, 140, 40, 40);
 
         NEXT.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         NEXT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/right.png"))); // NOI18N
@@ -371,12 +373,12 @@ public class Loop3DPanel171 extends BasePanel {
             }
         });
         add(NEXT);
-        NEXT.setBounds(130, 110, 40, 40);
+        NEXT.setBounds(130, 140, 40, 40);
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel2.setText("Слой");
         add(jLabel2);
-        jLabel2.setBounds(20, 50, 80, 17);
+        jLabel2.setBounds(20, 60, 130, 29);
 
         Source.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         Source.setText("Исходное  сечение");
@@ -386,12 +388,12 @@ public class Loop3DPanel171 extends BasePanel {
             }
         });
         add(Source);
-        Source.setBounds(20, 150, 170, 24);
+        Source.setBounds(20, 200, 170, 24);
 
-        LAYERS.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        LAYERS.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         LAYERS.setToolTipText("");
         add(LAYERS);
-        LAYERS.setBounds(20, 70, 150, 30);
+        LAYERS.setBounds(20, 90, 150, 40);
 
         SPEED.setMaximum(50);
         SPEED.setMinimum(1);
@@ -402,12 +404,12 @@ public class Loop3DPanel171 extends BasePanel {
             }
         });
         add(SPEED);
-        SPEED.setBounds(10, 280, 160, 20);
+        SPEED.setBounds(10, 440, 160, 20);
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel1.setText("Скорость");
         add(jLabel1);
-        jLabel1.setBounds(20, 260, 110, 20);
+        jLabel1.setBounds(20, 410, 150, 30);
 
         ByStep.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         ByStep.setText("По шагам");
@@ -417,7 +419,7 @@ public class Loop3DPanel171 extends BasePanel {
             }
         });
         add(ByStep);
-        ByStep.setBounds(20, 310, 130, 24);
+        ByStep.setBounds(20, 460, 130, 24);
 
         NextStep.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         NextStep.setText("Следующий");
@@ -427,7 +429,7 @@ public class Loop3DPanel171 extends BasePanel {
             }
         });
         add(NextStep);
-        NextStep.setBounds(20, 340, 140, 30);
+        NextStep.setBounds(20, 490, 140, 30);
 
         GCodeAnimate.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         GCodeAnimate.setText("G код: анимация");
@@ -437,9 +439,9 @@ public class Loop3DPanel171 extends BasePanel {
             }
         });
         add(GCodeAnimate);
-        GCodeAnimate.setBounds(20, 220, 140, 30);
+        GCodeAnimate.setBounds(20, 370, 140, 30);
 
-        MLNAnimate.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        MLNAnimate.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         MLNAnimate.setText("MLN: анимация");
         MLNAnimate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -447,7 +449,7 @@ public class Loop3DPanel171 extends BasePanel {
             }
         });
         add(MLNAnimate);
-        MLNAnimate.setBounds(20, 180, 140, 30);
+        MLNAnimate.setBounds(20, 330, 210, 30);
     }// </editor-fold>//GEN-END:initComponents
 
     private void ModelViewItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_ModelViewItemStateChanged

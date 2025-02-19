@@ -29,6 +29,7 @@ import java.util.StringTokenizer;
 
 import romanow.cnc.m3d.ViewAdapter;
 import romanow.cnc.m3d.ViewNotifyer;
+import romanow.cnc.view.design.JCheckBoxButton;
 
 import static romanow.cnc.Values.*;
 import static romanow.cnc.utils.Utils.viewUpdate;
@@ -46,6 +47,8 @@ public class CNCViewerPanel extends BasePanel {
     private final static int KeyCodeEnter=10;
     private ArrayList<String> savedGCodes = new ArrayList<>();
     private int lastSavedCount=0;
+    private JCheckBoxButton relative;
+    private JCheckBoxButton pauseButton;
     private ViewNotifyer notify;
     private BufferedWriter logFile = null;
     private ViewAdapter viewCommon = new ViewAdapter(null);
@@ -56,7 +59,13 @@ public class CNCViewerPanel extends BasePanel {
     public CNCViewerPanel(CNCViewer baseFrame) {
         super(baseFrame);
         initComponents();
-        CNCReset.setVisible(false);
+        relative = new JCheckBoxButton(Relative);
+        relative.setSelected(false);
+        pauseButton = new JCheckBoxButton(Pause,"pause-72","play-72");
+        pauseButton.setSelected(false);
+        pauseButton.setEnabled(false);
+        CNCReset.setEnabled(false);
+        Stop.setEnabled(false);
         ws = WorkSpace.ws();
         Dimension dim = ws.getDim();
         if (dim.width!=0)
@@ -71,16 +80,16 @@ public class CNCViewerPanel extends BasePanel {
             public boolean onStepLine() {
                 if (BYSTEP.isSelected()){
                     pause(true);
-                    PAUSE.setText("продолжить");
-                }
+                    pauseButton.setSelected(true);
+                    }
                 return super.onStepLine();
             }
             @Override
             public boolean onStepLayer() {
                 if (BYSTEP.isSelected()){
                     pause(true);
-                    PAUSE.setText("продолжить");
-                }
+                    pauseButton.setSelected(true);
+                    }
                 return super.onStepLayer();
             }
         };
@@ -98,13 +107,11 @@ public class CNCViewerPanel extends BasePanel {
                             }
                             if (level0>=Values.error){
                                 viewCommon.finish();
-                                PAUSE.setText("...");
-                            }
+                                }
                             if (level0 >Values.warning || stopOnWarning && level0==Values.warning){           // выше warning  - приостановить
                                 if (viewCommon.isRunning()) {
                                     viewCommon.pause(true);
-                                    PAUSE.setText("продолжить");
-                                }
+                                    }
                             }
                         });
             }
@@ -173,14 +180,15 @@ public class CNCViewerPanel extends BasePanel {
         MLNLoad = new javax.swing.JButton();
         GGODESend = new javax.swing.JTextField();
         COMPortOnOff = new javax.swing.JButton();
-        RELATIVE = new javax.swing.JCheckBox();
-        STOP = new javax.swing.JButton();
-        PAUSE = new javax.swing.JButton();
+        Stop = new javax.swing.JButton();
         LEVEL = new javax.swing.JComboBox<>();
         LogToFile = new javax.swing.JCheckBox();
         LogStop = new javax.swing.JCheckBox();
         BYSTEP = new javax.swing.JCheckBox();
         CNCReset = new javax.swing.JButton();
+        Relative = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        Pause = new javax.swing.JButton();
 
         setLayout(null);
 
@@ -230,15 +238,17 @@ public class CNCViewerPanel extends BasePanel {
         jLabel41.setBounds(790, 10, 150, 29);
 
         GCODEMilling.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        GCODEMilling.setText("G-код (станок)");
+        GCODEMilling.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/icon2/icons8-drill-72.png"))); // NOI18N
         GCODEMilling.setBorder(new javax.swing.border.MatteBorder(null));
+        GCODEMilling.setBorderPainted(false);
+        GCODEMilling.setContentAreaFilled(false);
         GCODEMilling.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 GCODEMillingActionPerformed(evt);
             }
         });
         add(GCODEMilling);
-        GCODEMilling.setBounds(580, 290, 200, 40);
+        GCODEMilling.setBounds(580, 290, 60, 60);
 
         GCODESave.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         GCODESave.setText("G-код (экспорт)");
@@ -285,7 +295,7 @@ public class CNCViewerPanel extends BasePanel {
             }
         });
         add(GGODESend);
-        GGODESend.setBounds(580, 400, 370, 40);
+        GGODESend.setBounds(580, 410, 450, 40);
 
         COMPortOnOff.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/status_gray.png"))); // NOI18N
         COMPortOnOff.setBorderPainted(false);
@@ -296,34 +306,20 @@ public class CNCViewerPanel extends BasePanel {
             }
         });
         add(COMPortOnOff);
-        COMPortOnOff.setBounds(980, 400, 40, 40);
+        COMPortOnOff.setBounds(900, 300, 40, 40);
 
-        RELATIVE.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        RELATIVE.setText("Относительная СК");
-        add(RELATIVE);
-        RELATIVE.setBounds(580, 350, 140, 24);
-
-        STOP.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        STOP.setText("Завершить");
-        STOP.setBorder(new javax.swing.border.MatteBorder(null));
-        STOP.addActionListener(new java.awt.event.ActionListener() {
+        Stop.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        Stop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/icon2/icons8-stop-72.png"))); // NOI18N
+        Stop.setBorder(new javax.swing.border.MatteBorder(null));
+        Stop.setBorderPainted(false);
+        Stop.setContentAreaFilled(false);
+        Stop.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                STOPActionPerformed(evt);
+                StopActionPerformed(evt);
             }
         });
-        add(STOP);
-        STOP.setBounds(790, 340, 160, 40);
-
-        PAUSE.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        PAUSE.setText("Пауза");
-        PAUSE.setBorder(new javax.swing.border.MatteBorder(null));
-        PAUSE.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                PAUSEActionPerformed(evt);
-            }
-        });
-        add(PAUSE);
-        PAUSE.setBounds(790, 290, 160, 40);
+        add(Stop);
+        Stop.setBounds(740, 290, 60, 60);
 
         LEVEL.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         LEVEL.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "информ.", "важное", "предупр.", "сбой" }));
@@ -361,7 +357,7 @@ public class CNCViewerPanel extends BasePanel {
         add(BYSTEP);
         BYSTEP.setBounds(570, 700, 130, 24);
 
-        CNCReset.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/remove.png"))); // NOI18N
+        CNCReset.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/icon2/icons8-cancel-72.png"))); // NOI18N
         CNCReset.setBorderPainted(false);
         CNCReset.setContentAreaFilled(false);
         CNCReset.addActionListener(new java.awt.event.ActionListener() {
@@ -370,7 +366,28 @@ public class CNCViewerPanel extends BasePanel {
             }
         });
         add(CNCReset);
-        CNCReset.setBounds(970, 280, 50, 50);
+        CNCReset.setBounds(820, 290, 60, 60);
+
+        Relative.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                RelativeMouseClicked(evt);
+            }
+        });
+        add(Relative);
+        Relative.setBounds(580, 360, 60, 40);
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel1.setText("Относительная СК");
+        add(jLabel1);
+        jLabel1.setBounds(660, 360, 220, 32);
+
+        Pause.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                PauseMouseClicked(evt);
+            }
+        });
+        add(Pause);
+        Pause.setBounds(660, 290, 60, 60);
     }// </editor-fold>//GEN-END:initComponents
 
     private void openModel(){
@@ -493,6 +510,8 @@ public class CNCViewerPanel extends BasePanel {
     private void gCodeSend(BufferedReader in,COMPortGDriver driver,int timeOut) {
         int count = 0;
         viewCommon.start();
+        pauseButton.setEnabled(true);
+        Stop.setEnabled(true);
         try {
             String gCode = null;
             while (viewCommon.isRunning() && (gCode = in.readLine()) != null) {
@@ -535,6 +554,9 @@ public class CNCViewerPanel extends BasePanel {
                     try { in.close(); } catch (IOException e) {}
                     }
                 }
+            viewCommon.finish();
+            pauseButton.setEnabled(false);
+            Stop.setEnabled(false);
         }
     private void GCODEMillingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GCODEMillingActionPerformed
         final String fname = getBaseFrame().getInputFileName("Файл GCODE","gcode",false);
@@ -556,7 +578,7 @@ public class CNCViewerPanel extends BasePanel {
                 return;
                 }
             setComPortState(ComPortStateOn);
-            if (RELATIVE.isSelected())
+            if (relative.isSelected())
                 in = gCodeConvertIntoRelative(in);
             if (in==null)
                 return;
@@ -578,7 +600,7 @@ public class CNCViewerPanel extends BasePanel {
     private void closeComPort(BufferedReader in){
         setComPortState(ComPortStateOff);
         driver.close();
-        CNCReset.setVisible(false);
+        CNCReset.setEnabled(false);
         if (in != null) {
             try {
                 in.close();
@@ -845,6 +867,7 @@ public class CNCViewerPanel extends BasePanel {
             final BufferedReader in2 = in;
             ArrayList<GCodeLayer> res = gCodeParse(in2);
             if (res!=null) {
+                WorkSpace.ws().dataState(Sliced);
                 getBaseFrame().setViewPanelEnable(PanelSTL3DLoops);
                 getBaseFrame().refreshPanels();
                 getBaseFrame().toFront(PanelSTL3DLoops);
@@ -953,28 +976,17 @@ public class CNCViewerPanel extends BasePanel {
                     return;
                     }
                 setComPortState(ComPortStateOn);
-                CNCReset.setVisible(true);
+                CNCReset.setEnabled(true);
                 break;
             }
     }//GEN-LAST:event_COMPortOnOffActionPerformed
 
-    private void STOPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_STOPActionPerformed
+    private void StopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StopActionPerformed
         viewCommon.finish();
-        PAUSE.setText("...");
-        STOP.setText("...");
+        Stop.setEnabled(false);
+        Pause.setEnabled(false);
         sendEvent(Events.OperateFinish,0,0,null,null);
-    }//GEN-LAST:event_STOPActionPerformed
-
-    private void PAUSEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PAUSEActionPerformed
-        if (!viewCommon.isRunning())
-            return;
-        if (viewCommon.changePause()){
-            PAUSE.setText("продолжить");
-        }
-        else{
-            PAUSE.setText("остановить");
-        }
-    }//GEN-LAST:event_PAUSEActionPerformed
+    }//GEN-LAST:event_StopActionPerformed
 
     private void LEVELItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_LEVELItemStateChanged
         notify.setLevel(LEVEL.getSelectedIndex());
@@ -1003,8 +1015,7 @@ public class CNCViewerPanel extends BasePanel {
                 WorkSpace.ws().getNotify().notify(info,"Reset: "+ans.o2);
             else{
                 viewCommon.finish();
-                PAUSE.setText("...");
-                STOP.setText("...");
+                Stop.setText("...");
                 sendEvent(Events.OperateFinish,0,0,null,null);
                 }
             setComPortState(ComPortStateOn);
@@ -1016,6 +1027,17 @@ public class CNCViewerPanel extends BasePanel {
         sendOneCommmand(new String(ctrlX));
         sendOneCommmand("$X");
     }//GEN-LAST:event_CNCResetActionPerformed
+
+    private void RelativeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_RelativeMouseClicked
+        relative.itemStateChanged();
+    }//GEN-LAST:event_RelativeMouseClicked
+
+    private void PauseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_PauseMouseClicked
+        if (!viewCommon.isRunning())
+            return;
+        viewCommon.changePause();
+        pauseButton.itemStateChanged();
+    }//GEN-LAST:event_PauseMouseClicked
 
     private void exportGCode(){
         if (getBaseFrame().test3()) return;
@@ -1183,12 +1205,13 @@ public class CNCViewerPanel extends BasePanel {
     private javax.swing.JCheckBox LogStop;
     private javax.swing.JCheckBox LogToFile;
     private javax.swing.JButton MLNLoad;
-    private javax.swing.JButton PAUSE;
-    private javax.swing.JCheckBox RELATIVE;
+    private javax.swing.JButton Pause;
+    private javax.swing.JButton Relative;
     private javax.swing.JButton SLICE;
     private javax.swing.JButton STLLoad;
-    private javax.swing.JButton STOP;
     private javax.swing.JComboBox<String> SliceMode;
+    private javax.swing.JButton Stop;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel40;
     private javax.swing.JLabel jLabel41;

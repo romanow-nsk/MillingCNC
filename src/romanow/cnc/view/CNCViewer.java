@@ -1300,7 +1300,7 @@ public class CNCViewer extends BaseFrame {
             if (panel.isSelected())
                 panel.onDeactivate();
             panel.shutDown();
-        }
+            }
     dispose();
     }
 
