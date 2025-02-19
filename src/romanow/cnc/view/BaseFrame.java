@@ -36,6 +36,7 @@ public abstract class BaseFrame extends JFrame implements I_Important, I_PanelEv
     public JProgressBar getProgress(){ return null; };
     //-------------------------------------------------------------------------------
     public BaseFrame(){
+        super();
         ws = WorkSpace.ws();
         }
     public boolean isViewPanelEnable(int mode){
