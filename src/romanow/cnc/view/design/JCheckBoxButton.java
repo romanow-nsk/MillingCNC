@@ -2,6 +2,7 @@ package romanow.cnc.view.design;
 
 import lombok.Getter;
 import romanow.cnc.Values;
+import romanow.cnc.view.BasePanel;
 
 import javax.swing.*;
 
@@ -27,11 +28,13 @@ public class JCheckBoxButton {
     public void setSelected(boolean sel){
         selected = sel;
         button.setIcon(new javax.swing.ImageIcon(getClass().getResource(Values.mdpi+(selected ? stateOnIcon : stateOffIcon)+".png")));
+        BasePanel.resizeIcon(button);
         button.revalidate();
         }
     public void itemStateChanged(){
         selected = !selected;
         button.setIcon(new javax.swing.ImageIcon(getClass().getResource(Values.mdpi+(selected ? stateOnIcon : stateOffIcon)+".png")));
+        BasePanel.resizeIcon(button);
         button.revalidate();
         }
     public void setVisible(boolean bb){

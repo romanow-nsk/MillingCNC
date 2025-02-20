@@ -135,7 +135,7 @@
           <Font name="Segoe UI" size="24" style="0"/>
         </Property>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/drawable-mdpi/icon2/icons8-drill-72.png"/>
+          <Image iconType="3" name="/drawable-mdpi/icon2/icons8-drill-48.png"/>
         </Property>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.MatteColorBorderInfo">
@@ -150,7 +150,7 @@
       </Events>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="580" y="290" width="60" height="60"/>
+          <AbsoluteConstraints x="580" y="300" width="50" height="50"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -258,7 +258,7 @@
       </Events>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="900" y="290" width="60" height="60"/>
+          <AbsoluteConstraints x="870" y="290" width="60" height="60"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -268,7 +268,7 @@
           <Font name="Segoe UI" size="24" style="0"/>
         </Property>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/drawable-mdpi/icon2/icons8-stop-72.png"/>
+          <Image iconType="3" name="/drawable-mdpi/icon2/icons8-stop-48.png"/>
         </Property>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.MatteColorBorderInfo">
@@ -283,7 +283,7 @@
       </Events>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="740" y="290" width="60" height="60"/>
+          <AbsoluteConstraints x="740" y="300" width="50" height="50"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -364,7 +364,7 @@
     <Component class="javax.swing.JButton" name="CNCReset">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/drawable-mdpi/icon2/icons8-cancel-72.png"/>
+          <Image iconType="3" name="/drawable-mdpi/icon2/icons8-cancel-48.png"/>
         </Property>
         <Property name="borderPainted" type="boolean" value="false"/>
         <Property name="contentAreaFilled" type="boolean" value="false"/>
@@ -374,7 +374,7 @@
       </Events>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="820" y="290" width="60" height="60"/>
+          <AbsoluteConstraints x="810" y="300" width="50" height="50"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -407,7 +407,7 @@
       </Events>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="660" y="290" width="60" height="60"/>
+          <AbsoluteConstraints x="660" y="300" width="50" height="50"/>
         </Constraint>
       </Constraints>
     </Component>

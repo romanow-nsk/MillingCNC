@@ -238,7 +238,7 @@ public class CNCViewerPanel extends BasePanel {
         jLabel41.setBounds(790, 10, 150, 29);
 
         GCODEMilling.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        GCODEMilling.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/icon2/icons8-drill-72.png"))); // NOI18N
+        GCODEMilling.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/icon2/icons8-drill-48.png"))); // NOI18N
         GCODEMilling.setBorder(new javax.swing.border.MatteBorder(null));
         GCODEMilling.setBorderPainted(false);
         GCODEMilling.setContentAreaFilled(false);
@@ -248,7 +248,7 @@ public class CNCViewerPanel extends BasePanel {
             }
         });
         add(GCODEMilling);
-        GCODEMilling.setBounds(580, 290, 60, 60);
+        GCODEMilling.setBounds(580, 300, 50, 50);
 
         GCODESave.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         GCODESave.setText("G-код (экспорт)");
@@ -306,10 +306,10 @@ public class CNCViewerPanel extends BasePanel {
             }
         });
         add(COMPortOnOff);
-        COMPortOnOff.setBounds(900, 290, 60, 60);
+        COMPortOnOff.setBounds(870, 290, 60, 60);
 
         Stop.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        Stop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/icon2/icons8-stop-72.png"))); // NOI18N
+        Stop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/icon2/icons8-stop-48.png"))); // NOI18N
         Stop.setBorder(new javax.swing.border.MatteBorder(null));
         Stop.setBorderPainted(false);
         Stop.setContentAreaFilled(false);
@@ -319,7 +319,7 @@ public class CNCViewerPanel extends BasePanel {
             }
         });
         add(Stop);
-        Stop.setBounds(740, 290, 60, 60);
+        Stop.setBounds(740, 300, 50, 50);
 
         LEVEL.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         LEVEL.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "информ.", "важное", "предупр.", "сбой" }));
@@ -357,7 +357,7 @@ public class CNCViewerPanel extends BasePanel {
         add(BYSTEP);
         BYSTEP.setBounds(570, 700, 130, 24);
 
-        CNCReset.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/icon2/icons8-cancel-72.png"))); // NOI18N
+        CNCReset.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/icon2/icons8-cancel-48.png"))); // NOI18N
         CNCReset.setBorderPainted(false);
         CNCReset.setContentAreaFilled(false);
         CNCReset.addActionListener(new java.awt.event.ActionListener() {
@@ -366,7 +366,7 @@ public class CNCViewerPanel extends BasePanel {
             }
         });
         add(CNCReset);
-        CNCReset.setBounds(820, 290, 60, 60);
+        CNCReset.setBounds(810, 300, 50, 50);
 
         Relative.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -387,7 +387,7 @@ public class CNCViewerPanel extends BasePanel {
             }
         });
         add(Pause);
-        Pause.setBounds(660, 290, 60, 60);
+        Pause.setBounds(660, 300, 50, 50);
     }// </editor-fold>//GEN-END:initComponents
 
     private void openModel(){

@@ -71,6 +71,24 @@ public abstract class BasePanel extends javax.swing.JPanel implements I_PanelEve
         setComponentsScale(panel.getComponents());
         panel.revalidate();
         }
+    public static void resizeIcon(JButton button){
+        if (button.getIcon()==null)
+            return;
+        if (!WorkSpace.ws().global().fullScreen)
+            return;
+            String iconName = button.getIcon().toString();
+            if (iconName.endsWith("48.png")){
+                int idx= iconName.indexOf(Values.mdpi);
+                if (idx!=-1){
+                    iconName = iconName.substring(idx);
+                    int lnt = iconName.length();
+                    iconName = iconName.substring(0,lnt-6)+"72.png";
+                    System.out.println(iconName);
+                    //button.setIcon(new javax.swing.ImageIcon(frame.getClass().getResource(iconName))); // NOI18N
+                    button.setIcon(new javax.swing.ImageIcon(BasePanel.class.getResource(iconName))); // NOI18N
+                    }
+                }
+            }
     public static void setComponentsScale(Component list[]){
         Dimension dim = WorkSpace.ws().getDim();
         if (dim.width==0)
@@ -87,11 +105,12 @@ public abstract class BasePanel extends javax.swing.JPanel implements I_PanelEve
             rec.y = (int)(rec.y*scaleY);
             component.setBounds(rec);
             //int fontSize = (int)(14. * scaleY);
-            if (component instanceof JButton){
-                JButton button = (JButton)component;
+            if (component instanceof JButton) {
+                JButton button = (JButton) component;
                 int fontSize = button.getFont().getSize();
                 int style = button.getFont().getStyle();
-                button.setFont(new java.awt.Font("Segoe UI", style, (int)(fontSize*scaleY)));
+                button.setFont(new java.awt.Font("Segoe UI", style, (int) (fontSize * scaleY)));
+                resizeIcon(button);
                 }
             if (component instanceof JCheckBox){
                 JCheckBox button = (JCheckBox)component;
