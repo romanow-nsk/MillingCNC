@@ -68,7 +68,7 @@ public class MLNViewPanel extends BasePanel {
     private JCheckBoxButton points3;
     private JCheckBoxButton onlyLoop;
     private JCheckBoxButton moveToNearest;
-
+    private JCheckBoxButton showPrint;
     /**
      * Creates new form MLNViewPanel
      */
@@ -96,6 +96,8 @@ public class MLNViewPanel extends BasePanel {
         onlyLoop.setSelected(true);
         moveToNearest = new JCheckBoxButton(MoveToNearestButton);
         moveToNearest.setSelected(true);
+        showPrint = new JCheckBoxButton(ShowPrint,"animate-48","animate-run-48");
+        showPrint.setSelected(false);
         setComponentsScale();
         statView = new StatisticPanel();
         if (ws.global().fullScreen)
@@ -106,9 +108,9 @@ public class MLNViewPanel extends BasePanel {
         add(statView);
         gPanel = new GraphPanel(mBack);
         if (ws.global().fullScreen)
-            gPanel.setBounds((int)(scaleX*250), (int)(scaleY*10), (int)(ws.getScaleMin()*720));
+            gPanel.setBounds((int)(scaleX*250), (int)(scaleY*10), (int)(ws.getScaleMin()*Values.MLNPanelSize));
         else
-            gPanel.setBounds(210,10,720);
+            gPanel.setBounds(210,10,Values.MLNPanelSize);
         BasePanel.setComponentsScale(gPanel);
         add(gPanel);
         MODE.addItem("Растр");
@@ -367,11 +369,10 @@ public class MLNViewPanel extends BasePanel {
         }).start();
     }
     private int showDelay=10;
-    private boolean showRun=false;
     private void paintViewMode0(){   //Запуск в потоке
         paintViewOrig(false);
         for(STLLine line :layer.segments().lines()){
-            if (!showRun) {
+            if (!showPrint.isSelected()) {
                 break;
             }
             try { Thread.sleep(showDelay); } catch (InterruptedException ex) {}
@@ -629,7 +630,6 @@ public class MLNViewPanel extends BasePanel {
         LineRemove = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        jSeparator2 = new javax.swing.JSeparator();
         jSeparator3 = new javax.swing.JSeparator();
         B6 = new javax.swing.JButton();
         B7 = new javax.swing.JButton();
@@ -666,6 +666,7 @@ public class MLNViewPanel extends BasePanel {
         Z0_6 = new javax.swing.JLabel();
         Z0_7 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
+        LineLabel2 = new javax.swing.JLabel();
 
         setLayout(null);
 
@@ -684,7 +685,7 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(HORIZ);
-        HORIZ.setBounds(900, 390, 190, 20);
+        HORIZ.setBounds(910, 430, 180, 20);
 
         VERTIC.setMinimum(-100);
         VERTIC.setOrientation(javax.swing.JSlider.VERTICAL);
@@ -702,7 +703,7 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(VERTIC);
-        VERTIC.setBounds(180, 420, 20, 270);
+        VERTIC.setBounds(180, 360, 20, 270);
 
         MAS.setMaximum(50);
         MAS.setMinimum(1);
@@ -713,10 +714,10 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(MAS);
-        MAS.setBounds(910, 430, 180, 20);
+        MAS.setBounds(910, 470, 180, 20);
 
         PREV.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        PREV.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/icon2/icons8-left-72.png"))); // NOI18N
+        PREV.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/icon2/icons8-left-48.png"))); // NOI18N
         PREV.setBorderPainted(false);
         PREV.setContentAreaFilled(false);
         PREV.addActionListener(new java.awt.event.ActionListener() {
@@ -725,10 +726,10 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(PREV);
-        PREV.setBounds(0, 150, 70, 60);
+        PREV.setBounds(10, 160, 50, 50);
 
         NEXT.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        NEXT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/icon2/icons8-right-72.png"))); // NOI18N
+        NEXT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/icon2/icons8-right-48.png"))); // NOI18N
         NEXT.setBorderPainted(false);
         NEXT.setContentAreaFilled(false);
         NEXT.addActionListener(new java.awt.event.ActionListener() {
@@ -737,17 +738,17 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(NEXT);
-        NEXT.setBounds(140, 150, 70, 60);
+        NEXT.setBounds(140, 160, 50, 50);
 
         MES.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         MES.setEnabled(false);
         add(MES);
-        MES.setBounds(200, 740, 880, 30);
+        MES.setBounds(10, 730, 890, 30);
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel1.setText("Скорость анимации");
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel1.setText("Скорость");
         add(jLabel1);
-        jLabel1.setBounds(910, 330, 180, 20);
+        jLabel1.setBounds(1000, 370, 110, 20);
 
         LoopPlus.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         LoopPlus.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/right.png"))); // NOI18N
@@ -759,7 +760,7 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(LoopPlus);
-        LoopPlus.setBounds(140, 690, 40, 40);
+        LoopPlus.setBounds(130, 620, 50, 50);
 
         LoopMinus.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         LoopMinus.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/left.png"))); // NOI18N
@@ -771,20 +772,22 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(LoopMinus);
-        LoopMinus.setBounds(10, 690, 40, 40);
+        LoopMinus.setBounds(10, 620, 50, 50);
 
         DeleteLoop.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        DeleteLoop.setText("Удалить контур");
+        DeleteLoop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/icon2/icons8-remove-48.png"))); // NOI18N
+        DeleteLoop.setBorderPainted(false);
+        DeleteLoop.setContentAreaFilled(false);
         DeleteLoop.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 DeleteLoopActionPerformed(evt);
             }
         });
         add(DeleteLoop);
-        DeleteLoop.setBounds(10, 730, 180, 40);
+        DeleteLoop.setBounds(70, 670, 50, 50);
 
         LoopCalc.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        LoopCalc.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/question.png"))); // NOI18N
+        LoopCalc.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/icon2/icons8-question-48.png"))); // NOI18N
         LoopCalc.setBorderPainted(false);
         LoopCalc.setContentAreaFilled(false);
         LoopCalc.addActionListener(new java.awt.event.ActionListener() {
@@ -793,49 +796,56 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(LoopCalc);
-        LoopCalc.setBounds(70, 690, 54, 40);
+        LoopCalc.setBounds(70, 620, 50, 50);
 
-        B5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        B5.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         B5.setText("0.0");
+        B5.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         B5.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         B5.setEnabled(false);
-        B5.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                B5MouseClicked(evt);
+        B5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                B5ActionPerformed(evt);
             }
         });
         add(B5);
-        B5.setBounds(160, 360, 50, 30);
+        B5.setBounds(70, 280, 70, 40);
 
         B3.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        B3.setText("Добавить слой");
+        B3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/icon2/icons8-add-48.png"))); // NOI18N
+        B3.setBorderPainted(false);
+        B3.setContentAreaFilled(false);
         B3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 B3ActionPerformed(evt);
             }
         });
         add(B3);
-        B3.setBounds(10, 320, 190, 38);
+        B3.setBounds(10, 270, 50, 50);
 
         B2.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        B2.setText("Удалить слой");
+        B2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/icon2/icons8-remove-48.png"))); // NOI18N
+        B2.setBorderPainted(false);
+        B2.setContentAreaFilled(false);
         B2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 B2ActionPerformed(evt);
             }
         });
         add(B2);
-        B2.setBounds(10, 270, 190, 40);
+        B2.setBounds(150, 270, 50, 50);
 
         LineRemove.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        LineRemove.setText("Удалить линию");
+        LineRemove.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/icon2/icons8-remove-48.png"))); // NOI18N
+        LineRemove.setBorderPainted(false);
+        LineRemove.setContentAreaFilled(false);
         LineRemove.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 LineRemoveActionPerformed(evt);
             }
         });
         add(LineRemove);
-        LineRemove.setBounds(910, 590, 170, 26);
+        LineRemove.setBounds(1030, 670, 50, 50);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel2.setText("Слой");
@@ -843,12 +853,10 @@ public class MLNViewPanel extends BasePanel {
         jLabel2.setBounds(10, 50, 150, 29);
         add(jSeparator1);
         jSeparator1.setBounds(10, 493, 180, 0);
-        add(jSeparator2);
-        jSeparator2.setBounds(10, 410, 190, 10);
         add(jSeparator3);
         jSeparator3.setBounds(10, 550, 210, 0);
 
-        B6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        B6.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         B6.setText("Загрузить сечение");
         B6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -856,7 +864,7 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(B6);
-        B6.setBounds(910, 660, 170, 30);
+        B6.setBounds(910, 730, 170, 30);
 
         B7.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         B7.setText("Слайсинг");
@@ -868,29 +876,31 @@ public class MLNViewPanel extends BasePanel {
         add(B7);
         B7.setBounds(10, 220, 190, 40);
 
-        LineLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        LineLabel1.setText("Редактировать");
+        LineLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        LineLabel1.setText("Линия");
         add(LineLabel1);
-        LineLabel1.setBounds(910, 455, 140, 17);
+        LineLabel1.setBounds(910, 680, 70, 22);
 
         LineInsert.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        LineInsert.setText("Добавить линию");
+        LineInsert.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/icon2/icons8-add-48.png"))); // NOI18N
+        LineInsert.setBorderPainted(false);
+        LineInsert.setContentAreaFilled(false);
         LineInsert.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 LineInsertActionPerformed(evt);
             }
         });
         add(LineInsert);
-        LineInsert.setBounds(910, 625, 170, 30);
+        LineInsert.setBounds(980, 670, 50, 50);
 
         MY.setEditable(false);
         MY.setBackground(new java.awt.Color(200, 200, 200));
-        MY.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        MY.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         MY.setText("0");
         add(MY);
-        MY.setBounds(1010, 510, 70, 25);
+        MY.setBounds(1010, 570, 70, 40);
 
-        PY.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        PY.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         PY.setText("0");
         PY.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         PY.setEnabled(false);
@@ -900,26 +910,26 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(PY);
-        PY.setBounds(930, 510, 70, 25);
+        PY.setBounds(930, 570, 70, 40);
 
-        X.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        X.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         X.setText("Y");
         add(X);
-        X.setBounds(185, 400, 20, 20);
+        X.setBounds(180, 330, 20, 30);
 
-        X1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        X1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         X1.setText("X");
         add(X1);
-        X1.setBounds(910, 370, 20, 20);
+        X1.setBounds(1050, 410, 20, 20);
 
         MX.setEditable(false);
         MX.setBackground(new java.awt.Color(200, 200, 200));
-        MX.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        MX.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         MX.setText("0");
         add(MX);
-        MX.setBounds(1010, 480, 70, 25);
+        MX.setBounds(1010, 525, 70, 38);
 
-        PX.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        PX.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         PX.setText("0");
         PX.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         PX.setEnabled(false);
@@ -929,21 +939,21 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(PX);
-        PX.setBounds(930, 480, 70, 25);
+        PX.setBounds(930, 525, 70, 40);
 
-        GroupSize.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        GroupSize.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         GroupSize.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2", "3", "4", "5", "6", "7", "8", "9", "10" }));
         GroupSize.setMinimumSize(new java.awt.Dimension(37, 25));
         GroupSize.setPreferredSize(new java.awt.Dimension(37, 25));
         add(GroupSize);
-        GroupSize.setBounds(970, 210, 50, 30);
+        GroupSize.setBounds(1010, 240, 70, 40);
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel3.setText("NxN : 1");
         add(jLabel3);
-        jLabel3.setBounds(900, 215, 50, 20);
+        jLabel3.setBounds(910, 250, 100, 30);
 
-        MergeLayers.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        MergeLayers.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         MergeLayers.setText("Слить слои");
         MergeLayers.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -951,7 +961,7 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(MergeLayers);
-        MergeLayers.setBounds(900, 250, 120, 30);
+        MergeLayers.setBounds(910, 295, 170, 40);
 
         ShowDelay.setMajorTickSpacing(1);
         ShowDelay.setValue(10);
@@ -961,7 +971,7 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(ShowDelay);
-        ShowDelay.setBounds(900, 350, 190, 20);
+        ShowDelay.setBounds(900, 390, 190, 20);
 
         LAYERS.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         LAYERS.addItemListener(new java.awt.event.ItemListener() {
@@ -981,34 +991,33 @@ public class MLNViewPanel extends BasePanel {
         add(MODE);
         MODE.setBounds(10, 10, 190, 40);
 
-        LoopList2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        LoopList2.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         add(LoopList2);
-        LoopList2.setBounds(10, 640, 170, 30);
+        LoopList2.setBounds(10, 580, 170, 30);
 
-        X2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        X2.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         X2.setText("X");
         add(X2);
-        X2.setBounds(910, 480, 20, 20);
+        X2.setBounds(910, 540, 20, 20);
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel4.setText("Контуры");
         add(jLabel4);
-        jLabel4.setBounds(20, 420, 110, 20);
+        jLabel4.setBounds(10, 350, 110, 30);
 
-        X3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        X3.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         X3.setText("Y");
         add(X3);
-        X3.setBounds(910, 515, 20, 20);
+        X3.setBounds(910, 580, 20, 20);
 
         ShowPrint.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        ShowPrint.setText("Анимация");
         ShowPrint.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ShowPrintActionPerformed(evt);
             }
         });
         add(ShowPrint);
-        ShowPrint.setBounds(900, 290, 120, 30);
+        ShowPrint.setBounds(910, 340, 50, 50);
 
         Points2Button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1016,7 +1025,7 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(Points2Button);
-        Points2Button.setBounds(120, 440, 50, 40);
+        Points2Button.setBounds(120, 380, 50, 40);
 
         Z0_1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         Z0_1.setText("Сетка (мм)");
@@ -1031,10 +1040,10 @@ public class MLNViewPanel extends BasePanel {
         add(GridButton);
         GridButton.setBounds(80, 160, 50, 40);
 
-        Z0_2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z0_2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         Z0_2.setText("По контурам");
         add(Z0_2);
-        Z0_2.setBounds(20, 600, 90, 20);
+        Z0_2.setBounds(10, 540, 120, 25);
 
         Points3Button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1042,12 +1051,12 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(Points3Button);
-        Points3Button.setBounds(120, 490, 50, 40);
+        Points3Button.setBounds(120, 430, 50, 40);
 
-        Z0_3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z0_3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         Z0_3.setText("Сторона");
         add(Z0_3);
-        Z0_3.setBounds(20, 450, 90, 20);
+        Z0_3.setBounds(10, 390, 110, 25);
 
         Points0Button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1055,12 +1064,12 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(Points0Button);
-        Points0Button.setBounds(120, 540, 50, 40);
+        Points0Button.setBounds(120, 480, 50, 40);
 
-        Z0_4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z0_4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         Z0_4.setText("Плоскость");
         add(Z0_4);
-        Z0_4.setBounds(20, 500, 90, 20);
+        Z0_4.setBounds(10, 440, 100, 25);
 
         OnlyLoopButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1068,12 +1077,12 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(OnlyLoopButton);
-        OnlyLoopButton.setBounds(120, 590, 50, 40);
+        OnlyLoopButton.setBounds(120, 530, 50, 40);
 
-        Z0_5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z0_5.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         Z0_5.setText("к ближайшей");
         add(Z0_5);
-        Z0_5.setBounds(910, 560, 90, 20);
+        Z0_5.setBounds(910, 640, 120, 25);
 
         MoveToNearestButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1081,22 +1090,27 @@ public class MLNViewPanel extends BasePanel {
             }
         });
         add(MoveToNearestButton);
-        MoveToNearestButton.setBounds(1030, 540, 50, 40);
+        MoveToNearestButton.setBounds(1030, 620, 50, 40);
 
-        Z0_6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z0_6.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         Z0_6.setText("Сечение");
         add(Z0_6);
-        Z0_6.setBounds(20, 550, 90, 20);
+        Z0_6.setBounds(10, 490, 100, 25);
 
-        Z0_7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Z0_7.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         Z0_7.setText("Привязка");
         add(Z0_7);
-        Z0_7.setBounds(910, 540, 90, 20);
+        Z0_7.setBounds(910, 620, 90, 25);
 
-        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel5.setText("Масштаб");
         add(jLabel5);
-        jLabel5.setBounds(910, 410, 110, 20);
+        jLabel5.setBounds(1000, 450, 120, 20);
+
+        LineLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        LineLabel2.setText("Редактировать");
+        add(LineLabel2);
+        LineLabel2.setBounds(910, 490, 140, 22);
     }// </editor-fold>//GEN-END:initComponents
 
     private void HORIZStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_HORIZStateChanged
@@ -1288,21 +1302,21 @@ public class MLNViewPanel extends BasePanel {
     }//GEN-LAST:event_LAYERSItemStateChanged
 
     private void ShowPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ShowPrintActionPerformed
-        if (!showRun){
+        if (!showPrint.isSelected()){
             ShowPrint.setText("Прервать");
             showDelay=10;
             new Thread(()->{
                 paintViewMode0();
                 Utils.runAfterDelayMS(10, ()->{
                     ShowPrint.setText("Развертка");
-                    showRun=false;
+                    showPrint.setSelected(false);
                     });
                 }).start();
             }
         else{
             ShowPrint.setText("Развертка");
             }
-        showRun=!showRun;
+        showPrint.itemStateChanged();
     }//GEN-LAST:event_ShowPrintActionPerformed
 
     private void Points2ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Points2ButtonActionPerformed
@@ -1372,14 +1386,14 @@ public class MLNViewPanel extends BasePanel {
             });
     }//GEN-LAST:event_PYMouseClicked
 
-    private void B5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_B5MouseClicked
-        DigitPanel digit = new DigitPanel("Глубина слоя",B5, new I_RealValue() {
+    private void B5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_B5ActionPerformed
+        DigitPanel digit = new DigitPanel("Z слоя", B5, false, new I_RealValue() {
             @Override
             public void onEvent(String value) {
                 B5.setText(value);
                 }
             });
-    }//GEN-LAST:event_B5MouseClicked
+    }//GEN-LAST:event_B5ActionPerformed
 
     @Override
     public void refresh() {
@@ -1403,6 +1417,7 @@ public class MLNViewPanel extends BasePanel {
     private javax.swing.JComboBox<String> LAYERS;
     private javax.swing.JButton LineInsert;
     private javax.swing.JLabel LineLabel1;
+    private javax.swing.JLabel LineLabel2;
     private javax.swing.JButton LineRemove;
     private javax.swing.JButton LoopCalc;
     private javax.swing.JComboBox<String> LoopList2;
@@ -1443,7 +1458,6 @@ public class MLNViewPanel extends BasePanel {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     // End of variables declaration//GEN-END:variables
 }

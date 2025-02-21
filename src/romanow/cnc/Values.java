@@ -31,10 +31,10 @@ public class Values {
             //"/drawable-mdpi/status_green.png",
             //"/drawable-mdpi/status_yellow.png",
             //"/drawable-mdpi/status_red.png"};
-            mdpi+"turn-gray-72.png",
-            mdpi+"turn-green-72.png",
-            mdpi+"turn-yellow-72.png",
-            mdpi+"turn-red-72.png"};
+            mdpi+"turn-gray-48.png",
+            mdpi+"turn-green-48.png",
+            mdpi+"turn-yellow-48.png",
+            mdpi+"turn-red-48.png"};
     // Маски панелей -----------------------------
     public final static int PanelLogin=0x01;
     public final static int PanelMain=0x02;
@@ -88,6 +88,7 @@ public class Values {
     public final static int MenuButtonXSize=180;
     public final static int MenuButtonYSize=40;
     public final static int MenuButtonStep=50;
+    public final static int MLNPanelSize=680;
     /** коэффициент заполнения моделью пространства при автомасштабировании +/-1 */
     public final static double DefaultModelScale=1;
     /** размер рабочего поля в мм*/

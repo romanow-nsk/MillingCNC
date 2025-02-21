@@ -61,7 +61,7 @@ public class CNCViewerPanel extends BasePanel {
         initComponents();
         relative = new JCheckBoxButton(Relative);
         relative.setSelected(false);
-        pauseButton = new JCheckBoxButton(Pause,"pause-72","play-72");
+        pauseButton = new JCheckBoxButton(Pause,"pause-48","play-48");
         pauseButton.setSelected(false);
         pauseButton.setEnabled(false);
         CNCReset.setEnabled(false);
@@ -297,7 +297,7 @@ public class CNCViewerPanel extends BasePanel {
         add(GGODESend);
         GGODESend.setBounds(580, 410, 450, 40);
 
-        COMPortOnOff.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/icon2/icons8-turn-gray-72.png"))); // NOI18N
+        COMPortOnOff.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/icon2/icons8-turn-gray-48.png"))); // NOI18N
         COMPortOnOff.setBorderPainted(false);
         COMPortOnOff.setContentAreaFilled(false);
         COMPortOnOff.addActionListener(new java.awt.event.ActionListener() {
@@ -306,7 +306,7 @@ public class CNCViewerPanel extends BasePanel {
             }
         });
         add(COMPortOnOff);
-        COMPortOnOff.setBounds(870, 290, 60, 60);
+        COMPortOnOff.setBounds(870, 300, 50, 50);
 
         Stop.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         Stop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/icon2/icons8-stop-48.png"))); // NOI18N
