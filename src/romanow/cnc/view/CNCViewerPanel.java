@@ -154,6 +154,7 @@ public class CNCViewerPanel extends BasePanel {
     public void setComPortState(int state){
         comPortState = state;
         COMPortOnOff.setIcon(new javax.swing.ImageIcon(getClass().getResource(ComPortStates[state])));
+        resizeIcon(COMPortOnOff);
         }
 
 
@@ -357,7 +358,7 @@ public class CNCViewerPanel extends BasePanel {
         add(BYSTEP);
         BYSTEP.setBounds(570, 700, 130, 24);
 
-        CNCReset.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/icon2/icons8-cancel-48.png"))); // NOI18N
+        CNCReset.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/icon2/icons8-refresh-48.png"))); // NOI18N
         CNCReset.setBorderPainted(false);
         CNCReset.setContentAreaFilled(false);
         CNCReset.addActionListener(new java.awt.event.ActionListener() {
@@ -387,7 +388,7 @@ public class CNCViewerPanel extends BasePanel {
             }
         });
         add(Pause);
-        Pause.setBounds(660, 300, 50, 50);
+        Pause.setBounds(650, 300, 50, 50);
     }// </editor-fold>//GEN-END:initComponents
 
     private void openModel(){
@@ -867,7 +868,6 @@ public class CNCViewerPanel extends BasePanel {
             final BufferedReader in2 = in;
             ArrayList<GCodeLayer> res = gCodeParse(in2);
             if (res!=null) {
-                WorkSpace.ws().dataState(Sliced);
                 getBaseFrame().setViewPanelEnable(PanelSTL3DLoops);
                 getBaseFrame().refreshPanels();
                 getBaseFrame().toFront(PanelSTL3DLoops);

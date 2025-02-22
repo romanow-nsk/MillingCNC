@@ -169,11 +169,11 @@ public class CNCViewer extends BaseFrame {
         addPanel(new CNCViewerPanel(this));
         //addPanel(new CNCLogPanel(this));
         addPanel(new GlobalSettingsPanel(this));
-        addPanel(new STL3DViewPanel171(this));
         addPanel(new ModelSettingsPanel(this));
         //addPanel(new CommonViewPanel(this));                // Пока нельзя убирать.... ws.preview
         addPanel(new Loop3DPanel171(this));
         addPanel(new MLNViewPanel(this));
+        //addPanel(new STL3DViewPanel171(this));
         addPanel(new LoginPanel(this));
         for(BasePanel panel : getPanels())
             if (dim.width!=0)

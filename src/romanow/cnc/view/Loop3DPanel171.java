@@ -47,17 +47,18 @@ public class Loop3DPanel171 extends BasePanel {
     private PModel171 model;
     private SimpleUniverse universe;
     private ArrayList<GCodeLayer> gCode=new ArrayList<>();
-    private boolean gCodeMode=false;
     private LineAttributes lineAttr = null;
     private final static float lineWidth=1.5f;
     private Object byStepSynch = new Object();
-    private boolean gCodeAnimate=false;
+    private double layerZ=0;
+    private boolean newLayer=true;
     private JCheckBoxButton byStep;
     private JCheckBoxButton modelViewButton;
     private JCheckBoxButton crossSection;
-    private JCheckBoxButton mlnAnimateButton;
-    private JCheckBoxButton gcodeAnimateButton;
-
+    private JCheckBoxButton animateButton;          // Управление анимацией
+    private JCheckBoxButton gcodeMode;              // Источник анимации - выбор
+    private boolean mlnPresent=false;
+    private boolean gCodePresent=false;
     double Scale0 = 0.1;
     /**
      * Creates new form Loop3DPanel
@@ -72,10 +73,12 @@ public class Loop3DPanel171 extends BasePanel {
         modelViewButton.setSelected(true);
         crossSection = new JCheckBoxButton(LayerCut);
         crossSection.setSelected(false);
-        mlnAnimateButton = new JCheckBoxButton(MLNAnimateButton,"animate-48","animate-run-48");
-        mlnAnimateButton.setSelected(false);
-        gcodeAnimateButton = new JCheckBoxButton(GGodeAnimateButton,"animate-48","animate-run-48");
-        gcodeAnimateButton.setSelected(false);
+        animateButton = new JCheckBoxButton(AnimateButton,"animate-48","animate-run-48");
+        animateButton.setSelected(false);
+        animateButton.setEnabled(false);
+        gcodeMode = new JCheckBoxButton(GodeModeButton);
+        gcodeMode.setSelected(false);
+        gcodeMode.setEnabled(false);
         setComponentsScale();
         setPreferredSize(createDim(dim,Values.FrameWidth-100, Values.FrameHeight-Values.FrameBottom*2));
         //universe = new SimpleUniverse(canvas);
@@ -84,20 +87,18 @@ public class Loop3DPanel171 extends BasePanel {
     @Override
     public boolean isSelectedMode(){            // Промотр 3D для любой загруженной модели
         int state = WorkSpace.ws().dataState();
-        return state == Values.Sliced;
+        mlnPresent = state == Values.Sliced;
+        return mlnPresent || gCodePresent;
         //return ((modeMask() & mode)!=0) && modeEnabled();
         }
-    private void setLayers(){
+    private void setLayersMLN(){
         LAYERS.removeAll();
-        if (!WorkSpace.ws().slicePresent())
-            return;
         for(int i=0;i<data.size();i++){
             SliceLayer lr = data.get(i);
             LAYERS.addItem(lr.label());
             }
         cLayer = 0;
         }
-
     private void setLayersGCode(){
         LAYERS.removeAll();
         for(int i=0;i<gCode.size();i++){
@@ -107,28 +108,53 @@ public class Loop3DPanel171 extends BasePanel {
         cLayer = 0;
         }
 
-
-    private void paintView(){
+    private void paintView(final boolean full){
+        if (!full)
+            killThread();
         thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                paintView(null,0);
+                if (gcodeMode.isSelected())
+                    paintViewGCode(full);
+                else
+                    paintViewMLN(full);
                 }
             });
         thread.start();
         }
 
-    private double layerZ=0;
-    private boolean newLayer=true;
     @Override
     public void onEvent(int code, int par1, long par2, String par3, Object oo) {
         if (code== Events.GCode){
-            gCodeMode = true;
+            gCodePresent = true;
             gCode = (ArrayList<GCodeLayer>) oo;
-            setLayersGCode();
-            gcodeAnimateButton.setEnabled(true);
+            if (mlnPresent)
+                gcodeMode.setSelected(true);
+            setModeButtons();
+            }
         }
-    }
+
+    private void setModeButtons(){
+        if (!(mlnPresent || gCodePresent)){
+            LAYERS.removeAll();
+            gcodeMode.setEnabled(false);
+            animateButton.setEnabled(false);
+            return;
+            }
+        animateButton.setEnabled(true);
+        boolean bb = mlnPresent && gCodePresent;
+        gcodeMode.setEnabled(bb);
+        if (!bb)                                // Если только один источник
+            gcodeMode.setSelected(gCodePresent);
+        if (bb && gcodeMode.isSelected()){
+            setLayersGCode();
+            gcodeMode.setSelected(true);
+            }
+        else{
+            setLayersMLN();
+            gcodeMode.setSelected(false);
+            }
+        }
 
     private final static Color[] colors = {
         Values.ColorDarkGreen,
@@ -149,10 +175,86 @@ public class Loop3DPanel171 extends BasePanel {
         }
 
 
+    private void paintViewGCode(final boolean full){
+        model.cleanup();
+        if (modelViewButton.isSelected()) {
+            model.addChild(modelView);
+            }
+        data = WorkSpace.ws().data();
+        if (data != null) {
+            int idx = LAYERS.getSelectedIndex();
+            if (idx!=-1){
+                if (crossSection.isSelected())
+                    model.addSource(data.get(idx));
+                else
+                    model.addLoop(data.get(idx));
+                }
+            }
+        if (!full) {
+           renderSynch();  // ?????????????????????????
+            return;
+            }
+        int idx = LAYERS.getSelectedIndex();
+        final ArrayList<STLLine> tmp = new ArrayList<>();
+        GCodeLayer lr = gCode.get(idx);
+           for(int ii=0;ii<lr.groups.size();ii++){
+               for (STLLine line2 : lr.groups.get(ii)) {
+                   tmp.add(line2);
+                   paintView(tmp,(float) lr.getLayerZ());
+                   try{
+                       Thread.sleep((50-SPEED.getValue())*2);
+                       } catch (InterruptedException e) {}
+                   }
+               tmp.add(null);
+               }
+              renderSynch();
+              if (byStep.isSelected()) {
+                  try {
+                     synchronized (byStepSynch){
+                        byStepSynch.wait();
+                         }
+                     } catch (InterruptedException e) {}
+                  }
+             }
+
+    private void paintViewMLN(final boolean full){
+        model.cleanup();
+        if (modelViewButton.isSelected()) {
+            model.addChild(modelView);
+            }
+        data = WorkSpace.ws().data();
+        int idx = LAYERS.getSelectedIndex();
+        if (idx!=-1){
+             if (crossSection.isSelected())
+                model.addSource(data.get(idx));
+             else
+                model.addLoop(data.get(idx));
+                }
+        if (!full) {
+            renderSynch();  // ?????????????????????????
+            return;
+            }
+        double zz = data.get(idx).z();
+        final ArrayList<STLLine> tmp = new ArrayList<>();
+        for (STLLine line2 : data.get(idx).segments().lines()) {
+             tmp.add(line2);
+                    paintView(tmp,(float) zz);
+                    try{
+                        Thread.sleep((50-SPEED.getValue())*2);
+                    } catch (InterruptedException e) {}
+                }
+        renderSynch();
+        if (byStep.isSelected()) {
+            try {
+                synchronized (byStepSynch){
+                   byStepSynch.wait();
+                   }
+                } catch (InterruptedException e) {}
+            }
+        }
+
 
     private void paintView(ArrayList<STLLine> lines, float z){
-        if (WorkSpace.ws().dataState()!=Values.Sliced)
-            return;
         model.cleanup();
         if (modelViewButton.isSelected()) {
             model.addChild(modelView);
@@ -166,74 +268,32 @@ public class Loop3DPanel171 extends BasePanel {
                     model.addLoop(data.get(idx));
                 }
             }
-        if (lines!=null){
-            int colorIdx=0;
-            Appearance app = PModel171.colorAppearance(colors[colorIdx]);
-            app.setLineAttributes(lineAttr);
-            for(STLLine line1 : lines){
-                if (line1==null){
-                    if (colorIdx<colors.length-1)
-                        colorIdx++;
-                    else
-                        colorIdx=0;
-                    app = PModel171.colorAppearance(colors[colorIdx]);
-                    app.setLineAttributes(lineAttr);
-                    continue;
-                    }
-                model.addLine(line1,z,app);
+        int colorIdx=0;
+        Appearance app = PModel171.colorAppearance(colors[colorIdx]);
+        app.setLineAttributes(lineAttr);
+        for(STLLine line1 : lines){
+            if (line1==null){
+                if (colorIdx<colors.length-1)
+                    colorIdx++;
+                else
+                    colorIdx=0;
+                app = PModel171.colorAppearance(colors[colorIdx]);
+                app.setLineAttributes(lineAttr);
+                continue;
                 }
-            renderSynch();
-            if (byStep.isSelected()) {
-                try {
-                    synchronized (byStepSynch){
-                        byStepSynch.wait();
-                        }
-                    } catch (InterruptedException e) {}
-                }
+            model.addLine(line1,z,app);
             }
-        else{
-            if (!mlnAnimateButton.isSelected() && !gCodeAnimate){
-                renderSynch();
-                return;
+        renderSynch();
+        if (byStep.isSelected()) {
+            try {
+                synchronized (byStepSynch){
+                    byStepSynch.wait();
                 }
-            int idx = LAYERS.getSelectedIndex();
-            final ArrayList<STLLine> tmp = new ArrayList<>();
-            if (mlnAnimateButton.isSelected()){
-                double zz = data.get(idx).z();
-                for (STLLine line2 : data.get(idx).segments().lines()) {
-                     tmp.add(line2);
-                     paintView(tmp,(float) zz);
-                     try{
-                        Thread.sleep((50-SPEED.getValue())*2);
-                        } catch (InterruptedException e) {}
-                    }
-                }
-            else
-            if (gCodeAnimate) {   //----------------------------------------------------------------------------------------------
-                    GCodeLayer lr = gCode.get(idx);
-                    for(int ii=0;ii<lr.groups.size();ii++){
-                        for (STLLine line2 : lr.groups.get(ii)) {
-                            tmp.add(line2);
-                            paintView(tmp,(float) lr.getLayerZ());
-                            try{
-                                Thread.sleep((50-SPEED.getValue())*2);
-                                } catch (InterruptedException e) {}
-                            }
-                        tmp.add(null);
-                        }
-                    }
-            else{
-                renderSynch();
-                if (byStep.isSelected()) {
-                    try {
-                        synchronized (byStepSynch){
-                            byStepSynch.wait();
-                            }
-                        } catch (InterruptedException e) {}
-                    }
-                }
-            }
+            } catch (InterruptedException e) {}
         }
+    }
+
+
 
     private void paintSlice(){
         Appearance app = PModel171.colorAppearance(Color.blue);
@@ -275,11 +335,10 @@ public class Loop3DPanel171 extends BasePanel {
 
     @Override
     public void onActivate() {
-        gcodeAnimateButton.setEnabled(false);
         GraphicsConfiguration config = SimpleUniverse.getPreferredConfiguration();
         canvas = new PCanvas3D171(config);
         Dimension dim = WorkSpace.ws().getDim();
-        canvas.setBounds(createRec(dim,200,10,Values.FrameWidth-200, Values.FrameHeight-Values.FrameBottom*2));
+        canvas.setBounds(createRec(dim,220,10,Values.FrameWidth-220, Values.FrameHeight-Values.FrameBottom));
         add(canvas);
         universe = new SimpleUniverse(canvas);
         canvas.initcanvas(universe);
@@ -287,7 +346,7 @@ public class Loop3DPanel171 extends BasePanel {
         lineAttr.setLineWidth(lineWidth);
         data = WorkSpace.ws().data();
         NextStep.setVisible(byStep.isSelected());
-        setLayers();
+        setModeButtons();
         /*
         setBounds(100,100,750,700);
         GraphicsConfiguration config = SimpleUniverse.getPreferredConfiguration();
@@ -312,7 +371,6 @@ public class Loop3DPanel171 extends BasePanel {
         model.setBnormstrip(true);
         model.addChild(new Background(new Color3f(0,0,0)));
         modelView = model.addTriangles(WorkSpace.ws().model().triangles(),0.6f);
-        paintView();
         //thread = new Thread(()->{       // выполнить в потоке вне GUI
         //if (ws().isModelSliced())
         //    model.addLoops(ws().data());
@@ -352,9 +410,9 @@ public class Loop3DPanel171 extends BasePanel {
         ModelView = new javax.swing.JButton();
         LayerCut = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
-        MLNAnimateButton = new javax.swing.JButton();
+        AnimateButton = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
-        GGodeAnimateButton = new javax.swing.JButton();
+        GodeModeButton = new javax.swing.JButton();
 
         setLayout(null);
 
@@ -385,7 +443,7 @@ public class Loop3DPanel171 extends BasePanel {
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel2.setText("G-код");
         add(jLabel2);
-        jLabel2.setBounds(10, 330, 100, 29);
+        jLabel2.setBounds(140, 320, 70, 29);
 
         LAYERS.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         LAYERS.setToolTipText("");
@@ -406,7 +464,7 @@ public class Loop3DPanel171 extends BasePanel {
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel1.setText("Анимация");
         add(jLabel1);
-        jLabel1.setBounds(10, 250, 150, 30);
+        jLabel1.setBounds(10, 260, 150, 30);
 
         NextStep.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         NextStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/icon2/icons8-next-48.png"))); // NOI18N
@@ -423,12 +481,12 @@ public class Loop3DPanel171 extends BasePanel {
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel3.setText("По шагам");
         add(jLabel3);
-        jLabel3.setBounds(20, 450, 120, 30);
+        jLabel3.setBounds(10, 450, 120, 30);
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel4.setText("Сечение");
         add(jLabel4);
-        jLabel4.setBounds(10, 200, 110, 29);
+        jLabel4.setBounds(10, 210, 110, 29);
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel5.setText("Слой");
@@ -438,7 +496,7 @@ public class Loop3DPanel171 extends BasePanel {
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel6.setText("Скорость");
         add(jLabel6);
-        jLabel6.setBounds(20, 380, 150, 30);
+        jLabel6.setBounds(10, 380, 150, 30);
 
         ByStep.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -469,26 +527,26 @@ public class Loop3DPanel171 extends BasePanel {
         add(jLabel7);
         jLabel7.setBounds(10, 20, 60, 29);
 
-        MLNAnimateButton.addActionListener(new java.awt.event.ActionListener() {
+        AnimateButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                MLNAnimateButtonActionPerformed(evt);
+                AnimateButtonActionPerformed(evt);
             }
         });
-        add(MLNAnimateButton);
-        MLNAnimateButton.setBounds(150, 280, 50, 40);
+        add(AnimateButton);
+        AnimateButton.setBounds(150, 260, 50, 40);
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel8.setText("MLN");
         add(jLabel8);
-        jLabel8.setBounds(10, 290, 60, 29);
+        jLabel8.setBounds(10, 320, 60, 29);
 
-        GGodeAnimateButton.addActionListener(new java.awt.event.ActionListener() {
+        GodeModeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                GGodeAnimateButtonActionPerformed(evt);
+                GodeModeButtonActionPerformed(evt);
             }
         });
-        add(GGodeAnimateButton);
-        GGodeAnimateButton.setBounds(150, 330, 50, 40);
+        add(GodeModeButton);
+        GodeModeButton.setBounds(70, 320, 50, 40);
     }// </editor-fold>//GEN-END:initComponents
 
     private void PREVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PREVActionPerformed
@@ -496,15 +554,15 @@ public class Loop3DPanel171 extends BasePanel {
         return;
         cLayer--;
         LAYERS.setSelectedIndex(cLayer);
-        paintView();
+        paintView(false);
     }//GEN-LAST:event_PREVActionPerformed
 
     private void NEXTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NEXTActionPerformed
-        if (cLayer==data.size()-1)
+        if (cLayer==LAYERS.getItemCount()-1)
         return;
         cLayer++;
         LAYERS.setSelectedIndex(cLayer);
-        paintView();
+        paintView(false);
     }//GEN-LAST:event_NEXTActionPerformed
 
     private void SPEEDStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_SPEEDStateChanged
@@ -516,51 +574,50 @@ public class Loop3DPanel171 extends BasePanel {
             }
     }//GEN-LAST:event_NextStepActionPerformed
 
-    private void killThread(){
+    private synchronized void killThread(){
         try{
             if (thread!=null){          // Тупо обломить поток
                 thread.stop();
                 thread=null;
+                animateButton.setSelected(false);
                 }
             } catch (Exception ee){}
-
         }
 
 
     private void ByStepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ByStepActionPerformed
         byStep.itemStateChanged();
         NextStep.setVisible(byStep.isSelected());
+        //if (!byStep.isSelected())
+        synchronized (byStepSynch){
+            byStepSynch.notifyAll();
+            }
     }//GEN-LAST:event_ByStepActionPerformed
 
     private void ModelViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModelViewActionPerformed
         modelViewButton.itemStateChanged();
-        paintView();
+        paintView(false);
     }//GEN-LAST:event_ModelViewActionPerformed
 
     private void LayerCutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LayerCutActionPerformed
         crossSection.itemStateChanged();
-        paintView();
+        paintView(false);
     }//GEN-LAST:event_LayerCutActionPerformed
 
-    private void MLNAnimateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MLNAnimateButtonActionPerformed
-        if (mlnAnimateButton.isSelected()){
+    private void AnimateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AnimateButtonActionPerformed
+        if (animateButton.isSelected()){
             killThread();
             }
         else{
-            paintView();
+            paintView(true);
             }
-        mlnAnimateButton.itemStateChanged();
-    }//GEN-LAST:event_MLNAnimateButtonActionPerformed
+        animateButton.itemStateChanged();
+    }//GEN-LAST:event_AnimateButtonActionPerformed
 
-    private void GGodeAnimateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GGodeAnimateButtonActionPerformed
-        if (gcodeAnimateButton.isSelected()){
-            killThread();
-            }
-        else{
-            paintView();
-            }
-        gcodeAnimateButton.itemStateChanged();
-    }//GEN-LAST:event_GGodeAnimateButtonActionPerformed
+    private void GodeModeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GodeModeButtonActionPerformed
+        gcodeMode.itemStateChanged();
+        setModeButtons();
+        }//GEN-LAST:event_GodeModeButtonActionPerformed
 
     @Override
     public void refresh() {
@@ -571,11 +628,11 @@ public class Loop3DPanel171 extends BasePanel {
         }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton AnimateButton;
     private javax.swing.JButton ByStep;
-    private javax.swing.JButton GGodeAnimateButton;
+    private javax.swing.JButton GodeModeButton;
     private javax.swing.JComboBox<String> LAYERS;
     private javax.swing.JButton LayerCut;
-    private javax.swing.JButton MLNAnimateButton;
     private javax.swing.JButton ModelView;
     private javax.swing.JButton NEXT;
     private javax.swing.JButton NextStep;

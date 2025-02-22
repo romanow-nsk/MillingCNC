@@ -251,7 +251,7 @@ public class Loop3DPanel extends BasePanel {
         GraphicsConfiguration config = SimpleUniverse.getPreferredConfiguration();
         canvas = new PCanvas3D(config);
         Dimension dim = WorkSpace.ws().getDim();
-        canvas.setBounds(createRec(dim,200,10,Values.FrameWidth-200, Values.FrameHeight-Values.FrameBottom*2));
+        canvas.setBounds(createRec(dim,200,10,Values.FrameWidth-200, Values.FrameHeight-Values.FrameBottom));
         add(canvas);
         universe = new SimpleUniverse(canvas);
         canvas.initcanvas(universe);

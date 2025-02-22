@@ -101,9 +101,9 @@ public class MLNViewPanel extends BasePanel {
         setComponentsScale();
         statView = new StatisticPanel();
         if (ws.global().fullScreen)
-            statView.setBounds((int)(scaleX*980), (int)(scaleY*10), (int)(scaleX*250), (int)(scaleY*220));
+            statView.setBounds((int)(scaleX*1000), (int)(scaleY*10), (int)(scaleX*250), (int)(scaleY*250));
         else
-            statView.setBounds(890, 10, 250, 220);
+            statView.setBounds(900, 10, 250, 250);
         BasePanel.setComponentsScale(statView);
         add(statView);
         gPanel = new GraphPanel(mBack);
@@ -124,6 +124,7 @@ public class MLNViewPanel extends BasePanel {
 
     @Override
     public void onActivate() {
+        notify = WorkSpace.ws().getNotify();
         gPanel.setPaintParams(HORIZ,VERTIC);
         dz = ws.local().model.VerticalStep.getVal();
         data = ws.data();
@@ -857,14 +858,14 @@ public class MLNViewPanel extends BasePanel {
         jSeparator3.setBounds(10, 550, 210, 0);
 
         B6.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        B6.setText("Загрузить сечение");
+        B6.setText("+сечение");
         B6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 B6ActionPerformed(evt);
             }
         });
         add(B6);
-        B6.setBounds(910, 730, 170, 30);
+        B6.setBounds(910, 725, 170, 40);
 
         B7.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         B7.setText("Слайсинг");
@@ -946,12 +947,12 @@ public class MLNViewPanel extends BasePanel {
         GroupSize.setMinimumSize(new java.awt.Dimension(37, 25));
         GroupSize.setPreferredSize(new java.awt.Dimension(37, 25));
         add(GroupSize);
-        GroupSize.setBounds(1010, 240, 70, 40);
+        GroupSize.setBounds(1010, 250, 70, 40);
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel3.setText("NxN : 1");
         add(jLabel3);
-        jLabel3.setBounds(910, 250, 100, 30);
+        jLabel3.setBounds(910, 260, 100, 30);
 
         MergeLayers.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         MergeLayers.setText("Слить слои");
