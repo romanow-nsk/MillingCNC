@@ -74,8 +74,13 @@ public abstract class BasePanel extends javax.swing.JPanel implements I_PanelEve
     public static void resizeIcon(JButton button){
         if (button.getIcon()==null)
             return;
-        if (!WorkSpace.ws().global().fullScreen)
+        double sx = WorkSpace.ws().getScaleX();
+        double sy = WorkSpace.ws().getScaleY();
+        System.out.println("ScaleXY="+sx+" "+sy);
+        if (sx<Values.FrameScaleKoeff)
             return;
+        //if (!WorkSpace.ws().global().fullScreen)
+        //    return;
             String iconName = button.getIcon().toString();
             if (iconName.endsWith("48.png")){
                 int idx= iconName.indexOf(Values.mdpi);
@@ -83,7 +88,7 @@ public abstract class BasePanel extends javax.swing.JPanel implements I_PanelEve
                     iconName = iconName.substring(idx);
                     int lnt = iconName.length();
                     iconName = iconName.substring(0,lnt-6)+"72.png";
-                    System.out.println(iconName);
+                    //System.out.println(iconName);
                     //button.setIcon(new javax.swing.ImageIcon(frame.getClass().getResource(iconName))); // NOI18N
                     button.setIcon(new javax.swing.ImageIcon(BasePanel.class.getResource(iconName))); // NOI18N
                     }

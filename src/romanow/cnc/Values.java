@@ -89,6 +89,7 @@ public class Values {
     public final static int MenuButtonYSize=40;
     public final static int MenuButtonStep=50;
     public final static int MLNPanelSize=680;
+    public final static double FrameScaleKoeff=1.5;     // Коэффициент перехода на большие иконки
     /** коэффициент заполнения моделью пространства при автомасштабировании +/-1 */
     public final static double DefaultModelScale=1;
     /** размер рабочего поля в мм*/
