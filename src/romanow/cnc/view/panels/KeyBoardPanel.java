@@ -5,6 +5,7 @@
  */
 package romanow.cnc.view.panels;
 
+import romanow.cnc.utils.Utils;
 import romanow.cnc.view.BasePanel;
 import romanow.cnc.view.BasePopupDialog;
 import romanow.cnc.view.design.JCheckBoxButton;
@@ -35,6 +36,7 @@ public class KeyBoardPanel extends BasePopupDialog {
     //    }
     public KeyBoardPanel(String title, JTextField field0 , boolean pass0, I_RealValue back0) {
         super(670,250);
+        try{
         initComponents();
         hideText = new JCheckBoxButton(HideText);
         TITLE.setText(title);
@@ -53,9 +55,13 @@ public class KeyBoardPanel extends BasePopupDialog {
         BasePanel.setComponentsScale(this);
         positionOn(field, -500,100, true);         // Уже пересчитан масштаб !!!!!!!!!!!!!!!
         retryLongDelay();
-        revalidate();
         setVisible(true);
+        revalidate();
         retryLongDelay();
+        System.out.println("KeyBoardPanel");
+            }catch (Exception ee){
+                System.out.println("KeyBoardPanel: "+Utils.createFatalMessage(ee,10));
+                }
         }
     private void showString(){
         if (pass && !hideText.isSelected()){

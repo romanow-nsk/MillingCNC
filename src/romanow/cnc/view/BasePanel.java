@@ -76,7 +76,7 @@ public abstract class BasePanel extends javax.swing.JPanel implements I_PanelEve
             return;
         double sx = WorkSpace.ws().getScaleX();
         double sy = WorkSpace.ws().getScaleY();
-        System.out.println("ScaleXY="+sx+" "+sy);
+       //System.out.println("ScaleXY="+sx+" "+sy);
         if (sx<Values.FrameScaleKoeff)
             return;
         //if (!WorkSpace.ws().global().fullScreen)
@@ -202,6 +202,7 @@ public abstract class BasePanel extends javax.swing.JPanel implements I_PanelEve
                 WorkSpace.ws().saveSettings();
             }
         });
+        keyBoard.setVisible(true);
     }
 
 
