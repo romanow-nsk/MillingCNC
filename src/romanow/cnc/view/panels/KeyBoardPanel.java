@@ -50,7 +50,7 @@ public class KeyBoardPanel extends BasePopupDialog {
         for(int i=0;i<nn;i++)
             cc[i]=zz[i];
         showString();
-        Shift.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/down.png"))); // NOI18N
+        Shift.setIcon(new javax.swing.ImageIcon(getClass().getResource("/drawable-mdpi/up.png"))); // NOI18N
         Value.setText(field.getText());
         BasePanel.setComponentsScale(this);
         positionOn(field, -500,100, true);         // Уже пересчитан масштаб !!!!!!!!!!!!!!!
@@ -263,7 +263,7 @@ public class KeyBoardPanel extends BasePopupDialog {
         Shift.setBounds(10, 200, 50, 40);
 
         Point.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        Point.setText(".");
+        Point.setText("/.");
         Point.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 PointActionPerformed(evt);
@@ -562,7 +562,7 @@ public class KeyBoardPanel extends BasePopupDialog {
         B37.setBounds(430, 200, 50, 40);
 
         B39.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        B39.setText(",");
+        B39.setText("*,");
         B39.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 B39ActionPerformed(evt);
@@ -635,11 +635,11 @@ public class KeyBoardPanel extends BasePopupDialog {
 
     private void ShiftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ShiftActionPerformed
         shift =!shift;
-        Shift.setIcon(new javax.swing.ImageIcon(getClass().getResource(shift ? "/drawable-mdpi/up.png" : "/drawable-mdpi/down.png"))); // NOI18N
+        Shift.setIcon(new javax.swing.ImageIcon(getClass().getResource(shift ? "/drawable-mdpi/down.png" : "/drawable-mdpi/up.png"))); // NOI18N
     }//GEN-LAST:event_ShiftActionPerformed
 
     private void PointActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PointActionPerformed
-        procDigit('.');
+        procDigit(shift ? '/' :'.');
     }//GEN-LAST:event_PointActionPerformed
 
     private void OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OKActionPerformed
@@ -766,7 +766,7 @@ public class KeyBoardPanel extends BasePopupDialog {
     }//GEN-LAST:event_B37ActionPerformed
 
     private void B39ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_B39ActionPerformed
-        procDigit(',');
+        procDigit(shift ? '*' : ',');
     }//GEN-LAST:event_B39ActionPerformed
 
     private void HideTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HideTextActionPerformed

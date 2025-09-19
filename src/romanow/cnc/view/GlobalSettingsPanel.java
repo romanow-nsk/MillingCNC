@@ -791,7 +791,7 @@ public class GlobalSettingsPanel extends BasePanel  implements I_SettingsPanel{
             }
         });
         add(DeviceName);
-        DeviceName.setBounds(980, 155, 90, 40);
+        DeviceName.setBounds(880, 155, 190, 40);
 
         DevicePort.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         DevicePort.setDisabledTextColor(new java.awt.Color(0, 0, 0));
